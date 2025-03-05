@@ -12,19 +12,20 @@ const int GRID_WIDTH = 20;
 const int GRID_HEIGHT = 15;
 const int CELL_SIZE = 40;
 
+bool touch = false;
+
 class Player {
 protected : 
     sf::Vector2f position;
     sf::Vector2f velocity;
-    float SPEED = 200.0f;  // Vitesse de déplacement horizontal
+    RectangleShape shape;
+
     const float gravity = 981.0f;  // Gravité en pixels par seconde carrée (simulation)
+    float SPEED = 200.0f;  // Vitesse de déplacement horizontal
     float jumpForce = 550.f;  // Force initiale du saut
     bool isJumping;
 
 public : 
-
-    float groundHeight = 13 * 40.f;  // Hauteur du sol a modif dans le jeu, le but est d'arriver a faire en sorte de remplacer cette valeur par les cases de nos plateformes en soit
-    RectangleShape shape;
 
     Player(float startX, float startY, float s, float jForce) {
         shape.setFillColor(sf::Color::Green);
@@ -42,16 +43,9 @@ public :
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) { jump(); }
 
         // Gérer le saut
-        if (isJumping) {
+        if (isJumping || !touch) { // si le joueur saute / n'est pas au sol
             velocity.y += gravity * deltaTime;  // Appliquer la gravité
             position.y += velocity.y * deltaTime;
-
-            // Vérifier si le joueur touche le sol
-            if (position.y >= groundHeight) { // si le y est sup ou égal à 500 alors on fixe le y a 500 et on dit que le saut se stop 
-                position.y = groundHeight;
-                isJumping = false;
-                velocity.y = 0;  // Arrêter le mouvement vertical
-            }
         }
 
         /*sf::Vector2f newPosition = shape.getPosition() + movement;
@@ -74,10 +68,47 @@ public :
     }
 
     void jump() {
-        if (!isJumping) {  // Sauter uniquement si le joueur est sur le sol
+        if (!isJumping) {  // Sauter uniquement si le joueur est sur le sol / saute pas
             isJumping = true;
             velocity.y = -jumpForce;  // Appliquer une force initiale vers le haut
         }
+    }
+
+    Vector2f getPosPos() {
+        return position;
+    }
+
+    Vector2f setPosPos(float(x), float(y)) {
+        position.x = x;
+        position.y = y;
+        return position;
+    }
+
+    Vector2f getVelocity() {
+        return velocity;
+    }
+
+    Vector2f setVelocity(float veloX, float veloY) {
+        velocity.x = veloX;
+        velocity.y = veloY;
+        return velocity;
+    }
+
+    RectangleShape getShape() {
+        return shape;
+    }
+
+    bool getIsJumping() {
+        return isJumping;
+    }
+
+    bool setIsJumping(bool jump) {
+        isJumping = jump;
+        return isJumping;
+    }
+
+    float getGravity() {
+        return gravity;
     }
 
     void update(float deltaTime) {
@@ -236,7 +267,7 @@ public:
         }
     }
 
-    void collisionMap(sf::RenderWindow& window, Player& player) {
+    void collisionMap(sf::RenderWindow& window, Player& player, float deltaTime) {
         if (vector_Map.empty()) return;
         sf::RectangleShape tile(sf::Vector2f(40, 40));
         
@@ -244,12 +275,16 @@ public:
             for (size_t j = 0; j < vector_Map[i].size(); j++) {
                 switch (vector_Map[i][j]) {
                 case '!':
-                    if (tile.getGlobalBounds().intersects(player.shape.getGlobalBounds())) {
+                    if (tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
                         cout << "collision" << endl;
-                        // ici on met le bidule
+                        player.setPosPos(player.getPosPos().x, tile.getPosition().y - 40);
+                        player.setIsJumping(false);
+                        touch = true;
                     }
-                    else {
-                        player.groundHeight = 13 * 40.f;
+                    else if (!tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds()) && !player.getIsJumping()) {
+                        player.setVelocity(player.getVelocity().x, player.getGravity() * deltaTime);
+                        cout << "no collision" << endl;
+                        touch = false;
                     }
                     break;
                 case '#':
@@ -295,7 +330,7 @@ int main() {
         for (auto& players : map.vector_player) {
             players->update(deltaTime);
             players->draw(window);
-            map.collisionMap(window, *players);
+            map.collisionMap(window, *players, deltaTime);
         }
 
         //player.update(deltaTime);
