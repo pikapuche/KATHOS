@@ -1,10 +1,8 @@
 #include "Player.hpp"
 
-Player::Player(float startX, float startY, float s, float jForce) {
+Player::Player(float s, float jForce) : Entity(position.x, position.y) {
     shape.setFillColor(sf::Color::Green);
     shape.setSize(sf::Vector2f(40.f, 40.f));
-    position.x = startX;
-    position.y = startY;
     velocity.y = 0;  // Pas de mouvement vertical au départ
     isJumping = false;
 }
