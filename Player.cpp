@@ -22,7 +22,7 @@ void Player::movementManager(float deltaTime) {
 }
 
 void Player::jump() {
-    if (!isJumping && !touch) {  // Sauter uniquement si le joueur est sur le sol / saute pas
+    if (!isJumping) {  // Sauter uniquement si le joueur est sur le sol / saute pas
         isJumping = true;
         velocity.y = -jumpForce;  // Appliquer une force initiale vers le haut
     }
