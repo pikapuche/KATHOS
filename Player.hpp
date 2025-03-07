@@ -1,6 +1,6 @@
 #include "Entity.hpp"
 
-class Player {
+class Player : public Entity {
 protected:
     sf::Vector2f position;
     sf::Vector2f velocity;
@@ -13,7 +13,7 @@ protected:
 
 public:
 
-    Player(float startX, float startY, float s, float jForce);
+    Player(float s, float jForce);
 
     void movementManager(float deltaTime);
 

@@ -4,21 +4,18 @@ void Game::run()
 {
     // Création de la fenêtre
     sf::RenderWindow window(sf::VideoMode(800, 600), "Test mini studio 2D");
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(60); 
 
     Map map;
-    //Grid grid;
 
-    map.loadFromFile("C:\\Users\\quent\\OneDrive\\Documents\\Cours C++\\Mini studio\\mapV1.txt");
+    map.loadFromFile("assets/map/mapV1.txt"); // fichier de la map
     map.initAll();
 
-    //Player player(50, 500, 100.f, 50.f);
-
-    Clock clock;
+    Clock clock; // Horloge pour le deltaTime
 
     // Boucle principale
     while (window.isOpen()) {
-        sf::Time deltaT = clock.restart();
+        sf::Time deltaT = clock.restart(); // deltaTime permettant de synchroniser les déplacements et autres mouvements tous ensemble sur la même durée
         float deltaTime = deltaT.asSeconds();
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -29,21 +26,17 @@ void Game::run()
         // Effacer la fenêtre
         window.clear();
 
-        map.drawMap(window);
+        map.drawMap(window); // draw la map
 
         cout << deltaTime << endl;
 
-        for (auto& players : map.vector_player) {
+        for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements
             players->update(deltaTime);
             players->draw(window);
             map.collisionMap(window, *players, deltaTime);
         }
 
-        //player.update(deltaTime);
-
-        //player.draw(window);
-
-        // Afficher le contenu
+        // Affiche tout
         window.display();
     }
 }
