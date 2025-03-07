@@ -8,7 +8,7 @@ protected:
 
     const float gravity = 981.0f;  // Gravité en pixels par seconde carrée (simulation)
     float SPEED = 200.0f;  // Vitesse de déplacement horizontal
-    float jumpForce = 550.f;  // Force initiale du saut
+    float jumpForce = 600.f;  // Force initiale du saut
     bool isJumping;
 
 public:

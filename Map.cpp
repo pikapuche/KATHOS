@@ -85,7 +85,23 @@ void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime
     for (size_t i = 0; i < vector_Map.size(); i++) { // gros code qui permet de parcourir la map
         for (size_t j = 0; j < vector_Map[i].size(); j++) {
             switch (vector_Map[i][j]) {
-            case '!': // sol
+            case '!': // plateformes
+                if (tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds()) && tile.getPosition().y > player.getPosPos().y) { // si le joueur entre en collision avec la plateforme mais qu'il est plus bas alors on set sa pos en dessous de la plateforme pour pas qu'il la traverse
+                    player.setPosPos(player.getPosPos().x, tile.getPosition().y + 40);
+                    player.setIsJumping(false);
+                    player.setVelocity(player.getVelocity().x, player.getJumpForce() * deltaTime * 18);
+                }
+                else if (tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) { // si le joueur entre en collision avec une plateforme alors il set sa position en haut de celle ci
+                    cout << "collision" << endl;
+                    player.setPosPos(player.getPosPos().x, tile.getPosition().y - 40);
+                    player.setIsJumping(false);
+                    player.setVelocity(player.getVelocity().x, 0);
+                }
+                if (!player.getIsJumping() && !tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) { // si le joueur ne saute pas et qu'il n'est pas en collision alors il applique la gravité
+                    player.setVelocity(player.getVelocity().x, player.getJumpForce() * deltaTime * 18);
+                }
+                break;
+            case '#': // sol 
                 if (tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) { // si le joueur entre en collision avec une plateforme alors il set sa position en haut de celle ci
                     cout << "collision" << endl;
                     player.setPosPos(player.getPosPos().x, tile.getPosition().y - 40);
@@ -93,11 +109,11 @@ void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime
                     player.setVelocity(player.getVelocity().x, 0);
                 }
                 if (!player.getIsJumping() && !tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) { // si le joueur ne saute pas et qu'il n'est pas en collision alors il applique la gravité
-                    //player.setVelocity(player.getVelocity().x, player.getGravity() * deltaTime);
                     player.setVelocity(player.getVelocity().x, player.getJumpForce() * deltaTime * 18);
                 }
-                break;
-            case '#':
+                if (tile.getPosition().y < player.getPosPos().y) {
+                    player.setPosPos(player.getPosPos().x, tile.getPosition().y - 1 * 40.f);
+                }
                 break;
             default:  tile.setFillColor(sf::Color::Black); break;
             }
