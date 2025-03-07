@@ -3,7 +3,7 @@
 void Game::run()
 {
     // Création de la fenêtre
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Test mini studio 2D");
+    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Kathos", sf::Style::Fullscreen);
     window.setFramerateLimit(60); 
 
     Map map;
@@ -28,7 +28,7 @@ void Game::run()
 
         map.drawMap(window); // draw la map
 
-        cout << deltaTime << endl;
+        //cout << deltaTime << endl;
 
         for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements
             players->update(deltaTime);
