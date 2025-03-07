@@ -42,11 +42,15 @@ public :
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) { jump(); }
 
-        // Gérer le saut
-        if (isJumping || !touch) { // si le joueur saute / n'est pas au sol
-            velocity.y += gravity * deltaTime;  // Appliquer la gravité
-            position.y += velocity.y * deltaTime;
-        }
+        velocity.y += gravity * deltaTime;  // Appliquer la gravité
+        position.y += velocity.y * deltaTime;
+
+
+        //// Gérer le saut
+        //if (isJumping) { // si le joueur saute / n'est pas au sol
+        //    velocity.y += gravity * deltaTime;  // Appliquer la gravité
+        //    position.y += velocity.y * deltaTime;
+        //}
 
         /*sf::Vector2f newPosition = shape.getPosition() + movement;
         sf::FloatRect newBounds(newPosition, shape.getSize());
@@ -68,7 +72,7 @@ public :
     }
 
     void jump() {
-        if (!isJumping) {  // Sauter uniquement si le joueur est sur le sol / saute pas
+        if (!isJumping && !touch) {  // Sauter uniquement si le joueur est sur le sol / saute pas
             isJumping = true;
             velocity.y = -jumpForce;  // Appliquer une force initiale vers le haut
         }
@@ -107,8 +111,21 @@ public :
         return isJumping;
     }
 
+    float getJumpForce() {
+        return jumpForce;
+    }
+
+    float setJumpForce(float force) {
+        jumpForce = force;
+        return jumpForce;
+    }
+
     float getGravity() {
         return gravity;
+    }
+
+    float getSPEED() {
+        return SPEED;
     }
 
     void update(float deltaTime) {
@@ -279,12 +296,11 @@ public:
                         cout << "collision" << endl;
                         player.setPosPos(player.getPosPos().x, tile.getPosition().y - 40);
                         player.setIsJumping(false);
-                        touch = true;
+                        player.setVelocity(player.getVelocity().x, 0);
                     }
-                    else if (!tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds()) && !player.getIsJumping()) {
-                        player.setVelocity(player.getVelocity().x, player.getGravity() * deltaTime);
-                        cout << "no collision" << endl;
-                        touch = false;
+                    if (!player.getIsJumping() && !tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
+                        //player.setVelocity(player.getVelocity().x, player.getGravity() * deltaTime);
+                        player.setVelocity(player.getVelocity().x, player.getJumpForce() * deltaTime * 18);
                     }
                     break;
                 case '#':
@@ -326,6 +342,8 @@ int main() {
         window.clear();
 
         map.drawMap(window);
+
+        cout << deltaTime << endl;
 
         for (auto& players : map.vector_player) {
             players->update(deltaTime);
