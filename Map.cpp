@@ -70,10 +70,6 @@ void Map::drawMap(sf::RenderWindow& window) {
             }
             tile.setPosition(j * 40.f, i * 40.f);
             window.draw(tile);
-            if (winGame) {
-                this_thread::sleep_for(std::chrono::seconds(3));
-                window.close();
-            }
         }
     }
 }
@@ -88,11 +84,11 @@ void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime
             case '!': // plateformes
                 if (tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds()) && tile.getPosition().y > player.getPosPos().y) { // si le joueur entre en collision avec la plateforme mais qu'il est plus bas alors on set sa pos en dessous de la plateforme pour pas qu'il la traverse
                     player.setPosPos(player.getPosPos().x, tile.getPosition().y + 40);
-                    player.setIsJumping(false);
-                    player.setVelocity(player.getVelocity().x, player.getJumpForce() * deltaTime * 18);
+                    player.setIsJumping(true);
+                    //player.setVelocity(player.getVelocity().x, player.getJumpForce() * deltaTime * 18);
                 }
-                else if (tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) { // si le joueur entre en collision avec une plateforme alors il set sa position en haut de celle ci
-                    cout << "collision" << endl;
+                else if (tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds()) && tile.getPosition().y < player.getPosPos().y) { // si le joueur entre en collision avec une plateforme alors il set sa position en haut de celle ci
+                    cout << "collision plateforme" << endl;
                     player.setPosPos(player.getPosPos().x, tile.getPosition().y - 40);
                     player.setIsJumping(false);
                     player.setVelocity(player.getVelocity().x, 0);
@@ -103,7 +99,7 @@ void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime
                 break;
             case '#': // sol 
                 if (tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) { // si le joueur entre en collision avec une plateforme alors il set sa position en haut de celle ci
-                    cout << "collision" << endl;
+                    cout << "collision sol" << endl;
                     player.setPosPos(player.getPosPos().x, tile.getPosition().y - 40);
                     player.setIsJumping(false);
                     player.setVelocity(player.getVelocity().x, 0);
@@ -112,7 +108,7 @@ void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime
                     player.setVelocity(player.getVelocity().x, player.getJumpForce() * deltaTime * 18);
                 }
                 if (tile.getPosition().y < player.getPosPos().y) {
-                    player.setPosPos(player.getPosPos().x, tile.getPosition().y - 1 * 40.f);
+                    player.setPosPos(player.getPosPos().x, tile.getPosition().y - 40);
                 }
                 break;
             default:  tile.setFillColor(sf::Color::Black); break;

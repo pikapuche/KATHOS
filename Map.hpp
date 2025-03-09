@@ -10,6 +10,8 @@ protected:
     sf::Texture groundTexture;
     sf::Texture wallTexture;
 
+    float playerHeight = 70.0f;
+
     sf::Text win;
     sf::Font font;
 
