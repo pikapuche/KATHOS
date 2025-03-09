@@ -36,7 +36,7 @@ void Map::initAll() {
             {
                 Player* players = new Player(100.f, 50.f);
                 vector_player.push_back(players);
-                for (auto& player : vector_player) { // set la position de départ du player
+                for (auto& player : vector_player) { // set la position de dï¿½part du player
                     player->setPosPos(j * 40.f, i * 40.f);
                 }
                 break;
@@ -97,7 +97,7 @@ void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime
                     player.setIsJumping(false);
                     player.setVelocity(player.getVelocity().x, 0);
                 }
-                if (!player.getIsJumping() && !tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) { // si le joueur ne saute pas et qu'il n'est pas en collision alors il applique la gravité
+                if (!player.getIsJumping() && !tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) { // si le joueur ne saute pas et qu'il n'est pas en collision alors il applique la gravitï¿½
                     player.setVelocity(player.getVelocity().x, player.getJumpForce() * deltaTime * 18);
                 }
                 break;
@@ -108,7 +108,7 @@ void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime
                     player.setIsJumping(false);
                     player.setVelocity(player.getVelocity().x, 0);
                 }
-                if (!player.getIsJumping() && !tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) { // si le joueur ne saute pas et qu'il n'est pas en collision alors il applique la gravité
+                if (!player.getIsJumping() && !tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) { // si le joueur ne saute pas et qu'il n'est pas en collision alors il applique la gravitï¿½
                     player.setVelocity(player.getVelocity().x, player.getJumpForce() * deltaTime * 18);
                 }
                 if (tile.getPosition().y < player.getPosPos().y) {
@@ -117,7 +117,7 @@ void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime
                 break;
             default:  tile.setFillColor(sf::Color::Black); break;
             }
-            tile.setPosition(j * 40.f, i * 40.f); // set la position des différentes tiles sur la map
+            tile.setPosition(j * 40.f, i * 40.f); // set la position des diffï¿½rentes tiles sur la map
         }
     }
 }

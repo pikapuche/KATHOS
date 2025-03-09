@@ -3,7 +3,7 @@
 Player::Player(float s, float jForce) : Entity(position.x, position.y) { // constructeur de base 
     shape.setFillColor(sf::Color::Green);
     shape.setSize(sf::Vector2f(40.f, 40.f));
-    velocity.y = 0;  // Pas de mouvement vertical au départ
+    velocity.y = 0;  // Pas de mouvement vertical au dï¿½part
     isJumping = false;
 }
 
@@ -13,7 +13,7 @@ void Player::movementManager(float deltaTime) {
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) { jump(); }
 
-    velocity.y += gravity * deltaTime;  // Appliquer la gravité
+    velocity.y += gravity * deltaTime;  // Appliquer la gravitï¿½
     position.y += velocity.y * deltaTime;
 
     shape.setPosition(position);

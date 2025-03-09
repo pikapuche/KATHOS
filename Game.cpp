@@ -1,12 +1,14 @@
 #include "Game.hpp"
+#include "MainScreen.hpp"
 
 void Game::run()
 {
-    // Création de la fenêtre
+    // Crï¿½ation de la fenï¿½tre
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Kathos", sf::Style::Fullscreen);
     window.setFramerateLimit(60); 
 
     Map map;
+    MainScreen mainScreen;
 
     map.loadFromFile("assets/map/mapV1.txt"); // fichier de la map
     map.initAll();
@@ -15,28 +17,34 @@ void Game::run()
 
     // Boucle principale
     while (window.isOpen()) {
-        sf::Time deltaT = clock.restart(); // deltaTime permettant de synchroniser les déplacements et autres mouvements tous ensemble sur la même durée
+        sf::Time deltaT = clock.restart(); // deltaTime permettant de synchroniser les dï¿½placements et autres mouvements tous ensemble sur la mï¿½me durï¿½e
         float deltaTime = deltaT.asSeconds();
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
-                window.close(); // Fermer la fenêtre
+                window.close(); // Fermer la fenï¿½tre
         }
 
-        // Effacer la fenêtre
+        // Effacer la fenï¿½tre
         window.clear();
 
-        map.drawMap(window); // draw la map
-
-        //cout << deltaTime << endl;
-
-        for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements
-            players->update(deltaTime);
-            players->draw(window);
-            map.collisionMap(window, *players, deltaTime);
+        if (mainScreen.getIsInMenu()) {
+            mainScreen.initMenu(window);
+            mainScreen.updateMenu(window);
         }
+        else if (!mainScreen.getIsInMenu()) {
+            map.drawMap(window); // draw la map
 
-        // Affiche tout
-        window.display();
+            //cout << deltaTime << endl;
+
+            for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gï¿½rer dans ses dï¿½placements
+                players->update(deltaTime);
+                players->draw(window);
+                map.collisionMap(window, *players, deltaTime);
+            }
+
+            // Affiche tout
+            window.display();
+        }
     }
 }

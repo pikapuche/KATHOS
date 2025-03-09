@@ -6,8 +6,8 @@ protected:
     sf::Vector2f velocity;
     RectangleShape shape;
 
-    const float gravity = 981.0f;  // Gravité en pixels par seconde carrée (simulation)
-    float SPEED = 200.0f;  // Vitesse de déplacement horizontal
+    const float gravity = 981.0f;  // Gravitï¿½ en pixels par seconde carrï¿½e (simulation)
+    float SPEED = 200.0f;  // Vitesse de dï¿½placement horizontal
     float jumpForce = 600.f;  // Force initiale du saut
     bool isJumping;
 
