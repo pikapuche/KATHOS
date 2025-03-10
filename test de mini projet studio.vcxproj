@@ -71,12 +71,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\SFML-2.6.2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SFML-2.6.2\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\nlamarre\Documents\SFML-2.6.2-windows-vc17-64-bit\SFML-2.6.2\include;C:\Users\nlamarre\Documents\SFML-2.6.2-windows-vc17-64-bit\SFML-2.6.2\include;$(IncludePath);$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\nlamarre\Documents\SFML-2.6.2-windows-vc17-64-bit\SFML-2.6.2\lib;C:\Users\nlamarre\Documents\SFML-2.6.2-windows-vc17-64-bit\SFML-2.6.2\lib;$(LibraryPath);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\SFML-2.6.2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SFML-2.6.2\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\nlamarre\Documents\SFML-2.6.2-windows-vc17-64-bit\SFML-2.6.2\include;C:\SFML-2.6.2\include;$(IncludePath);$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\nlamarre\Documents\SFML-2.6.2-windows-vc17-64-bit\SFML-2.6.2\lib;C:\SFML-2.6.2\lib;$(LibraryPath);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -139,6 +139,7 @@
   <ItemGroup>
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Gemme.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -146,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="Game.hpp" />
+    <ClInclude Include="Gemme.hpp" />
     <ClInclude Include="Map.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="stdafx.hpp" />
