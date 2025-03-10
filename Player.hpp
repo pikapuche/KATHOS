@@ -10,6 +10,12 @@ protected:
     float SPEED = 200.0f;  // Vitesse de déplacement horizontal
     float jumpForce = 600.f;  // Force initiale du saut
     bool isJumping;
+    bool isAttacking;
+
+    float animTimeDecr;
+    float rotaLeft;
+
+    RectangleShape attackShape;
 
 public:
 
@@ -18,6 +24,8 @@ public:
     void movementManager(float deltaTime);
 
     void jump();
+
+    void attack(float deltaTime);
 
     Vector2f getPosPos();
 
