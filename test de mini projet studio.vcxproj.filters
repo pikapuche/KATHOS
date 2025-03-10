@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Fichiers sources\Interface &amp; UI">
+      <UniqueIdentifier>{25552cd5-5323-45d8-bf81-f3aa6e492aca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Interface &amp; UI.hpp">
+      <UniqueIdentifier>{f7558d98-aa14-4f09-b266-b65af8603972}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -31,7 +37,10 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="MainScreen.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\Interface &amp; UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Fichiers sources\Interface &amp; UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -51,7 +60,21 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="MainScreen.hpp">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\Interface &amp; UI.hpp</Filter>
     </ClInclude>
+    <ClInclude Include="Button.hpp">
+      <Filter>Fichiers d%27en-tête\Interface &amp; UI.hpp</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\texture\titlescreen\button1.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="assets\texture\titlescreen\button2.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="assets\texture\titlescreen\background.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -1,34 +1,6 @@
 #include "MainScreen.hpp"
 #include <iostream>
 
-// Constructor for Button (No text, only texture)
-MainScreen::Button::Button(float x, float y, float width, float height, const std::string& texturePath) {
-    std::cout << "Loading: " << texturePath << std::endl;  // Debugging
-
-    if (!texture.loadFromFile(texturePath)) {
-        std::cerr << "Failed to load texture: " << texturePath << std::endl;
-    }
-
-    shape.setSize(sf::Vector2f(width, height));
-    shape.setPosition(x, y);
-    shape.setTexture(&texture);
-}
-
-void MainScreen::Button::draw(sf::RenderWindow& window) {
-    window.draw(shape);
-}
-
-bool MainScreen::Button::isHovered(sf::Vector2f mousePos) {
-    return shape.getGlobalBounds().contains(mousePos);
-}
-
-bool MainScreen::Button::isClicked(sf::Event event, sf::Vector2f mousePos) {
-    return event.type == sf::Event::MouseButtonPressed &&
-        event.mouseButton.button == sf::Mouse::Left &&
-        isHovered(mousePos);
-}
-
-// Getters & Setters
 bool MainScreen::getIsInMenu() {
     return isInMenu;
 }
@@ -37,47 +9,104 @@ void MainScreen::setIsInMenu(bool menu) {
     isInMenu = menu;
 }
 
-// Initialize menu with title, background, and buttons
 void MainScreen::initMenu(sf::RenderWindow& window) {
-    std::cout << "Loading background texture..." << std::endl;
-
     if (!backgroundTexture.loadFromFile("assets/texture/titlescreen/background.png")) {
         std::cerr << "Failed to load background texture!" << std::endl;
     }
 
-    background.setSize(sf::Vector2f(window.getSize().x, window.getSize().y));
-    background.setTexture(&backgroundTexture);
+    background.setScale(sf::Vector2f(1.0f,1.0f));
+    background.setTexture(backgroundTexture);
 
-    buttons.emplace_back(300, 200, 200, 50, "assets/texture/titlescreen/button1.png");
-    buttons.emplace_back(300, 300, 200, 50, "assets/texture/titlescreen/button2.png");
+    buttons.push_back(Button(
+        window.getSize().x / 2 - 100, window.getSize().y / 2 - 100,
+		200, 100, ButtonType::Play, false,
+        "assets/texture/titlescreen/buttons/playButton.png",
+        "assets/texture/titlescreen/buttons/playButtonHover.png"
+    ));
+
+    buttons.push_back(Button(
+        window.getSize().x / 2 - 100, window.getSize().y / 2 + 300,
+        200, 100, ButtonType::Exit, false,
+        "assets/texture/titlescreen/buttons/ExitButton.png",
+        "assets/texture/titlescreen/buttons/ExitButtonHover.png"
+    ));
+
+    buttons.push_back(Button(
+        window.getSize().x / 2 - 100, window.getSize().y / 2 + 100,
+        200, 100, ButtonType::Settings, false,
+        "assets/texture/titlescreen/buttons/SettingsButton.png",
+        "assets/texture/titlescreen/buttons/SettingsButtonHover.png"
+    ));
+
+    buttons.push_back(Button(
+        window.getSize().x / 2 - 100, window.getSize().y / 2 + -100,
+        200, 100, ButtonType::Sound, true,
+        "assets/texture/titlescreen/buttons/settings/soundButton.png",
+        "assets/texture/titlescreen/buttons/settings/soundButtonHover.png"
+    ));
+
+    buttons.push_back(Button(
+        window.getSize().x / 2 - 100, window.getSize().y / 2 + 300,
+        200, 100, ButtonType::Return, true,
+        "assets/texture/titlescreen/buttons/settings/returnButton.png",
+        "assets/texture/titlescreen/buttons/settings/returnButtonHover.png"
+    ));
 }
 
-// Draw menu elements
 void MainScreen::updateMenu(sf::RenderWindow& window) {
     window.clear();
     window.draw(background);
 
     for (auto& button : buttons) {
-        button.draw(window);
-    }
+        if (button.isHovered(window)) {
+            button.setTexture(true);
 
-    window.display();
-}
+            //Check when button click
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                if (!button.getisHidden()) {
+                    std::cout << "Button clicked" << std::endl;
+                    switch (button.getType()) { //Check button type in Menu
+                    case ButtonType::Play:
+                        isInMenu = false; //Start Game
+                        break;
+                    case ButtonType::Exit:
+                        window.close(); //Exit Game
+                        break;
 
-// Handle button clicks (Fixed: Removed Text)
-void MainScreen::handleMenuInput(sf::RenderWindow& window, sf::Event event) {
-    sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
-
-    for (auto& button : buttons) {
-        if (button.isClicked(event, mousePos)) {
-            if (&button == &buttons[0]) {  // Play button
-                std::cout << "Play Clicked!" << std::endl;
-                setIsInMenu(false);
-            }
-            else if (&button == &buttons[1]) {  // Exit button
-                std::cout << "Exit Clicked! Closing window." << std::endl;
-                window.close();
+                    case ButtonType::Settings:
+                        isInSettings = true; //Settings Menu
+                        break;
+                    case ButtonType::Return:
+                        isInSettings = false; //Return to Main Menu
+                        break;
+                    }
+                }
             }
         }
+        
+        else {
+            button.setTexture(false);
+        }
+
+
+        if (isInSettings) {
+            if (button.isInSettings()) {
+				button.setHidden(false);
+                button.draw(window);
+            }
+			else if (!button.isInSettings()) {
+				button.setHidden(true);
+			}
+        }
+        else if (!isInSettings) {
+            if (!button.isInSettings()) {
+				button.setHidden(false);
+                button.draw(window);
+            }
+			else if (button.isInSettings()) {
+				button.setHidden(true);
+			}
+        }
     }
+    window.display();
 }
