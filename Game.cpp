@@ -1,51 +1,61 @@
 #include "Game.hpp"
 #include "MainScreen.hpp"
+#include "Interface.hpp"
 
 void Game::run()
 {
-    // Cr�ation de la fen�tre
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Kathos", sf::Style::Fullscreen);
     window.setFramerateLimit(60);
 
     Map map;
     MainScreen mainScreen;
+    Interface overlay;
     mainScreen.initMenu(window);
-    map.loadFromFile("assets/map/mapV1.txt"); // fichier de la map
+    map.loadFromFile("assets/map/mapV1.txt");
     map.initAll();
 
-    Clock clock; // Horloge pour le deltaTime
+    Clock clock;
+    overlay.initInterface(); // Ensure the texture is loaded once
 
-    // Boucle principale
     while (window.isOpen()) {
-        sf::Time deltaT = clock.restart(); // deltaTime permettant de synchroniser les d�placements et autres mouvements tous ensemble sur la m�me dur�e
+        sf::Time deltaT = clock.restart();
         float deltaTime = deltaT.asSeconds();
         sf::Event event;
+
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed || event.key.code == sf::Keyboard::Escape) {
-                window.close(); // Fermer la fen�tre
+            if (event.type == sf::Event::Closed) {
+                window.close();
             }
-
-            // Effacer la fen�tre
-            window.clear();
-
-            if (mainScreen.getIsInMenu()) {
-                mainScreen.updateMenu(window);
+            if (mainScreen.getIsInMenu() && event.key.code == sf::Keyboard::Escape) {
+                window.close();
             }
-            else if (!mainScreen.getIsInMenu()) {
-				mainScreen.destroyAll();
-                map.drawMap(window); // draw la map
+            else if (!mainScreen.getIsInMenu() && event.key.code == sf::Keyboard::Escape) {
+                overlay.setIsPaused(true);
+            }
+        }
 
-                //cout << deltaTime << endl;
+        window.clear();
 
-                for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le g�rer dans ses d�placements
+        if (mainScreen.getIsInMenu()) {
+            mainScreen.updateMenu(window);
+        }
+        else {
+            mainScreen.destroyAll();
+            map.drawMap(window);
+
+            for (auto& players : map.vector_player) {
+                if (!overlay.getIsPaused()) {
                     players->update(deltaTime);
-                    players->draw(window);
                     map.collisionMap(window, *players, deltaTime);
                 }
-
-                // Affiche tout
-                window.display();
+                players->draw(window);
             }
+
+            if (overlay.getIsPaused()) {
+                overlay.updateInterface(window);
+            }
+
+            window.display();
         }
     }
 }

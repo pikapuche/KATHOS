@@ -42,6 +42,9 @@
     <ClCompile Include="Button.cpp">
       <Filter>Fichiers sources\Interface &amp; UI</Filter>
     </ClCompile>
+    <ClCompile Include="Interface.cpp">
+      <Filter>Fichiers sources\Interface &amp; UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.hpp">
@@ -63,6 +66,9 @@
       <Filter>Fichiers d%27en-tête\Interface &amp; UI.hpp</Filter>
     </ClInclude>
     <ClInclude Include="Button.hpp">
+      <Filter>Fichiers d%27en-tête\Interface &amp; UI.hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface.hpp">
       <Filter>Fichiers d%27en-tête\Interface &amp; UI.hpp</Filter>
     </ClInclude>
   </ItemGroup>
