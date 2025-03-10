@@ -85,7 +85,8 @@ void MainScreen::updateMenu(sf::RenderWindow& window) {
         }
         
         else {
-            button.setTexture(false);
+            button.setTexture(false);   
+
         }
 
 
@@ -109,4 +110,8 @@ void MainScreen::updateMenu(sf::RenderWindow& window) {
         }
     }
     window.display();
+}
+
+void MainScreen::destroyAll() {
+	buttons.clear();
 }

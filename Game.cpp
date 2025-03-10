@@ -32,6 +32,7 @@ void Game::run()
                 mainScreen.updateMenu(window);
             }
             else if (!mainScreen.getIsInMenu()) {
+				mainScreen.destroyAll();
                 map.drawMap(window); // draw la map
 
                 //cout << deltaTime << endl;

@@ -16,4 +16,5 @@ public:
     void setIsInMenu(bool menu);
     void initMenu(sf::RenderWindow& window);
     void updateMenu(sf::RenderWindow& window);
+    void destroyAll();
 };
