@@ -8,7 +8,7 @@ void Game::run()
 
     Map map;
 
-    map.loadFromFile("assets/map/mapV1.txt"); // fichier de la map
+    map.loadFromFile("assets/map/mapBoss.txt"); // fichier de la map
     map.initAll();
 
     Clock clock; // Horloge pour le deltaTime
@@ -26,6 +26,7 @@ void Game::run()
         // Effacer la fenêtre
         window.clear();
 
+        map.update(deltaTime);
         map.drawMap(window); // draw la map
 
         //cout << deltaTime << endl;

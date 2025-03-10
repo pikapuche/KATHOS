@@ -1,10 +1,15 @@
 #include "Map.hpp"
 
+Map::Map() {
+    boss = nullptr;
+}
+
 Map::~Map() {
     for (auto players : vector_player) {
         delete players;
     }
     vector_player.clear();
+    delete boss;
 }
 
 bool Map::loadFromFile(string filename) {
@@ -47,6 +52,21 @@ void Map::initAll() {
             }
         }
     }
+
+    for (size_t i = 0; i < vector_Map.size(); i++) {
+        for (size_t j = 0; j < vector_Map[i].size(); j++) {
+            if (vector_Map[i][j] == 'B') {
+                boss = new Boss(j * 40.f, i * 40.f);
+            }
+        }
+    }
+}
+
+void Map::update(float deltaTime) {
+    if (boss) {
+        boss->update(deltaTime);
+        boss->checkCollision(vector_Map[0].size() * 40);
+    }
 }
 
 void Map::drawMap(sf::RenderWindow& window) {
@@ -71,6 +91,10 @@ void Map::drawMap(sf::RenderWindow& window) {
             }
             window.draw(tile);
         }
+    }
+
+    if(boss) {
+        boss->draw(window);
     }
 }
 

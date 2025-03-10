@@ -1,5 +1,6 @@
 #include "stdafx.hpp"
 #include "Player.hpp"
+#include "Boss.hpp"
 
 const int GRID_WIDTH = 20;
 const int GRID_HEIGHT = 15;
@@ -20,7 +21,9 @@ protected:
 public:
 
     vector<Player*> vector_player;
+    Boss* boss;
 
+    Map();
     ~Map();
 
     vector<string> vector_Map;
@@ -30,6 +33,8 @@ public:
     void initAll();
 
     void drawMap(sf::RenderWindow& window);
+
+    void update(float deltaTime);
 
     void collisionMap(sf::RenderWindow& window, Player& player, float deltaTime);
 };
