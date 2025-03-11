@@ -37,7 +37,7 @@ void Map::initAll() {
             {
                 Player* players = new Player();
                 vector_player.push_back(players);
-                for (auto& player : vector_player) { // set la position de départ du player
+                for (auto& player : vector_player) { // set la position de dÃ¯Â¿Â½part du player
                     player->setPosPos(j * 40.f, i * 40.f);
                 }
                 break;
@@ -46,7 +46,7 @@ void Map::initAll() {
             {
                 Gemme* gemmes = new Gemme();
                 vector_gemme.push_back(gemmes);
-                for (auto& gemme : vector_gemme) { // set la position de départ de la gemme
+                for (auto& gemme : vector_gemme) { // set la position de dÃ©part de la gemme
                     gemme->setPosition(j * 40.f, i * 40.f);
                 }
                 break;
@@ -75,6 +75,10 @@ void Map::drawMap(sf::RenderWindow& window) {
                 tile.setFillColor(sf::Color::Cyan);
                 break;
             }
+            case 'K': {
+
+                break;
+            }
 
             default:  tile.setFillColor(sf::Color::Black); break;
             }
@@ -89,7 +93,7 @@ void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime
 
     for (size_t i = 0; i < vector_Map.size(); i++) { // gros code qui permet de parcourir la map 
         for (size_t j = 0; j < vector_Map[i].size(); j++) {
-            tile.setPosition(j * 40.f, i * 40.f); // set la position des différentes tiles sur la map
+            tile.setPosition(j * 40.f, i * 40.f); // set la position des diffÃ©rentes tiles sur la map
             switch (vector_Map[i][j]) {
             case '!': // plateformes
                 if (tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds()) && tile.getPosition().y > player.getPosPos().y) { // si le joueur entre en collision avec la plateforme mais qu'il est plus bas alors on set sa pos en dessous de la plateforme pour pas qu'il la traverse
@@ -104,7 +108,7 @@ void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime
                     player.setIsGrounded(true);
                     player.setVelocity(player.getVelocity().x, 0);
                 }
-                else if (!player.getIsJumping() && !tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) { // si le joueur ne saute pas et qu'il n'est pas en collision alors il applique la gravité
+                else if (!player.getIsJumping() && !tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) { // si le joueur ne saute pas et qu'il n'est pas en collision alors il applique la gravitÃ©
                     player.setVelocity(player.getVelocity().x, player.getJumpForce() * deltaTime * 18);
                 }
                 break;
@@ -116,7 +120,7 @@ void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime
                     player.setIsGrounded(true);
                     player.setVelocity(player.getVelocity().x, 0);
                 }
-                if (!player.getIsJumping() && !tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) { // si le joueur ne saute pas et qu'il n'est pas en collision alors il applique la gravité
+                if (!player.getIsJumping() && !tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) { // si le joueur ne saute pas et qu'il n'est pas en collision alors il applique la gravitÃ¯Â¿Â½
                     player.setVelocity(player.getVelocity().x, player.getJumpForce() * deltaTime * 18);
                 }
                 if (tile.getPosition().y < player.getPosPos().y) {

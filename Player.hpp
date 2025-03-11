@@ -10,8 +10,8 @@ protected:
     enum State { LOOK_LEFT, LOOK_RIGHT };
     State state;
 
-    const float gravity = 981.0f;  // Gravité en pixels par seconde carrée (simulation)
-    float SPEED = 300.0f;  // Vitesse de déplacement horizontal
+    const float gravity = 981.0f;  // GravitÃ© en pixels par seconde carrÃ©e (simulation)
+    float SPEED = 300.0f;  // Vitesse de dÃ©placement horizontal
     float jumpForce = 600.f;  // Force initiale du saut
     bool isJumping = false;
     bool isJumping2 = false;
@@ -22,6 +22,7 @@ protected:
     bool isTakeDash = false;
     bool isDashing = false;
     bool isTakeSpeed = false;
+    bool hasKey = false;
 
     float animTimeDecr;
     float rotaLeft = 220;
@@ -108,4 +109,7 @@ public:
     void update(float deltaTime);
 
     void draw(RenderWindow& window);
+
+    bool gethasKey();
+    void sethasKey(bool key);
 };

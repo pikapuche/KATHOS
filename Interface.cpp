@@ -1,0 +1,68 @@
+#include "Interface.hpp"
+#include <iostream>
+
+PauseOverlay::PauseOverlay() {
+    //overlay.setColor(sf::Color(255, 255, 255, 150)); // Slight transparency
+}
+
+void PauseOverlay::setTexture(const std::string& texturePath) {
+    if (!overlayTexture.loadFromFile(texturePath)) {
+        std::cerr << "Failed to load pause overlay texture from: " << texturePath << std::endl;
+    }
+    else {
+        overlay.setTexture(overlayTexture);
+    }
+}
+
+void PauseOverlay::draw(sf::RenderWindow& window) {
+    window.draw(overlay);
+}
+
+bool Interface::getIsPaused() {
+	return isPaused;
+}
+
+void Interface::setIsPaused(bool paused) {
+	isPaused = paused;
+}
+
+void Interface::initInterface() {
+    pauseOverlay.setTexture("assets/texture/UI/pausedOverlay.png");
+
+    buttons.push_back(Button(
+        1920 / 2 - 100, 1080 / 2 - 100,
+        200, 100, ButtonType::Resume, false,
+        "assets/texture/UI/resumeButton.png",
+        "assets/texture/UI/resumeButtonHover.png"
+    ));
+
+    buttons.push_back(Button(
+        1920 / 2 - 100, 1080 / 2 + 100,
+        200, 100, ButtonType::Exit, false,
+        "assets/texture/titlescreen/buttons/ExitButton.png",
+        "assets/texture/titlescreen/buttons/ExitButtonHover.png"
+    ));
+}
+
+void Interface::updateInterface(sf::RenderWindow& window) {
+    pauseOverlay.draw(window);
+    for (auto& button : buttons) {
+        if (button.isHovered(window)) {
+            button.setTexture(true);
+		}
+		else {
+			button.setTexture(false);
+		}
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+            switch (button.getType()) { //Check button type in Menu
+            case ButtonType::Resume:
+                isPaused = false;
+                break;
+			case ButtonType::Exit:
+				window.close();
+				break;
+            }
+        }
+        button.draw(window);
+    }
+}
