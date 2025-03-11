@@ -7,7 +7,8 @@ enum class ButtonType {
     Settings,
     Sound,
     Return,
-    Resume
+    Resume,
+    Restart
 };
 
 class Button {

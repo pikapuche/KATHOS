@@ -38,7 +38,7 @@ void Game::run()
 
         if (mainScreen.getIsInMenu()) {
             mainScreen.updateMenu(window);
-        }
+        }   
         else {
             mainScreen.destroyAll();
             map.drawMap(window);
@@ -53,6 +53,16 @@ void Game::run()
 
             if (overlay.getIsPaused()) {
                 overlay.updateInterface(window);
+                if (overlay.getShouldRestart()) {
+                    map.vector_player.clear();  // Clear old player instances
+                    map.loadFromFile("assets/map/mapV1.txt"); // Reload map
+                    map.initAll(); // Reset objects
+                    overlay.resetRestartFlag(); // Reset the flag so it doesn't keep restarting
+
+                }
+                for (auto& players : map.vector_player) {
+                    players->draw(window);
+                }
             }
 
             window.display();

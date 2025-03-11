@@ -38,6 +38,13 @@ void Interface::initInterface() {
 
     buttons.push_back(Button(
         1920 / 2 - 100, 1080 / 2 + 100,
+        200, 100, ButtonType::Restart, false,
+        "assets/texture/UI/RestartButton.png",
+        "assets/texture/UI/RestartButtonHover.png"
+    ));
+
+    buttons.push_back(Button(
+        1920 / 2 - 100, 1080 / 2 + 300,
         200, 100, ButtonType::Exit, false,
         "assets/texture/titlescreen/buttons/ExitButton.png",
         "assets/texture/titlescreen/buttons/ExitButtonHover.png"
@@ -46,23 +53,40 @@ void Interface::initInterface() {
 
 void Interface::updateInterface(sf::RenderWindow& window) {
     pauseOverlay.draw(window);
+
     for (auto& button : buttons) {
         if (button.isHovered(window)) {
             button.setTexture(true);
-		}
-		else {
-			button.setTexture(false);
-		}
+        }
+        else {
+            button.setTexture(false);
+        }
+
+        // FIX: Only trigger when the mouse button is released
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-            switch (button.getType()) { //Check button type in Menu
-            case ButtonType::Resume:
-                isPaused = false;
-                break;
-			case ButtonType::Exit:
-				window.close();
-				break;
+            if (button.isHovered(window)) {  // Ensure the mouse is over the button
+                switch (button.getType()) {
+                case ButtonType::Resume:
+                    isPaused = false;
+                    return;
+                case ButtonType::Exit:
+                    window.close();
+                    return;
+                case ButtonType::Restart:
+                    shouldRestart = true; // New flag to signal a restart
+                    isPaused = false; // Unpause when restarting
+                    return;
+                }
             }
         }
+
         button.draw(window);
     }
+}
+
+bool Interface::getShouldRestart() const{
+    return shouldRestart;
+}
+void Interface::resetRestartFlag() {
+    shouldRestart = false;
 }

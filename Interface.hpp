@@ -21,9 +21,12 @@ private:
     bool isPaused;
     PauseOverlay pauseOverlay; // Store the overlay as a member
     std::vector<Button> buttons;
+    bool shouldRestart = false; // Track restart state
 public:
     void initInterface();
 	bool getIsPaused();
 	void setIsPaused(bool paused);
     void updateInterface(sf::RenderWindow& window);
+    bool getShouldRestart() const;
+    void resetRestartFlag();
 };
