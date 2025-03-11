@@ -7,28 +7,42 @@ protected:
     sf::Vector2f velocity;
     RectangleShape shape;
 
-    const float gravity = 981.0f;  // Gravité en pixels par seconde carrée (simulation)
-    float SPEED = 300.0f;  // Vitesse de déplacement horizontal
+    enum State { LOOK_LEFT, LOOK_RIGHT };
+    State state;
+
+    const float gravity = 981.0f;  // GravitÃ© en pixels par seconde carrÃ©e (simulation)
+    float SPEED = 300.0f;  // Vitesse de dÃ©placement horizontal
     float jumpForce = 600.f;  // Force initiale du saut
-    bool isJumping;
-    bool isJumping2;
-    bool isAttacking;
+    bool isJumping = false;
+    bool isJumping2 = false;
+    bool isAttacking = false;
     bool canJump = false;
     bool canJump2 = false;
     bool isGrounded = false;
+    bool isTakeDash = false;
+    bool isDashing = false;
+    bool isTakeSpeed = false;
+    bool hasKey = false;
 
     float animTimeDecr;
     float rotaLeft = 220;
 
+    float gachetteValue;
+
     int jumpCount = 0;
+
+    int buttonCount = sf::Joystick::getButtonCount(0);
+    float joystickValue;
 
     RectangleShape attackShape;
 
     Clock jumpClock;
+    Clock coolDownDash;
+    Clock clock;
 
 public:
 
-    Player(float s, float jForce);
+    Player();
 
     void movementManager(float deltaTime);
 
@@ -66,6 +80,18 @@ public:
 
     bool getIsGrounded();
 
+    bool getIsTakeDash();
+
+    bool setIsTakeDash(bool dash);
+
+    bool getIsDashing();
+
+    bool setIsDashing(bool dash);
+
+    bool getIsTakeSpeed();
+
+    bool setIsTakeSpeed(bool speed);
+
     float getJumpForce();
 
     float setJumpForce(float force);
@@ -79,6 +105,10 @@ public:
     int getJumpCount();
 
     float setSPEED(float speed);
+
+    bool getHasKey();
+
+    bool setHasKey(bool key);
 
     void update(float deltaTime);
 

@@ -1,49 +1,69 @@
 #include "Game.hpp"
+#include "MainScreen.hpp"
+#include "Interface.hpp"
 
 void Game::run()
 {
-    // Création de la fenêtre
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Kathos", sf::Style::Fullscreen);
+
+    window.setVerticalSyncEnabled(true);
     window.setFramerateLimit(60); 
 
     Map map;
-
-    map.loadFromFile("assets/map/mapV1.txt"); // fichier de la map
+    MainScreen mainScreen;
+    Interface overlay;
+    mainScreen.initMenu(window);
+    map.loadFromFile("assets/map/mapV1.txt");
     map.initAll();
 
-    Clock clock; // Horloge pour le deltaTime
+    Clock clock;
+    overlay.initInterface(); // Ensure the texture is loaded once
 
-    // Boucle principale
     while (window.isOpen()) {
-        sf::Time deltaT = clock.restart(); // deltaTime permettant de synchroniser les déplacements et autres mouvements tous ensemble sur la même durée
+        sf::Time deltaT = clock.restart();
         float deltaTime = deltaT.asSeconds();
         sf::Event event;
+
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                window.close(); // Fermer la fenêtre
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+            if (mainScreen.getIsInMenu() && event.key.code == sf::Keyboard::Escape) {
+                window.close();
+            }
+            else if (!mainScreen.getIsInMenu() && event.key.code == sf::Keyboard::Escape) {
+                overlay.setIsPaused(true);
+            }
         }
 
-        // Effacer la fenêtre
         window.clear();
 
-        map.drawMap(window); // draw la map
-
-        //cout << deltaTime << endl;
-
-        for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements
-            players->update(deltaTime);
-            players->draw(window);
-            map.collisionMap(window, *players, deltaTime);
+        if (mainScreen.getIsInMenu()) {
+            mainScreen.updateMenu(window);
         }
+        else {
+            mainScreen.destroyAll();
+            map.drawMap(window);
 
-        for (auto& gemmes : map.vector_gemme) {
-            for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements
-                gemmes->interact(*players);
+            for (auto& players : map.vector_player) {
+                if (!overlay.getIsPaused()) {
+                    players->update(deltaTime);
+                    map.collisionMap(window, *players, deltaTime);
+                }
+                players->draw(window);
             }
-            gemmes->draw(window);
+
+            if (overlay.getIsPaused()) {
+                overlay.updateInterface(window);
+            }
+        for (auto& gemmes : map.vector_gemme) {
+            for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gÃ©rer dans ses dÃ©placements
+                gemmes->interact(*players);
+                gemmes->draw(window, *players);
+            }
+        }
+            window.display();
         }
 
-        // Affiche tout
-        window.display();
     }
 }

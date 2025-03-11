@@ -1,11 +1,8 @@
 #include "Gemme.hpp"
 
-Gemme::Gemme(float s, float jForce) : Player(s, jForce) {
+Gemme::Gemme() : Player() {
 	speedGemmeShape.setSize(Vector2f(32, 32));
 	dashGemmeShape.setSize(Vector2f(32, 32));
-	isTakeSpeed = false;
-	isTakeDash = false;
-	isDashing = false;
 }
 
 sf::Vector2f Gemme::setPosition(float x, float y)
@@ -18,48 +15,25 @@ sf::Vector2f Gemme::setPosition(float x, float y)
 void Gemme::interact(Player& player)
 {
 	if (speedGemmeShape.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
-		isTakeSpeed = true;
+		player.setIsTakeSpeed(true);
 		cout << "est récup";
 	}
 
-	if (Keyboard::isKeyPressed(Keyboard::LShift) && isTakeSpeed) {
-		player.setSPEED(500);
-	}
-	else {
-		player.setSPEED(300);
-	}
-
 	if (dashGemmeShape.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
-		isTakeDash = true;
+		player.setIsTakeDash(true);
 		clock.restart();
 	}
-
-	if (Keyboard::isKeyPressed(Keyboard::A) && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500 ) {
-		isDashing = true;
-		clock.restart();
-	}
-
-	if (isDashing) {
-		player.setSPEED(2000);
-		if (clock.getElapsedTime().asMilliseconds() >= 100) {
-			isDashing = false;
-			player.setSPEED(300.f);
-			coolDownDash.restart();
-		}
-	}
-
-
 
 	dashGemmeShape.setPosition(position);
 	speedGemmeShape.setPosition(position);
 }
 
-void Gemme::draw(RenderWindow& window)
+void Gemme::draw(RenderWindow& window, Player& player)
 {
-	if (isTakeSpeed == false) {
+	if (!player.getIsTakeSpeed()) {
 		window.draw(speedGemmeShape);
 	}
-	if (isTakeDash == false) {
+	if (!player.getIsTakeDash()) {
 		window.draw(dashGemmeShape);
 	}
 }
