@@ -10,12 +10,20 @@ protected:
     float SPEED = 200.0f;  // Vitesse de déplacement horizontal
     float jumpForce = 600.f;  // Force initiale du saut
     bool isJumping;
+    bool isJumping2;
     bool isAttacking;
+    bool canJump = false;
+    bool canJump2 = false;
+    bool isGrounded = false;
 
     float animTimeDecr;
-    float rotaLeft;
+    float rotaLeft = 220;
+
+    int jumpCount = 0;
 
     RectangleShape attackShape;
+
+    Clock jumpClock;
 
 public:
 
@@ -41,6 +49,22 @@ public:
 
     bool setIsJumping(bool jump);
 
+    bool getIsJumping2();
+
+    bool setIsJumping2(bool jump);
+
+    bool getCanJump();
+
+    bool setcanJump(bool can);
+
+    bool getCanJump2();
+
+    bool setcanJump2(bool can);
+
+    bool setIsGrounded(bool is);
+
+    bool getIsGrounded();
+
     float getJumpForce();
 
     float setJumpForce(float force);
@@ -48,6 +72,10 @@ public:
     float getGravity();
 
     float getSPEED();
+
+    int setJumpCount(float count);
+
+    int getJumpCount();
 
     void update(float deltaTime);
 
