@@ -106,10 +106,11 @@ public:
 
     float setSPEED(float speed);
 
+    bool getHasKey();
+
+    bool setHasKey(bool key);
+
     void update(float deltaTime);
 
     void draw(RenderWindow& window);
-
-    bool gethasKey();
-    void sethasKey(bool key);
 };

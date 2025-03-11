@@ -285,6 +285,13 @@ int Player::getJumpCount()
     return jumpCount;
 }
 
+bool Player::getHasKey() {
+    return hasKey;
+}
+bool Player::setHasKey(bool key) {
+    hasKey = key;
+}
+
 #pragma endregion Getteurs / Setteurs
 
 void Player::update(float deltaTime) {
@@ -294,12 +301,5 @@ void Player::update(float deltaTime) {
 
 void Player::draw(RenderWindow& window) {
     window.draw(shape);
-}
-
-bool Player::gethasKey() {
-    return hasKey;
-}
-void Player::sethasKey(bool key) {
-    hasKey = key;
     if (isAttacking) window.draw(attackShape);
 }
