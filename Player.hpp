@@ -25,7 +25,8 @@ protected:
     bool hasKey = false;
 
     float animTimeDecr;
-    float rotaLeft = 220;
+    float rotaRight = 220;
+    float rotaLeft = -20;
 
     float gachetteValue;
 
@@ -49,6 +50,8 @@ public:
     void jump();
 
     void attack(float deltaTime);
+
+    void dash();
 
     Vector2f getPosPos();
 

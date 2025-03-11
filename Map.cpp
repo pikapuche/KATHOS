@@ -108,9 +108,9 @@ void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime
                     player.setIsGrounded(true);
                     player.setVelocity(player.getVelocity().x, 0);
                 }
-                else if (!player.getIsJumping() && !tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) { // si le joueur ne saute pas et qu'il n'est pas en collision alors il applique la gravité
-                    player.setVelocity(player.getVelocity().x, player.getJumpForce() * deltaTime * 18);
-                }
+                //else if (!player.getIsJumping() && !tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) { // si le joueur ne saute pas et qu'il n'est pas en collision alors il applique la gravité
+                //    player.setVelocity(player.getVelocity().x, player.getJumpForce() * deltaTime * 18);
+                //} 
                 break;
             case '#': // sol 
                 if (tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) { // si le joueur entre en collision avec le sol alors il set sa position en haut du sol
@@ -120,9 +120,9 @@ void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime
                     player.setIsGrounded(true);
                     player.setVelocity(player.getVelocity().x, 0);
                 }
-                if (!player.getIsJumping() && !tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) { // si le joueur ne saute pas et qu'il n'est pas en collision alors il applique la gravitï¿½
-                    player.setVelocity(player.getVelocity().x, player.getJumpForce() * deltaTime * 18);
-                }
+                //if (!player.getIsJumping() && !tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) { // si le joueur ne saute pas et qu'il n'est pas en collision alors il applique la gravitï¿½
+                //    player.setVelocity(player.getVelocity().x, player.getJumpForce() * deltaTime * 18);
+                //}
                 if (tile.getPosition().y < player.getPosPos().y) {
                     player.setPosPos(player.getPosPos().x, tile.getPosition().y - 40);
                 }
