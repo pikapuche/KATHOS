@@ -30,36 +30,34 @@ void Gemme::interact(Player& player)
 	}
 
 	if (dashGemmeShape.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
-		isTakeDash = true;
+		player.setIsTakeDash(true);
 		clock.restart();
 	}
 
-	if (Keyboard::isKeyPressed(Keyboard::A) && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asSeconds() >= 2) {
-		isDashing = true;
+	if (Keyboard::isKeyPressed(Keyboard::A) && player.getIsTakeDash() && !player.getIsDashing() && coolDownDash.getElapsedTime().asMilliseconds() >= 1500) {
+		player.setIsDashing(true);
 		clock.restart();
 	}
 
-	if (isDashing) {
+	if (player.getIsDashing()) {
 		player.setSPEED(2000);
-		if (clock.getElapsedTime().asMilliseconds() >= 150) {
-			isDashing = false;
+		if (clock.getElapsedTime().asMilliseconds() >= 100) {
+			player.setIsDashing(false);
 			player.setSPEED(300.f);
 			coolDownDash.restart();
 		}
 	}
 
-
-
 	dashGemmeShape.setPosition(position);
 	speedGemmeShape.setPosition(position);
 }
 
-void Gemme::draw(RenderWindow& window)
+void Gemme::draw(RenderWindow& window, Player& player)
 {
 	if (isTakeSpeed == false) {
 		window.draw(speedGemmeShape);
 	}
-	if (isTakeDash == false) {
+	if (!player.getIsTakeDash()) {
 		window.draw(dashGemmeShape);
 	}
 }

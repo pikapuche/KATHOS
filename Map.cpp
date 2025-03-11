@@ -46,7 +46,7 @@ void Map::initAll() {
             {
                 Gemme* gemmes = new Gemme(100.0f, 50.0f);
                 vector_gemme.push_back(gemmes);
-                for (auto& gemme : vector_gemme) { // set la position de départ du player
+                for (auto& gemme : vector_gemme) { // set la position de départ de la gemme
                     gemme->setPosition(j * 40.f, i * 40.f);
                 }
                 break;
