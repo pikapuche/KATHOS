@@ -34,8 +34,9 @@ void Player::jump() {
         velocity.y = -jumpForce;  // Appliquer une force initiale vers le haut pour sauter 
         jumpCount = 1;
         jumpClock.restart();
+        cout << "isgrounded" << endl;
     }
-    else if (jumpCount < 2 && jumpClock.getElapsedTime().asMilliseconds() >= 175) {
+    else if (jumpCount == 1 && jumpClock.getElapsedTime().asMilliseconds() >= 175 && !isGrounded) {
         velocity.y = -jumpForce;
         jumpCount = 2;
     }
@@ -50,7 +51,6 @@ void Player::attack(float deltaTime) {
             if (rotaLeft >= 300) {
                 rotaLeft = 220;
                 isAttacking = false;
-                cout << "ouiiiiiiiiiiiiiiiiiii" << endl << endl;
             }
             animTimeDecr = 0;
         }
