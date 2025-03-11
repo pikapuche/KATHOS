@@ -6,7 +6,7 @@ protected :
 
 	Sprite sprite;
 
-	// état d'anim avec les enums
+	// ï¿½tat d'anim avec les enums
 
 public : 
 

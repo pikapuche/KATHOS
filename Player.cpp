@@ -3,7 +3,7 @@
 Player::Player() : Entity(position.x, position.y) { // constructeur de base 
     shape.setFillColor(sf::Color::Green);
     shape.setSize(sf::Vector2f(40.0f, 40.0f));
-    velocity.y = 0;  // Pas de mouvement vertical au dÈpart
+    velocity.y = 0;  // Pas de mouvement vertical au d√©part
     isJumping = false;
     isJumping2 = false;
     isAttacking = false;
@@ -55,17 +55,17 @@ void Player::movementManager(float deltaTime) {
             SPEED = 300;
         }
 
-        // VÈrification des g‚chettes (axes Z et R)
+        // V√©rification des g√¢chettes (axes Z et R)
         gachetteValue = sf::Joystick::getAxisPosition(0, sf::Joystick::Z);
 
-        // Si la g‚chette gauche est pressÈe
-        if (gachetteValue > 10 && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500) {  // NÈgatif pour la g‚chette gauche (enfoncÈe)
+        // Si la g√¢chette gauche est press√©e
+        if (gachetteValue > 10 && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500) {  // N√©gatif pour la g√¢chette gauche (enfonc√©e)
             isDashing = true;
             clock.restart();
             cout << "dash" << endl;
         }
-        // Si la g‚chette droite est pressÈe
-        else if (gachetteValue < -10 && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500) {  // Positif pour la g‚chette droite (enfoncÈe)
+        // Si la g√¢chette droite est press√©e
+        else if (gachetteValue < -10 && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500) {  // Positif pour la g√¢chette droite (enfonc√©e)
             isDashing = true;
             clock.restart();
             cout << "dash" << endl;
@@ -87,7 +87,7 @@ void Player::movementManager(float deltaTime) {
         }
     }
 
-    velocity.y += gravity * deltaTime;  // Appliquer la gravitÈ
+    velocity.y += gravity * deltaTime;  // Appliquer la gravit√©
     position.y += velocity.y * deltaTime;
 
     shape.setPosition(position);
@@ -274,5 +274,12 @@ void Player::update(float deltaTime) {
 
 void Player::draw(RenderWindow& window) {
     window.draw(shape);
+}
+
+bool Player::gethasKey() {
+    return hasKey;
+}
+void Player::sethasKey(bool key) {
+    hasKey = key;
     if (isAttacking) window.draw(attackShape);
 }
