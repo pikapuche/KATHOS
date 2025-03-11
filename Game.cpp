@@ -36,6 +36,13 @@ void Game::run()
             map.collisionMap(window, *players, deltaTime);
         }
 
+        for (auto& gemmes : map.vector_gemme) {
+            for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements
+                gemmes->interact(*players);
+            }
+            gemmes->draw(window);
+        }
+
         // Affiche tout
         window.display();
     }

@@ -1,3 +1,4 @@
+#pragma once
 #include "Entity.hpp"
 
 class Player : public Entity {
@@ -7,7 +8,7 @@ protected:
     RectangleShape shape;
 
     const float gravity = 981.0f;  // Gravité en pixels par seconde carrée (simulation)
-    float SPEED = 200.0f;  // Vitesse de déplacement horizontal
+    float SPEED = 300.0f;  // Vitesse de déplacement horizontal
     float jumpForce = 600.f;  // Force initiale du saut
     bool isJumping;
     bool isAttacking;
@@ -48,6 +49,8 @@ public:
     float getGravity();
 
     float getSPEED();
+
+    float setSPEED(float speed);
 
     void update(float deltaTime);
 

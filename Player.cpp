@@ -98,6 +98,12 @@ float Player::getSPEED() {
     return SPEED;
 }
 
+float Player::setSPEED(float speed) {
+    SPEED = speed;
+    return SPEED;
+}
+
+
 void Player::update(float deltaTime) {
     movementManager(deltaTime);
 }
