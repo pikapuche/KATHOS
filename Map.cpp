@@ -38,7 +38,7 @@ void Map::initAll() {
                 Player* players = new Player();
                 vector_player.push_back(players);
                 for (auto& player : vector_player) { // set la position de dï¿½part du player
-                    player->setPosPos(j * 40.f, i * 40.f);
+                    player->getShape().setPosition(j * 40.f, i * 40.f);
                 }
                 break;
             }
@@ -96,14 +96,14 @@ void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime
             tile.setPosition(j * 40.f, i * 40.f); // set la position des différentes tiles sur la map
             switch (vector_Map[i][j]) {
             case '!': // plateformes
-                if (tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds()) && tile.getPosition().y > player.getPosPos().y) { // si le joueur entre en collision avec la plateforme mais qu'il est plus bas alors on set sa pos en dessous de la plateforme pour pas qu'il la traverse
-                    player.setPosPos(player.getPosPos().x, tile.getPosition().y + 40);
+                if (tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds()) && tile.getPosition().y > player.getShape().getPosition().y) { // si le joueur entre en collision avec la plateforme mais qu'il est plus bas alors on set sa pos en dessous de la plateforme pour pas qu'il la traverse
+                    player.getShape().setPosition(player.getShape().getPosition().x, tile.getPosition().y + 40);
                     player.setIsJumping(true);
                     player.setIsGrounded(false);
                 }
-                else if (tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds()) && tile.getPosition().y < player.getPosPos().y) { // si le joueur entre en collision avec une plateforme alors il set sa position en haut de celle ci
+                else if (tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds()) && tile.getPosition().y < player.getShape().getPosition().y) { // si le joueur entre en collision avec une plateforme alors il set sa position en haut de celle ci
                     //cout << "collision plateforme" << endl;
-                    player.setPosPos(player.getPosPos().x, tile.getPosition().y - 40);
+                    player.getShape().setPosition(player.getShape().getPosition().x, tile.getPosition().y - 40);
                     player.setIsJumping(false);
                     player.setIsGrounded(true);
                     player.setVelocity(player.getVelocity().x, 0);
@@ -115,7 +115,7 @@ void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime
             case '#': // sol 
                 if (tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) { // si le joueur entre en collision avec le sol alors il set sa position en haut du sol
                     //cout << "collision sol" << endl;
-                    player.setPosPos(player.getPosPos().x, tile.getPosition().y - 40);
+                    player.getShape().setPosition(player.getShape().getPosition().x, tile.getPosition().y - 40);
                     player.setIsJumping(false);
                     player.setIsGrounded(true);
                     player.setVelocity(player.getVelocity().x, 0);
@@ -123,8 +123,8 @@ void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime
                 //if (!player.getIsJumping() && !tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) { // si le joueur ne saute pas et qu'il n'est pas en collision alors il applique la gravitï¿½
                 //    player.setVelocity(player.getVelocity().x, player.getJumpForce() * deltaTime * 18);
                 //}
-                if (tile.getPosition().y < player.getPosPos().y) {
-                    player.setPosPos(player.getPosPos().x, tile.getPosition().y - 40);
+                if (tile.getPosition().y < player.getShape().getPosition().y) {
+                    player.getShape().setPosition(player.getShape().getPosition().x, tile.getPosition().y - 40);
                 }
                 break;
             default:  tile.setFillColor(sf::Color::Black); break;

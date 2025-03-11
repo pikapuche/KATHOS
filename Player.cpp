@@ -3,9 +3,8 @@
 Player::Player() : Entity(position.x, position.y) { // constructeur de base 
     shape.setFillColor(sf::Color::Green);
     shape.setSize(sf::Vector2f(40.0f, 40.0f));
-    velocity.y = 0;  // Pas de mouvement vertical au depart
+    velocity.y = 0; // Pas de mouvement vertical au depart
     isJumping = false;
-    isJumping2 = false;
     isAttacking = false;
     attackShape.setSize(sf::Vector2f(10.0f, 20.0f));
     attackShape.setFillColor(sf::Color::Red);
@@ -31,7 +30,7 @@ void Player::movementManager(float deltaTime) {
         clock.restart();
     }
 
-    if ((Keyboard::isKeyPressed(Keyboard::LShift) || sf::Joystick::isButtonPressed(0, 8)) && isTakeSpeed ) {
+    if ((Keyboard::isKeyPressed(Keyboard::LShift) || sf::Joystick::isButtonPressed(0, 8)) && isTakeSpeed) {
         SPEED = 600;
     }
     else {
@@ -124,16 +123,6 @@ void Player::dash(float deltaTime)
 
 #pragma region Getteurs / Setteurs
 
-Vector2f Player::getPosPos() {
-    return position;
-}
-
-Vector2f Player::setPosPos(float(x), float(y)) {
-    position.x = x;
-    position.y = y;
-    return position;
-}
-
 Vector2f Player::getVelocity() {
     return velocity;
 }
@@ -155,37 +144,6 @@ bool Player::getIsJumping() {
 bool Player::setIsJumping(bool jump) {
     isJumping = jump;
     return isJumping;
-}
-
-bool Player::getIsJumping2() {
-    return isJumping2;
-}
-
-bool Player::setIsJumping2(bool jump) {
-    isJumping2 = jump;
-    return isJumping2;
-}
-
-bool Player::getCanJump()
-{
-    return canJump;
-}
-
-bool Player::setcanJump(bool can)
-{
-    canJump = can;
-    return canJump;
-}
-
-bool Player::getCanJump2()
-{
-    return canJump2;
-}
-
-bool Player::setcanJump2(bool can)
-{
-    canJump2 = can;
-    return canJump2;
 }
 
 bool Player::setIsGrounded(bool is)
