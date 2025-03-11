@@ -34,14 +34,14 @@ void Gemme::interact(Player& player)
 		clock.restart();
 	}
 
-	if (Keyboard::isKeyPressed(Keyboard::A) && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asSeconds() >= 2) {
+	if (Keyboard::isKeyPressed(Keyboard::A) && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500 ) {
 		isDashing = true;
 		clock.restart();
 	}
 
 	if (isDashing) {
 		player.setSPEED(2000);
-		if (clock.getElapsedTime().asMilliseconds() >= 150) {
+		if (clock.getElapsedTime().asMilliseconds() >= 100) {
 			isDashing = false;
 			player.setSPEED(300.f);
 			coolDownDash.restart();
