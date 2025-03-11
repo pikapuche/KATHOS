@@ -86,8 +86,6 @@ void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime
                 if (tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds()) && tile.getPosition().y > player.getPosPos().y) { // si le joueur entre en collision avec la plateforme mais qu'il est plus bas alors on set sa pos en dessous de la plateforme pour pas qu'il la traverse
                     player.setPosPos(player.getPosPos().x, tile.getPosition().y + 40);
                     player.setIsJumping(true);
-                    //player.setIsJumping2(true);
-                    //player.setVelocity(player.getVelocity().x, player.getJumpForce() * deltaTime * 18);
                 }
                 else if (tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds()) && tile.getPosition().y < player.getPosPos().y) { // si le joueur entre en collision avec une plateforme alors il set sa position en haut de celle ci
                     cout << "collision plateforme" << endl;
