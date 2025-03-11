@@ -24,15 +24,6 @@ void Gemme::interact(Player& player)
 		clock.restart();
 	}
 
-	if (player.getIsDashing()) {
-		player.setSPEED(2000);
-		if (clock.getElapsedTime().asMilliseconds() >= 100) {
-			player.setIsDashing(false);
-			player.setSPEED(300.f);
-			coolDownDash.restart();
-		}
-	}
-
 	dashGemmeShape.setPosition(position);
 	speedGemmeShape.setPosition(position);
 }
