@@ -56,7 +56,7 @@ void Map::initAll() {
     for (size_t i = 0; i < vector_Map.size(); i++) {
         for (size_t j = 0; j < vector_Map[i].size(); j++) {
             if (vector_Map[i][j] == 'B') {
-                boss = new Boss(j * 40.f, i * 40.f);
+                boss = new Boss(j * 40.f, i * 40.f, *vector_player[0]);
             }
         }
     }

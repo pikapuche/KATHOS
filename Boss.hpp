@@ -1,8 +1,8 @@
 #pragma once
-#ifndef BOSS_HPP
-#define BOSS_HPP
-
 #include "stdafx.hpp"
+#include "Entity.hpp"
+#include "Player.hpp"
+#include "Map.hpp"
 
 class Boss {
 private:
@@ -10,15 +10,14 @@ private:
     sf::Vector2f position;
     sf::Vector2f velocity;
     float speed;
+    Player& target;
 
 public:
-    Boss(float startX, float startY);
+    Boss(float posX, float posY, Player& target);
 
-    void update(float deltaTime);
-    void draw(sf::RenderWindow& window);
+    void update(float deltatime);
+    void draw(RenderWindow& window);
     void checkCollision(int mapWidth);
 
-    sf::RectangleShape getShape();
+    RectangleShape getShape();
 };
-
-#endif

@@ -1,9 +1,9 @@
 #include "Boss.hpp"
 
-Boss::Boss(float startX, float startY) { //constructeur du boss
+Boss::Boss(float posX, float posY, Player& target) : target(target) { //constructeur du boss
     shape.setSize(sf::Vector2f(50.0f, 50.0f));
     shape.setFillColor(sf::Color::Red);
-    position = { startX, startY };
+    position = { posX, posY };
     shape.setPosition(position);
     speed = 200.0f;
     velocity = { -speed, 0.0f };
@@ -13,6 +13,21 @@ void Boss::update(float deltaTime) { //déplacements
     position += velocity * deltaTime;
     shape.setPosition(position);
 }
+
+//void Boss::update(float deltaTime)
+//{
+//    Vector2f direction = target.getPosPos() - position;
+//    float magnitude = sqrt(direction.x * direction.x + direction.y * direction.y);
+//
+//    if (magnitude > 0)
+//    {
+//        direction /= magnitude;
+//    }
+//
+//    Vector2f newPosition = position + direction * speed * deltaTime;
+//
+//    shape.setPosition(position);
+//}
 
 void Boss::draw(sf::RenderWindow& window) {
     window.draw(shape);

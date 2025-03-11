@@ -1,3 +1,4 @@
+#pragma once
 #include "stdafx.hpp"
 #include "Player.hpp"
 #include "Boss.hpp"
@@ -19,9 +20,8 @@ protected:
     bool winGame = false;
 
 public:
-
-    vector<Player*> vector_player;
     Boss* boss;
+    vector<Player*> vector_player;
 
     Map();
     ~Map();
