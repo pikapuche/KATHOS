@@ -2,11 +2,8 @@
 
 Player::Player() : Entity(position.x, position.y) { // constructeur de base 
     shape.setFillColor(sf::Color::Green);
-<<<<<<< Updated upstream
     shape.setSize(sf::Vector2f(40.f, 40.f));
-=======
     shape.setSize(sf::Vector2f(32.0f, 32.0f));
->>>>>>> Stashed changes
     velocity.y = 0;  // Pas de mouvement vertical au départ
     isJumping = false;
 }
