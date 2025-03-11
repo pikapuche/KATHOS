@@ -70,6 +70,7 @@ void MainScreen::updateMenu(sf::RenderWindow& window) {
                         isInMenu = false; //Start Game
                         break;
                     case ButtonType::Exit:
+                        if(clickCooldown.getElapsedTime().asSeconds() > cooldownTime)
                         window.close(); //Exit Game
                         break;
 
@@ -77,6 +78,7 @@ void MainScreen::updateMenu(sf::RenderWindow& window) {
                         isInSettings = true; //Settings Menu
                         break;
                     case ButtonType::Return:
+                        clickCooldown.restart();
                         isInSettings = false; //Return to Main Menu
                         break;
                     }

@@ -65,6 +65,10 @@ void Map::drawMap(sf::RenderWindow& window) {
                 tile.setFillColor(sf::Color::Cyan);
                 break;
             }
+            case 'K': {
+
+                break;
+            }
 
             default:  tile.setFillColor(sf::Color::Black); break;
             }

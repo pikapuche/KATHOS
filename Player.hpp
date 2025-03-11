@@ -10,6 +10,7 @@ protected:
     float SPEED = 200.0f;  // Vitesse de d�placement horizontal
     float jumpForce = 600.f;  // Force initiale du saut
     bool isJumping;
+    bool hasKey = false;
 
 public:
 
@@ -44,4 +45,7 @@ public:
     void update(float deltaTime);
 
     void draw(RenderWindow& window);
+
+    bool gethasKey();
+    void sethasKey(bool key);
 };

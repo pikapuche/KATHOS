@@ -10,9 +10,6 @@ private:
     sf::Sprite overlay;
     sf::Texture overlayTexture;
 
-    
-
-
 public:
     PauseOverlay();
     void setTexture(const std::string& texturePath);

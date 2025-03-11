@@ -83,3 +83,10 @@ void Player::update(float deltaTime) {
 void Player::draw(RenderWindow& window) {
     window.draw(shape);
 }
+
+bool Player::gethasKey() {
+    return hasKey;
+}
+void Player::sethasKey(bool key) {
+    hasKey = key;
+}

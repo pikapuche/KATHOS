@@ -161,6 +161,9 @@
     <Image Include="assets\texture\titlescreen\button1.png" />
     <Image Include="assets\texture\titlescreen\button2.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="assets\map\mapV1.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -10,6 +10,8 @@ private:
     sf::Sprite background;
     sf::Texture backgroundTexture;
     std::vector<Button> buttons;
+    sf::Clock clickCooldown;  // Cooldown timer
+    float cooldownTime = 0.5f; // 0.5 seconds
 
 public:
     bool getIsInMenu();
