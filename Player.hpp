@@ -52,6 +52,10 @@ public:
 
     void dash(float deltaTime);
 
+    Vector2f setPosPos(float x, float y);
+
+    Vector2f getPosPos();
+
     Vector2f getVelocity();
 
     Vector2f setVelocity(float veloX, float veloY);

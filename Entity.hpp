@@ -14,8 +14,6 @@ protected :
 
 public : 
 
-	Vector2f velocity;
-
 	Entity(/*Texture& texture,*/ float posX, float posY);
 
 	virtual void update(float deltaTime) = 0;

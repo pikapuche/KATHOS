@@ -121,6 +121,18 @@ void Player::dash(float deltaTime)
     }
 }
 
+Vector2f Player::setPosPos(float x, float y)
+{
+    position.x = x;
+    position.y = y;
+    return position;
+}
+
+Vector2f Player::getPosPos()
+{
+    return position;
+}
+
 #pragma region Getteurs / Setteurs
 
 Vector2f Player::getVelocity() {
