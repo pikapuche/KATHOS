@@ -19,6 +19,33 @@ void Player::movementManager(float deltaTime) {
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) { isAttacking = true; }
 
+    //////////////////////////////  Manette  //////////////////////////////////
+
+    if (sf::Joystick::isConnected(0))
+    {
+        if (sf::Joystick::isButtonPressed(0, 0))
+        {
+            jump();
+        }
+
+        if (sf::Joystick::isButtonPressed(0, 2)) {
+            cout << "settings ouais" << endl;
+            isAttacking = true;
+        }
+
+        joystickValue = sf::Joystick::getAxisPosition(0, sf::Joystick::X);
+
+        if (joystickValue > 10 && joystickValue < -10) {
+            position.x += 0;
+        }
+        else if (joystickValue < -10) {
+            position.x -= SPEED * deltaTime;
+        } 
+        else if (joystickValue > 10) {
+            position.x += 1 + SPEED * deltaTime;
+        }
+    }
+
     velocity.y += gravity * deltaTime;  // Appliquer la gravité
     position.y += velocity.y * deltaTime;
 

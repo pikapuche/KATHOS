@@ -22,6 +22,9 @@ protected:
 
     int jumpCount = 0;
 
+    int buttonCount = sf::Joystick::getButtonCount(0);
+    float joystickValue;
+
     RectangleShape attackShape;
 
     Clock jumpClock;
