@@ -2,6 +2,7 @@
 #include "stdafx.hpp"
 #include "Player.hpp"
 #include "Boss.hpp"
+#include "NuageTox.hpp"
 
 const int GRID_WIDTH = 20;
 const int GRID_HEIGHT = 15;
@@ -25,6 +26,7 @@ protected:
 public:
     vector<Boss*> vector_boss;
     vector<Player*> vector_player;
+    vector<NuageTox*> vector_nuageTox;
 
     ~Map();
 
@@ -41,6 +43,8 @@ public:
     void collisionMap(sf::RenderWindow& window, Player& player, float deltaTime);
 
     void checkPlayerBossCollision();
+
+    void checkPlayerNuageCollision();
 
     bool getIsGameOver();
 };

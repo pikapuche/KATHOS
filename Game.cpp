@@ -40,6 +40,9 @@ void Game::run()
             bosses->update(deltaTime);
             bosses->draw(window);
         }
+        for (auto& toxes : map.vector_nuageTox) {
+            toxes->draw(window);
+        }
 
         // Affiche tout
         window.display();

@@ -1,6 +1,6 @@
 #include "Boss.hpp"
 
-Boss::Boss(Player& target) : target(target) { //constructeur du boss
+Boss::Boss(Player& target) : Entity(position.x, position.y), target(target) { //constructeur du boss
     shape.setSize(sf::Vector2f(50.0f, 50.0f));
     shape.setFillColor(sf::Color::Red);
     speed = 200.0f;

@@ -57,6 +57,15 @@ void Map::initAll() {
                 }
                 break;
             }
+            case 'N': // nuages
+            {
+                NuageTox* toxes = new NuageTox(100.f, 50.f);
+                vector_nuageTox.push_back(toxes);
+                for (auto& nuage : vector_nuageTox) { // set la position de départ du nuage
+                    nuage->setPos(j * 40.f, i * 40.f);
+                }
+                break;
+            }
             default:  tile.setFillColor(sf::Color::Black); break;
             }
         }
@@ -65,6 +74,8 @@ void Map::initAll() {
 
 void Map::update(float deltaTime) {
     if (isGameOver) return;
+
+    checkPlayerNuageCollision();
 
     for (auto& boss : vector_boss) {
         boss->update(deltaTime);
@@ -176,6 +187,29 @@ void Map::checkPlayerBossCollision() {
             }
         }
     }
+}
+
+void Map::checkPlayerNuageCollision() 
+{
+    if (vector_player.empty() || isGameOver) return;
+
+    for (auto& player : vector_player) 
+    {
+        for (auto& nuage : vector_nuageTox)
+        {
+            nuage->checkCollisionWithPlayer(*player);
+
+            if (isGameOver) 
+            {
+                std::cout << "Le joueur a touché un nuage toxique" << std::endl;
+            }
+        }
+    }
+}
+
+bool Map::getIsGameOver()
+{
+    return isGameOver;
 }
 
 /*void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime) {

@@ -3,7 +3,7 @@
 #include "Entity.hpp"
 #include "Player.hpp"
 
-class Boss {
+class Boss : public Entity {
 private:
     sf::RectangleShape shape;
     sf::Vector2f position;
@@ -15,8 +15,8 @@ private:
 public:
     Boss(Player& target);
 
-    void update(float deltatime);
-    void draw(RenderWindow& window);
+    void update(float deltatime) override;
+    void draw(RenderWindow& window) override;
     void checkCollision(int mapWidth);
     void chasePlayer();
     bool canSeePlayer();
