@@ -1,5 +1,7 @@
+#pragma once
 #include "stdafx.hpp"
 #include "Player.hpp"
+#include "Gemme.hpp"
 
 const int GRID_WIDTH = 20;
 const int GRID_HEIGHT = 15;
@@ -10,6 +12,8 @@ protected:
     sf::Texture groundTexture;
     sf::Texture wallTexture;
 
+    float playerHeight = 70.0f;
+
     sf::Text win;
     sf::Font font;
 
@@ -18,6 +22,8 @@ protected:
 public:
 
     vector<Player*> vector_player;
+
+    vector<Gemme*> vector_gemme;
 
     ~Map();
 

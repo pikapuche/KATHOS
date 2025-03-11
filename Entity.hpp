@@ -1,3 +1,4 @@
+#pragma once
 #include "stdafx.hpp"
 
 class Entity {

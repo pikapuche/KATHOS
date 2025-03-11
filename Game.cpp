@@ -5,7 +5,9 @@
 void Game::run()
 {
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Kathos", sf::Style::Fullscreen);
-    window.setFramerateLimit(60);
+
+    window.setVerticalSyncEnabled(true);
+    window.setFramerateLimit(60); 
 
     Map map;
     MainScreen mainScreen;
@@ -54,8 +56,14 @@ void Game::run()
             if (overlay.getIsPaused()) {
                 overlay.updateInterface(window);
             }
-
+        for (auto& gemmes : map.vector_gemme) {
+            for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements
+                gemmes->interact(*players);
+                gemmes->draw(window, *players);
+            }
+        }
             window.display();
         }
+
     }
 }

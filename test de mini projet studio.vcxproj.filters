@@ -44,6 +44,8 @@
     </ClCompile>
     <ClCompile Include="Interface.cpp">
       <Filter>Fichiers sources\Interface &amp; UI</Filter>
+    <ClCompile Include="Gemme.cpp">
+      <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -87,5 +89,8 @@
     <Text Include="assets\map\mapV1.txt">
       <Filter>Fichiers de ressources</Filter>
     </Text>
+    <ClInclude Include="Gemme.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
