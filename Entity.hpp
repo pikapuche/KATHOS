@@ -5,14 +5,16 @@ class Entity {
 protected : 
 
 	Sprite sprite;
+	sf::Vector2f position;
+	sf::Vector2f velocity;
+	RectangleShape shape;
+	RectangleShape attackShape;
 
-	// �tat d'anim avec les enums
+	// etat d'anim avec les enums
 
 public : 
 
-	Vector2f direction;
 	Vector2f velocity;
-	Vector2f baseDirection;
 
 	Entity(/*Texture& texture,*/ float posX, float posY);
 

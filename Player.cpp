@@ -3,9 +3,8 @@
 Player::Player() : Entity(position.x, position.y) { // constructeur de base 
     shape.setFillColor(sf::Color::Green);
     shape.setSize(sf::Vector2f(40.0f, 40.0f));
-    velocity.y = 0;  // Pas de mouvement vertical au dÃ©part
+    velocity.y = 0; // Pas de mouvement vertical au depart
     isJumping = false;
-    isJumping2 = false;
     isAttacking = false;
     attackShape.setSize(sf::Vector2f(10.0f, 20.0f));
     attackShape.setFillColor(sf::Color::Red);
@@ -13,23 +12,26 @@ Player::Player() : Entity(position.x, position.y) { // constructeur de base
 
 void Player::movementManager(float deltaTime) { 
 
-    if (isDashing == false) {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) { position.x -= SPEED * deltaTime; state = LOOK_LEFT; }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { position.x += 1 + SPEED * deltaTime; state = LOOK_RIGHT; }
+    if (!isDashing) {
+        if (joystickValue > 10 && joystickValue < -10) {
+            position.x += 0;
+        }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) || joystickValue < -10) { position.x -= SPEED * deltaTime; stateLook = LOOK_LEFT; }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || joystickValue > 10) { position.x += 1 + SPEED * deltaTime; stateLook = LOOK_RIGHT; }
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) { jump(); }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Joystick::isButtonPressed(0, 0)) { jump(); }
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) { isAttacking = true; }
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) || sf::Joystick::isButtonPressed(0, 2)) { isAttacking = true; }
 
-    if (Keyboard::isKeyPressed(Keyboard::A) && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500) {
+    // Si la gâchette gauche est pressée ou que A est pressée OU si la gâchette droite est pressée ou que A est pressée
+    if (((Keyboard::isKeyPressed(Keyboard::A) || gachetteValue > 10) || (Keyboard::isKeyPressed(Keyboard::A) || gachetteValue < -10)) && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500) {
         isDashing = true;
         clock.restart();
-        cout << "dash" << endl;
     }
 
-    if (Keyboard::isKeyPressed(Keyboard::LShift) && isTakeSpeed) {
-        SPEED = 500;
+    if ((Keyboard::isKeyPressed(Keyboard::LShift) || sf::Joystick::isButtonPressed(0, 8)) && isTakeSpeed) {
+        SPEED = 600;
     }
     else {
         SPEED = 300;
@@ -39,75 +41,17 @@ void Player::movementManager(float deltaTime) {
 
     if (sf::Joystick::isConnected(0))
     {
-        if (sf::Joystick::isButtonPressed(0, 0))
-        {
-            jump();
-        }
-
-        if (sf::Joystick::isButtonPressed(0, 2)) {
-            isAttacking = true;
-        }
-
-        if (sf::Joystick::isButtonPressed(0, 8) && isTakeSpeed) { // Up D-Pad
-            SPEED = 500;
-        }
-        else {
-            SPEED = 300;
-        }
-
-        // VÃ©rification des gÃ¢chettes (axes Z et R)
+        // Verification des gechettes (left = 10 & right = -10)
         gachetteValue = sf::Joystick::getAxisPosition(0, sf::Joystick::Z);
 
-        // Si la gâchette gauche est pressée
-        if (gachetteValue > 10 && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500 && state == LOOK_LEFT) {  // Négatif pour la gâchette gauche (enfoncée)
-            isDashing = true;
-            clock.restart();
-            cout << "dash" << endl;
-            if (isDashing) {
-                SPEED = 2000;
-                if (clock.getElapsedTime().asMilliseconds() >= 100) {
-                    isDashing = false;
-                    SPEED = 300.f;
-                    coolDownDash.restart();
-                }
-            }
-        }
-        // Si la gâchette droite est pressée
-        else if (gachetteValue < -10 && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500 && state == LOOK_RIGHT) {  // Positif pour la gâchette droite (enfoncée)
-            isDashing = true;
-            clock.restart();
-            cout << "dash" << endl;
-            if (isDashing) {
-                SPEED = 2000;
-                if (clock.getElapsedTime().asMilliseconds() >= 100) {
-                    isDashing = false;
-                    SPEED = 300.f;
-                    coolDownDash.restart();
-                }
-            }
-        }
+        joystickValue = sf::Joystick::getAxisPosition(0, sf::Joystick::X); // donne la poussée du joystick gauche sur l'axe X
 
-
-        joystickValue = sf::Joystick::getAxisPosition(0, sf::Joystick::X);
-
-        if (!isDashing) {
-            if (joystickValue > 10 && joystickValue < -10) {
-                position.x += 0;
-            }
-            else if (joystickValue < -10) {
-                position.x -= SPEED * deltaTime;
-            }
-            else if (joystickValue > 10) {
-                position.x += 1 + SPEED * deltaTime;
-            }
-        }
     }
 
-    velocity.y += gravity * deltaTime;  // Appliquer la gravitÃ©
+    velocity.y += gravity * deltaTime;  // Appliquer la gravité
     position.y += velocity.y * deltaTime;
-
+    
     shape.setPosition(position);
-    attackShape.setPosition(position.x + 40, position.y + 20);
 }
 
 void Player::jump() {
@@ -118,40 +62,66 @@ void Player::jump() {
         velocity.y = -jumpForce;  // Appliquer une force initiale vers le haut pour sauter 
         jumpCount = 1;
         jumpClock.restart();
-        cout << "isgrounded" << endl;
     }
-    else if (jumpCount == 1 && jumpClock.getElapsedTime().asMilliseconds() >= 175 && !isGrounded) {
+    else if (jumpCount == 1 && jumpClock.getElapsedTime().asMilliseconds() >= 175 && !isGrounded) { // compteur permettant de savoir si on peut faire un deuxième saut
         velocity.y = -jumpForce;
         jumpCount = 2;
     }
 }
 
 void Player::attack(float deltaTime) {
+    // Si le perso a une épée on fait une rotation a l'arme
     if (isAttacking) {
-        animTimeDecr += deltaTime;
-        if (animTimeDecr > 0.008) {
-            rotaLeft += 10;
-            attackShape.setRotation(rotaLeft); // 220
-            if (rotaLeft >= 300) {
-                rotaLeft = 220;
-                isAttacking = false;
+        if (stateLook == LOOK_RIGHT) {
+            attackShape.setPosition(position.x + 40, position.y + 20);
+            animTimeDecr += deltaTime;
+            if (animTimeDecr > 0.008) {
+                rotaRight += 10;
+                attackShape.setRotation(rotaRight);
+                if (rotaRight >= 300) {
+                    rotaRight = 220;
+                    isAttacking = false;
+                }
+                animTimeDecr = 0;
             }
-            animTimeDecr = 0;
+        }
+        if (stateLook == LOOK_LEFT) {
+            attackShape.setPosition(position.x - 20, position.y + 20);
+            animTimeDecr += deltaTime;
+            if (animTimeDecr > 0.008) {
+                rotaRight -= 10;
+                attackShape.setRotation(rotaRight);
+                if (rotaRight <= -100) {
+                    rotaRight = -20;
+                    isAttacking = false;
+                }
+                animTimeDecr = 0;
+            }
+        }
+    }
+}
+
+void Player::dash(float deltaTime)
+{
+    if (isDashing) {
+        if (stateLook == LOOK_LEFT) {
+            SPEED = 2000;
+            position.x -= 2 + SPEED * deltaTime;
+        }
+        if (stateLook == LOOK_RIGHT) {
+            SPEED = 2000;
+            position.x += 2 + SPEED * deltaTime;
+        }
+        if (clock.getElapsedTime().asMilliseconds() >= 100) {
+            isDashing = false;
+            SPEED = 300.f;
+            coolDownDash.restart();
+            cout << "dash stop" << endl;
         }
     }
 }
 
 #pragma region Getteurs / Setteurs
-
-Vector2f Player::getPosPos() {
-    return position;
-}
-
-Vector2f Player::setPosPos(float(x), float(y)) {
-    position.x = x;
-    position.y = y;
-    return position;
-}
 
 Vector2f Player::getVelocity() {
     return velocity;
@@ -174,37 +144,6 @@ bool Player::getIsJumping() {
 bool Player::setIsJumping(bool jump) {
     isJumping = jump;
     return isJumping;
-}
-
-bool Player::getIsJumping2() {
-    return isJumping2;
-}
-
-bool Player::setIsJumping2(bool jump) {
-    isJumping2 = jump;
-    return isJumping2;
-}
-
-bool Player::getCanJump()
-{
-    return canJump;
-}
-
-bool Player::setcanJump(bool can)
-{
-    canJump = can;
-    return canJump;
-}
-
-bool Player::getCanJump2()
-{
-    return canJump2;
-}
-
-bool Player::setcanJump2(bool can)
-{
-    canJump2 = can;
-    return canJump2;
 }
 
 bool Player::setIsGrounded(bool is)
@@ -297,6 +236,7 @@ bool Player::setHasKey(bool key) {
 void Player::update(float deltaTime) {
     movementManager(deltaTime);
     attack(deltaTime);
+    dash(deltaTime);
 }
 
 void Player::draw(RenderWindow& window) {
