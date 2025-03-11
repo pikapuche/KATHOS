@@ -1,6 +1,6 @@
 #include "Player.hpp"
 
-Player::Player(float s, float jForce) : Entity(position.x, position.y) { // constructeur de base 
+Player::Player() : Entity(position.x, position.y) { // constructeur de base 
     shape.setFillColor(sf::Color::Green);
     shape.setSize(sf::Vector2f(40.0f, 40.0f));
     velocity.y = 0;  // Pas de mouvement vertical au départ
@@ -22,6 +22,19 @@ void Player::movementManager(float deltaTime) {
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) { isAttacking = true; }
 
+    if (Keyboard::isKeyPressed(Keyboard::A) && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500) {
+        isDashing = true;
+        clock.restart();
+        cout << "dash" << endl;
+    }
+
+    if (Keyboard::isKeyPressed(Keyboard::LShift) && isTakeSpeed) {
+        SPEED = 500;
+    }
+    else {
+        SPEED = 300;
+    }
+
     //////////////////////////////  Manette  //////////////////////////////////
 
     if (sf::Joystick::isConnected(0))
@@ -32,20 +45,45 @@ void Player::movementManager(float deltaTime) {
         }
 
         if (sf::Joystick::isButtonPressed(0, 2)) {
-            cout << "settings ouais" << endl;
             isAttacking = true;
         }
 
+        if (sf::Joystick::isButtonPressed(0, 8) && isTakeSpeed) { // Up D-Pad
+            SPEED = 500;
+        }
+        else {
+            SPEED = 300;
+        }
+
+        // Vérification des gâchettes (axes Z et R)
+        gachetteValue = sf::Joystick::getAxisPosition(0, sf::Joystick::Z);
+
+        // Si la gâchette gauche est pressée
+        if (gachetteValue > 10 && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500) {  // Négatif pour la gâchette gauche (enfoncée)
+            isDashing = true;
+            clock.restart();
+            cout << "dash" << endl;
+        }
+        // Si la gâchette droite est pressée
+        else if (gachetteValue < -10 && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500) {  // Positif pour la gâchette droite (enfoncée)
+            isDashing = true;
+            clock.restart();
+            cout << "dash" << endl;
+        }
+
+
         joystickValue = sf::Joystick::getAxisPosition(0, sf::Joystick::X);
 
-        if (joystickValue > 10 && joystickValue < -10) {
-            position.x += 0;
-        }
-        else if (joystickValue < -10) {
-            position.x -= SPEED * deltaTime;
-        } 
-        else if (joystickValue > 10) {
-            position.x += 1 + SPEED * deltaTime;
+        if (!isDashing) {
+            if (joystickValue > 10 && joystickValue < -10) {
+                position.x += 0;
+            }
+            else if (joystickValue < -10) {
+                position.x -= SPEED * deltaTime;
+            }
+            else if (joystickValue > 10) {
+                position.x += 1 + SPEED * deltaTime;
+            }
         }
     }
 
@@ -182,6 +220,17 @@ bool Player::setIsDashing(bool dash)
 {
     isDashing = dash; 
     return isDashing;
+}
+
+bool Player::getIsTakeSpeed()
+{
+    return isTakeSpeed;
+}
+
+bool Player::setIsTakeSpeed(bool speed)
+{
+    isTakeSpeed = speed;
+    return isTakeSpeed;
 }
 
 float Player::getJumpForce() {

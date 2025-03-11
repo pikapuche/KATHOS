@@ -4,6 +4,7 @@ void Game::run()
 {
     // Création de la fenêtre
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Kathos", sf::Style::Fullscreen);
+    window.setVerticalSyncEnabled(true);
     window.setFramerateLimit(60); 
 
     Map map;

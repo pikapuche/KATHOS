@@ -18,9 +18,12 @@ protected:
     bool isGrounded = false;
     bool isTakeDash = false;
     bool isDashing = false;
+    bool isTakeSpeed = false;
 
     float animTimeDecr;
     float rotaLeft = 220;
+
+    float gachetteValue;
 
     int jumpCount = 0;
 
@@ -30,10 +33,12 @@ protected:
     RectangleShape attackShape;
 
     Clock jumpClock;
+    Clock coolDownDash;
+    Clock clock;
 
 public:
 
-    Player(float s, float jForce);
+    Player();
 
     void movementManager(float deltaTime);
 
@@ -78,6 +83,10 @@ public:
     bool getIsDashing();
 
     bool setIsDashing(bool dash);
+
+    bool getIsTakeSpeed();
+
+    bool setIsTakeSpeed(bool speed);
 
     float getJumpForce();
 

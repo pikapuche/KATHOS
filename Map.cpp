@@ -35,7 +35,7 @@ void Map::initAll() {
             switch (vector_Map[i][j]) {
             case '=': // player
             {
-                Player* players = new Player(100.f, 50.f);
+                Player* players = new Player();
                 vector_player.push_back(players);
                 for (auto& player : vector_player) { // set la position de départ du player
                     player->setPosPos(j * 40.f, i * 40.f);
@@ -44,7 +44,7 @@ void Map::initAll() {
             }
             case '*': 
             {
-                Gemme* gemmes = new Gemme(100.0f, 50.0f);
+                Gemme* gemmes = new Gemme();
                 vector_gemme.push_back(gemmes);
                 for (auto& gemme : vector_gemme) { // set la position de départ de la gemme
                     gemme->setPosition(j * 40.f, i * 40.f);
