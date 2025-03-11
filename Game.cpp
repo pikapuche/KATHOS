@@ -1,5 +1,7 @@
 #include "Game.hpp"
 
+//faire collision
+
 void Game::run()
 {
     // Création de la fenêtre
