@@ -270,6 +270,7 @@ int Player::getJumpCount()
 void Player::update(float deltaTime) {
     movementManager(deltaTime);
     attack(deltaTime);
+    std::cout << "Pos x : " << position.x << "Pos Y : " << position.y << std::endl;
 }
 
 void Player::draw(RenderWindow& window) {
@@ -281,5 +282,4 @@ bool Player::gethasKey() {
 }
 void Player::sethasKey(bool key) {
     hasKey = key;
-    if (isAttacking) window.draw(attackShape);
 }

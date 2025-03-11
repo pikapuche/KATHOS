@@ -75,10 +75,6 @@ void Map::drawMap(sf::RenderWindow& window) {
                 tile.setFillColor(sf::Color::Cyan);
                 break;
             }
-            case 'K': {
-
-                break;
-            }
 
             default:  tile.setFillColor(sf::Color::Black); break;
             }
@@ -125,6 +121,7 @@ void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime
                 }
                 if (tile.getPosition().y < player.getPosPos().y) {
                     player.setPosPos(player.getPosPos().x, tile.getPosition().y - 40);
+                    
                 }
                 break;
             default:  tile.setFillColor(sf::Color::Black); break;

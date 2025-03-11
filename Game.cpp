@@ -11,10 +11,11 @@ void Game::run()
 
     Map map;
     MainScreen mainScreen;
-    Interface overlay;
-    mainScreen.initMenu(window);
+
     map.loadFromFile("assets/map/mapV1.txt");
     map.initAll();
+    Interface overlay;
+    mainScreen.initMenu(window);
 
     Clock clock;
     overlay.initInterface(); // Ensure the texture is loaded once
@@ -58,12 +59,15 @@ void Game::run()
                 if (overlay.getShouldRestart()) {
                     map.vector_player.clear();  // Clear old player instances
                     map.loadFromFile("assets/map/mapV1.txt"); // Reload map
+                    map.drawMap(window);
                     map.initAll(); // Reset objects
+
+                    for (auto& players : map.vector_player) {
+                            map.collisionMap(window, *players, deltaTime);
+                    }
+                    
                     overlay.resetRestartFlag(); // Reset the flag so it doesn't keep restarting
 
-                }
-                for (auto& players : map.vector_player) {
-                    players->draw(window);
                 }
             }
         for (auto& gemmes : map.vector_gemme) {

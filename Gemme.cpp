@@ -16,7 +16,7 @@ void Gemme::interact(Player& player)
 {
 	if (speedGemmeShape.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
 		player.setIsTakeSpeed(true);
-		cout << "est récup";
+		cout << "est rï¿½cup";
 	}
 
 	if (dashGemmeShape.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
