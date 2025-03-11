@@ -12,8 +12,11 @@ Player::Player(float s, float jForce) : Entity(position.x, position.y) { // cons
 }
 
 void Player::movementManager(float deltaTime) { 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) { position.x -= SPEED * deltaTime; }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { position.x += 1 + SPEED * deltaTime; }
+
+    if (isDashing == false) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) { position.x -= SPEED * deltaTime; }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { position.x += 1 + SPEED * deltaTime; }
+    }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) { jump(); }
 
@@ -130,6 +133,28 @@ bool Player::setIsGrounded(bool is)
 bool Player::getIsGrounded()
 {
     return isGrounded;
+}
+
+bool Player::getIsTakeDash()
+{
+    return isTakeDash;
+}
+
+bool Player::setIsTakeDash(bool dash)
+{
+    isTakeDash = dash;
+    return isTakeDash;
+}
+
+bool Player::getIsDashing()
+{
+    return isDashing;
+}
+
+bool Player::setIsDashing(bool dash)
+{
+    isDashing = dash; 
+    return isDashing;
 }
 
 float Player::getJumpForce() {

@@ -16,6 +16,8 @@ protected:
     bool canJump = false;
     bool canJump2 = false;
     bool isGrounded = false;
+    bool isTakeDash = false;
+    bool isDashing = false;
 
     float animTimeDecr;
     float rotaLeft = 220;
@@ -65,6 +67,14 @@ public:
     bool setIsGrounded(bool is);
 
     bool getIsGrounded();
+
+    bool getIsTakeDash();
+
+    bool setIsTakeDash(bool dash);
+
+    bool getIsDashing();
+
+    bool setIsDashing(bool dash);
 
     float getJumpForce();
 

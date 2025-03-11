@@ -8,8 +8,6 @@ protected:
 	RectangleShape speedGemmeShape;
 	RectangleShape dashGemmeShape;
 	bool isTakeSpeed;
-	bool isTakeDash;
-	bool isDashing;
 	Clock clock;
 	Clock coolDownDash;
 public:
@@ -17,5 +15,5 @@ public:
 
 	sf::Vector2f setPosition(float x, float y);
 	void interact(Player& player);
-	void draw(RenderWindow& window);
+	void draw(RenderWindow& window, Player& player);
 };
