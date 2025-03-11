@@ -149,6 +149,12 @@ float Player::getSPEED() {
     return SPEED;
 }
 
+float Player::setSPEED(float speed) {
+    SPEED = speed;
+    return SPEED;
+}
+
+
 int Player::setJumpCount(float count)
 {
     jumpCount = count;
