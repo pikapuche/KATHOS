@@ -33,25 +33,33 @@ void Map::initAll() {
         for (size_t j = 0; j < vector_Map[i].size(); j++) {
             tile.setPosition(j * 40.f, i * 40.f);
             switch (vector_Map[i][j]) {
-            case '=': // player
+            case '=': // Player
             {
                 Player* players = new Player();
                 vector_player.push_back(players);
-                for (auto& player : vector_player) { // set la position de dï¿½part du player
+                for (auto& player : vector_player) { // set la position de depart du player
                     player->setPosPos(j * 40.f, i * 40.f);
                 }
                 break;
             }
-            case '*': 
+            case '*': // Gemme
             {
                 Gemme* gemmes = new Gemme();
                 vector_gemme.push_back(gemmes);
-                for (auto& gemme : vector_gemme) { // set la position de départ de la gemme
+                for (auto& gemme : vector_gemme) { 
                     gemme->setPosition(j * 40.f, i * 40.f);
                 }
                 break;
             }
-
+            case 'E': // Ennemi
+            {
+                Enemy* ennemi = new Enemy();
+                vector_enemy.push_back(ennemi);
+                for (auto& ennemi : vector_enemy) {
+                    ennemi->setPosPos(j * 40.f, i * 40.f);
+                }
+                break;
+            }
             default:  tile.setFillColor(sf::Color::Black); break;
             }
         }
@@ -87,7 +95,7 @@ void Map::drawMap(sf::RenderWindow& window) {
     }
 }
 
-void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime) {
+void Map::collisionMap(Player& player, Enemy& enemy, float deltaTime) { // arriver a mettre entity pour permettre de faire ce qu'on veut avec un seul truc et opti
     if (vector_Map.empty()) return;
     sf::RectangleShape tile(sf::Vector2f(40, 40));
 
@@ -96,6 +104,7 @@ void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime
             tile.setPosition(j * 40.f, i * 40.f); // set la position des différentes tiles sur la map
             switch (vector_Map[i][j]) {
             case '!': // plateformes
+                ////////////////////////////////////////////////// player //////////////////////////////////////////////////
                 if (tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds()) && tile.getPosition().y > player.getPosPos().y) { // si le joueur entre en collision avec la plateforme mais qu'il est plus bas alors on set sa pos en dessous de la plateforme pour pas qu'il la traverse
                     player.setPosPos(player.getPosPos().x, tile.getPosition().y + 40);
                     player.setIsJumping(true);
@@ -105,18 +114,38 @@ void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime
                     player.setPosPos(player.getPosPos().x, tile.getPosition().y - 40);
                     player.setIsJumping(false);
                     player.setIsGrounded(true);
-                    player.setVelocity(player.getVelocity().x, 0);
+                    //player.setVelocity(player.getVelocity().x, 0);
                 } 
+                ////////////////////////////////////////////////// enemy //////////////////////////////////////////////////
+                if (tile.getGlobalBounds().intersects(enemy.getShape().getGlobalBounds()) && tile.getPosition().y > enemy.getPosPos().y) { // si le joueur entre en collision avec la plateforme mais qu'il est plus bas alors on set sa pos en dessous de la plateforme pour pas qu'il la traverse
+                    enemy.setPosPos(enemy.getPosPos().x, tile.getPosition().y + 40);
+                    enemy.setIsGrounded(false);
+                }
+                else if (tile.getGlobalBounds().intersects(enemy.getShape().getGlobalBounds()) && tile.getPosition().y < enemy.getPosPos().y) { // si le joueur entre en collision avec une plateforme alors il set sa position en haut de celle ci
+                    enemy.setPosPos(enemy.getPosPos().x, tile.getPosition().y - 40);
+                    enemy.setIsGrounded(true);
+                    //enemy.setVelocity(enemy.getVelocity().x, 0);
+                }
                 break;
             case '#': // sol 
+                ////////////////////////////////////////////////// player //////////////////////////////////////////////////
                 if (tile.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) { // si le joueur entre en collision avec le sol alors il set sa position en haut du sol
                     player.setPosPos(player.getPosPos().x, tile.getPosition().y - 40);
                     player.setIsJumping(false);
                     player.setIsGrounded(true);
-                    player.setVelocity(player.getVelocity().x, 0);
+                    //player.setVelocity(player.getVelocity().x, 0);
                 }
                 if (tile.getPosition().y < player.getPosPos().y) {
                     player.setPosPos(player.getPosPos().x, tile.getPosition().y - 40);
+                }
+                ////////////////////////////////////////////////// enemy //////////////////////////////////////////////////
+                if (tile.getGlobalBounds().intersects(enemy.getShape().getGlobalBounds())) { // si le joueur entre en collision avec le sol alors il set sa position en haut du sol
+                    enemy.setPosPos(enemy.getPosPos().x, tile.getPosition().y - 40);
+                    enemy.setIsGrounded(true);
+                    //enemy.setVelocity(enemy.getVelocity().x, 0);
+                }
+                if (tile.getPosition().y < enemy.getPosPos().y) {
+                    enemy.setPosPos(enemy.getPosPos().x, tile.getPosition().y - 40);
                 }
                 break;
             default:  tile.setFillColor(sf::Color::Black); break;

@@ -3,8 +3,8 @@
 
 class Player : public Entity {
 protected:
-    sf::Vector2f position;
-    sf::Vector2f velocity;
+    //sf::Vector2f position;
+    //sf::Vector2f velocity;
     RectangleShape shape;
     RectangleShape attackShape;
 
@@ -13,7 +13,6 @@ protected:
 
     int jumpCount = 0;
 
-    const float gravity = 981.0f;  // Gravité en pixels par seconde carrée (simulation)
     float SPEED = 300.0f;  // Vitesse de déplacement horizontal
     float jumpForce = 600.f;  // Force initiale du saut
 

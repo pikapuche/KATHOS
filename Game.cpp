@@ -48,7 +48,8 @@ void Game::run()
             for (auto& players : map.vector_player) {
                 if (!overlay.getIsPaused()) {
                     players->update(deltaTime);
-                    map.collisionMap(window, *players, deltaTime);
+                    for(auto& enemies : map.vector_enemy)
+                    map.collisionMap(*players, *enemies, deltaTime);
                 }
                 players->draw(window);
             }
@@ -62,6 +63,13 @@ void Game::run()
                     gemmes->interact(*players);
                     gemmes->draw(window, *players);
                 }
+            }
+
+            for (auto& ennemis : map.vector_enemy) {
+                for (auto& players : map.vector_player) {
+                    ennemis->updateReal(deltaTime, *players);
+                }
+                ennemis->draw(window);
             }
             window.display();
         }

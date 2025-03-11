@@ -4,8 +4,6 @@ Player::Player() : Entity(position.x, position.y) { // constructeur de base
     shape.setFillColor(sf::Color::Green);
     shape.setSize(sf::Vector2f(40.0f, 40.0f));
     velocity.y = 0; // Pas de mouvement vertical au depart
-    isJumping = false;
-    isAttacking = false;
     attackShape.setSize(sf::Vector2f(10.0f, 20.0f));
     attackShape.setFillColor(sf::Color::Red);
 }
@@ -48,6 +46,9 @@ void Player::movementManager(float deltaTime) {
 
     }
 
+    if (isGrounded) {
+        velocity.y = 0;
+    }
     velocity.y += gravity * deltaTime;  // Appliquer la gravité
     position.y += velocity.y * deltaTime;
     

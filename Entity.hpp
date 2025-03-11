@@ -9,6 +9,7 @@ protected :
 	sf::Vector2f velocity;
 	RectangleShape shape;
 	RectangleShape attackShape;
+	const float gravity = 981.0f;  // Gravité en pixels par seconde carrée (simulation)
 
 	// etat d'anim avec les enums
 
