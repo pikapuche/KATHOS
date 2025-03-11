@@ -1,3 +1,4 @@
+#pragma once
 #include "Entity.hpp"
 
 class Player : public Entity {
@@ -7,9 +8,23 @@ protected:
     RectangleShape shape;
 
     const float gravity = 981.0f;  // Gravité en pixels par seconde carrée (simulation)
-    float SPEED = 200.0f;  // Vitesse de déplacement horizontal
+    float SPEED = 300.0f;  // Vitesse de déplacement horizontal
     float jumpForce = 600.f;  // Force initiale du saut
     bool isJumping;
+    bool isJumping2;
+    bool isAttacking;
+    bool canJump = false;
+    bool canJump2 = false;
+    bool isGrounded = false;
+
+    float animTimeDecr;
+    float rotaLeft = 220;
+
+    int jumpCount = 0;
+
+    RectangleShape attackShape;
+
+    Clock jumpClock;
 
 public:
 
@@ -18,6 +33,8 @@ public:
     void movementManager(float deltaTime);
 
     void jump();
+
+    void attack(float deltaTime);
 
     Vector2f getPosPos();
 
@@ -33,6 +50,22 @@ public:
 
     bool setIsJumping(bool jump);
 
+    bool getIsJumping2();
+
+    bool setIsJumping2(bool jump);
+
+    bool getCanJump();
+
+    bool setcanJump(bool can);
+
+    bool getCanJump2();
+
+    bool setcanJump2(bool can);
+
+    bool setIsGrounded(bool is);
+
+    bool getIsGrounded();
+
     float getJumpForce();
 
     float setJumpForce(float force);
@@ -40,6 +73,12 @@ public:
     float getGravity();
 
     float getSPEED();
+
+    int setJumpCount(float count);
+
+    int getJumpCount();
+
+    float setSPEED(float speed);
 
     void update(float deltaTime);
 
