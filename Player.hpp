@@ -7,8 +7,8 @@ protected:
     sf::Vector2f velocity;
     RectangleShape shape;
 
-    enum State { LOOK_LEFT, LOOK_RIGHT };
-    State state;
+    enum StateLook { LOOK_LEFT, LOOK_RIGHT };
+    StateLook stateLook;
 
     const float gravity = 981.0f;  // Gravité en pixels par seconde carrée (simulation)
     float SPEED = 300.0f;  // Vitesse de déplacement horizontal
@@ -51,7 +51,7 @@ public:
 
     void attack(float deltaTime);
 
-    void dash();
+    void dash(float deltaTime);
 
     Vector2f getPosPos();
 
