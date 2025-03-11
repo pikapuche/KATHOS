@@ -1,10 +1,8 @@
 #include "Boss.hpp"
 
-Boss::Boss(float posX, float posY, Player& target) : target(target) { //constructeur du boss
+Boss::Boss(Player& target) : target(target) { //constructeur du boss
     shape.setSize(sf::Vector2f(50.0f, 50.0f));
     shape.setFillColor(sf::Color::Red);
-    position = { posX, posY };
-    shape.setPosition(position);
     speed = 200.0f;
     velocity = { -speed, 0.0f };
 }
@@ -42,6 +40,16 @@ void Boss::checkCollision(int mapWidth) { //check les collisions et empêche le b
         position.x = mapWidth - shape.getSize().x;
         velocity.x = -speed;
     }
+}
+
+Vector2f Boss::getPos() {
+    return position;
+}
+
+Vector2f Boss::setPos(float(x), float(y)) {
+    position.x = x;
+    position.y = y;
+    return position;
 }
 
 sf::RectangleShape Boss::getShape() { //prend la shape du joueur

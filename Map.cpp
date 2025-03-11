@@ -1,15 +1,14 @@
 #include "Map.hpp"
 
-Map::Map() {
-    boss = nullptr;
-}
-
 Map::~Map() {
     for (auto players : vector_player) {
         delete players;
     }
     vector_player.clear();
-    delete boss;
+    for (auto bosses : vector_boss) {
+        delete bosses;
+    }
+    vector_boss.clear();
 }
 
 bool Map::loadFromFile(string filename) {
@@ -47,25 +46,27 @@ void Map::initAll() {
                 }
                 break;
             }
-
-            default:  tile.setFillColor(sf::Color::Black); break;
+            case 'B': // boss
+            {
+                for (auto& player : vector_player) {
+                    Boss* bosses = new Boss(*player);
+                    vector_boss.push_back(bosses);
+                }
+                for (auto& boss : vector_boss) {
+                    boss->setPos(j * 40.f, i * 40.f);
+                }
+                break;
             }
-        }
-    }
-
-    for (size_t i = 0; i < vector_Map.size(); i++) {
-        for (size_t j = 0; j < vector_Map[i].size(); j++) {
-            if (vector_Map[i][j] == 'B') {
-                boss = new Boss(j * 40.f, i * 40.f, *vector_player[0]);
+            default:  tile.setFillColor(sf::Color::Black); break;
             }
         }
     }
 }
 
 void Map::update(float deltaTime) {
-    if (boss) {
+    for (auto& boss : vector_boss) {
         boss->update(deltaTime);
-        boss->checkCollision(vector_Map[0].size() * 40);
+        boss->checkCollision(vector_Map[0].size() * 70);
     }
 }
 
@@ -91,10 +92,6 @@ void Map::drawMap(sf::RenderWindow& window) {
             }
             window.draw(tile);
         }
-    }
-
-    if(boss) {
-        boss->draw(window);
     }
 }
 

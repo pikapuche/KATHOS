@@ -20,10 +20,9 @@ protected:
     bool winGame = false;
 
 public:
-    Boss* boss;
+    vector<Boss*> vector_boss;
     vector<Player*> vector_player;
 
-    Map();
     ~Map();
 
     vector<string> vector_Map;

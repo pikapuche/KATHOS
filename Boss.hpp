@@ -2,7 +2,6 @@
 #include "stdafx.hpp"
 #include "Entity.hpp"
 #include "Player.hpp"
-#include "Map.hpp"
 
 class Boss {
 private:
@@ -13,11 +12,14 @@ private:
     Player& target;
 
 public:
-    Boss(float posX, float posY, Player& target);
+    Boss(Player& target);
 
     void update(float deltatime);
     void draw(RenderWindow& window);
     void checkCollision(int mapWidth);
+
+    Vector2f getPos();
+    Vector2f setPos(float(x), float(y));
 
     RectangleShape getShape();
 };

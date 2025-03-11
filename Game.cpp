@@ -36,6 +36,10 @@ void Game::run()
             players->draw(window);
             map.collisionMap(window, *players, deltaTime);
         }
+        for (auto& bosses : map.vector_boss) { // vector player dans la map pour pouvoir le gérer dans ses déplacements
+            bosses->update(deltaTime);
+            bosses->draw(window);
+        }
 
         // Affiche tout
         window.display();
