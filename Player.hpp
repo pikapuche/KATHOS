@@ -13,7 +13,7 @@ protected:
 
 public:
 
-    Player(float s, float jForce);
+    Player();
 
     void movementManager(float deltaTime);
 

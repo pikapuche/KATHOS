@@ -71,8 +71,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+<<<<<<< Updated upstream
     <IncludePath>C:\SFML-2.6.2\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\SFML-2.6.2\lib;$(LibraryPath)</LibraryPath>
+=======
+    <IncludePath>C:\Users\nlamarre\source\repos\Mini-Projet-Studio\SFML du projet\include;C:\SFML-2.6.2\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\nlamarre\source\repos\Mini-Projet-Studio\SFML du projet\lib;C:\SFML-2.6.2\lib;$(LibraryPath)</LibraryPath>
+>>>>>>> Stashed changes
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>C:\SFML-2.6.2\include;$(IncludePath)</IncludePath>

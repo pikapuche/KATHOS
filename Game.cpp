@@ -6,10 +6,9 @@ void Game::run()
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Kathos", sf::Style::Fullscreen);
     window.setFramerateLimit(60); 
 
-    Map map;
-
-    map.loadFromFile("assets/map/mapV1.txt"); // fichier de la map
-    map.initAll();
+    Player player;
+    Map* m = new Map();
+    m->loadMap(player);
 
     Clock clock; // Horloge pour le deltaTime
 
@@ -26,16 +25,26 @@ void Game::run()
         // Effacer la fenêtre
         window.clear();
 
-        map.drawMap(window); // draw la map
+        m->draw(window);
 
         //cout << deltaTime << endl;
 
-        for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements
-            players->update(deltaTime);
-            players->draw(window);
-            map.collisionMap(window, *players, deltaTime);
-        }
+        //for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements
+        //    players->update(deltaTime);
+        //    players->draw(window);
+        //    map.collisionMap(window, *players, deltaTime);
+        //}
 
+<<<<<<< Updated upstream
+=======
+        //for (auto& gemmes : map.vector_gemme) {
+        //    for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements
+        //        gemmes->interact(*players);
+        //    }
+        //    gemmes->draw(window);
+        //}
+
+>>>>>>> Stashed changes
         // Affiche tout
         window.display();
     }

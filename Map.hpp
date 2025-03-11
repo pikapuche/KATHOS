@@ -1,6 +1,7 @@
 #include "stdafx.hpp"
 #include "Player.hpp"
 
+<<<<<<< Updated upstream
 const int GRID_WIDTH = 20;
 const int GRID_HEIGHT = 15;
 const int CELL_SIZE = 16;
@@ -15,19 +16,49 @@ protected:
 
     bool winGame = false;
 
+=======
+class Map {
+>>>>>>> Stashed changes
 public:
+    Texture groundYellowLeftTexture, groundYellowMidTexture, groundYellowRightTexture;
+    Texture groundRedLeftTexture, groundRedMidTexture, groundRedRightTexture;
+    Texture groundGreenLeftTexture, groundGreenMidTexture, groundGreenRightTexture;
 
-    vector<Player*> vector_player;
+    //Texture wallTexture;
 
+<<<<<<< Updated upstream
     ~Map();
+=======
+    vector<Sprite*> groundYLVector, groundYMVector, groundYRVector;
+    vector<Sprite*> groundRLVector, groundRMVector, groundRRVector;
+    vector<Sprite*> groundGLVector, groundGMVector, groundGRVector;
 
-    vector<string> vector_Map;
+    vector<ifstream*> maps;
+>>>>>>> Stashed changes
 
-    bool loadFromFile(string filename);
+    //Text win;
+    //Font font;
 
-    void initAll();
+    enum class StatePlaying {
+        Practice,
+        Monde1,
+        Monde2,
+        Monde3,
+    };
 
-    void drawMap(sf::RenderWindow& window);
+    StatePlaying statePlaying;
 
-    void collisionMap(sf::RenderWindow& window, Player& player, float deltaTime);
+    Map();
+
+    ~Map(); 
+
+    void update(Player& player); 
+
+    void collision(Player& player);
+
+    void loadMap(Player& player);
+
+    void monSwitch(ifstream& _Map, string line, int z, Player& player);
+
+    void draw(RenderWindow& window);
 };

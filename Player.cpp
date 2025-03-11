@@ -1,6 +1,6 @@
 #include "Player.hpp"
 
-Player::Player(float s, float jForce) : Entity(position.x, position.y) { // constructeur de base 
+Player::Player() : Entity(position.x, position.y) { // constructeur de base 
     shape.setFillColor(sf::Color::Green);
 <<<<<<< Updated upstream
     shape.setSize(sf::Vector2f(40.f, 40.f));
