@@ -10,6 +10,7 @@ private:
     sf::Vector2f velocity;
     float speed;
     Player& target;
+    float detectionRange;
 
 public:
     Boss(Player& target);
@@ -17,6 +18,8 @@ public:
     void update(float deltatime);
     void draw(RenderWindow& window);
     void checkCollision(int mapWidth);
+    void chasePlayer();
+    bool canSeePlayer();
 
     Vector2f getPos();
     Vector2f setPos(float(x), float(y));

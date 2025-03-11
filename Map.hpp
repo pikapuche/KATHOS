@@ -7,7 +7,8 @@ const int GRID_WIDTH = 20;
 const int GRID_HEIGHT = 15;
 const int CELL_SIZE = 40;
 
-class Map {
+class Map 
+{
 protected:
     sf::Texture groundTexture;
     sf::Texture wallTexture;
@@ -18,6 +19,8 @@ protected:
     sf::Font font;
 
     bool winGame = false;
+
+    bool isGameOver = false;
 
 public:
     vector<Boss*> vector_boss;
@@ -36,4 +39,8 @@ public:
     void update(float deltaTime);
 
     void collisionMap(sf::RenderWindow& window, Player& player, float deltaTime);
+
+    void checkPlayerBossCollision();
+
+    bool getIsGameOver();
 };

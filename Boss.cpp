@@ -5,27 +5,35 @@ Boss::Boss(Player& target) : target(target) { //constructeur du boss
     shape.setFillColor(sf::Color::Red);
     speed = 200.0f;
     velocity = { -speed, 0.0f };
+    detectionRange = 300.0f;
+}
+
+bool Boss::canSeePlayer()
+{
+    float distanceX = std::abs(target.getPosPos().x - position.x);
+    float distanceY = std::abs(target.getPosPos().y - position.y);
+
+    return (distanceX < detectionRange && distanceY < 50.0f);
+}
+
+void Boss::chasePlayer()
+{
+    if (target.getPosPos().x > position.x)
+    {
+        velocity.x = speed;
+    }
+    else {
+        velocity.x = -speed;
+    }
 }
 
 void Boss::update(float deltaTime) { //déplacements
+    if (canSeePlayer()) {
+        chasePlayer();
+    }
     position += velocity * deltaTime;
     shape.setPosition(position);
 }
-
-//void Boss::update(float deltaTime)
-//{
-//    Vector2f direction = target.getPosPos() - position;
-//    float magnitude = sqrt(direction.x * direction.x + direction.y * direction.y);
-//
-//    if (magnitude > 0)
-//    {
-//        direction /= magnitude;
-//    }
-//
-//    Vector2f newPosition = position + direction * speed * deltaTime;
-//
-//    shape.setPosition(position);
-//}
 
 void Boss::draw(sf::RenderWindow& window) {
     window.draw(shape);

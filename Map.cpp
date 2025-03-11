@@ -64,10 +64,14 @@ void Map::initAll() {
 }
 
 void Map::update(float deltaTime) {
+    if (isGameOver) return;
+
     for (auto& boss : vector_boss) {
         boss->update(deltaTime);
         boss->checkCollision(vector_Map[0].size() * 70);
     }
+
+    checkPlayerBossCollision();
 }
 
 void Map::drawMap(sf::RenderWindow& window) {
@@ -92,6 +96,28 @@ void Map::drawMap(sf::RenderWindow& window) {
             }
             window.draw(tile);
         }
+    }
+
+    if (isGameOver) {
+        sf::RectangleShape gameOverScreen(sf::Vector2f(window.getSize().x, window.getSize().y));
+        gameOverScreen.setFillColor(sf::Color(0, 0, 0, 150));
+        window.draw(gameOverScreen);
+
+        sf::Font font;
+        if (!font.loadFromFile("Assets/Fonts/Minecraft.ttf")) {
+            cout << "Erreur chargement police !" << endl;
+        }
+
+        sf::Text gameOverText;
+        gameOverText.setFont(font);
+        gameOverText.setString("GAME OVER");
+        gameOverText.setCharacterSize(80);
+        gameOverText.setFillColor(sf::Color::Red);
+        gameOverText.setStyle(sf::Text::Bold);
+        gameOverText.setPosition((window.getSize().x - gameOverText.getGlobalBounds().width) / 2, (window.getSize().y - gameOverText.getGlobalBounds().height) / 2);
+
+        window.draw(gameOverText);
+        return;
     }
 }
 
@@ -134,6 +160,19 @@ void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime
                 }
                 break;
             default:  tile.setFillColor(sf::Color::Black); break;
+            }
+        }
+    }
+}
+
+void Map::checkPlayerBossCollision() {
+    if (vector_player.empty() || vector_boss.empty() || isGameOver) return;
+
+    for (auto& player : vector_player) {
+        for (auto& boss : vector_boss) {
+            if (player->getShape().getGlobalBounds().intersects(boss->getShape().getGlobalBounds())) {
+                cout << "Collision entre le joueur et le boss" << endl;
+                isGameOver = true;
             }
         }
     }
