@@ -3,7 +3,7 @@
 Player::Player() : Entity(position.x, position.y) { // constructeur de base 
     shape.setFillColor(sf::Color::Green);
     shape.setSize(sf::Vector2f(40.0f, 40.0f));
-    velocity.y = 0;  // Pas de mouvement vertical au départ
+    velocity.y = 0;  // Pas de mouvement vertical au dÃ©part
     isJumping = false;
     isJumping2 = false;
     isAttacking = false;
@@ -14,8 +14,8 @@ Player::Player() : Entity(position.x, position.y) { // constructeur de base
 void Player::movementManager(float deltaTime) { 
 
     if (isDashing == false) {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) { position.x -= SPEED * deltaTime; }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { position.x += 1 + SPEED * deltaTime; }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) { position.x -= SPEED * deltaTime; state = LOOK_LEFT; }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { position.x += 1 + SPEED * deltaTime; state = LOOK_RIGHT; }
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) { jump(); }
@@ -55,20 +55,36 @@ void Player::movementManager(float deltaTime) {
             SPEED = 300;
         }
 
-        // Vérification des gâchettes (axes Z et R)
+        // VÃ©rification des gÃ¢chettes (axes Z et R)
         gachetteValue = sf::Joystick::getAxisPosition(0, sf::Joystick::Z);
 
         // Si la gâchette gauche est pressée
-        if (gachetteValue > 10 && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500) {  // Négatif pour la gâchette gauche (enfoncée)
+        if (gachetteValue > 10 && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500 && state == LOOK_LEFT) {  // Négatif pour la gâchette gauche (enfoncée)
             isDashing = true;
             clock.restart();
             cout << "dash" << endl;
+            if (isDashing) {
+                SPEED = 2000;
+                if (clock.getElapsedTime().asMilliseconds() >= 100) {
+                    isDashing = false;
+                    SPEED = 300.f;
+                    coolDownDash.restart();
+                }
+            }
         }
         // Si la gâchette droite est pressée
-        else if (gachetteValue < -10 && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500) {  // Positif pour la gâchette droite (enfoncée)
+        else if (gachetteValue < -10 && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500 && state == LOOK_RIGHT) {  // Positif pour la gâchette droite (enfoncée)
             isDashing = true;
             clock.restart();
             cout << "dash" << endl;
+            if (isDashing) {
+                SPEED = 2000;
+                if (clock.getElapsedTime().asMilliseconds() >= 100) {
+                    isDashing = false;
+                    SPEED = 300.f;
+                    coolDownDash.restart();
+                }
+            }
         }
 
 
@@ -87,7 +103,7 @@ void Player::movementManager(float deltaTime) {
         }
     }
 
-    velocity.y += gravity * deltaTime;  // Appliquer la gravité
+    velocity.y += gravity * deltaTime;  // Appliquer la gravitÃ©
     position.y += velocity.y * deltaTime;
 
     shape.setPosition(position);
@@ -124,6 +140,8 @@ void Player::attack(float deltaTime) {
         }
     }
 }
+
+#pragma region Getteurs / Setteurs
 
 Vector2f Player::getPosPos() {
     return position;
@@ -266,6 +284,8 @@ int Player::getJumpCount()
 {
     return jumpCount;
 }
+
+#pragma endregion Getteurs / Setteurs
 
 void Player::update(float deltaTime) {
     movementManager(deltaTime);

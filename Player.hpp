@@ -7,20 +7,22 @@ protected:
     sf::Vector2f velocity;
     RectangleShape shape;
 
+    enum State { LOOK_LEFT, LOOK_RIGHT };
+    State state;
 
-    bool hasKey = false;
     const float gravity = 981.0f;  // Gravité en pixels par seconde carrée (simulation)
     float SPEED = 300.0f;  // Vitesse de déplacement horizontal
     float jumpForce = 600.f;  // Force initiale du saut
-    bool isJumping;
-    bool isJumping2;
-    bool isAttacking;
+    bool isJumping = false;
+    bool isJumping2 = false;
+    bool isAttacking = false;
     bool canJump = false;
     bool canJump2 = false;
     bool isGrounded = false;
     bool isTakeDash = false;
     bool isDashing = false;
     bool isTakeSpeed = false;
+    bool hasKey = false;
 
     float animTimeDecr;
     float rotaLeft = 220;
