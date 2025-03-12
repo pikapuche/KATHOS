@@ -1,9 +1,9 @@
 #include "Ennemis.hpp"
 
-Enemy::Enemy() : Entity(position.x, position.y)
+Enemy::Enemy() : Entity(texture, position.x, position.y)
 {
 	shape.setFillColor(Color::Magenta);
-	shape.setSize(Vector2f(40.0f, 40.0f));
+	shape.setSize(Vector2f(32.0f, 32.0f));
     circle.setRadius(50.0f);
     circle.setPosition(position);
     circle.setFillColor(sf::Color::Red);

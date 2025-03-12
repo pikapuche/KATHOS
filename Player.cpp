@@ -1,11 +1,13 @@
 #include "Player.hpp"
 
-Player::Player() : Entity(position.x, position.y) { // constructeur de base 
-    shape.setFillColor(sf::Color::Green);
-    shape.setSize(sf::Vector2f(40.0f, 40.0f));
+Player::Player() : Entity(texture, position.x, position.y) { // constructeur de base 
+    //shape.setSize(sf::Vector2f(40.0f, 40.0f));
     velocity.y = 0; // Pas de mouvement vertical au depart
     attackShape.setSize(sf::Vector2f(10.0f, 20.0f));
     attackShape.setFillColor(sf::Color::Red);
+    textureSprint.loadFromFile("assets/texture/player/piskelVersion.png");
+    sprite.setTexture(textureSprint);
+    sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
 }
 
 void Player::movementManager(float deltaTime) { 
@@ -14,8 +16,8 @@ void Player::movementManager(float deltaTime) {
         if (joystickValue > 10 && joystickValue < -10) {
             position.x += 0;
         }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) || joystickValue < -10) { position.x -= SPEED * deltaTime; stateLook = LOOK_LEFT; }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || joystickValue > 10) { position.x += 1 + SPEED * deltaTime; stateLook = LOOK_RIGHT; }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) || joystickValue < -10) { position.x -= SPEED * deltaTime; stateLook = LOOK_LEFT; stateMove = RUN; }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || joystickValue > 10) { position.x += 1 + SPEED * deltaTime; stateLook = LOOK_RIGHT; stateMove = RUN; }
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Joystick::isButtonPressed(0, 0)) { jump(); }
@@ -52,7 +54,32 @@ void Player::movementManager(float deltaTime) {
     velocity.y += gravity * deltaTime;  // Appliquer la gravité
     position.y += velocity.y * deltaTime;
     
-    shape.setPosition(position);
+    //shape.setPosition(position);
+    sprite.setPosition(position);
+}
+
+void Player::animationManager(float deltaTime) {
+    switch (stateMove)
+    {
+    case RUN:
+        animRunTimeDecr += deltaTime;
+        anim_move.y = 0;
+        if (animRunTimeDecr > 0.08f) {
+            anim_move.x++;
+            animRunTimeDecr = 0;
+        }
+        if (stateLook == LOOK_LEFT) {
+            if (anim_move.x > 6) 
+                anim_move.x = 1;
+            sprite.setTextureRect(sf::IntRect(anim_move.x * 32, anim_move.y * 32, -32, 32));
+        }
+        else if (stateLook == LOOK_RIGHT) {
+            if (anim_move.x > 5)
+                anim_move.x = 0;
+            sprite.setTextureRect(sf::IntRect(anim_move.x * 32, anim_move.y * 32, 32, 32));
+        }
+        break;
+    }
 }
 
 void Player::jump() {
@@ -146,9 +173,9 @@ Vector2f Player::setVelocity(float veloX, float veloY) {
     return velocity;
 }
 
-RectangleShape Player::getShape() {
-    return shape;
-}
+//RectangleShape Player::getShape() {
+//    return shape;
+//}
 
 bool Player::getIsJumping() {
     return isJumping;
@@ -242,6 +269,7 @@ bool Player::getHasKey() {
 }
 bool Player::setHasKey(bool key) {
     hasKey = key;
+    return hasKey;
 }
 
 #pragma endregion Getteurs / Setteurs
@@ -250,9 +278,10 @@ void Player::update(float deltaTime) {
     movementManager(deltaTime);
     attack(deltaTime);
     dash(deltaTime);
+    animationManager(deltaTime);
 }
 
 void Player::draw(RenderWindow& window) {
-    window.draw(shape);
+    window.draw(sprite);
     if (isAttacking) window.draw(attackShape);
 }

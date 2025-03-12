@@ -3,13 +3,14 @@
 
 class Player : public Entity {
 protected:
-    //sf::Vector2f position;
-    //sf::Vector2f velocity;
-    RectangleShape shape;
+    Texture textureSprint;
     RectangleShape attackShape;
 
-    enum StateLook { LOOK_LEFT, LOOK_RIGHT };
+    enum StateLook { LOOK_RIGHT, LOOK_LEFT };
     StateLook stateLook;
+
+    enum StateMove { RUN, IDLE };
+    StateMove stateMove;
 
     int jumpCount = 0;
 
@@ -17,6 +18,7 @@ protected:
     float jumpForce = 600.f;  // Force initiale du saut
 
     float animTimeDecr;
+    float animRunTimeDecr;
 
     float rotaRight = 220;
     float rotaLeft = -20;
@@ -35,6 +37,8 @@ protected:
 
     bool hasKey = false;
 
+    bool isMoving = false;
+
     Clock jumpClock;
     Clock coolDownDash;
     Clock clock;
@@ -44,6 +48,8 @@ public:
     Player();
 
     void movementManager(float deltaTime);
+
+    void animationManager(float deltaTime);
 
     void jump();
 
@@ -59,7 +65,7 @@ public:
 
     Vector2f setVelocity(float veloX, float veloY);
 
-    RectangleShape getShape();
+    //RectangleShape getShape();
 
     bool getIsJumping();
 
