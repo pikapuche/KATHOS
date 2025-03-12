@@ -48,12 +48,10 @@ void Map::initAll() {
             }
             case 'B': // boss
             {
-                for (auto& player : vector_player) {
-                    Boss* bosses = new Boss(*player);
-                    vector_boss.push_back(bosses);
-                }
-                for (auto& boss : vector_boss) {
+                if (!vector_player.empty()) {
+                    Boss* boss = new Boss(*vector_player[0]); // Prend le premier joueur
                     boss->setPos(j * 40.f, i * 40.f);
+                    vector_boss.push_back(boss);
                 }
                 break;
             }

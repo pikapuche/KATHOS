@@ -5,15 +5,19 @@ Boss::Boss(Player& target) : Entity(position.x, position.y), target(target) { //
     shape.setFillColor(sf::Color::Red);
     speed = 200.0f;
     velocity = { -speed, 0.0f };
-    detectionRange = 600.0f;
+    detectionRange = 400.0f;
 }
 
 bool Boss::canSeePlayer()
 {
-    float distanceX = std::abs(target.getPosPos().x - position.x);
-    float distanceY = std::abs(target.getPosPos().y - position.y);
+    float distance = std::sqrt(std::pow(target.getPosPos().x - position.x, 2) + std::pow(target.getPosPos().y - position.y, 2));
+    return (distance < detectionRange);
+}
 
-    return (distanceX < detectionRange && distanceY < 50.0f);
+void Boss::startJump() {
+    isJumping = true;
+    jumpTimer.restart();
+    groundY = position.y;
 }
 
 void Boss::chasePlayer()
@@ -33,6 +37,34 @@ void Boss::update(float deltaTime) { //déplacements
     }
     position += velocity * deltaTime;
     shape.setPosition(position);
+
+    if (!isJumping && !isFalling) {
+        if (rand() % 300 == 0) {
+            startJump();
+        }
+    }
+
+    if (isJumping) {
+        position.y += jumpSpeed;
+        jumpSpeed += gravity;
+
+        if (jumpTimer.getElapsedTime() >= jumpDuration) {
+            isJumping = false;
+            isFalling = true;
+        }
+    }
+
+    if (isFalling) {
+        position.y += gravity * 5;
+
+        if (position.y >= groundY) {
+            position.y = groundY;
+            isFalling = false;
+            jumpSpeed = -8.0f;
+        }
+    }
+
+    sprite.setPosition(position);
 }
 
 void Boss::draw(sf::RenderWindow& window) {
@@ -54,7 +86,7 @@ Vector2f Boss::getPos() {
     return position;
 }
 
-Vector2f Boss::setPos(float(x), float(y)) {
+Vector2f Boss::setPos(float x, float y) {
     position.x = x;
     position.y = y;
     return position;
