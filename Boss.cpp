@@ -5,7 +5,7 @@ Boss::Boss(Player& target) : Entity(position.x, position.y), target(target) { //
     shape.setFillColor(sf::Color::Red);
     speed = 200.0f;
     velocity = { -speed, 0.0f };
-    detectionRange = 300.0f;
+    detectionRange = 600.0f;
 }
 
 bool Boss::canSeePlayer()
