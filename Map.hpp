@@ -1,6 +1,6 @@
 #pragma once
 #include "stdafx.hpp"
-#include "Player.hpp"
+#include "Ennemis.hpp"
 #include "Gemme.hpp"
 
 const int GRID_WIDTH = 20;
@@ -25,6 +25,8 @@ public:
 
     vector<Gemme*> vector_gemme;
 
+    vector<Enemy*> vector_enemy;
+
     ~Map();
 
     vector<string> vector_Map;
@@ -35,5 +37,5 @@ public:
 
     void drawMap(sf::RenderWindow& window);
 
-    void collisionMap(sf::RenderWindow& window, Player& player, float deltaTime);
+    void collisionMap(Player& player, Enemy& enemy, float deltaTime);
 };

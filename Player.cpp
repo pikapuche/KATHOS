@@ -1,23 +1,22 @@
 #include "Player.hpp"
 
-Player::Player() : Entity(position.x, position.y) { // constructeur de base 
-    shape.setFillColor(sf::Color::Green);
-    shape.setSize(sf::Vector2f(40.0f, 40.0f));
+Player::Player() : Entity(texture, position.x, position.y) { // constructeur de base 
+    //shape.setSize(sf::Vector2f(64.0f, 64.0f));
     velocity.y = 0; // Pas de mouvement vertical au depart
-    isJumping = false;
-    isAttacking = false;
     attackShape.setSize(sf::Vector2f(10.0f, 20.0f));
     attackShape.setFillColor(sf::Color::Red);
+    textureSprint.loadFromFile("assets/texture/player/piskelVersion2.png");
+    sprite.setTexture(textureSprint);
+    sprite.setTextureRect(sf::IntRect(0, 0, 64, 64));
 }
 
 void Player::movementManager(float deltaTime) { 
-
     if (!isDashing) {
         if (joystickValue > 10 && joystickValue < -10) {
             position.x += 0;
         }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) || joystickValue < -10) { position.x -= SPEED * deltaTime; stateLook = LOOK_LEFT; }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || joystickValue > 10) { position.x += 1 + SPEED * deltaTime; stateLook = LOOK_RIGHT; }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) || joystickValue < -10) { position.x -= SPEED * deltaTime; stateLook = LOOK_LEFT; stateMove = RUN; }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || joystickValue > 10) { position.x += 1 + SPEED * deltaTime; stateLook = LOOK_RIGHT; stateMove = RUN; }
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Joystick::isButtonPressed(0, 0)) { jump(); }
@@ -25,7 +24,7 @@ void Player::movementManager(float deltaTime) {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) || sf::Joystick::isButtonPressed(0, 2)) { isAttacking = true; }
 
     // Si la gâchette gauche est pressée ou que A est pressée OU si la gâchette droite est pressée ou que A est pressée
-    if (((Keyboard::isKeyPressed(Keyboard::A) || gachetteValue > 10) || (Keyboard::isKeyPressed(Keyboard::A) || gachetteValue < -10)) && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500) {
+    if (((sf::Mouse::isButtonPressed(sf::Mouse::Right) || gachetteValue > 10) || (Keyboard::isKeyPressed(Keyboard::A) || gachetteValue < -10)) && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500) {
         isDashing = true;
         clock.restart();
     }
@@ -51,19 +50,56 @@ void Player::movementManager(float deltaTime) {
     velocity.y += gravity * deltaTime;  // Appliquer la gravité
     position.y += velocity.y * deltaTime;
     
-    shape.setPosition(position);
+    //shape.setPosition(position);
+    sprite.setPosition(position);
+
+    if (sprite.getPosition().y < -20) {
+        sprite.setPosition(position.x, position.y = 64);
+    }
+    if (sprite.getPosition().y > 1080) {
+        sprite.setPosition(position.x, position.y = 1080);
+    }
+    if (sprite.getPosition().x < 0) {
+        sprite.setPosition(position.x = 0, position.y);
+    }
+    if (sprite.getPosition().x > 1920) {
+        sprite.setPosition(position.x = 1920, position.y);
+    }
+}
+
+void Player::animationManager(float deltaTime) {
+    switch (stateMove)
+    {
+    case RUN:
+        animRunTimeDecr += deltaTime;
+        anim_move.y = 0;
+        if (animRunTimeDecr > 0.12f) {
+            anim_move.x++;
+            animRunTimeDecr = 0;
+        }
+        if (stateLook == LOOK_LEFT) {
+            if (anim_move.x > 6) 
+                anim_move.x = 1;
+            sprite.setTextureRect(sf::IntRect(anim_move.x * 64, anim_move.y * 64, -64, 64));
+        }
+        else if (stateLook == LOOK_RIGHT) {
+            if (anim_move.x > 5)
+                anim_move.x = 0;
+            sprite.setTextureRect(sf::IntRect(anim_move.x * 64, anim_move.y * 64, 64, 64));
+        }
+        break;
+    }
 }
 
 void Player::jump() {
 
-    if (isGrounded) {  // Sauter uniquement si le joueur est sur le sol / saute pas
-        isGrounded = false;
-        isJumping = true;
+    if (state == GROUNDED) {  // Sauter uniquement si le joueur est sur le sol / saute pas
+        state = JUMP;
         velocity.y = -jumpForce;  // Appliquer une force initiale vers le haut pour sauter 
         jumpCount = 1;
         jumpClock.restart();
     }
-    else if (jumpCount == 1 && jumpClock.getElapsedTime().asMilliseconds() >= 175 && !isGrounded) { // compteur permettant de savoir si on peut faire un deuxième saut
+    else if (jumpCount == 1 && jumpClock.getElapsedTime().asMilliseconds() >= 175 && state != GROUNDED) { // compteur permettant de savoir si on peut faire un deuxième saut
         velocity.y = -jumpForce;
         jumpCount = 2;
     }
@@ -104,6 +140,7 @@ void Player::attack(float deltaTime) {
 void Player::dash(float deltaTime)
 {
     if (isDashing) {
+        sprite.setColor(Color::Blue);
         if (stateLook == LOOK_LEFT) {
             SPEED = 2000;
             position.x -= 2 + SPEED * deltaTime;
@@ -119,18 +156,39 @@ void Player::dash(float deltaTime)
             cout << "dash stop" << endl;
         }
     }
+    else {
+        sprite.setColor(Color::White);
+    }
 }
 
-Vector2f Player::setPosPos(float x, float y)
-{
-    position.x = x;
-    position.y = y;
-    return position;
+void Player::collisionFloor(RectangleShape& tile) {
+    if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds())) { // si le joueur entre en collision avec le sol alors il set sa position en haut du sol
+        setPosPos(getPosPos().x, tile.getPosition().y - 62);
+        velocity.y = 0;
+        state = GROUNDED;
+    }
+    else if (tile.getPosition().y < getPosPos().y) { // s'il passe sous le sol
+        setPosPos(getPosPos().x, tile.getPosition().y - 62);
+    }
 }
 
-Vector2f Player::getPosPos()
-{
-    return position;
+void Player::collisionPlatform(RectangleShape& tile) {
+
+    if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds()) && tile.getPosition().y < position.y) { // si le perso se trouve sous la plateforme il ne la traverse pas 
+        position.y = tile.getPosition().y + 40;
+        
+        state = NONE;
+    }
+    else if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds()) && tile.getPosition().y > position.y) { // collision de base 
+        position.y = tile.getPosition().y - 62;
+        velocity.y = 0;
+        state = GROUNDED;
+    }
+
+    //else if (tile.getGlobalBounds().intersects(getSprite().getGlobalBounds()) && tile.getPosition().y < getPosPos().y) { // si le joueur entre en collision avec une plateforme alors il set sa position en haut de celle ci
+    //    setPosPos(getPosPos().x, tile.getPosition().y - 62);
+    //    state = GROUNDED;
+    //}
 }
 
 #pragma region Getteurs / Setteurs
@@ -145,29 +203,41 @@ Vector2f Player::setVelocity(float veloX, float veloY) {
     return velocity;
 }
 
-RectangleShape Player::getShape() {
-    return shape;
-}
+//RectangleShape Player::getShape() {
+//    return shape;
+//}
 
-bool Player::getIsJumping() {
-    return isJumping;
-}
-
-bool Player::setIsJumping(bool jump) {
-    isJumping = jump;
-    return isJumping;
-}
-
-bool Player::setIsGrounded(bool is)
+Vector2f Player::setPosPos(float x, float y)
 {
-    isGrounded = is;
-    return isGrounded;
+    position.x = x;
+    position.y = y;
+    return position;
 }
 
-bool Player::getIsGrounded()
+Vector2f Player::getPosPos()
 {
-    return isGrounded;
+    return position;
 }
+
+//bool Player::getIsJumping() {
+//    return isJumping;
+//}
+//
+//bool Player::setIsJumping(bool jump) {
+//    isJumping = jump;
+//    return isJumping;
+//}
+//
+//bool Player::setIsGrounded(bool is)
+//{
+//    isGrounded = is;
+//    return isGrounded;
+//}
+//
+//bool Player::getIsGrounded()
+//{
+//    return isGrounded;
+//}
 
 bool Player::getIsTakeDash()
 {
@@ -241,6 +311,7 @@ bool Player::getHasKey() {
 }
 bool Player::setHasKey(bool key) {
     hasKey = key;
+    return hasKey;
 }
 
 #pragma endregion Getteurs / Setteurs
@@ -249,9 +320,10 @@ void Player::update(float deltaTime) {
     movementManager(deltaTime);
     attack(deltaTime);
     dash(deltaTime);
+    animationManager(deltaTime);
 }
 
 void Player::draw(RenderWindow& window) {
-    window.draw(shape);
+    window.draw(sprite);
     if (isAttacking) window.draw(attackShape);
 }

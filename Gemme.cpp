@@ -14,12 +14,12 @@ sf::Vector2f Gemme::setPosition(float x, float y)
 
 void Gemme::interact(Player& player)
 {
-	if (speedGemmeShape.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
+	if (speedGemmeShape.getGlobalBounds().intersects(player.getSprite().getGlobalBounds())) {
 		player.setIsTakeSpeed(true);
 		cout << "est récup";
 	}
 
-	if (dashGemmeShape.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
+	if (dashGemmeShape.getGlobalBounds().intersects(player.getSprite().getGlobalBounds())) {
 		player.setIsTakeDash(true);
 		clock.restart();
 	}

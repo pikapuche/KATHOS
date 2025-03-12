@@ -3,21 +3,25 @@
 
 class Player : public Entity {
 protected:
-    sf::Vector2f position;
-    sf::Vector2f velocity;
-    RectangleShape shape;
+    Texture textureSprint;
     RectangleShape attackShape;
 
-    enum StateLook { LOOK_LEFT, LOOK_RIGHT };
+    enum State { NONE, GROUNDED, JUMP };
+    State state;
+
+    enum StateLook { LOOK_RIGHT, LOOK_LEFT };
     StateLook stateLook;
+
+    enum StateMove { RUN, IDLE };
+    StateMove stateMove;
 
     int jumpCount = 0;
 
-    const float gravity = 981.0f;  // Gravité en pixels par seconde carrée (simulation)
     float SPEED = 300.0f;  // Vitesse de déplacement horizontal
     float jumpForce = 600.f;  // Force initiale du saut
 
     float animTimeDecr;
+    float animRunTimeDecr;
 
     float rotaRight = 220;
     float rotaLeft = -20;
@@ -25,10 +29,10 @@ protected:
     float gachetteValue;
     float joystickValue;
 
-    bool isJumping = false;
+    //bool isJumping = false;
     bool isAttacking = false;
 
-    bool isGrounded = false;
+    //bool isGrounded = false;
 
     bool isTakeDash = false;
     bool isDashing = false;
@@ -36,21 +40,31 @@ protected:
 
     bool hasKey = false;
 
+    bool isMoving = false;
+
     Clock jumpClock;
     Clock coolDownDash;
     Clock clock;
 
 public:
 
+    bool floor = true;
+
     Player();
 
     void movementManager(float deltaTime);
+
+    void animationManager(float deltaTime);
 
     void jump();
 
     void attack(float deltaTime);
 
     void dash(float deltaTime);
+
+    void collisionFloor(RectangleShape& tile);
+
+    void collisionPlatform(RectangleShape& tile);
 
     Vector2f setPosPos(float x, float y);
 
@@ -60,15 +74,15 @@ public:
 
     Vector2f setVelocity(float veloX, float veloY);
 
-    RectangleShape getShape();
+    //RectangleShape getShape();
 
-    bool getIsJumping();
+    //bool getIsJumping();
 
-    bool setIsJumping(bool jump);
+    //bool setIsJumping(bool jump);
 
-    bool setIsGrounded(bool is);
+    //bool setIsGrounded(bool is);
 
-    bool getIsGrounded();
+    //bool getIsGrounded();
 
     bool getIsTakeDash();
 
