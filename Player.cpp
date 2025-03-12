@@ -1,17 +1,16 @@
 #include "Player.hpp"
 
 Player::Player() : Entity(texture, position.x, position.y) { // constructeur de base 
-    //shape.setSize(sf::Vector2f(40.0f, 40.0f));
+    //shape.setSize(sf::Vector2f(64.0f, 64.0f));
     velocity.y = 0; // Pas de mouvement vertical au depart
     attackShape.setSize(sf::Vector2f(10.0f, 20.0f));
     attackShape.setFillColor(sf::Color::Red);
-    textureSprint.loadFromFile("assets/texture/player/piskelVersion.png");
+    textureSprint.loadFromFile("assets/texture/player/piskelVersion2.png");
     sprite.setTexture(textureSprint);
-    sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+    sprite.setTextureRect(sf::IntRect(0, 0, 64, 64));
 }
 
 void Player::movementManager(float deltaTime) { 
-
     if (!isDashing) {
         if (joystickValue > 10 && joystickValue < -10) {
             position.x += 0;
@@ -56,6 +55,10 @@ void Player::movementManager(float deltaTime) {
     
     //shape.setPosition(position);
     sprite.setPosition(position);
+
+    if (sprite.getPosition().y < -20) {
+        sprite.setPosition(sprite.getPosition().x, 64);
+    }
 }
 
 void Player::animationManager(float deltaTime) {
@@ -64,19 +67,19 @@ void Player::animationManager(float deltaTime) {
     case RUN:
         animRunTimeDecr += deltaTime;
         anim_move.y = 0;
-        if (animRunTimeDecr > 0.08f) {
+        if (animRunTimeDecr > 0.12f) {
             anim_move.x++;
             animRunTimeDecr = 0;
         }
         if (stateLook == LOOK_LEFT) {
             if (anim_move.x > 6) 
                 anim_move.x = 1;
-            sprite.setTextureRect(sf::IntRect(anim_move.x * 32, anim_move.y * 32, -32, 32));
+            sprite.setTextureRect(sf::IntRect(anim_move.x * 64, anim_move.y * 64, -64, 64));
         }
         else if (stateLook == LOOK_RIGHT) {
             if (anim_move.x > 5)
                 anim_move.x = 0;
-            sprite.setTextureRect(sf::IntRect(anim_move.x * 32, anim_move.y * 32, 32, 32));
+            sprite.setTextureRect(sf::IntRect(anim_move.x * 64, anim_move.y * 64, 64, 64));
         }
         break;
     }

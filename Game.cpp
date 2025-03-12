@@ -13,7 +13,7 @@ void Game::run()
     MainScreen mainScreen;
     Interface overlay;
     mainScreen.initMenu(window);
-    map.loadFromFile("assets/map/mapVSprite.txt");
+    map.loadFromFile("assets/map/mapV3.txt");
     map.initAll();
 
     Clock clock;
