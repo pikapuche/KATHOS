@@ -6,6 +6,9 @@ protected:
     Texture textureSprint;
     RectangleShape attackShape;
 
+    enum State { NONE, GROUNDED, JUMP };
+    State state;
+
     enum StateLook { LOOK_RIGHT, LOOK_LEFT };
     StateLook stateLook;
 
@@ -26,10 +29,10 @@ protected:
     float gachetteValue;
     float joystickValue;
 
-    bool isJumping = false;
+    //bool isJumping = false;
     bool isAttacking = false;
 
-    bool isGrounded = false;
+    //bool isGrounded = false;
 
     bool isTakeDash = false;
     bool isDashing = false;
@@ -45,6 +48,8 @@ protected:
 
 public:
 
+    bool floor = true;
+
     Player();
 
     void movementManager(float deltaTime);
@@ -57,6 +62,10 @@ public:
 
     void dash(float deltaTime);
 
+    void collisionFloor(RectangleShape& tile);
+
+    void collisionPlatform(RectangleShape& tile);
+
     Vector2f setPosPos(float x, float y);
 
     Vector2f getPosPos();
@@ -67,13 +76,13 @@ public:
 
     //RectangleShape getShape();
 
-    bool getIsJumping();
+    //bool getIsJumping();
 
-    bool setIsJumping(bool jump);
+    //bool setIsJumping(bool jump);
 
-    bool setIsGrounded(bool is);
+    //bool setIsGrounded(bool is);
 
-    bool getIsGrounded();
+    //bool getIsGrounded();
 
     bool getIsTakeDash();
 

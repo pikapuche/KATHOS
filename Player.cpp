@@ -24,7 +24,7 @@ void Player::movementManager(float deltaTime) {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) || sf::Joystick::isButtonPressed(0, 2)) { isAttacking = true; }
 
     // Si la gâchette gauche est pressée ou que A est pressée OU si la gâchette droite est pressée ou que A est pressée
-    if (((Keyboard::isKeyPressed(Keyboard::A) || gachetteValue > 10) || (Keyboard::isKeyPressed(Keyboard::A) || gachetteValue < -10)) && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500) {
+    if (((sf::Mouse::isButtonPressed(sf::Mouse::Right) || gachetteValue > 10) || (Keyboard::isKeyPressed(Keyboard::A) || gachetteValue < -10)) && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500) {
         isDashing = true;
         clock.restart();
     }
@@ -47,9 +47,6 @@ void Player::movementManager(float deltaTime) {
 
     }
 
-    if (isGrounded) {
-        velocity.y = 0;
-    }
     velocity.y += gravity * deltaTime;  // Appliquer la gravité
     position.y += velocity.y * deltaTime;
     
@@ -57,7 +54,16 @@ void Player::movementManager(float deltaTime) {
     sprite.setPosition(position);
 
     if (sprite.getPosition().y < -20) {
-        sprite.setPosition(sprite.getPosition().x, 64);
+        sprite.setPosition(position.x, position.y = 64);
+    }
+    if (sprite.getPosition().y > 1080) {
+        sprite.setPosition(position.x, position.y = 1080);
+    }
+    if (sprite.getPosition().x < 0) {
+        sprite.setPosition(position.x = 0, position.y);
+    }
+    if (sprite.getPosition().x > 1920) {
+        sprite.setPosition(position.x = 1920, position.y);
     }
 }
 
@@ -87,14 +93,13 @@ void Player::animationManager(float deltaTime) {
 
 void Player::jump() {
 
-    if (isGrounded) {  // Sauter uniquement si le joueur est sur le sol / saute pas
-        isGrounded = false;
-        isJumping = true;
+    if (state == GROUNDED) {  // Sauter uniquement si le joueur est sur le sol / saute pas
+        state = JUMP;
         velocity.y = -jumpForce;  // Appliquer une force initiale vers le haut pour sauter 
         jumpCount = 1;
         jumpClock.restart();
     }
-    else if (jumpCount == 1 && jumpClock.getElapsedTime().asMilliseconds() >= 175 && !isGrounded) { // compteur permettant de savoir si on peut faire un deuxième saut
+    else if (jumpCount == 1 && jumpClock.getElapsedTime().asMilliseconds() >= 175 && state != GROUNDED) { // compteur permettant de savoir si on peut faire un deuxième saut
         velocity.y = -jumpForce;
         jumpCount = 2;
     }
@@ -135,6 +140,7 @@ void Player::attack(float deltaTime) {
 void Player::dash(float deltaTime)
 {
     if (isDashing) {
+        sprite.setColor(Color::Blue);
         if (stateLook == LOOK_LEFT) {
             SPEED = 2000;
             position.x -= 2 + SPEED * deltaTime;
@@ -150,18 +156,39 @@ void Player::dash(float deltaTime)
             cout << "dash stop" << endl;
         }
     }
+    else {
+        sprite.setColor(Color::White);
+    }
 }
 
-Vector2f Player::setPosPos(float x, float y)
-{
-    position.x = x;
-    position.y = y;
-    return position;
+void Player::collisionFloor(RectangleShape& tile) {
+    if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds())) { // si le joueur entre en collision avec le sol alors il set sa position en haut du sol
+        setPosPos(getPosPos().x, tile.getPosition().y - 62);
+        velocity.y = 0;
+        state = GROUNDED;
+    }
+    else if (tile.getPosition().y < getPosPos().y) { // s'il passe sous le sol
+        setPosPos(getPosPos().x, tile.getPosition().y - 62);
+    }
 }
 
-Vector2f Player::getPosPos()
-{
-    return position;
+void Player::collisionPlatform(RectangleShape& tile) {
+
+    if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds()) && tile.getPosition().y < position.y) { // si le perso se trouve sous la plateforme il ne la traverse pas 
+        position.y = tile.getPosition().y + 40;
+        
+        state = NONE;
+    }
+    else if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds()) && tile.getPosition().y > position.y) { // collision de base 
+        position.y = tile.getPosition().y - 62;
+        velocity.y = 0;
+        state = GROUNDED;
+    }
+
+    //else if (tile.getGlobalBounds().intersects(getSprite().getGlobalBounds()) && tile.getPosition().y < getPosPos().y) { // si le joueur entre en collision avec une plateforme alors il set sa position en haut de celle ci
+    //    setPosPos(getPosPos().x, tile.getPosition().y - 62);
+    //    state = GROUNDED;
+    //}
 }
 
 #pragma region Getteurs / Setteurs
@@ -180,25 +207,37 @@ Vector2f Player::setVelocity(float veloX, float veloY) {
 //    return shape;
 //}
 
-bool Player::getIsJumping() {
-    return isJumping;
-}
-
-bool Player::setIsJumping(bool jump) {
-    isJumping = jump;
-    return isJumping;
-}
-
-bool Player::setIsGrounded(bool is)
+Vector2f Player::setPosPos(float x, float y)
 {
-    isGrounded = is;
-    return isGrounded;
+    position.x = x;
+    position.y = y;
+    return position;
 }
 
-bool Player::getIsGrounded()
+Vector2f Player::getPosPos()
 {
-    return isGrounded;
+    return position;
 }
+
+//bool Player::getIsJumping() {
+//    return isJumping;
+//}
+//
+//bool Player::setIsJumping(bool jump) {
+//    isJumping = jump;
+//    return isJumping;
+//}
+//
+//bool Player::setIsGrounded(bool is)
+//{
+//    isGrounded = is;
+//    return isGrounded;
+//}
+//
+//bool Player::getIsGrounded()
+//{
+//    return isGrounded;
+//}
 
 bool Player::getIsTakeDash()
 {
