@@ -4,6 +4,7 @@
 class Player : public Entity {
 protected:
     Texture textureSprint;
+    Texture textureIdle;
     RectangleShape attackShape;
 
     enum State { NONE, GROUNDED, JUMP };
@@ -12,7 +13,7 @@ protected:
     enum StateLook { LOOK_RIGHT, LOOK_LEFT };
     StateLook stateLook;
 
-    enum StateMove { RUN, IDLE };
+    enum StateMove { IDLE, RUN };
     StateMove stateMove;
 
     int jumpCount = 0;
@@ -22,6 +23,7 @@ protected:
 
     float animTimeDecr;
     float animRunTimeDecr;
+    float animIdleTimeDecr;
 
     float rotaRight = 220;
     float rotaLeft = -20;
@@ -29,18 +31,13 @@ protected:
     float gachetteValue;
     float joystickValue;
 
-    //bool isJumping = false;
     bool isAttacking = false;
-
-    //bool isGrounded = false;
 
     bool isTakeDash = false;
     bool isDashing = false;
     bool isTakeSpeed = false;
 
     bool hasKey = false;
-
-    bool isMoving = false;
 
     Clock jumpClock;
     Clock coolDownDash;

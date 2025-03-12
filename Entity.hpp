@@ -13,8 +13,7 @@ protected :
 	const float gravity = 981.0f;  // Gravité en pixels par seconde carrée (simulation)
 
 	Vector2i anim_move;
-
-	// etat d'anim avec les enums
+	Vector2i anim_idle;
 
 public : 
 
