@@ -1,22 +1,33 @@
 #include "Player.hpp"
 
 Player::Player() : Entity(texture, position.x, position.y) { // constructeur de base 
-    //shape.setSize(sf::Vector2f(64.0f, 64.0f));
     velocity.y = 0; // Pas de mouvement vertical au depart
     attackShape.setSize(sf::Vector2f(10.0f, 20.0f));
     attackShape.setFillColor(sf::Color::Red);
-    textureSprint.loadFromFile("assets/texture/player/piskelVersion2.png");
+    textureSprint.loadFromFile("assets/texture/player/piskelVersion3.png");
+    textureIdle.loadFromFile("assets/texture/player/idleV2.png");
     sprite.setTexture(textureSprint);
     sprite.setTextureRect(sf::IntRect(0, 0, 64, 64));
 }
 
 void Player::movementManager(float deltaTime) { 
+
+    if (stateMove == IDLE) {
+        sprite.setTexture(textureIdle);
+    }
+    else if (stateMove == RUN) {
+        sprite.setTexture(textureSprint);
+    }
+
     if (!isDashing) {
         if (joystickValue > 10 && joystickValue < -10) {
             position.x += 0;
         }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) || joystickValue < -10) { position.x -= SPEED * deltaTime; stateLook = LOOK_LEFT; stateMove = RUN; }
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || joystickValue > 10) { position.x += 1 + SPEED * deltaTime; stateLook = LOOK_RIGHT; stateMove = RUN; }
+        else {
+            stateMove = IDLE;
+        }
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Joystick::isButtonPressed(0, 0)) { jump(); }
@@ -86,6 +97,24 @@ void Player::animationManager(float deltaTime) {
             if (anim_move.x > 5)
                 anim_move.x = 0;
             sprite.setTextureRect(sf::IntRect(anim_move.x * 64, anim_move.y * 64, 64, 64));
+        }
+        break;
+    case IDLE : 
+        animIdleTimeDecr += deltaTime;
+        anim_idle.y = 0;
+        if (animIdleTimeDecr > 0.12f) {
+            anim_idle.x++;
+            animIdleTimeDecr = 0;
+        }
+        if (stateLook == LOOK_LEFT) {
+            if (anim_idle.x > 8)
+                anim_idle.x = 1;
+            sprite.setTextureRect(sf::IntRect(anim_idle.x * 64, anim_idle.y * 64, -64, 64));
+        }
+        else if (stateLook == LOOK_RIGHT) {
+            if (anim_idle.x > 7)
+                anim_idle.x = 0;
+            sprite.setTextureRect(sf::IntRect(anim_idle.x * 64, anim_idle.y * 64, 64, 64));
         }
         break;
     }
@@ -163,12 +192,12 @@ void Player::dash(float deltaTime)
 
 void Player::collisionFloor(RectangleShape& tile) {
     if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds())) { // si le joueur entre en collision avec le sol alors il set sa position en haut du sol
-        setPosPos(getPosPos().x, tile.getPosition().y - 62);
+        setPosPos(getPosPos().x, tile.getPosition().y - 64);
         velocity.y = 0;
         state = GROUNDED;
     }
     else if (tile.getPosition().y < getPosPos().y) { // s'il passe sous le sol
-        setPosPos(getPosPos().x, tile.getPosition().y - 62);
+        setPosPos(getPosPos().x, tile.getPosition().y - 64);
     }
 }
 
@@ -180,7 +209,7 @@ void Player::collisionPlatform(RectangleShape& tile) {
         state = NONE;
     }
     else if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds()) && tile.getPosition().y > position.y) { // collision de base 
-        position.y = tile.getPosition().y - 62;
+        position.y = tile.getPosition().y - 64;
         velocity.y = 0;
         state = GROUNDED;
     }
