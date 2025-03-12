@@ -54,22 +54,22 @@ void Game::run()
                 players->draw(window);
             }
 
-            if (overlay.getIsPaused()) {
-                overlay.updateInterface(window);
-                if (overlay.getShouldRestart()) {
-                    map.vector_player.clear();  // Clear old player instances
-                    map.loadFromFile("assets/map/mapV1.txt"); // Reload map
-                    map.drawMap(window);
-                    map.initAll(); // Reset objects
 
-                    for (auto& players : map.vector_player) {
-                            map.collisionMap(window, *players, deltaTime);
-                    }
-                    
-                    overlay.resetRestartFlag(); // Reset the flag so it doesn't keep restarting
+            overlay.updateInterface(window);
+            if (overlay.getShouldRestart()) {
+                map.vector_player.clear();  // Clear old player instances
+                map.loadFromFile("assets/map/mapV1.txt"); // Reload map
+                map.drawMap(window);
+                map.initAll(); // Reset objects
 
+                for (auto& players : map.vector_player) {
+                        map.collisionMap(window, *players, deltaTime);
                 }
+                    
+                overlay.resetRestartFlag(); // Reset the flag so it doesn't keep restarting
+
             }
+            
         for (auto& gemmes : map.vector_gemme) {
             for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements
                 gemmes->interact(*players);

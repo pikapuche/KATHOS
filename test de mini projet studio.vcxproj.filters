@@ -1,96 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Fichiers sources">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Fichiers d%27en-tête">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Fichiers de ressources">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Fichiers sources\Interface &amp; UI">
-      <UniqueIdentifier>{25552cd5-5323-45d8-bf81-f3aa6e492aca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Fichiers d%27en-tête\Interface &amp; UI.hpp">
-      <UniqueIdentifier>{f7558d98-aa14-4f09-b266-b65af8603972}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Interface.cpp" />
+    <ClCompile Include="Gemme.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainScreen.cpp" />
+    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="MainScreen.cpp">
-      <Filter>Fichiers sources\Interface &amp; UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Fichiers sources\Interface &amp; UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Interface.cpp">
-      <Filter>Fichiers sources\Interface &amp; UI</Filter>
-    <ClCompile Include="Gemme.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
+    <ClInclude Include="Button.hpp" />
+    <ClInclude Include="Entity.hpp" />
+    <ClInclude Include="Game.hpp" />
+    <ClInclude Include="Interface.hpp" />
+    <ClInclude Include="MainScreen.hpp" />
+    <ClInclude Include="Gemme.hpp" />
+    <ClInclude Include="Map.hpp" />
+    <ClInclude Include="Player.hpp" />
+    <ClInclude Include="stdafx.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Game.hpp">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Map.hpp">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.hpp">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.hpp">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.hpp">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="MainScreen.hpp">
-      <Filter>Fichiers d%27en-tête\Interface &amp; UI.hpp</Filter>
-    </ClInclude>
-    <ClInclude Include="Button.hpp">
-      <Filter>Fichiers d%27en-tête\Interface &amp; UI.hpp</Filter>
-    </ClInclude>
-    <ClInclude Include="Interface.hpp">
-      <Filter>Fichiers d%27en-tête\Interface &amp; UI.hpp</Filter>
-    </ClInclude>
+    <Image Include="assets\texture\titlescreen\background.png" />
+    <Image Include="assets\texture\titlescreen\button1.png" />
+    <Image Include="assets\texture\titlescreen\button2.png" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="assets\texture\titlescreen\button1.png">
-      <Filter>Fichiers de ressources</Filter>
-    </Image>
-    <Image Include="assets\texture\titlescreen\button2.png">
-      <Filter>Fichiers de ressources</Filter>
-    </Image>
-    <Image Include="assets\texture\titlescreen\background.png">
-      <Filter>Fichiers de ressources</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="assets\map\mapV1.txt">
-      <Filter>Fichiers de ressources</Filter>
-    </Text>
-    <ClInclude Include="Gemme.hpp">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
+    <Text Include="assets\map\mapV1.txt" />
   </ItemGroup>
 </Project>

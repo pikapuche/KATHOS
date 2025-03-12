@@ -2,6 +2,7 @@
 #include "SFML/Graphics.hpp"
 #include <vector>
 #include "Button.hpp"  // Include the Button header
+#include "Interface.hpp"
 
 class MainScreen {
 private:

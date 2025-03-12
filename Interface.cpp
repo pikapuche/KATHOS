@@ -52,35 +52,37 @@ void Interface::initInterface() {
 }
 
 void Interface::updateInterface(sf::RenderWindow& window) {
-    pauseOverlay.draw(window);
+    if (isPaused) { //Only if paused
+        pauseOverlay.draw(window);
 
-    for (auto& button : buttons) {
-        if (button.isHovered(window)) {
-            button.setTexture(true);
-        }
-        else {
-            button.setTexture(false);
-        }
+        for (auto& button : buttons) {
+            if (button.isHovered(window)) {
+                button.setTexture(true);
+            }
+            else {
+                button.setTexture(false);
+            }
 
-        // FIX: Only trigger when the mouse button is released
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-            if (button.isHovered(window)) {  // Ensure the mouse is over the button
-                switch (button.getType()) {
-                case ButtonType::Resume:
-                    isPaused = false;
-                    return;
-                case ButtonType::Exit:
-                    window.close();
-                    return;
-                case ButtonType::Restart:
-                    shouldRestart = true; // New flag to signal a restart
-                    isPaused = false; // Unpause when restarting
-                    return;
+            // FIX: Only trigger when the mouse button is released
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                if (button.isHovered(window)) {  // Ensure the mouse is over the button
+                    switch (button.getType()) {
+                    case ButtonType::Resume:
+                        isPaused = false;
+                        return;
+                    case ButtonType::Exit:
+                        window.close();
+                        return;
+                    case ButtonType::Restart:
+                        shouldRestart = true; // New flag to signal a restart
+                        isPaused = false; // Unpause when restarting
+                        return;
+                    }
                 }
             }
-        }
 
-        button.draw(window);
+            button.draw(window);
+        }
     }
 }
 
@@ -89,4 +91,12 @@ bool Interface::getShouldRestart() const{
 }
 void Interface::resetRestartFlag() {
     shouldRestart = false;
+}
+
+void Interface::setUsingController(bool usingController) {
+	isUsingController = usingController;
+}
+
+bool Interface::getUsingController() {
+	return isUsingController;
 }
