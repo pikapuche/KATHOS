@@ -13,7 +13,6 @@ public:
 
     void update(float deltatime) override;
     void draw(RenderWindow& window) override;
-    /*bool isInside();*/
 
     Vector2f getPos();
     Vector2f setPos(float x, float y);

@@ -5,11 +5,6 @@ NuageTox::NuageTox() : Entity(position.x, position.y) { //constructeur du boss
     shape.setFillColor(Color(0, 90, 0, 150));
 }
 
-//bool NuageTox::isInside()
-//{
-//
-//}
-
 void NuageTox::draw(sf::RenderWindow& window) {
     window.draw(shape);
 }
@@ -28,6 +23,6 @@ Vector2f NuageTox::setPos(float x, float y) {
     return position;
 }
 
-sf::RectangleShape NuageTox::getShape() { //prend la shape du joueur
+sf::RectangleShape NuageTox::getShape() { //prend la shape du nuage
     return shape;
 }
