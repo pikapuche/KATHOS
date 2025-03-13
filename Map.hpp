@@ -24,6 +24,7 @@ public:
     vector<ifstream*> maps;
 
     vector<Player*> playerVector;
+    vector<Boss*> bossVector;
 
     //Text win;
     //Font font;

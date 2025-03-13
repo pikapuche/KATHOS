@@ -42,15 +42,18 @@ void Game::run()
         for (auto& playerv : m->playerVector) {
             playerv->update(deltaTime);
         }
+        for (auto& bossrv : m->bossVector) {
+            bossrv->update(deltaTime);
+        }
         m->update();
         m->draw(window);
 
-        if (mainScreen.getIsInMenu()) {
+        /*if (mainScreen.getIsInMenu()) {
             mainScreen.updateMenu(window);
         }   
         else {
             mainScreen.destroyAll();
-        }
+        }*/
 
         //for (auto& gemmes : map.vector_gemme) {
         //    for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements

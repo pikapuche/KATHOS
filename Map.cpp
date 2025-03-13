@@ -10,7 +10,6 @@ Map::Map() : statePlaying(StatePlaying::Practice) {
 	groundGreenLeftTexture.loadFromFile("Assets/Map/groundGreenLeft.png");
 	groundGreenMidTexture.loadFromFile("Assets/Map/groundGreenMid.png");
 	groundGreenRightTexture.loadFromFile("Assets/Map/groundGreenRight.png");
-
 }
 
 void Map::update() {
@@ -59,6 +58,13 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				playerVector.push_back(player);
 				break;
 			}
+			case 'B':
+			{
+				Boss* boss = new Boss(*playerVector[0]);
+				boss->setPos((float)i * 32, (float)_z * 32);
+				bossVector.push_back(boss);
+				break;
+			}
 
 			}
 		}
@@ -101,6 +107,9 @@ void Map::draw(RenderWindow& window) {
 	}
 	for (auto& playerv : playerVector) {
 		playerv->draw(window);
+	}
+	for (auto& bossrv : bossVector) {
+		bossrv->draw(window);
 	}
 }
 
