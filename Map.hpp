@@ -17,6 +17,9 @@ protected:
     sf::Text win;
     sf::Font font;
 
+    Vector2f waypoint1;
+    Vector2f waypoint2;
+
     bool winGame = false;
 
 public:

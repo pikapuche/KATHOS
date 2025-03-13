@@ -51,7 +51,7 @@ void Player::movementManager(float deltaTime) {
 
     if (sf::Joystick::isConnected(0))
     {
-        // Verification des gechettes (left = 10 & right = -10)
+        // Verification des gachettes (left = 10 & right = -10)
         gachetteValue = sf::Joystick::getAxisPosition(0, sf::Joystick::Z);
 
         joystickValue = sf::Joystick::getAxisPosition(0, sf::Joystick::X); // donne la poussée du joystick gauche sur l'axe X
@@ -190,6 +190,19 @@ void Player::dash(float deltaTime)
     }
 }
 
+void Player::collisionPlatform(RectangleShape& tile, float deltaTime) {
+    if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds()) && tile.getPosition().y < position.y) { // si le perso se trouve sous la plateforme il ne la traverse pas 
+        position.y = tile.getPosition().y + 40;
+        velocity.y = gravity * deltaTime;
+        state = NONE;
+    }
+    else if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds()) && tile.getPosition().y > position.y) { // collision de base 
+        position.y = tile.getPosition().y - 64;
+        velocity.y = 0;
+        state = GROUNDED;
+    }
+}
+
 void Player::collisionFloor(RectangleShape& tile) {
     if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds())) { // si le joueur entre en collision avec le sol alors il set sa position en haut du sol
         setPosPos(getPosPos().x, tile.getPosition().y - 64);
@@ -199,25 +212,6 @@ void Player::collisionFloor(RectangleShape& tile) {
     else if (tile.getPosition().y < getPosPos().y) { // s'il passe sous le sol
         setPosPos(getPosPos().x, tile.getPosition().y - 64);
     }
-}
-
-void Player::collisionPlatform(RectangleShape& tile) {
-
-    if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds()) && tile.getPosition().y < position.y) { // si le perso se trouve sous la plateforme il ne la traverse pas 
-        position.y = tile.getPosition().y + 40;
-        
-        state = NONE;
-    }
-    else if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds()) && tile.getPosition().y > position.y) { // collision de base 
-        position.y = tile.getPosition().y - 64;
-        velocity.y = 0;
-        state = GROUNDED;
-    }
-
-    //else if (tile.getGlobalBounds().intersects(getSprite().getGlobalBounds()) && tile.getPosition().y < getPosPos().y) { // si le joueur entre en collision avec une plateforme alors il set sa position en haut de celle ci
-    //    setPosPos(getPosPos().x, tile.getPosition().y - 62);
-    //    state = GROUNDED;
-    //}
 }
 
 #pragma region Getteurs / Setteurs

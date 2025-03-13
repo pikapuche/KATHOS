@@ -13,15 +13,21 @@ protected :
 
 	bool isGrounded = false;
 
-	float SPEED = 10.f;
+	float SPEED = 250.f;
+
+	Vector2f waypoint1;
+	Vector2f waypoint2;
+
+	CircleShape circleOne;
+	CircleShape circleTwo;
 
 public : 
 
-	Enemy();
+	Enemy(Vector2f wayOne, Vector2f wayTwo);
 
 	bool detectPlayer(Player& player);
 
-	void patrol();
+	void patrol(float deltaTime);
 
 	void chase(Player& player);
 

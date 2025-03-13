@@ -59,9 +59,9 @@ public:
 
     void dash(float deltaTime);
 
-    void collisionFloor(RectangleShape& tile);
+    void collisionPlatform(RectangleShape& tile, float deltaTime);
 
-    void collisionPlatform(RectangleShape& tile);
+    void collisionFloor(RectangleShape& tile);
 
     Vector2f setPosPos(float x, float y);
 

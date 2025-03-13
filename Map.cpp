@@ -51,9 +51,19 @@ void Map::initAll() {
                 }
                 break;
             }
+            case '1' : 
+            {
+                waypoint1 = { j * 24.f, i * 39.f };
+                break;
+            }
+            case '2': 
+            {
+                waypoint2 = { j * 24.f, i * 39.f };
+                break;
+            }
             case 'E': // Ennemi
             {
-                Enemy* ennemi = new Enemy();
+                Enemy* ennemi = new Enemy(waypoint1, waypoint2); // choix des waypoints pour la patrol
                 vector_enemy.push_back(ennemi);
                 for (auto& ennemi : vector_enemy) {
                     ennemi->setPosPos(j * 24.f, i * 39.f);
@@ -104,7 +114,7 @@ void Map::collisionMap(Player& player, Enemy& enemy, float deltaTime) { // arriv
             tile.setPosition(j * 24.f, i * 39.f); // set la position des différentes tiles sur la map
             switch (vector_Map[i][j]) {
             case '!': // plateformes
-                player.collisionPlatform(tile);
+                player.collisionPlatform(tile, deltaTime);
                 ////////////////////////////////////////////////// player //////////////////////////////////////////////////
                 //if (tile.getGlobalBounds().intersects(player.getSprite().getGlobalBounds()) && tile.getPosition().y > player.getPosPos().y) { // si le joueur entre en collision avec la plateforme mais qu'il est plus bas alors on set sa pos en dessous de la plateforme pour pas qu'il la traverse
                 //    player.setPosPos(player.getPosPos().x, tile.getPosition().y + 64);
