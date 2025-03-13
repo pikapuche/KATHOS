@@ -7,7 +7,8 @@ enum class ButtonType {
     Settings,
     Sound,
     Return,
-    Resume
+    Resume,
+    Restart
 };
 
 class Button {
@@ -28,4 +29,8 @@ public:
     bool isInSettings();
 	bool getisHidden();
 	void setHidden(bool hidden);
+    sf::Vector2f getPosition();
+
+    float getHeight();
+	float getWidth();
 };

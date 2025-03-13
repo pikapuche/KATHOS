@@ -12,6 +12,7 @@ void Game::run()
     window.setFramerateLimit(60); 
 
     MainScreen mainScreen;
+
     Interface overlay;
     mainScreen.initMenu(window);
     Map* m = new Map();
@@ -46,12 +47,24 @@ void Game::run()
 
         if (mainScreen.getIsInMenu()) {
             mainScreen.updateMenu(window);
-        }
+        }   
         else {
             mainScreen.destroyAll();
 
-            if (overlay.getIsPaused()) {
-                overlay.updateInterface(window);
+
+            overlay.updateInterface(window);
+            if (overlay.getShouldRestart()) {
+                map.vector_player.clear();  // Clear old player instances
+                map.loadFromFile("assets/map/mapV1.txt"); // Reload map
+                map.drawMap(window);
+                map.initAll(); // Reset objects
+
+                for (auto& players : map.vector_player) {
+                        map.collisionMap(window, *players, deltaTime);
+                }
+                    
+                overlay.resetRestartFlag(); // Reset the flag so it doesn't keep restarting
+
             }
         }
 
