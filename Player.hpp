@@ -7,9 +7,6 @@ protected:
     Texture textureIdle;
     RectangleShape attackShape;
 
-    enum State { NONE, GROUNDED, JUMP };
-    State state;
-
     enum StateLook { LOOK_RIGHT, LOOK_LEFT };
     StateLook stateLook;
 
@@ -44,6 +41,9 @@ protected:
     Clock clock;
 
 public:
+
+    enum State { NONE, GROUNDED, JUMP };
+    State state;
 
     bool floor = true;
 

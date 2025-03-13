@@ -226,10 +226,6 @@ Vector2f Player::setVelocity(float veloX, float veloY) {
     return velocity;
 }
 
-//RectangleShape Player::getShape() {
-//    return shape;
-//}
-
 Vector2f Player::setPosPos(float x, float y)
 {
     position.x = x;
@@ -241,26 +237,6 @@ Vector2f Player::getPosPos()
 {
     return position;
 }
-
-//bool Player::getIsJumping() {
-//    return isJumping;
-//}
-//
-//bool Player::setIsJumping(bool jump) {
-//    isJumping = jump;
-//    return isJumping;
-//}
-//
-//bool Player::setIsGrounded(bool is)
-//{
-//    isGrounded = is;
-//    return isGrounded;
-//}
-//
-//bool Player::getIsGrounded()
-//{
-//    return isGrounded;
-//}
 
 bool Player::getIsTakeDash()
 {

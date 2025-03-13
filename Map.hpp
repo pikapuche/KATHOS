@@ -25,6 +25,12 @@ public:
 
     vector<Player*> playerVector;
 
+    Sprite* gGL;
+    Sprite* gGM;
+    Sprite* gGR;
+
+    Sprite* groundSprite;
+
     //Text win;
     //Font font;
 
@@ -43,7 +49,7 @@ public:
 
     void update(); 
 
-    void collision();
+    void collision(float deltaTime);
 
     void loadMap();
 
