@@ -2,7 +2,7 @@
 
 NuageTox::NuageTox() : Entity(position.x, position.y) { //constructeur du boss
     shape.setSize(sf::Vector2f(50.0f, 50.0f));
-    shape.setFillColor(Color::Green);
+    shape.setFillColor(Color(0, 90, 0, 150));
 }
 
 //bool NuageTox::isInside()
@@ -15,7 +15,7 @@ void NuageTox::draw(sf::RenderWindow& window) {
 }
 
 void NuageTox::update(float deltaTime) { //déplacements
-    getPos();
+    shape.setPosition(position);
 }
 
 Vector2f NuageTox::getPos() {

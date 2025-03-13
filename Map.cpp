@@ -63,11 +63,9 @@ void Map::initAll() {
             }
             case 'T': // nuage
             {
-                if (!vector_player.empty()) {
-                    NuageTox* nuage = new NuageTox();
-                    nuage->setPos(j * 40.f, i * 40.f);
-                    vector_nuage.push_back(nuage);
-                }
+                NuageTox* nuage = new NuageTox();
+                nuage->setPos(j * 40.f, i * 40.f);
+                vector_nuage.push_back(nuage);
                 break;
             }
             default:  tile.setFillColor(sf::Color::Black); break;
