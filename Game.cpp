@@ -9,9 +9,8 @@ void Game::run()
     window.setFramerateLimit(60); 
 
     Map* m = new Map();
-    for (auto& playerv : m->playerVector) {
-        m->loadMap(*playerv);
-    }
+    m->loadMap();
+
 
     Clock clock; // Horloge pour le deltaTime
 
@@ -28,12 +27,11 @@ void Game::run()
         // Effacer la fenêtre
         window.clear();
         for (auto& playerv : m->playerVector) {
-            player.update(deltaTime);
+            playerv->update(deltaTime);
         }
-   
-        m->update(player);
-        m->draw(window,player);
-
+        m->update();        
+        m->draw(window);
+        
         //cout << deltaTime << endl;
 
         //for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements

@@ -13,19 +13,19 @@ Map::Map() : statePlaying(StatePlaying::Practice) {
 
 }
 
-void Map::update(Player& player) {
-	collision(player);
+void Map::update() {
+	collision();
 }
 
-void Map::collision(Player& player) {
-	player.getShape().getGlobalBounds();
+void Map::collision() {
+	playerVector[0]->getShape().getGlobalBounds();
 	//for (auto& monde1 : monde1Vector )  Si touche la sortie donc clear pointeur
 
 	// mettre les collisions
 
 }
 
-void Map::monSwitch(ifstream& _Map, string _line, int _z, Player& _player) {
+void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 	
 	while (getline(_Map, _line)) {
         for (int i = 0; i < _line.size(); i++) {
@@ -58,7 +58,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z, Player& _player) {
 			case 'P':
 			{
 				Player* player = new Player;
-				_player.setPosPos((float)i * 32,(float)_z * 32);
+				player->setPosPos((float)i * 32,(float)_z * 32);
 				playerVector.push_back(player);
 				break;
 			}
@@ -69,7 +69,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z, Player& _player) {
     }
 }
 
-void Map::loadMap(Player& player) {
+void Map::loadMap() {
 	if (statePlaying == StatePlaying::Practice) {
 		ifstream Map0("Assets/Map/Practice.txt");
 		maps.push_back(&Map0);
@@ -77,7 +77,7 @@ void Map::loadMap(Player& player) {
 		float z = 0;
 
 		for (auto& mapPractice : maps) {
-			monSwitch(*mapPractice, line, z, *playerVector[0]);
+			monSwitch(*mapPractice, line, z);
 		}
 	}
 
@@ -88,14 +88,14 @@ void Map::loadMap(Player& player) {
 		float z = 0;
 
 		for (auto& mapMonde1 : maps) {
-			monSwitch(*mapMonde1, line, z, player);
+			monSwitch(*mapMonde1, line, z);
 		}
 	}
 
 
 }
 
-void Map::draw(RenderWindow& window,Player& player) {
+void Map::draw(RenderWindow& window) {
 	for (auto& groundGL : groundGLVector) {
 		window.draw(*groundGL);
 	}

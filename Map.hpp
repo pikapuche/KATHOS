@@ -37,14 +37,14 @@ public:
 
     ~Map(); 
 
-    void update(Player& player); 
+    void update(); 
 
-    void collision(Player& player);
+    void collision();
 
-    void loadMap(Player& player);
+    void loadMap();
 
-    void monSwitch(ifstream& _Map, string line, int z, Player& player);
+    void monSwitch(ifstream& _Map, string line, int z);
 
-    void draw(RenderWindow& window, Player& player);
+    void draw(RenderWindow& window);
 
 };
