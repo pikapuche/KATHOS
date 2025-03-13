@@ -1,6 +1,6 @@
 #pragma once
 #include "Entity.hpp"
-
+#include "Interactibles.hpp"
 class Player : public Entity {
 protected:
     Texture textureSprint;

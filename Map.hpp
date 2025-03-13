@@ -5,6 +5,7 @@
 #include "NuageTox.hpp"
 #include "Ennemis.hpp"
 #include "Gemme.hpp"
+#include "Interactibles.hpp"
 
 class Map {
 public:
@@ -23,7 +24,9 @@ public:
 
     vector<ifstream*> maps;
 
-    vector<Player*> playerVector;
+    vector<Player*> playerVector; //Player Vector
+    vector<Interactible*> interactiblesVector; // Vector of all Interacts
+
 
     //Text win;
     //Font font;

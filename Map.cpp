@@ -1,15 +1,15 @@
 #include "Map.hpp"
 
 Map::Map() : statePlaying(StatePlaying::Practice) {
-	groundYellowLeftTexture.loadFromFile("Assets/Map/groundYellowLeft.png");
-	groundYellowMidTexture.loadFromFile("Assets/Map/groundYellowMid.png");
-	groundYellowRightTexture.loadFromFile("Assets/Map/groundYellowRight.png");
-	groundRedLeftTexture.loadFromFile("Assets/Map/groundRedLeft.png");
-	groundRedMidTexture.loadFromFile("Assets/Map/groundRedMid.png");
-	groundRedRightTexture.loadFromFile("Assets/Map/groundRedRight.png");
-	groundGreenLeftTexture.loadFromFile("Assets/Map/groundGreenLeft.png");
-	groundGreenMidTexture.loadFromFile("Assets/Map/groundGreenMid.png");
-	groundGreenRightTexture.loadFromFile("Assets/Map/groundGreenRight.png");
+	groundYellowLeftTexture.loadFromFile("Assets/texture/Map/groundYellowLeft.png");
+	groundYellowMidTexture.loadFromFile("Assets/texture/Map/groundYellowMid.png");
+	groundYellowRightTexture.loadFromFile("Assets/texture/Map/groundYellowRight.png");
+	groundRedLeftTexture.loadFromFile("Assets/texture/Map/groundRedLeft.png");
+	groundRedMidTexture.loadFromFile("Assets/texture/Map/groundRedMid.png");
+	groundRedRightTexture.loadFromFile("Assets/texture/Map/groundRedRight.png");
+	groundGreenLeftTexture.loadFromFile("Assets/texture/Map/groundGreenLeft.png");
+	groundGreenMidTexture.loadFromFile("Assets/texture/Map/groundGreenMid.png");
+	groundGreenRightTexture.loadFromFile("Assets/texture/Map/groundGreenRight.png");
 
 }
 
@@ -59,6 +59,10 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				playerVector.push_back(player);
 				break;
 			}
+			case 'C':
+				Chest * chest = new Chest;
+				chest->setPosPos((float)i * 32, (float)_z * 32-17);
+				interactiblesVector.push_back(chest);
 
 			}
 		}
@@ -101,6 +105,9 @@ void Map::draw(RenderWindow& window) {
 	}
 	for (auto& playerv : playerVector) {
 		playerv->draw(window);
+	}
+	for (auto& interactv : interactiblesVector) {
+		interactv->draw(window);
 	}
 }
 

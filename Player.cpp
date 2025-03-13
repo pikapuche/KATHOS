@@ -349,4 +349,4 @@ void Player::update(float deltaTime) {
 void Player::draw(RenderWindow& window) {
     window.draw(sprite);
     if (isAttacking) window.draw(attackShape);
-}
+};
