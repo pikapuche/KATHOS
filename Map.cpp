@@ -20,9 +20,6 @@ void Map::update() {
 void Map::collision() {
 	playerVector[0]->getSprite().getGlobalBounds();
 	//for (auto& monde1 : monde1Vector )  Si touche la sortie donc clear pointeur
-
-	// mettre les collisions
-
 }
 
 void Map::monSwitch(ifstream& _Map, string _line, int _z) {
@@ -67,6 +64,28 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
         }
 		_z++;
     }
+
+    if (isGameOver) {
+        sf::RectangleShape gameOverScreen(sf::Vector2f(window.getSize().x, window.getSize().y));
+        gameOverScreen.setFillColor(sf::Color(0, 0, 0, 150));
+        window.draw(gameOverScreen);
+
+        sf::Font font;
+        if (!font.loadFromFile("Assets/Fonts/Minecraft.ttf")) {
+            cout << "Erreur chargement police !" << endl;
+        }
+
+        sf::Text gameOverText;
+        gameOverText.setFont(font);
+        gameOverText.setString("GAME OVER");
+        gameOverText.setCharacterSize(80);
+        gameOverText.setFillColor(sf::Color::Red);
+        gameOverText.setStyle(sf::Text::Bold);
+        gameOverText.setPosition((window.getSize().x - gameOverText.getGlobalBounds().width) / 2, (window.getSize().y - gameOverText.getGlobalBounds().height) / 2);
+
+        window.draw(gameOverText);
+        return;
+    }
 }
 
 void Map::loadMap() {
@@ -80,7 +99,6 @@ void Map::loadMap() {
 			monSwitch(*mapPractice, line, z);
 		}
 	}
-
 	if (statePlaying == StatePlaying::Monde1) {
 		ifstream Map1("Assets/Map/Monde1.txt");
 		maps.push_back(&Map1);
@@ -91,8 +109,6 @@ void Map::loadMap() {
 			monSwitch(*mapMonde1, line, z);
 		}
 	}
-
-
 }
 
 void Map::draw(RenderWindow& window) {

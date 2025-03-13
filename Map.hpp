@@ -1,9 +1,10 @@
 #pragma once
 #include "stdafx.hpp"
+#include "Player.hpp"
+#include "Boss.hpp"
+#include "NuageTox.hpp"
 #include "Ennemis.hpp"
 #include "Gemme.hpp"
-
-
 
 class Map {
 

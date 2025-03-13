@@ -17,7 +17,6 @@ void Game::run()
     Map* m = new Map();
     m->loadMap();
 
-
     Clock clock;
     overlay.initInterface(); // Ensure the texture is loaded once
 
@@ -54,6 +53,14 @@ void Game::run()
             if (overlay.getIsPaused()) {
                 overlay.updateInterface(window);
             }
+        }
+        for (auto& bosses : map.vector_boss) { // vector boss dans la map pour pouvoir le g�rer dans ses d�placements
+            bosses->update(deltaTime);
+            bosses->draw(window);
+        }
+        for (auto& nuages : map.vector_nuage) {
+            nuages->update(deltaTime);
+            nuages->draw(window);
         }
 
         //for (auto& gemmes : map.vector_gemme) {
