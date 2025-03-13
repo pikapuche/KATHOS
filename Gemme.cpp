@@ -3,9 +3,6 @@
 Gemme::Gemme() : Player() {
 	speedGemmeShape.setSize(Vector2f(32, 32));
 	dashGemmeShape.setSize(Vector2f(32, 32));
-	isTakeSpeed = false;
-	isTakeDash = false;
-	isDashing = false;
 }
 
 sf::Vector2f Gemme::setPosition(float x, float y)
@@ -26,17 +23,6 @@ void Gemme::interact(Player& player)
 		player.setIsTakeDash(true);
 		clock.restart();
 	}
-
-	if (isDashing) {
-		player.setSPEED(2000);
-		if (clock.getElapsedTime().asMilliseconds() >= 100) {
-			isDashing = false;
-			player.setSPEED(300.f);
-			coolDownDash.restart();
-		}
-	}
-
-
 
 	dashGemmeShape.setPosition(position);
 	speedGemmeShape.setPosition(position);
