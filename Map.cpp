@@ -56,7 +56,7 @@ void Map::initAll() {
             {
                 if (!vector_player.empty()) {
                     Boss* boss = new Boss(*vector_player[0]); // Prend le premier joueur
-                    boss->setPos(j * 40.f, i * 40.f);
+                    boss->setPos(j * 40.f, i * 40.f - 50);
                     vector_boss.push_back(boss);
                 }
                 break;
@@ -188,7 +188,7 @@ void Map::checkPlayerBossCollision() {
     {
         for (auto& boss : vector_boss)
         {
-            if (player->getShape().getGlobalBounds().intersects(boss->getShape().getGlobalBounds()))
+            if (player->getShape().getGlobalBounds().intersects(boss->getSprite().getGlobalBounds()))
             {
                 cout << "Collision entre le joueur et le boss" << endl;
                 isGameOver = true;

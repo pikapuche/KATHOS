@@ -14,7 +14,7 @@ public :
 	Vector2f velocity;
 	Vector2f baseDirection;
 
-	Entity(/*Texture& texture,*/ float posX, float posY);
+	Entity(float posX, float posY);
 
 	virtual void update(float deltaTime) = 0;
 	virtual void draw(RenderWindow& window) = 0;
