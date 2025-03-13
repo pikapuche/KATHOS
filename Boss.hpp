@@ -13,15 +13,24 @@ private:
 
     Texture texture;
 
+    bool isJumping;
+    float jumpTimer;
+    float jumpHeight;
+    float gravity;
+    float timeInAir;
+
 public:
     Boss(Player& target);
 
     void update(float deltatime) override;
     void draw(RenderWindow& window) override;
-    void checkCollision(int mapWidth);
+    void checkCollision(int mapWidth, int mapHeight);
     void chasePlayer();
     bool canSeePlayer();
 
+    void jumpToPlatform();
+    void fallBackDown();
+
     Vector2f getPos();
-    Vector2f setPos(float(x), float(y));
+    Vector2f setPos(float x, float y);
 };

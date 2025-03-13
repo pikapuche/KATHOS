@@ -2,24 +2,20 @@
 #include "MainScreen.hpp"
 #include "Interface.hpp"
 
-//faire collision
-
 void Game::run()
 {
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Kathos", sf::Style::Fullscreen);
-
     window.setVerticalSyncEnabled(true);
-    window.setFramerateLimit(60); 
+    window.setFramerateLimit(60);
 
     MainScreen mainScreen;
-
     Interface overlay;
     mainScreen.initMenu(window);
     Map* m = new Map();
     m->loadMap();
 
     Clock clock;
-    overlay.initInterface(); // Ensure the texture is loaded once
+    overlay.initInterface();
 
     while (window.isOpen()) {
         sf::Time deltaT = clock.restart();
@@ -44,25 +40,11 @@ void Game::run()
         }
         for (auto& bossrv : m->bossVector) {
             bossrv->update(deltaTime);
+            bossrv->checkCollision(1920, 1080);
         }
         m->update();
         m->draw(window);
 
-        /*if (mainScreen.getIsInMenu()) {
-            mainScreen.updateMenu(window);
-        }   
-        else {
-            mainScreen.destroyAll();
-        }*/
-
-        //for (auto& gemmes : map.vector_gemme) {
-        //    for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements
-        //        gemmes->interact(*players);
-        //    }
-        //    gemmes->draw(window);
-        //}
-
-        // Affiche tout
-        window.display(); 
+        window.display();
     }
 }

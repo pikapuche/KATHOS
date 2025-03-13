@@ -14,6 +14,9 @@ Map::Map() : statePlaying(StatePlaying::Practice) {
 
 void Map::update() {
 	collision();
+	for (auto& bossrv : bossVector) {
+		bossrv->checkCollision(1920, 1080);
+	}
 }
 
 void Map::collision() {
