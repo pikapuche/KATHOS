@@ -15,18 +15,16 @@ public:
     Texture groundRedLeftTexture, groundRedMidTexture, groundRedRightTexture;
     Texture groundGreenLeftTexture, groundGreenMidTexture, groundGreenRightTexture;
 
-    //Texture wallTexture;
-
     vector<unique_ptr<Sprite>> groundSprites;
+    vector<unique_ptr<Sprite>> gemmeSprites;
 
     shared_ptr<Player> player = make_shared<Player>();
+    shared_ptr<Player> gemme = make_shared<Gemme>();
 
     vector<ifstream*> maps;
 
     Sprite* groundSprite;
-
-    //Text win;
-    //Font font;
+    Sprite* gemmeSprite;
 
     enum class StatePlaying {
         Practice,

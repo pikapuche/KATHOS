@@ -13,10 +13,7 @@ Map::Map() : statePlaying(StatePlaying::Practice) {
 
 }
 
-Map::~Map()
-{
-	
-}
+Map::~Map() {}
 
 void Map::update(float deltaTime) {
 	collision(deltaTime);
@@ -26,6 +23,7 @@ void Map::collision(float deltaTime) {
 	for (auto& ground : groundSprites) {
 		player->collisionPlatform(*ground, deltaTime);
 	}
+
 }
 
 void Map::monSwitch(ifstream& _Map, string _line, int _z) {
@@ -58,11 +56,67 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				groundSprites.push_back(std::move(right));  // Utilise std::move pour transf�rer la propri�t�
 				break;
 			}
+			case '4':
+			{
+				auto left = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				left->setTexture(groundYellowLeftTexture);
+				left->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(left));  // Utilise std::move pour transf�rer la propri�t�
+				break;
+			}
+			case '5':
+			{
+				auto mid = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				mid->setTexture(groundYellowMidTexture);
+				mid->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(mid));  // Utilise std::move pour transf�rer la propri�t�
+				break;
+			}
+			case '6':
+			{
+				auto right = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				right->setTexture(groundYellowRightTexture);
+				right->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(right));  // Utilise std::move pour transf�rer la propri�t�
+				break;
+			}
+			case '7':
+			{
+				auto left = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				left->setTexture(groundRedLeftTexture);
+				left->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(left));  // Utilise std::move pour transf�rer la propri�t�
+				break;
+			}
+			case '8':
+			{
+				auto mid = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				mid->setTexture(groundRedMidTexture);
+				mid->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(mid));  // Utilise std::move pour transf�rer la propri�t�
+				break;
+			}
+			case '9':
+			{
+				auto right = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				right->setTexture(groundRedRightTexture);
+				right->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(right));  // Utilise std::move pour transf�rer la propri�t�
+				break;
+			}
 			case 'P':
 			{
 				player->setPosPos((float)i * 32, (float)_z * 20);
 				break;
 			}
+			case 'G':
+			{
+				gemme->setPosPos((float)i * 32, (float)_z * 20);
+				break;
+			}
+
+
+
 
 			}
 		}
@@ -96,6 +150,9 @@ void Map::loadMap() {
 void Map::draw(RenderWindow& window) {
 	for (auto& ground : groundSprites) {
 		window.draw(*ground);
+	}
+	for (auto& gemme : gemmeSprites) {
+		window.draw(*gemme);
 	}
 	player->draw(window);
 }
