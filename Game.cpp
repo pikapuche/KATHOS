@@ -8,14 +8,14 @@ void Game::run()
     window.setVerticalSyncEnabled(true);
     window.setFramerateLimit(60);
 
-    MainScreen mainScreen;
+    /*MainScreen mainScreen;
     Interface overlay;
-    mainScreen.initMenu(window);
+    mainScreen.initMenu(window);*/
     Map* m = new Map();
     m->loadMap();
 
     Clock clock;
-    overlay.initInterface();
+    /*overlay.initInterface();*/
 
     while (window.isOpen()) {
         Time deltaT = clock.restart();
@@ -26,12 +26,12 @@ void Game::run()
             if (event.type == Event::Closed) {
                 window.close();
             }
-            if (mainScreen.getIsInMenu() && event.key.code == Keyboard::Escape) {
+            /*if (mainScreen.getIsInMenu() && event.key.code == Keyboard::Escape) {
                 window.close();
             }
             else if (!mainScreen.getIsInMenu() && event.key.code == Keyboard::Escape) {
                 overlay.setIsPaused(true);
-            }
+            }*/
         }
 
         window.clear();
