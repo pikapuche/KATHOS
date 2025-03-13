@@ -18,8 +18,38 @@ void Map::update() {
 }
 
 void Map::collision() {
-	playerVector[0]->getSprite().getGlobalBounds();
+	if (playerVector[0]->getSprite().getGlobalBounds().intersects(groundSprite->getGlobalBounds()) && playerVector[0]->getPosPos().y < groundSprite->getPosition().y)
+	{
+
+	}
+	
 	//for (auto& monde1 : monde1Vector )  Si touche la sortie donc clear pointeur
+
+	//void Player::collisionPlatform(RectangleShape & tile, float deltaTime) {
+	//	if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds()) && tile.getPosition().y < position.y) { // si le perso se trouve sous la plateforme il ne la traverse pas 
+	//		position.y = tile.getPosition().y + 40;
+	//		velocity.y = gravity * deltaTime;
+	//		state = NONE;
+	//	}
+	//	else if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds()) && tile.getPosition().y > position.y) { // collision de base 
+	//		position.y = tile.getPosition().y - 64;
+	//		velocity.y = 0;
+	//		state = GROUNDED;
+	//	}
+	//}
+
+	//void Player::collisionFloor(RectangleShape & tile) {
+	//	if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds())) { // si le joueur entre en collision avec le sol alors il set sa position en haut du sol
+	//		setPosPos(getPosPos().x, tile.getPosition().y - 64);
+	//		velocity.y = 0;
+	//		state = GROUNDED;
+	//	}
+	//	else if (tile.getPosition().y < getPosPos().y) { // s'il passe sous le sol
+	//		setPosPos(getPosPos().x, tile.getPosition().y - 64);
+	//	}
+	//}
+
+
 }
 
 void Map::monSwitch(ifstream& _Map, string _line, int _z) {
@@ -30,26 +60,26 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				cout << _line[i] << endl;
 			case '1':
 			{
-				Sprite* gGL = new Sprite;
-				gGL->setTexture(groundGreenLeftTexture);
-				gGL->setPosition({ (float)i * 32,(float)_z * 32 });
-				groundGLVector.push_back(gGL);
+				groundSprite = new Sprite;
+				groundSprite->setTexture(groundGreenLeftTexture);
+				groundSprite->setPosition({ (float)i * 32,(float)_z * 32 });
+				groundGLVector.push_back(groundSprite);
 				break;
 			}
 			case '2':
 			{
-				Sprite* gGM = new Sprite;
-				gGM->setTexture(groundGreenMidTexture);
-				gGM->setPosition({ (float)i * 32,(float)_z * 32 });
-				groundGMVector.push_back(gGM);
+				groundSprite = new Sprite;
+				groundSprite->setTexture(groundGreenMidTexture);
+				groundSprite->setPosition({ (float)i * 32,(float)_z * 32 });
+				groundGMVector.push_back(groundSprite);
 				break;
 			}
 			case '3':
 			{
-				Sprite* gGR = new Sprite;
-				gGR->setTexture(groundGreenRightTexture);
-				gGR->setPosition({ (float)i * 32,(float)_z * 32 });
-				groundGMVector.push_back(gGR);
+				groundSprite = new Sprite;
+				groundSprite->setTexture(groundGreenRightTexture);
+				groundSprite->setPosition({ (float)i * 32,(float)_z * 32 });
+				groundGMVector.push_back(groundSprite);
 				break;
 			}
 			case 'P':

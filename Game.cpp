@@ -45,12 +45,12 @@ void Game::run()
         m->update();
         m->draw(window);
 
-        if (mainScreen.getIsInMenu()) {
-            mainScreen.updateMenu(window);
-        }   
-        else {
-            mainScreen.destroyAll();
-        }
+        //if (mainScreen.getIsInMenu()) {
+        //    mainScreen.updateMenu(window);
+        //}   
+        //else {
+        //    mainScreen.destroyAll();
+        //}
 
         //for (auto& gemmes : map.vector_gemme) {
         //    for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements

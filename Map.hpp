@@ -25,6 +25,8 @@ public:
 
     vector<Player*> playerVector;
 
+    Sprite* groundSprite;
+
     //Text win;
     //Font font;
 
@@ -39,7 +41,7 @@ public:
 
     Map();
 
-    ~Map(); 
+    ~Map();
 
     void update(); 
 
