@@ -36,6 +36,10 @@
     <ClCompile Include="Entity.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="NuageTox.cpp">
     <ClCompile Include="MainScreen.cpp">
       <Filter>Fichiers sources\Interface &amp; UI</Filter>
     </ClCompile>
@@ -64,6 +68,10 @@
     <ClInclude Include="Entity.hpp">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="Boss.hpp">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="NuageTox.hpp">
     <ClInclude Include="MainScreen.hpp">
       <Filter>Fichiers d%27en-tête\Interface &amp; UI.hpp</Filter>
     </ClInclude>

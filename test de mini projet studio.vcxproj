@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Ennemis.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -146,9 +147,11 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainScreen.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="NuageTox.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Boss.hpp" />
     <ClInclude Include="Button.hpp" />
     <ClInclude Include="Ennemis.hpp" />
     <ClInclude Include="Entity.hpp" />
@@ -157,6 +160,7 @@
     <ClInclude Include="MainScreen.hpp" />
     <ClInclude Include="Gemme.hpp" />
     <ClInclude Include="Map.hpp" />
+    <ClInclude Include="NuageTox.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="stdafx.hpp" />
   </ItemGroup>
