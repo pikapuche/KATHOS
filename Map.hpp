@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.hpp"
-#include "Player.hpp"
+#include "Ennemis.hpp"
+#include "Gemme.hpp"
 
 
 
