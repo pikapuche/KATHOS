@@ -50,22 +50,6 @@ void Game::run()
         }   
         else {
             mainScreen.destroyAll();
-
-
-            overlay.updateInterface(window);
-            if (overlay.getShouldRestart()) {
-                map.vector_player.clear();  // Clear old player instances
-                map.loadFromFile("assets/map/mapV1.txt"); // Reload map
-                map.drawMap(window);
-                map.initAll(); // Reset objects
-
-                for (auto& players : map.vector_player) {
-                        map.collisionMap(window, *players, deltaTime);
-                }
-                    
-                overlay.resetRestartFlag(); // Reset the flag so it doesn't keep restarting
-
-            }
         }
 
         //for (auto& gemmes : map.vector_gemme) {

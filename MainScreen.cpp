@@ -62,11 +62,6 @@ void MainScreen::initMenu(sf::RenderWindow& window) {
     highlightRect.setOrigin(highlightTexture.getSize().x / 2, highlightTexture.getSize().y / 2);
 }
 
-
-void MainScreen::updateMenu(sf::RenderWindow& window) {
-    window.draw(background);
-}
-
 void MainScreen::handleButtonPress(Button& button) {
     if (!button.getisHidden()) {
         switch (button.getType()) {
@@ -150,7 +145,6 @@ void MainScreen::updateMenu(sf::RenderWindow& window) {
         handleControllerNavigation();
     }
 
-    window.clear();
     window.draw(background);
     if (!interfaceuh.getUsingController()) {
         for (auto& button : buttons) {
@@ -215,11 +209,6 @@ void MainScreen::updateMenu(sf::RenderWindow& window) {
 
         window.draw(highlightRect);
     }
-
-
-
-    window.display();
-
 }
 
 void MainScreen::destroyAll() {
