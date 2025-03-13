@@ -18,38 +18,9 @@ void Map::update(float deltaTime) {
 }
 
 void Map::collision(float deltaTime) {
-	if (playerVector[0]->getPosPos().y < groundSprite->getPosition().y) {
-		playerVector[0]->setPosPos(playerVector[0]->getPosPos().x, groundSprite->getPosition().y - 64);
-		playerVector[0]->setVelocity(playerVector[0]->getVelocity().x, 0);
-		playerVector[0]->setState(playerVector[0]->GROUNDED);
+	for (auto& ground : groundSprites) {
+		player.collisionPlatform(*ground, deltaTime);
 	}
-	//playerVector[0]->collisionFloor(*groundSprite);
-	//playerVector[0]->collisionPlatform(*groundSprite, deltaTime);
-	//for (auto& monde1 : monde1Vector )  Si touche la sortie donc clear pointeur
-	
-	/////// Player //////////
-	//plateforme
-	//if (groundSprite->getGlobalBounds().intersects(playerVector[0]->getSprite().getGlobalBounds()) && groundSprite->getPosition().y < playerVector[0]->getPosPos().y) { // si le perso se trouve sous la plateforme il ne la traverse pas 
-	//	playerVector[0]->setPosPos(playerVector[0]->getPosPos().x, groundSprite->getPosition().y + 64);
-	//	playerVector[0]->setVelocity(playerVector[0]->getVelocity().x, playerVector[0]->getGravity() * deltaTime);
-	//	playerVector[0]->NONE;
-	//}
-	//else if (groundSprite->getGlobalBounds().intersects(playerVector[0]->getSprite().getGlobalBounds()) && groundSprite->getPosition().y > playerVector[0]->getPosPos().y) { // collision de base 
-	//	playerVector[0]->setPosPos(playerVector[0]->getPosPos().x, groundSprite->getPosition().y - 64);
-	//	playerVector[0]->setVelocity(playerVector[0]->getVelocity().x, 0);
-	//	playerVector[0]->GROUNDED;
-	//}
-	// sol
-	//if(playerVector[0]->getSprite().getGlobalBounds().intersects(groundSprite->getGlobalBounds()) && groundSprite->getPosition().y < playerVector[0]->getPosPos().y) {
-	////if (groundSprite->getGlobalBounds().intersects(playerVector[0]->getSprite().getGlobalBounds())) { // si le joueur entre en collision avec le sol alors il set sa position en haut du sol
-	//	playerVector[0]->setPosPos(playerVector[0]->getPosPos().x, groundSprite->getPosition().y - 64);
-	//	playerVector[0]->setVelocity(playerVector[0]->getVelocity().x, 0);
-	//	playerVector[0]->GROUNDED;
-	//}
-	//else if (groundSprite->getPosition().y < playerVector[0]->getPosPos().y) { // s'il passe sous le sol
-	//	playerVector[0]->setPosPos(playerVector[0]->getPosPos().x, groundSprite->getPosition().y - 64);
-	//	playerVector[0]->setVelocity(playerVector[0]->getVelocity().x, 0);
-	//}
 }
 
 void Map::monSwitch(ifstream& _Map, string _line, int _z) {
@@ -60,35 +31,31 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				cout << _line[i] << endl;
 			case '1':
 			{
-				groundSprite = new Sprite;
-				groundSprite->setTexture(groundGreenLeftTexture);
-				groundSprite->setPosition({ (float)i * 32,(float)_z * 32 });
-				groundGLVector.push_back(groundSprite);
-				//playerVector[0]->collisionFloor(*groundSprite);
-				//playerVector[0]->collisionPlatform(*groundSprite, deltaTime);
+				auto left = std::make_unique<Sprite>();  // La bonne façon de créer un unique_ptr
+				left->setTexture(groundGreenLeftTexture);
+				left->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(left));  // Utilise std::move pour transférer la propriété
 				break;
 			}
 			case '2':
 			{
-				groundSprite = new Sprite;
-				groundSprite->setTexture(groundGreenMidTexture);
-				groundSprite->setPosition({ (float)i * 32,(float)_z * 32 });
-				groundGMVector.push_back(groundSprite);
+				auto mid = std::make_unique<Sprite>();  // La bonne façon de créer un unique_ptr
+				mid->setTexture(groundGreenMidTexture);
+				mid->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(mid));  // Utilise std::move pour transférer la propriété
 				break;
 			}
 			case '3':
 			{
-				groundSprite = new Sprite;
-				groundSprite->setTexture(groundGreenRightTexture);
-				groundSprite->setPosition({ (float)i * 32,(float)_z * 32 });
-				groundGMVector.push_back(groundSprite);
+				auto right = std::make_unique<Sprite>();  // La bonne façon de créer un unique_ptr
+				right->setTexture(groundGreenRightTexture);
+				right->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(right));  // Utilise std::move pour transférer la propriété
 				break;
 			}
 			case 'P':
 			{
-				Player* player = new Player;
-				player->setPosPos((float)i * 32, (float)_z * 32);
-				playerVector.push_back(player);
+				player.setPosPos((float)i * 32, (float)_z * 20);
 				break;
 			}
 
@@ -122,18 +89,10 @@ void Map::loadMap() {
 }
 
 void Map::draw(RenderWindow& window) {
-	for (auto& groundGL : groundGLVector) {
-		window.draw(*groundGL);
+	for (auto& ground : groundSprites) {
+		window.draw(*ground);
 	}
-	for (auto& groundGM : groundGMVector) {
-		window.draw(*groundGM);
-	}
-	for (auto& groundGR : groundGRVector) {
-		window.draw(*groundGR);
-	}
-	for (auto& playerv : playerVector) {
-		playerv->draw(window);
-	}
+	player.draw(window);
 }
 
 void Map::gameOver(RenderWindow& window)

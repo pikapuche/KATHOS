@@ -17,19 +17,11 @@ public:
 
     //Texture wallTexture;
 
-    vector<Sprite*> groundYLVector, groundYMVector, groundYRVector;
-    vector<Sprite*> groundRLVector, groundRMVector, groundRRVector;
-    vector<Sprite*> groundGLVector, groundGMVector, groundGRVector;
+    vector<unique_ptr<Sprite>> groundSprites;
+
+    Player player;
 
     vector<ifstream*> maps;
-
-    vector<Player*> playerVector;
-
-    Sprite* gGL;
-    Sprite* gGM;
-    Sprite* gGR;
-
-    Sprite* groundSprite;
 
     //Text win;
     //Font font;
@@ -45,9 +37,9 @@ public:
 
     Map();
 
-    ~Map(); 
+    //~Map(); 
 
-    void update(float deltaTime); 
+    void update(float deltaTime);
 
     void collision(float deltaTime);
 

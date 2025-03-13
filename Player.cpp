@@ -137,7 +137,7 @@ void Player::attack(float deltaTime) {
     // Si le perso a une épée on fait une rotation a l'arme
     if (isAttacking) {
         if (stateLook == LOOK_RIGHT) {
-            attackShape.setPosition(position.x + 40, position.y + 20);
+            attackShape.setPosition(position.x + 40, position.y + 40);
             animTimeDecr += deltaTime;
             if (animTimeDecr > 0.008) {
                 rotaRight += 10;
@@ -150,7 +150,7 @@ void Player::attack(float deltaTime) {
             }
         }
         if (stateLook == LOOK_LEFT) {
-            attackShape.setPosition(position.x - 20, position.y + 20);
+            attackShape.setPosition(position.x - 20, position.y + 40);
             animTimeDecr += deltaTime;
             if (animTimeDecr > 0.008) {
                 rotaRight -= 10;
@@ -191,12 +191,12 @@ void Player::dash(float deltaTime)
 
 void Player::collisionPlatform(Sprite& tile, float deltaTime) {
     if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds()) && tile.getPosition().y < position.y) { // si le perso se trouve sous la plateforme il ne la traverse pas 
-        position.y = tile.getPosition().y + 40;
+        position.y = tile.getPosition().y + 35;
         velocity.y = gravity * deltaTime;
         state = NONE;
     }
     else if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds()) && tile.getPosition().y > position.y) { // collision de base 
-        position.y = tile.getPosition().y - 64;
+        position.y = tile.getPosition().y - 58;
         velocity.y = 0;
         state = GROUNDED;
     }
@@ -208,11 +208,11 @@ void Player::collisionFloor(Sprite& tile) {
         velocity.y = 0;
         state = GROUNDED;
     }
-    else if (tile.getPosition().y < getPosPos().y) { // s'il passe sous le sol
-        setPosPos(getPosPos().x, tile.getPosition().y - 64);
-        velocity.y = 0;
-        state = GROUNDED;
-    }
+    //else if (tile.getPosition().y < getPosPos().y) { // s'il passe sous le sol
+    //    setPosPos(getPosPos().x, tile.getPosition().y - 64);
+    //    velocity.y = 0;
+    //    state = GROUNDED;
+    //}
 }
 
 #pragma region Getteurs / Setteurs
@@ -313,11 +313,6 @@ bool Player::setHasKey(bool key) {
     hasKey = key;
     return hasKey;
 }
-
-//State Player::getState()
-//{
-//    return state; 
-//}
 
 void Player::setState(State _state)
 {
