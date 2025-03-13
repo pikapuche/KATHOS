@@ -3,42 +3,49 @@
 #include "Ennemis.hpp"
 #include "Gemme.hpp"
 
-const int GRID_WIDTH = 20;
-const int GRID_HEIGHT = 15;
-const int CELL_SIZE = 40;
+
 
 class Map {
-protected:
-    sf::Texture groundTexture;
-    sf::Texture wallTexture;
-
-    float playerHeight = 70.0f;
-
-    sf::Text win;
-    sf::Font font;
-
-    Vector2f waypoint1;
-    Vector2f waypoint2;
-
-    bool winGame = false;
 
 public:
+    Texture groundYellowLeftTexture, groundYellowMidTexture, groundYellowRightTexture;
+    Texture groundRedLeftTexture, groundRedMidTexture, groundRedRightTexture;
+    Texture groundGreenLeftTexture, groundGreenMidTexture, groundGreenRightTexture;
 
-    vector<Player*> vector_player;
+    //Texture wallTexture;
 
-    vector<Gemme*> vector_gemme;
+    vector<Sprite*> groundYLVector, groundYMVector, groundYRVector;
+    vector<Sprite*> groundRLVector, groundRMVector, groundRRVector;
+    vector<Sprite*> groundGLVector, groundGMVector, groundGRVector;
 
-    vector<Enemy*> vector_enemy;
+    vector<ifstream*> maps;
 
-    ~Map();
+    vector<Player*> playerVector;
 
-    vector<string> vector_Map;
+    //Text win;
+    //Font font;
 
-    bool loadFromFile(string filename);
+    enum class StatePlaying {
+        Practice,
+        Monde1,
+        Monde2,
+        Monde3,
+    };
 
-    void initAll();
+    StatePlaying statePlaying;
 
-    void drawMap(sf::RenderWindow& window);
+    Map();
 
-    void collisionMap(Player& player, Enemy& enemy, float deltaTime);
+    ~Map(); 
+
+    void update(); 
+
+    void collision();
+
+    void loadMap();
+
+    void monSwitch(ifstream& _Map, string line, int z);
+
+    void draw(RenderWindow& window);
+
 };

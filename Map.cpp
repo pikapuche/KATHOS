@@ -1,165 +1,111 @@
 #include "Map.hpp"
 
-Map::~Map() {
-    for (auto players : vector_player) {
-        delete players;
-    }
-    vector_player.clear();
+Map::Map() : statePlaying(StatePlaying::Practice) {
+	groundYellowLeftTexture.loadFromFile("Assets/Map/groundYellowLeft.png");
+	groundYellowMidTexture.loadFromFile("Assets/Map/groundYellowMid.png");
+	groundYellowRightTexture.loadFromFile("Assets/Map/groundYellowRight.png");
+	groundRedLeftTexture.loadFromFile("Assets/Map/groundRedLeft.png");
+	groundRedMidTexture.loadFromFile("Assets/Map/groundRedMid.png");
+	groundRedRightTexture.loadFromFile("Assets/Map/groundRedRight.png");
+	groundGreenLeftTexture.loadFromFile("Assets/Map/groundGreenLeft.png");
+	groundGreenMidTexture.loadFromFile("Assets/Map/groundGreenMid.png");
+	groundGreenRightTexture.loadFromFile("Assets/Map/groundGreenRight.png");
+
 }
 
-bool Map::loadFromFile(string filename) {
-    ifstream file(filename);
-    if (!file) {
-        cerr << "Impossible d'ouvrir le fichier de la carte." << endl;
-        return false;
-    }
-
-    string line;
-    while (getline(file, line)) {
-        vector_Map.push_back(line);
-    }
-
-    if (!font.loadFromFile("Assets/Minecraft.ttf"))
-    {
-        cout << "error font" << endl << endl;
-    }
+void Map::update() {
+	collision();
 }
 
-void Map::initAll() {
-    if (vector_Map.empty()) return;
-    sf::RectangleShape tile(sf::Vector2f(24, 39)); // 41 & 45 ///////// 39 * 39 donc 39 x et 39 y
+void Map::collision() {
+	playerVector[0]->getSprite().getGlobalBounds();
+	//for (auto& monde1 : monde1Vector )  Si touche la sortie donc clear pointeur
 
-    for (size_t i = 0; i < vector_Map.size(); i++) { // gros code qui permet de parcourir la map
-        for (size_t j = 0; j < vector_Map[i].size(); j++) {
-            tile.setPosition(j * 24.f, i * 39.f);
-            switch (vector_Map[i][j]) {
-            case '=': // Player
+	// mettre les collisions
+
+}
+
+void Map::monSwitch(ifstream& _Map, string _line, int _z) {
+	
+	while (getline(_Map, _line)) {
+        for (int i = 0; i < _line.size(); i++) {
+            switch (_line[i]) {
+                cout << _line[i] << endl;
+            case '1':
             {
-                Player* players = new Player();
-                vector_player.push_back(players);
-                for (auto& player : vector_player) { // set la position de depart du player
-                    player->setPosPos(j * 24.f, i * 39.f);
-                }
+                Sprite* gGL = new Sprite;
+                gGL->setTexture(groundGreenLeftTexture);
+                gGL->setPosition({ (float)i * 32,(float)_z * 32 });
+                groundGLVector.push_back(gGL);
                 break;
             }
-            case '*': // Gemme
-            {
-                Gemme* gemmes = new Gemme();
-                vector_gemme.push_back(gemmes);
-                for (auto& gemme : vector_gemme) { 
-                    gemme->setPosition(j * 24.f, i * 39.f);
-                }
-                break;
-            }
-            case '1' : 
-            {
-                waypoint1 = { j * 24.f, i * 39.f };
-                break;
-            }
-            case '2': 
-            {
-                waypoint2 = { j * 24.f, i * 39.f };
-                break;
-            }
-            case 'E': // Ennemi
-            {
-                Enemy* ennemi = new Enemy(waypoint1, waypoint2); // choix des waypoints pour la patrol
-                vector_enemy.push_back(ennemi);
-                for (auto& ennemi : vector_enemy) {
-                    ennemi->setPosPos(j * 24.f, i * 39.f);
-                }
-                break;
-            }
-            default:  tile.setFillColor(sf::Color::Black); break;
+			case '2':
+			{
+				Sprite* gGM = new Sprite;
+				gGM->setTexture(groundGreenMidTexture);
+				gGM->setPosition({ (float)i * 32,(float)_z * 32 });
+				groundGMVector.push_back(gGM);
+				break;
+			}
+			case '3':
+			{
+				Sprite* gGR = new Sprite;
+				gGR->setTexture(groundGreenRightTexture);
+				gGR->setPosition({ (float)i * 32,(float)_z * 32 });
+				groundGMVector.push_back(gGR);
+				break;
+			}
+			case 'P':
+			{
+				Player* player = new Player;
+				player->setPosPos((float)i * 32,(float)_z * 32);
+				playerVector.push_back(player);
+				break;
+			}
+
             }
         }
+		_z++;
     }
 }
 
-void Map::drawMap(sf::RenderWindow& window) {
-    if (vector_Map.empty()) return;
-    sf::RectangleShape tile(sf::Vector2f(24, 39));
+void Map::loadMap() {
+	if (statePlaying == StatePlaying::Practice) {
+		ifstream Map0("Assets/Map/Practice.txt");
+		maps.push_back(&Map0);
+		string line;
+		float z = 0;
 
-    for (size_t i = 0; i < vector_Map.size(); i++) { // gros code qui permet de parcourir la map
-        for (size_t j = 0; j < vector_Map[i].size(); j++) {
-            tile.setPosition(j * 24.f, i * 39.f);
-            switch (vector_Map[i][j]) {
-            case '!': { // sol
-                tile.setFillColor(sf::Color::Red); // permet de set le sol de couleur rouge 
-                break;
-            }
+		for (auto& mapPractice : maps) {
+			monSwitch(*mapPractice, line, z);
+		}
+	}
 
-            case '#': {
-                tile.setFillColor(sf::Color::Cyan);
-                break;
-            }
-            case 'K': {
+	if (statePlaying == StatePlaying::Monde1) {
+		ifstream Map1("Assets/Map/Monde1.txt");
+		maps.push_back(&Map1);
+		string line;
+		float z = 0;
 
-                break;
-            }
+		for (auto& mapMonde1 : maps) {
+			monSwitch(*mapMonde1, line, z);
+		}
+	}
 
-            default:  tile.setFillColor(sf::Color::Black); break;
-            }
-            window.draw(tile);
-        }
-    }
+
 }
 
-void Map::collisionMap(Player& player, Enemy& enemy, float deltaTime) { // arriver a mettre entity pour permettre de faire ce qu'on veut avec un seul truc et opti
-    if (vector_Map.empty()) return;
-    sf::RectangleShape tile(sf::Vector2f(24, 39));
-
-    for (size_t i = 0; i < vector_Map.size(); i++) { // gros code qui permet de parcourir la map 
-        for (size_t j = 0; j < vector_Map[i].size(); j++) {
-            tile.setPosition(j * 24.f, i * 39.f); // set la position des différentes tiles sur la map
-            switch (vector_Map[i][j]) {
-            case '!': // plateformes
-                player.collisionPlatform(tile, deltaTime);
-                ////////////////////////////////////////////////// player //////////////////////////////////////////////////
-                //if (tile.getGlobalBounds().intersects(player.getSprite().getGlobalBounds()) && tile.getPosition().y > player.getPosPos().y) { // si le joueur entre en collision avec la plateforme mais qu'il est plus bas alors on set sa pos en dessous de la plateforme pour pas qu'il la traverse
-                //    player.setPosPos(player.getPosPos().x, tile.getPosition().y + 64);
-                //    player.setIsJumping(true);
-                //    player.setIsGrounded(false);
-                //}
-                //else if (tile.getGlobalBounds().intersects(player.getSprite().getGlobalBounds()) && tile.getPosition().y < player.getPosPos().y) { // si le joueur entre en collision avec une plateforme alors il set sa position en haut de celle ci
-                //    player.setPosPos(player.getPosPos().x, tile.getPosition().y - 64);
-                //    player.setIsJumping(false);
-                //    player.setIsGrounded(true);
-                //    //player.setVelocity(player.getVelocity().x, 0);
-                //} 
-                ////////////////////////////////////////////////// enemy //////////////////////////////////////////////////
-                if (tile.getGlobalBounds().intersects(enemy.getShape().getGlobalBounds()) && tile.getPosition().y > enemy.getPosPos().y) { // si le joueur entre en collision avec la plateforme mais qu'il est plus bas alors on set sa pos en dessous de la plateforme pour pas qu'il la traverse
-                    enemy.setPosPos(enemy.getPosPos().x, tile.getPosition().y + 40);
-                    enemy.setIsGrounded(false);
-                }
-                else if (tile.getGlobalBounds().intersects(enemy.getShape().getGlobalBounds()) && tile.getPosition().y < enemy.getPosPos().y) { // si le joueur entre en collision avec une plateforme alors il set sa position en haut de celle ci
-                    enemy.setPosPos(enemy.getPosPos().x, tile.getPosition().y - 40);
-                    enemy.setIsGrounded(true);
-                    //enemy.setVelocity(enemy.getVelocity().x, 0);
-                }
-                break;
-            case '#': // sol 
-                player.collisionFloor(tile);
-                //if (tile.getGlobalBounds().intersects(player.getSprite().getGlobalBounds())) { // si le joueur entre en collision avec le sol alors il set sa position en haut du sol
-                //    player.setPosPos(player.getPosPos().x, tile.getPosition().y - 64);
-                //    player.setIsJumping(false);
-                //    player.setIsGrounded(true);
-                //}
-                //if (tile.getPosition().y < player.getPosPos().y) {
-                //    player.setPosPos(player.getPosPos().x, tile.getPosition().y - 64);
-                //}
-                ////////////////////////////////////////////////// enemy //////////////////////////////////////////////////
-                if (tile.getGlobalBounds().intersects(enemy.getShape().getGlobalBounds())) { // si le joueur entre en collision avec le sol alors il set sa position en haut du sol
-                    enemy.setPosPos(enemy.getPosPos().x, tile.getPosition().y - 40);
-                    enemy.setIsGrounded(true);
-                    //enemy.setVelocity(enemy.getVelocity().x, 0);
-                }
-                if (tile.getPosition().y < enemy.getPosPos().y) {
-                    enemy.setPosPos(enemy.getPosPos().x, tile.getPosition().y - 40);
-                }
-                break;
-            default:  tile.setFillColor(sf::Color::Black); break;
-            }
-        }
-    }
+void Map::draw(RenderWindow& window) {
+	for (auto& groundGL : groundGLVector) {
+		window.draw(*groundGL);
+	}
+	for (auto& groundGM : groundGMVector) {
+		window.draw(*groundGM);
+	}
+	for (auto& groundGR : groundGRVector) {
+		window.draw(*groundGR);
+	}
+	for (auto& playerv : playerVector) {
+		playerv->draw(window);
+	}
 }

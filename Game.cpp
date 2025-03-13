@@ -2,6 +2,8 @@
 #include "MainScreen.hpp"
 #include "Interface.hpp"
 
+//faire collision
+
 void Game::run()
 {
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Kathos", sf::Style::Fullscreen);
@@ -9,12 +11,12 @@ void Game::run()
     window.setVerticalSyncEnabled(true);
     window.setFramerateLimit(60); 
 
-    Map map;
     MainScreen mainScreen;
     Interface overlay;
     mainScreen.initMenu(window);
-    map.loadFromFile("assets/map/mapV3.txt");
-    map.initAll();
+    Map* m = new Map();
+    m->loadMap();
+
 
     Clock clock;
     overlay.initInterface(); // Ensure the texture is loaded once
@@ -37,41 +39,31 @@ void Game::run()
         }
 
         window.clear();
+        for (auto& playerv : m->playerVector) {
+            playerv->update(deltaTime);
+        }
+        m->update();
+        m->draw(window);
 
         if (mainScreen.getIsInMenu()) {
             mainScreen.updateMenu(window);
         }
         else {
             mainScreen.destroyAll();
-            map.drawMap(window);
-
-            for (auto& players : map.vector_player) {
-                if (!overlay.getIsPaused()) {
-                    players->update(deltaTime);
-                    for(auto& enemies : map.vector_enemy)
-                    map.collisionMap(*players, *enemies, deltaTime);
-                }
-                players->draw(window);
-            }
 
             if (overlay.getIsPaused()) {
                 overlay.updateInterface(window);
             }
-
-            for (auto& gemmes : map.vector_gemme) {
-                for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements
-                    gemmes->interact(*players);
-                    gemmes->draw(window, *players);
-                }
-            }
-
-            for (auto& ennemis : map.vector_enemy) {
-                for (auto& players : map.vector_player) {
-                    ennemis->updateReal(deltaTime, *players);
-                }
-                ennemis->draw(window);
-            }
-            window.display();
         }
+
+        //for (auto& gemmes : map.vector_gemme) {
+        //    for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements
+        //        gemmes->interact(*players);
+        //    }
+        //    gemmes->draw(window);
+        //}
+
+        // Affiche tout
+        window.display(); 
     }
 }
