@@ -15,8 +15,8 @@ protected :
 
 	float SPEED = 250.f;
 
-	Vector2f waypoint1;
-	Vector2f waypoint2;
+	Vector2f waypointOne;
+	Vector2f waypointTwo;
 
 	CircleShape circleOne;
 	CircleShape circleTwo;
