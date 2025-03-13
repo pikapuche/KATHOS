@@ -19,7 +19,7 @@ public:
 
     vector<unique_ptr<Sprite>> groundSprites;
 
-    Player player;
+    shared_ptr<Player> player = make_shared<Player>();
 
     vector<ifstream*> maps;
 
@@ -37,7 +37,7 @@ public:
 
     Map();
 
-    //~Map(); 
+    ~Map(); 
 
     void update(float deltaTime);
 

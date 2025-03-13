@@ -13,13 +13,18 @@ Map::Map() : statePlaying(StatePlaying::Practice) {
 
 }
 
+Map::~Map()
+{
+	
+}
+
 void Map::update(float deltaTime) {
 	collision(deltaTime);
 }
 
 void Map::collision(float deltaTime) {
 	for (auto& ground : groundSprites) {
-		player.collisionPlatform(*ground, deltaTime);
+		player->collisionPlatform(*ground, deltaTime);
 	}
 }
 
@@ -55,7 +60,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			}
 			case 'P':
 			{
-				player.setPosPos((float)i * 32, (float)_z * 20);
+				player->setPosPos((float)i * 32, (float)_z * 20);
 				break;
 			}
 
@@ -92,7 +97,7 @@ void Map::draw(RenderWindow& window) {
 	for (auto& ground : groundSprites) {
 		window.draw(*ground);
 	}
-	player.draw(window);
+	player->draw(window);
 }
 
 void Map::gameOver(RenderWindow& window)

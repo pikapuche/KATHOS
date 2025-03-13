@@ -63,18 +63,18 @@ void Player::movementManager(float deltaTime) {
     
     sprite.setPosition(position);
 
-    //if (sprite.getPosition().y < 0) { // haut de l'écran
-    //    sprite.setPosition(position.x, position.y = 64);
-    //}
-    //if (sprite.getPosition().y > 1016) { // bas de l'écran 
-    //    sprite.setPosition(position.x, position.y = 1016);
-    //}
-    //if (sprite.getPosition().x < 0) {
-    //    sprite.setPosition(position.x = 0, position.y);
-    //}
-    //if (sprite.getPosition().x > 1856) {
-    //    sprite.setPosition(position.x = 1856, position.y);
-    //}
+    if (sprite.getPosition().y < 0) { // haut de l'écran
+        sprite.setPosition(position.x, position.y = 64);
+    }
+    if (sprite.getPosition().y > 1016) { // bas de l'écran 
+        sprite.setPosition(position.x, position.y = 1016);
+    }
+    if (sprite.getPosition().x < 0) {
+        sprite.setPosition(position.x = 0, position.y);
+    }
+    if (sprite.getPosition().x > 1856) {
+        sprite.setPosition(position.x = 1856, position.y);
+    }
 }
 
 void Player::animationManager(float deltaTime) {
@@ -137,7 +137,7 @@ void Player::attack(float deltaTime) {
     // Si le perso a une épée on fait une rotation a l'arme
     if (isAttacking) {
         if (stateLook == LOOK_RIGHT) {
-            attackShape.setPosition(position.x + 40, position.y + 40);
+            attackShape.setPosition(position.x + 37, position.y + 45);
             animTimeDecr += deltaTime;
             if (animTimeDecr > 0.008) {
                 rotaRight += 10;
@@ -150,13 +150,13 @@ void Player::attack(float deltaTime) {
             }
         }
         if (stateLook == LOOK_LEFT) {
-            attackShape.setPosition(position.x - 20, position.y + 40);
+            attackShape.setPosition(position.x + 24, position.y + 37);
             animTimeDecr += deltaTime;
             if (animTimeDecr > 0.008) {
-                rotaRight -= 10;
-                attackShape.setRotation(rotaRight);
-                if (rotaRight <= -100) {
-                    rotaRight = -20;
+                rotaLeft -= 10;
+                attackShape.setRotation(rotaLeft);
+                if (rotaLeft <= 50) {
+                    rotaLeft = 130;
                     isAttacking = false;
                 }
                 animTimeDecr = 0;

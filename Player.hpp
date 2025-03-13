@@ -23,7 +23,7 @@ protected:
     float animIdleTimeDecr;
 
     float rotaRight = 220;
-    float rotaLeft = -20;
+    float rotaLeft = 120;
 
     float gachetteValue;
     float joystickValue;
