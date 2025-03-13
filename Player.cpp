@@ -61,20 +61,19 @@ void Player::movementManager(float deltaTime) {
     velocity.y += gravity * deltaTime;  // Appliquer la gravité
     position.y += velocity.y * deltaTime;
     
-    //shape.setPosition(position);
     sprite.setPosition(position);
 
-    if (sprite.getPosition().y < -20) {
+    if (sprite.getPosition().y < 0) { // haut de l'écran
         sprite.setPosition(position.x, position.y = 64);
     }
-    if (sprite.getPosition().y > 1080) {
-        sprite.setPosition(position.x, position.y = 1080);
+    if (sprite.getPosition().y > 1016) { // bas de l'écran 
+        sprite.setPosition(position.x, position.y = 1016);
     }
     if (sprite.getPosition().x < 0) {
         sprite.setPosition(position.x = 0, position.y);
     }
-    if (sprite.getPosition().x > 1920) {
-        sprite.setPosition(position.x = 1920, position.y);
+    if (sprite.getPosition().x > 1856) {
+        sprite.setPosition(position.x = 1856, position.y);
     }
 }
 
@@ -138,7 +137,7 @@ void Player::attack(float deltaTime) {
     // Si le perso a une épée on fait une rotation a l'arme
     if (isAttacking) {
         if (stateLook == LOOK_RIGHT) {
-            attackShape.setPosition(position.x + 40, position.y + 20);
+            attackShape.setPosition(position.x + 37, position.y + 45);
             animTimeDecr += deltaTime;
             if (animTimeDecr > 0.008) {
                 rotaRight += 10;
@@ -151,13 +150,13 @@ void Player::attack(float deltaTime) {
             }
         }
         if (stateLook == LOOK_LEFT) {
-            attackShape.setPosition(position.x - 20, position.y + 20);
+            attackShape.setPosition(position.x + 24, position.y + 37);
             animTimeDecr += deltaTime;
             if (animTimeDecr > 0.008) {
-                rotaRight -= 10;
-                attackShape.setRotation(rotaRight);
-                if (rotaRight <= -100) {
-                    rotaRight = -20;
+                rotaLeft -= 10;
+                attackShape.setRotation(rotaLeft);
+                if (rotaLeft <= 50) {
+                    rotaLeft = 130;
                     isAttacking = false;
                 }
                 animTimeDecr = 0;
@@ -190,28 +189,30 @@ void Player::dash(float deltaTime)
     }
 }
 
-void Player::collisionPlatform(RectangleShape& tile, float deltaTime) {
+void Player::collisionPlatform(Sprite& tile, float deltaTime) {
     if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds()) && tile.getPosition().y < position.y) { // si le perso se trouve sous la plateforme il ne la traverse pas 
-        position.y = tile.getPosition().y + 40;
+        position.y = tile.getPosition().y + 35;
         velocity.y = gravity * deltaTime;
         state = NONE;
     }
     else if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds()) && tile.getPosition().y > position.y) { // collision de base 
-        position.y = tile.getPosition().y - 64;
+        position.y = tile.getPosition().y - 58;
         velocity.y = 0;
         state = GROUNDED;
     }
 }
 
-void Player::collisionFloor(RectangleShape& tile) {
+void Player::collisionFloor(Sprite& tile) {
     if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds())) { // si le joueur entre en collision avec le sol alors il set sa position en haut du sol
         setPosPos(getPosPos().x, tile.getPosition().y - 64);
         velocity.y = 0;
         state = GROUNDED;
     }
-    else if (tile.getPosition().y < getPosPos().y) { // s'il passe sous le sol
-        setPosPos(getPosPos().x, tile.getPosition().y - 64);
-    }
+    //else if (tile.getPosition().y < getPosPos().y) { // s'il passe sous le sol
+    //    setPosPos(getPosPos().x, tile.getPosition().y - 64);
+    //    velocity.y = 0;
+    //    state = GROUNDED;
+    //}
 }
 
 #pragma region Getteurs / Setteurs
@@ -226,10 +227,6 @@ Vector2f Player::setVelocity(float veloX, float veloY) {
     return velocity;
 }
 
-//RectangleShape Player::getShape() {
-//    return shape;
-//}
-
 Vector2f Player::setPosPos(float x, float y)
 {
     position.x = x;
@@ -241,26 +238,6 @@ Vector2f Player::getPosPos()
 {
     return position;
 }
-
-//bool Player::getIsJumping() {
-//    return isJumping;
-//}
-//
-//bool Player::setIsJumping(bool jump) {
-//    isJumping = jump;
-//    return isJumping;
-//}
-//
-//bool Player::setIsGrounded(bool is)
-//{
-//    isGrounded = is;
-//    return isGrounded;
-//}
-//
-//bool Player::getIsGrounded()
-//{
-//    return isGrounded;
-//}
 
 bool Player::getIsTakeDash()
 {
@@ -335,6 +312,11 @@ bool Player::getHasKey() {
 bool Player::setHasKey(bool key) {
     hasKey = key;
     return hasKey;
+}
+
+void Player::setState(State _state)
+{
+    state = _state;
 }
 
 #pragma endregion Getteurs / Setteurs

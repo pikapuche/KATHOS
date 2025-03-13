@@ -9,14 +9,14 @@ void Game::run()
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Kathos", sf::Style::Fullscreen);
 
     window.setVerticalSyncEnabled(true);
-    window.setFramerateLimit(60); 
+    window.setFramerateLimit(60);
 
     MainScreen mainScreen;
 
     Interface overlay;
     mainScreen.initMenu(window);
-    Map* m = new Map();
-    m->loadMap();
+    Map m;
+    m.loadMap();
 
     Clock clock;
     overlay.initInterface(); // Ensure the texture is loaded once
@@ -39,18 +39,17 @@ void Game::run()
         }
 
         window.clear();
-        for (auto& playerv : m->playerVector) {
-            playerv->update(deltaTime);
-        }
-        m->update();
-        m->draw(window);
+        m.player->update(deltaTime);
 
-        if (mainScreen.getIsInMenu()) {
-            mainScreen.updateMenu(window);
-        }   
-        else {
-            mainScreen.destroyAll();
-        }
+        m.update(deltaTime);
+        m.draw(window);
+
+        //if (mainScreen.getIsInMenu()) {
+        //    mainScreen.updateMenu(window);
+        //}   
+        //else {
+        //    mainScreen.destroyAll();
+        //}
 
         //for (auto& gemmes : map.vector_gemme) {
         //    for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements
@@ -60,6 +59,6 @@ void Game::run()
         //}
 
         // Affiche tout
-        window.display(); 
+        window.display();
     }
 }
