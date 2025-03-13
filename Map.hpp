@@ -6,6 +6,9 @@
 #include "Ennemis.hpp"
 #include "Gemme.hpp"
 #include "Interactibles.hpp"
+#include "Chest.hpp"
+#include "Key.hpp"
+
 
 class Map {
 public:

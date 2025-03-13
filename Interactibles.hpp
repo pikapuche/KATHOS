@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 
+
 class Interactible {
 protected:
     sf::Sprite sprite;
@@ -26,17 +27,4 @@ public:
     virtual void draw(sf::RenderWindow& window) { window.draw(sprite); }
 
     void setTexture(const std::string& filePath);
-};
-
-class Chest : public Interactible {
-private:
-    std::string chestContent;
-    int contentAmount;
-    bool requireKey;
-
-public:
-    Chest();
-
-    //void interact(Player& player) override; // Define interaction
-    void setPosPos(float x, float y);
 };
