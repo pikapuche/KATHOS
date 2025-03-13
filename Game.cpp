@@ -42,7 +42,7 @@ void Game::run()
         for (auto& playerv : m->playerVector) {
             playerv->update(deltaTime);
         }
-        m->update();        
+        m->update();
         m->draw(window);
 
         if (mainScreen.getIsInMenu()) {
