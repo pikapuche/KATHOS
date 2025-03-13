@@ -3,36 +3,41 @@
 
 class Player : public Entity {
 protected:
-    sf::Vector2f position;
-    sf::Vector2f velocity;
-    RectangleShape shape;
+    Texture textureSprint;
+    Texture textureIdle;
+    RectangleShape attackShape;
 
+    enum State { NONE, GROUNDED, JUMP };
+    State state;
 
-    bool hasKey = false;
-    const float gravity = 981.0f;  // Gravité en pixels par seconde carrée (simulation)
+    enum StateLook { LOOK_RIGHT, LOOK_LEFT };
+    StateLook stateLook;
+
+    enum StateMove { IDLE, RUN };
+    StateMove stateMove;
+
+    int jumpCount = 0;
+
     float SPEED = 300.0f;  // Vitesse de déplacement horizontal
     float jumpForce = 600.f;  // Force initiale du saut
-    bool isJumping;
-    bool isJumping2;
-    bool isAttacking;
-    bool canJump = false;
-    bool canJump2 = false;
-    bool isGrounded = false;
+
+    float animTimeDecr;
+    float animRunTimeDecr;
+    float animIdleTimeDecr;
+
+    float rotaRight = 220;
+    float rotaLeft = -20;
+
+    float gachetteValue;
+    float joystickValue;
+
+    bool isAttacking = false;
+
     bool isTakeDash = false;
     bool isDashing = false;
     bool isTakeSpeed = false;
 
-    float animTimeDecr;
-    float rotaLeft = 220;
-
-    float gachetteValue;
-
-    int jumpCount = 0;
-
-    int buttonCount = sf::Joystick::getButtonCount(0);
-    float joystickValue;
-
-    RectangleShape attackShape;
+    bool hasKey = false;
 
     Clock jumpClock;
     Clock coolDownDash;
@@ -40,43 +45,41 @@ protected:
 
 public:
 
+    bool floor = true;
+
     Player();
 
     void movementManager(float deltaTime);
+
+    void animationManager(float deltaTime);
 
     void jump();
 
     void attack(float deltaTime);
 
-    Vector2f getPosPos();
+    void dash(float deltaTime);
 
-    Vector2f setPosPos(float(x), float(y));
+    void collisionPlatform(RectangleShape& tile, float deltaTime);
+
+    void collisionFloor(RectangleShape& tile);
+
+    Vector2f setPosPos(float x, float y);
+
+    Vector2f getPosPos();
 
     Vector2f getVelocity();
 
     Vector2f setVelocity(float veloX, float veloY);
 
-    RectangleShape getShape();
+    //RectangleShape getShape();
 
-    bool getIsJumping();
+    //bool getIsJumping();
 
-    bool setIsJumping(bool jump);
+    //bool setIsJumping(bool jump);
 
-    bool getIsJumping2();
+    //bool setIsGrounded(bool is);
 
-    bool setIsJumping2(bool jump);
-
-    bool getCanJump();
-
-    bool setcanJump(bool can);
-
-    bool getCanJump2();
-
-    bool setcanJump2(bool can);
-
-    bool setIsGrounded(bool is);
-
-    bool getIsGrounded();
+    //bool getIsGrounded();
 
     bool getIsTakeDash();
 
@@ -98,16 +101,17 @@ public:
 
     float getSPEED();
 
+    float setSPEED(float speed);
+
     int setJumpCount(float count);
 
     int getJumpCount();
 
-    float setSPEED(float speed);
+    bool getHasKey();
+
+    bool setHasKey(bool key);
 
     void update(float deltaTime);
 
     void draw(RenderWindow& window);
-
-    bool gethasKey();
-    void sethasKey(bool key);
 };

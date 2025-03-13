@@ -63,6 +63,10 @@ void MainScreen::initMenu(sf::RenderWindow& window) {
 }
 
 
+void MainScreen::updateMenu(sf::RenderWindow& window) {
+    window.draw(background);
+}
+
 void MainScreen::handleButtonPress(Button& button) {
     if (!button.getisHidden()) {
         switch (button.getType()) {
@@ -215,6 +219,7 @@ void MainScreen::updateMenu(sf::RenderWindow& window) {
 
 
     window.display();
+
 }
 
 void MainScreen::destroyAll() {
