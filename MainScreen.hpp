@@ -14,10 +14,18 @@ private:
     sf::Clock clickCooldown;  // Cooldown timer
     float cooldownTime = 0.5f; // 0.5 seconds
 
+    //Controller Inputs
+    Interface interfaceuh; // Add Interface object
+    int selectedButtonIndex = 0; // Tracks selected button
+    sf::Sprite highlightRect; // Highlight for selected button
+    sf::Texture highlightTexture; // Texture for the highlight
+    
 public:
     bool getIsInMenu();
     void setIsInMenu(bool menu);
     void initMenu(sf::RenderWindow& window);
     void updateMenu(sf::RenderWindow& window);
     void destroyAll();
+    void handleControllerNavigation();
+	void handleButtonPress(Button& button);
 };

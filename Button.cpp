@@ -53,3 +53,15 @@ bool Button::getisHidden() {
 void Button::setHidden(bool hidden) {
 	isHidden = hidden;
 }
+
+sf::Vector2f Button::getPosition() {
+	return button.getPosition();
+}
+
+float Button::getHeight() {
+    return button.getGlobalBounds().height;
+}
+
+float Button::getWidth() {
+    return button.getGlobalBounds().width;
+}

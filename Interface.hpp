@@ -22,7 +22,11 @@ private:
     PauseOverlay pauseOverlay; // Store the overlay as a member
     std::vector<Button> buttons;
     bool shouldRestart = false; // Track restart state
-    bool isUsingController = false;
+    bool isUsingController;
+    int selectedButtonIndex = 0; // Track the currently highlighted button
+    sf::Sprite highlightRect; // Overlay to show selection
+	sf::Texture highlightTexture;
+
 public:
     void initInterface();
 	bool getIsPaused();
@@ -32,4 +36,6 @@ public:
     void resetRestartFlag();
 	void setUsingController(bool usingController);
 	bool getUsingController();
+	void detectControllerInput();
+    void handleMenuNavigation(); // New function for input
 };

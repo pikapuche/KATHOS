@@ -29,4 +29,8 @@ public:
     bool isInSettings();
 	bool getisHidden();
 	void setHidden(bool hidden);
+    sf::Vector2f getPosition();
+
+    float getHeight();
+	float getWidth();
 };
