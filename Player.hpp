@@ -59,9 +59,9 @@ public:
 
     void dash(float deltaTime);
 
-    void collisionPlatform(RectangleShape& tile, float deltaTime);
+    void collisionPlatform(Sprite& tile, float deltaTime);
 
-    void collisionFloor(RectangleShape& tile);
+    void collisionFloor(Sprite& tile);
 
     Vector2f setPosPos(float x, float y);
 
@@ -70,16 +70,6 @@ public:
     Vector2f getVelocity();
 
     Vector2f setVelocity(float veloX, float veloY);
-
-    //RectangleShape getShape();
-
-    //bool getIsJumping();
-
-    //bool setIsJumping(bool jump);
-
-    //bool setIsGrounded(bool is);
-
-    //bool getIsGrounded();
 
     bool getIsTakeDash();
 
@@ -110,6 +100,10 @@ public:
     bool getHasKey();
 
     bool setHasKey(bool key);
+
+    State getState();
+
+    void setState(State _state);
 
     void update(float deltaTime);
 

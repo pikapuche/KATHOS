@@ -47,7 +47,7 @@ public:
 
     ~Map(); 
 
-    void update(); 
+    void update(float deltaTime); 
 
     void collision(float deltaTime);
 

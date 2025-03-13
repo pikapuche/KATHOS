@@ -13,34 +13,43 @@ Map::Map() : statePlaying(StatePlaying::Practice) {
 
 }
 
-void Map::update() {
-	collision();
+void Map::update(float deltaTime) {
+	collision(deltaTime);
 }
 
 void Map::collision(float deltaTime) {
-	playerVector[0]->getSprite().getGlobalBounds();
+	if (playerVector[0]->getPosPos().y < groundSprite->getPosition().y) {
+		playerVector[0]->setPosPos(playerVector[0]->getPosPos().x, groundSprite->getPosition().y - 64);
+		playerVector[0]->setVelocity(playerVector[0]->getVelocity().x, 0);
+		playerVector[0]->setState(playerVector[0]->GROUNDED);
+	}
+	//playerVector[0]->collisionFloor(*groundSprite);
+	//playerVector[0]->collisionPlatform(*groundSprite, deltaTime);
 	//for (auto& monde1 : monde1Vector )  Si touche la sortie donc clear pointeur
-
+	
 	/////// Player //////////
-	//if (playerVector[0]->getSprite().getGlobalBounds().intersects(groundSprite->getGlobalBounds()) && groundSprite->getPosition().y < playerVector[0]->getPosPos().y) {}
-	if (groundSprite->getGlobalBounds().intersects(playerVector[0]->getSprite().getGlobalBounds()) && groundSprite->getPosition().y < playerVector[0]->getPosPos().y) { // si le perso se trouve sous la plateforme il ne la traverse pas 
-		playerVector[0]->setPosPos(playerVector[0]->getPosPos().x, groundSprite->getPosition().y + 32);
-		playerVector[0]->setVelocity(playerVector[0]->getVelocity().x, playerVector[0]->getGravity() * deltaTime);
-		playerVector[0]->state = playerVector[0]->State::NONE; 
-	}
-	else if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds()) && tile.getPosition().y > position.y) { // collision de base 
-		position.y = tile.getPosition().y - 64;
-		velocity.y = 0;
-		state = GROUNDED;
-	}
-	if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds())) { // si le joueur entre en collision avec le sol alors il set sa position en haut du sol
-		setPosPos(getPosPos().x, tile.getPosition().y - 64);
-		velocity.y = 0;
-		state = GROUNDED;
-	}
-	else if (tile.getPosition().y < getPosPos().y) { // s'il passe sous le sol
-		setPosPos(getPosPos().x, tile.getPosition().y - 64);
-	}
+	//plateforme
+	//if (groundSprite->getGlobalBounds().intersects(playerVector[0]->getSprite().getGlobalBounds()) && groundSprite->getPosition().y < playerVector[0]->getPosPos().y) { // si le perso se trouve sous la plateforme il ne la traverse pas 
+	//	playerVector[0]->setPosPos(playerVector[0]->getPosPos().x, groundSprite->getPosition().y + 64);
+	//	playerVector[0]->setVelocity(playerVector[0]->getVelocity().x, playerVector[0]->getGravity() * deltaTime);
+	//	playerVector[0]->NONE;
+	//}
+	//else if (groundSprite->getGlobalBounds().intersects(playerVector[0]->getSprite().getGlobalBounds()) && groundSprite->getPosition().y > playerVector[0]->getPosPos().y) { // collision de base 
+	//	playerVector[0]->setPosPos(playerVector[0]->getPosPos().x, groundSprite->getPosition().y - 64);
+	//	playerVector[0]->setVelocity(playerVector[0]->getVelocity().x, 0);
+	//	playerVector[0]->GROUNDED;
+	//}
+	// sol
+	//if(playerVector[0]->getSprite().getGlobalBounds().intersects(groundSprite->getGlobalBounds()) && groundSprite->getPosition().y < playerVector[0]->getPosPos().y) {
+	////if (groundSprite->getGlobalBounds().intersects(playerVector[0]->getSprite().getGlobalBounds())) { // si le joueur entre en collision avec le sol alors il set sa position en haut du sol
+	//	playerVector[0]->setPosPos(playerVector[0]->getPosPos().x, groundSprite->getPosition().y - 64);
+	//	playerVector[0]->setVelocity(playerVector[0]->getVelocity().x, 0);
+	//	playerVector[0]->GROUNDED;
+	//}
+	//else if (groundSprite->getPosition().y < playerVector[0]->getPosPos().y) { // s'il passe sous le sol
+	//	playerVector[0]->setPosPos(playerVector[0]->getPosPos().x, groundSprite->getPosition().y - 64);
+	//	playerVector[0]->setVelocity(playerVector[0]->getVelocity().x, 0);
+	//}
 }
 
 void Map::monSwitch(ifstream& _Map, string _line, int _z) {
@@ -55,6 +64,8 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				groundSprite->setTexture(groundGreenLeftTexture);
 				groundSprite->setPosition({ (float)i * 32,(float)_z * 32 });
 				groundGLVector.push_back(groundSprite);
+				//playerVector[0]->collisionFloor(*groundSprite);
+				//playerVector[0]->collisionPlatform(*groundSprite, deltaTime);
 				break;
 			}
 			case '2':

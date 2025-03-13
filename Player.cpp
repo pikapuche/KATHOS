@@ -61,21 +61,20 @@ void Player::movementManager(float deltaTime) {
     velocity.y += gravity * deltaTime;  // Appliquer la gravité
     position.y += velocity.y * deltaTime;
     
-    //shape.setPosition(position);
     sprite.setPosition(position);
 
-    if (sprite.getPosition().y < -20) {
-        sprite.setPosition(position.x, position.y = 64);
-    }
-    if (sprite.getPosition().y > 1080) {
-        sprite.setPosition(position.x, position.y = 1080);
-    }
-    if (sprite.getPosition().x < 0) {
-        sprite.setPosition(position.x = 0, position.y);
-    }
-    if (sprite.getPosition().x > 1920) {
-        sprite.setPosition(position.x = 1920, position.y);
-    }
+    //if (sprite.getPosition().y < 0) { // haut de l'écran
+    //    sprite.setPosition(position.x, position.y = 64);
+    //}
+    //if (sprite.getPosition().y > 1016) { // bas de l'écran 
+    //    sprite.setPosition(position.x, position.y = 1016);
+    //}
+    //if (sprite.getPosition().x < 0) {
+    //    sprite.setPosition(position.x = 0, position.y);
+    //}
+    //if (sprite.getPosition().x > 1856) {
+    //    sprite.setPosition(position.x = 1856, position.y);
+    //}
 }
 
 void Player::animationManager(float deltaTime) {
@@ -190,7 +189,7 @@ void Player::dash(float deltaTime)
     }
 }
 
-void Player::collisionPlatform(RectangleShape& tile, float deltaTime) {
+void Player::collisionPlatform(Sprite& tile, float deltaTime) {
     if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds()) && tile.getPosition().y < position.y) { // si le perso se trouve sous la plateforme il ne la traverse pas 
         position.y = tile.getPosition().y + 40;
         velocity.y = gravity * deltaTime;
@@ -203,7 +202,7 @@ void Player::collisionPlatform(RectangleShape& tile, float deltaTime) {
     }
 }
 
-void Player::collisionFloor(RectangleShape& tile) {
+void Player::collisionFloor(Sprite& tile) {
     if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds())) { // si le joueur entre en collision avec le sol alors il set sa position en haut du sol
         setPosPos(getPosPos().x, tile.getPosition().y - 64);
         velocity.y = 0;
@@ -211,6 +210,8 @@ void Player::collisionFloor(RectangleShape& tile) {
     }
     else if (tile.getPosition().y < getPosPos().y) { // s'il passe sous le sol
         setPosPos(getPosPos().x, tile.getPosition().y - 64);
+        velocity.y = 0;
+        state = GROUNDED;
     }
 }
 
@@ -311,6 +312,16 @@ bool Player::getHasKey() {
 bool Player::setHasKey(bool key) {
     hasKey = key;
     return hasKey;
+}
+
+//State Player::getState()
+//{
+//    return state; 
+//}
+
+void Player::setState(State _state)
+{
+    state = _state;
 }
 
 #pragma endregion Getteurs / Setteurs
