@@ -18,8 +18,8 @@ Boss::Boss(Player& target) : Entity(position.x, position.y), target(target) {
 }
 
 bool Boss::canSeePlayer() {
-    float distanceX = std::abs(target.getPosPos().x - position.x);
-    float distanceY = std::abs(target.getPosPos().y - position.y);
+    float distanceX = abs(target.getPosPos().x - position.x);
+    float distanceY = abs(target.getPosPos().y - position.y);
     return (distanceX < detectionRange && distanceY < 50.0f);
 }
 
@@ -79,7 +79,7 @@ void Boss::update(float deltaTime) {
     sprite.setPosition(position);
 }
 
-void Boss::draw(sf::RenderWindow& window) {
+void Boss::draw(RenderWindow& window) {
     window.draw(sprite);
 }
 

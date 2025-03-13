@@ -4,7 +4,7 @@
 
 void Game::run()
 {
-    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Kathos", sf::Style::Fullscreen);
+    RenderWindow window(VideoMode(1920, 1080), "Kathos", Style::Fullscreen);
     window.setVerticalSyncEnabled(true);
     window.setFramerateLimit(60);
 
@@ -18,18 +18,18 @@ void Game::run()
     overlay.initInterface();
 
     while (window.isOpen()) {
-        sf::Time deltaT = clock.restart();
+        Time deltaT = clock.restart();
         float deltaTime = deltaT.asSeconds();
-        sf::Event event;
+        Event event;
 
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
+            if (event.type == Event::Closed) {
                 window.close();
             }
-            if (mainScreen.getIsInMenu() && event.key.code == sf::Keyboard::Escape) {
+            if (mainScreen.getIsInMenu() && event.key.code == Keyboard::Escape) {
                 window.close();
             }
-            else if (!mainScreen.getIsInMenu() && event.key.code == sf::Keyboard::Escape) {
+            else if (!mainScreen.getIsInMenu() && event.key.code == Keyboard::Escape) {
                 overlay.setIsPaused(true);
             }
         }

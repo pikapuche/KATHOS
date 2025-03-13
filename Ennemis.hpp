@@ -8,8 +8,8 @@ protected :
 	State currentState;
 
 	float detectionRadius;
-	sf::CircleShape circle;
-	sf::Vector2f lastPlayerPosition;
+	CircleShape circle;
+	Vector2f lastPlayerPosition;
 
 	bool isGrounded = false;
 
@@ -31,7 +31,7 @@ public :
 
 	void chase(Player& player);
 
-	void search(sf::Vector2f lastPlayerPos, float deltaTime);
+	void search(Vector2f lastPlayerPos, float deltaTime);
 
 	Vector2f setPosPos(float x, float y);
 

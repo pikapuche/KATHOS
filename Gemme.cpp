@@ -5,7 +5,7 @@ Gemme::Gemme() : Player() {
 	dashGemmeShape.setSize(Vector2f(32, 32));
 }
 
-sf::Vector2f Gemme::setPosition(float x, float y)
+Vector2f Gemme::setPosition(float x, float y)
 {
 	position.x = x;
 	position.y = y;

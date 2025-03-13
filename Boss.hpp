@@ -5,8 +5,8 @@
 
 class Boss : public Entity {
 private:
-    sf::Vector2f position;
-    sf::Vector2f velocity;
+    Vector2f position;
+    Vector2f velocity;
     float speed;
     Player& target;
     float detectionRange;
