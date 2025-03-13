@@ -25,17 +25,17 @@ void Map::collision() {
 void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 	
 	while (getline(_Map, _line)) {
-        for (int i = 0; i < _line.size(); i++) {
-            switch (_line[i]) {
-                cout << _line[i] << endl;
-            case '1':
-            {
-                Sprite* gGL = new Sprite;
-                gGL->setTexture(groundGreenLeftTexture);
-                gGL->setPosition({ (float)i * 32,(float)_z * 32 });
-                groundGLVector.push_back(gGL);
-                break;
-            }
+		for (int i = 0; i < _line.size(); i++) {
+			switch (_line[i]) {
+				cout << _line[i] << endl;
+			case '1':
+			{
+				Sprite* gGL = new Sprite;
+				gGL->setTexture(groundGreenLeftTexture);
+				gGL->setPosition({ (float)i * 32,(float)_z * 32 });
+				groundGLVector.push_back(gGL);
+				break;
+			}
 			case '2':
 			{
 				Sprite* gGM = new Sprite;
@@ -55,37 +55,15 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			case 'P':
 			{
 				Player* player = new Player;
-				player->setPosPos((float)i * 32,(float)_z * 32);
+				player->setPosPos((float)i * 32, (float)_z * 32);
 				playerVector.push_back(player);
 				break;
 			}
 
-            }
-        }
+			}
+		}
 		_z++;
-    }
-
-    if (isGameOver) {
-        sf::RectangleShape gameOverScreen(sf::Vector2f(window.getSize().x, window.getSize().y));
-        gameOverScreen.setFillColor(sf::Color(0, 0, 0, 150));
-        window.draw(gameOverScreen);
-
-        sf::Font font;
-        if (!font.loadFromFile("Assets/Fonts/Minecraft.ttf")) {
-            cout << "Erreur chargement police !" << endl;
-        }
-
-        sf::Text gameOverText;
-        gameOverText.setFont(font);
-        gameOverText.setString("GAME OVER");
-        gameOverText.setCharacterSize(80);
-        gameOverText.setFillColor(sf::Color::Red);
-        gameOverText.setStyle(sf::Text::Bold);
-        gameOverText.setPosition((window.getSize().x - gameOverText.getGlobalBounds().width) / 2, (window.getSize().y - gameOverText.getGlobalBounds().height) / 2);
-
-        window.draw(gameOverText);
-        return;
-    }
+	}
 }
 
 void Map::loadMap() {
@@ -123,5 +101,30 @@ void Map::draw(RenderWindow& window) {
 	}
 	for (auto& playerv : playerVector) {
 		playerv->draw(window);
+	}
+}
+
+void Map::gameOver(RenderWindow& window)
+{
+	if (isGameOver) {
+		sf::RectangleShape gameOverScreen(sf::Vector2f(window.getSize().x, window.getSize().y));
+		gameOverScreen.setFillColor(sf::Color(0, 0, 0, 150));
+		window.draw(gameOverScreen);
+
+		sf::Font font;
+		if (!font.loadFromFile("Assets/Fonts/Minecraft.ttf")) {
+			cout << "Erreur chargement police !" << endl;
+		}
+
+		sf::Text gameOverText;
+		gameOverText.setFont(font);
+		gameOverText.setString("GAME OVER");
+		gameOverText.setCharacterSize(80);
+		gameOverText.setFillColor(sf::Color::Red);
+		gameOverText.setStyle(sf::Text::Bold);
+		gameOverText.setPosition((window.getSize().x - gameOverText.getGlobalBounds().width) / 2, (window.getSize().y - gameOverText.getGlobalBounds().height) / 2);
+
+		window.draw(gameOverText);
+		return;
 	}
 }

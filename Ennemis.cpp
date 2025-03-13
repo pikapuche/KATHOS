@@ -1,6 +1,6 @@
 #include "Ennemis.hpp"
 
-Enemy::Enemy(Vector2f wayOne, Vector2f wayTwo) : Entity(texture, position.x, position.y)
+Enemy::Enemy(Vector2f wayOne, Vector2f wayTwo) : Entity(position.x, position.y)
 {
 	shape.setFillColor(Color::Magenta);
 	shape.setSize(Vector2f(32.0f, 32.0f));

@@ -1,6 +1,6 @@
 #include "Entity.hpp"
 
-Entity::Entity(Texture& texture, float posX, float posY)
+Entity::Entity(float posX, float posY)
 {
 }
 

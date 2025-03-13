@@ -7,8 +7,10 @@
 #include "Gemme.hpp"
 
 class Map {
-
 public:
+
+    bool isGameOver = false;
+
     Texture groundYellowLeftTexture, groundYellowMidTexture, groundYellowRightTexture;
     Texture groundRedLeftTexture, groundRedMidTexture, groundRedRightTexture;
     Texture groundGreenLeftTexture, groundGreenMidTexture, groundGreenRightTexture;
@@ -48,5 +50,7 @@ public:
     void monSwitch(ifstream& _Map, string line, int z);
 
     void draw(RenderWindow& window);
+
+    void gameOver(RenderWindow& window);
 
 };

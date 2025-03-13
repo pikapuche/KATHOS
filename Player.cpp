@@ -1,6 +1,6 @@
 #include "Player.hpp"
 
-Player::Player() : Entity(texture, position.x, position.y) { // constructeur de base 
+Player::Player() : Entity(position.x, position.y) { // constructeur de base 
     velocity.y = 0; // Pas de mouvement vertical au depart
     attackShape.setSize(sf::Vector2f(10.0f, 20.0f));
     attackShape.setFillColor(sf::Color::Red);
