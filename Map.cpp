@@ -36,26 +36,26 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				cout << _line[i] << endl;
 			case '1':
 			{
-				auto left = std::make_unique<Sprite>();  // La bonne façon de créer un unique_ptr
+				auto left = std::make_unique<Sprite>();  // La bonne faï¿½on de crï¿½er un unique_ptr
 				left->setTexture(groundGreenLeftTexture);
 				left->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(left));  // Utilise std::move pour transférer la propriété
+				groundSprites.push_back(std::move(left));  // Utilise std::move pour transfï¿½rer la propriï¿½tï¿½
 				break;
 			}
 			case '2':
 			{
-				auto mid = std::make_unique<Sprite>();  // La bonne façon de créer un unique_ptr
+				auto mid = std::make_unique<Sprite>();  // La bonne faï¿½on de crï¿½er un unique_ptr
 				mid->setTexture(groundGreenMidTexture);
 				mid->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(mid));  // Utilise std::move pour transférer la propriété
+				groundSprites.push_back(std::move(mid));  // Utilise std::move pour transfï¿½rer la propriï¿½tï¿½
 				break;
 			}
 			case '3':
 			{
-				auto right = std::make_unique<Sprite>();  // La bonne façon de créer un unique_ptr
+				auto right = std::make_unique<Sprite>();  // La bonne faï¿½on de crï¿½er un unique_ptr
 				right->setTexture(groundGreenRightTexture);
 				right->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(right));  // Utilise std::move pour transférer la propriété
+				groundSprites.push_back(std::move(right));  // Utilise std::move pour transfï¿½rer la propriï¿½tï¿½
 				break;
 			}
 			case 'P':
