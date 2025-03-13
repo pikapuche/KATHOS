@@ -10,10 +10,11 @@ Boss::Boss(Player& target) : Entity(position.x, position.y), target(target) {
     detectionRange = 600.0f;
 
     isJumping = false;
-    jumpTimer = 0;
+    canJump = true;
     jumpHeight = 200.0f;
     gravity = 500.0f;
     timeInAir = 0;
+    jumpCooldown = 2.0f;
 }
 
 bool Boss::canSeePlayer() {
@@ -34,8 +35,9 @@ void Boss::chasePlayer() {
 }
 
 void Boss::jumpToPlatform() {
-    if (!isJumping) {
+    if (canJump) {
         isJumping = true;
+        canJump = false;
         timeInAir = 0;
         velocity.y = -sqrt(2 * gravity * jumpHeight);
     }
@@ -46,17 +48,25 @@ void Boss::fallBackDown() {
 }
 
 void Boss::update(float deltaTime) {
-    if (!isJumping) {
-        if (rand() % 300 == 0) {
-            jumpToPlatform();
-        }
+    if (!isJumping && canJump && rand() % 500 == 0) {
+        jumpToPlatform();
     }
-    else {
+
+    if (isJumping) {
         fallBackDown();
         timeInAir += deltaTime;
-        if (timeInAir > 1.0f) {
+        if (velocity.y > 0 && position.y >= 800) {
             isJumping = false;
             velocity.y = 0;
+            position.y = 800;
+            jumpCooldown = 2.0f;
+        }
+    }
+
+    if (!canJump) {
+        jumpCooldown -= deltaTime;
+        if (jumpCooldown <= 0) {
+            canJump = true;
         }
     }
 

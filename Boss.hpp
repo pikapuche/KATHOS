@@ -14,10 +14,11 @@ private:
     Texture texture;
 
     bool isJumping;
-    float jumpTimer;
+    bool canJump;
     float jumpHeight;
     float gravity;
     float timeInAir;
+    float jumpCooldown;
 
 public:
     Boss(Player& target);
