@@ -3,36 +3,95 @@
 
 class Player : public Entity {
 protected:
-    sf::Vector2f position;
-    sf::Vector2f velocity;
-    RectangleShape shape;
+    Texture textureSprint;
+    Texture textureIdle;
+    RectangleShape attackShape;
 
-    const float gravity = 981.0f;  // Gravité en pixels par seconde carrée (simulation)
-    float SPEED = 200.0f;  // Vitesse de déplacement horizontal
+    enum State { NONE, GROUNDED, JUMP };
+    State state;
+
+    enum StateLook { LOOK_RIGHT, LOOK_LEFT };
+    StateLook stateLook;
+
+    enum StateMove { IDLE, RUN };
+    StateMove stateMove;
+
+    int jumpCount = 0;
+
+    float SPEED = 300.0f;  // Vitesse de dÃ©placement horizontal
     float jumpForce = 600.f;  // Force initiale du saut
-    bool isJumping;
+
+    float animTimeDecr;
+    float animRunTimeDecr;
+    float animIdleTimeDecr;
+
+    float rotaRight = 220;
+    float rotaLeft = -20;
+
+    float gachetteValue;
+    float joystickValue;
+
+    bool isAttacking = false;
+
+    bool isTakeDash = false;
+    bool isDashing = false;
+    bool isTakeSpeed = false;
+
+    bool hasKey = false;
+
+    Clock jumpClock;
+    Clock coolDownDash;
+    Clock clock;
 
 public:
 
-    Player(float s, float jForce);
+    bool floor = true;
+
+    Player();
 
     void movementManager(float deltaTime);
 
+    void animationManager(float deltaTime);
+
     void jump();
 
-    Vector2f getPosPos();
+    void attack(float deltaTime);
 
-    Vector2f setPosPos(float(x), float(y));
+    void dash(float deltaTime);
+
+    void collisionPlatform(RectangleShape& tile, float deltaTime);
+
+    void collisionFloor(RectangleShape& tile);
+
+    Vector2f setPosPos(float x, float y);
+
+    Vector2f getPosPos();
 
     Vector2f getVelocity();
 
     Vector2f setVelocity(float veloX, float veloY);
 
-    RectangleShape getShape();
+    //RectangleShape getShape();
 
-    bool getIsJumping();
+    //bool getIsJumping();
 
-    bool setIsJumping(bool jump);
+    //bool setIsJumping(bool jump);
+
+    //bool setIsGrounded(bool is);
+
+    //bool getIsGrounded();
+
+    bool getIsTakeDash();
+
+    bool setIsTakeDash(bool dash);
+
+    bool getIsDashing();
+
+    bool setIsDashing(bool dash);
+
+    bool getIsTakeSpeed();
+
+    bool setIsTakeSpeed(bool speed);
 
     float getJumpForce();
 
@@ -41,6 +100,16 @@ public:
     float getGravity();
 
     float getSPEED();
+
+    float setSPEED(float speed);
+
+    int setJumpCount(float count);
+
+    int getJumpCount();
+
+    bool getHasKey();
+
+    bool setHasKey(bool key);
 
     void update(float deltaTime);
 

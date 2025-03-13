@@ -5,14 +5,17 @@ class Entity {
 protected : 
 
 	Sprite sprite;
+	Texture texture;
+	sf::Vector2f position;
+	sf::Vector2f velocity;
+	RectangleShape shape;
+	RectangleShape attackShape;
+	const float gravity = 981.0f;  // Gravité en pixels par seconde carrée (simulation)
 
-	// �tat d'anim avec les enums
+	Vector2i anim_move;
+	Vector2i anim_idle;
 
 public : 
-
-	Vector2f direction;
-	Vector2f velocity;
-	Vector2f baseDirection;
 
 	Entity(float posX, float posY);
 

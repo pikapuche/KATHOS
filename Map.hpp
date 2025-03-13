@@ -3,48 +3,50 @@
 #include "Player.hpp"
 #include "Boss.hpp"
 #include "NuageTox.hpp"
+#include "Ennemis.hpp"
+#include "Gemme.hpp"
 
-const int GRID_WIDTH = 20;
-const int GRID_HEIGHT = 15;
-const int CELL_SIZE = 40;
-
-class Map 
-{
-protected:
-    sf::Texture groundTexture;
-    sf::Texture wallTexture;
-
-    float playerHeight = 70.0f;
-
-    sf::Text win;
-    sf::Font font;
-
-    bool winGame = false;
-
-    bool isGameOver = false;
+class Map {
 
 public:
-    vector<Boss*> vector_boss;
-    vector<NuageTox*> vector_nuage;
-    vector<Player*> vector_player;
+    Texture groundYellowLeftTexture, groundYellowMidTexture, groundYellowRightTexture;
+    Texture groundRedLeftTexture, groundRedMidTexture, groundRedRightTexture;
+    Texture groundGreenLeftTexture, groundGreenMidTexture, groundGreenRightTexture;
 
-    ~Map();
+    //Texture wallTexture;
 
-    vector<string> vector_Map;
+    vector<Sprite*> groundYLVector, groundYMVector, groundYRVector;
+    vector<Sprite*> groundRLVector, groundRMVector, groundRRVector;
+    vector<Sprite*> groundGLVector, groundGMVector, groundGRVector;
 
-    bool loadFromFile(string filename);
+    vector<ifstream*> maps;
 
-    void initAll();
+    vector<Player*> playerVector;
 
-    void drawMap(sf::RenderWindow& window);
+    //Text win;
+    //Font font;
 
-    void update(float deltaTime);
+    enum class StatePlaying {
+        Practice,
+        Monde1,
+        Monde2,
+        Monde3,
+    };
 
-    void collisionMap(sf::RenderWindow& window, Player& player, float deltaTime);
+    StatePlaying statePlaying;
 
-    void checkPlayerBossCollision();
+    Map();
 
-    void checkPlayerNuageCollision();
+    ~Map(); 
 
-    bool getIsGameOver();
+    void update(); 
+
+    void collision();
+
+    void loadMap();
+
+    void monSwitch(ifstream& _Map, string line, int z);
+
+    void draw(RenderWindow& window);
+
 };

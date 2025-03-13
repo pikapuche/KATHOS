@@ -1,42 +1,60 @@
 #include "Game.hpp"
+#include "MainScreen.hpp"
+#include "Interface.hpp"
+
+//faire collision
 
 void Game::run()
 {
-    // Création de la fenêtre
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Kathos", sf::Style::Fullscreen);
+
+    window.setVerticalSyncEnabled(true);
     window.setFramerateLimit(60); 
 
-    Map map;
+    MainScreen mainScreen;
+    Interface overlay;
+    mainScreen.initMenu(window);
+    Map* m = new Map();
+    m->loadMap();
 
-    map.loadFromFile("assets/map/mapBoss.txt"); // fichier de la map
-    map.initAll();
+    Clock clock;
+    overlay.initInterface(); // Ensure the texture is loaded once
 
-    Clock clock; // Horloge pour le deltaTime
-
-    // Boucle principale
     while (window.isOpen()) {
-        sf::Time deltaT = clock.restart(); // deltaTime permettant de synchroniser les déplacements et autres mouvements tous ensemble sur la même durée
+        sf::Time deltaT = clock.restart();
         float deltaTime = deltaT.asSeconds();
         sf::Event event;
+
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed || Keyboard::isKeyPressed(sf::Keyboard::Escape))
-                window.close(); // Fermer la fenêtre
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+            if (mainScreen.getIsInMenu() && event.key.code == sf::Keyboard::Escape) {
+                window.close();
+            }
+            else if (!mainScreen.getIsInMenu() && event.key.code == sf::Keyboard::Escape) {
+                overlay.setIsPaused(true);
+            }
         }
 
-        // Effacer la fenêtre
         window.clear();
-
-        map.update(deltaTime);
-        map.drawMap(window); // draw la map
-
-        //cout << deltaTime << endl;
-
-        for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements
-            players->update(deltaTime);
-            players->draw(window);
-            map.collisionMap(window, *players, deltaTime);
+        for (auto& playerv : m->playerVector) {
+            playerv->update(deltaTime);
         }
-        for (auto& bosses : map.vector_boss) { // vector boss dans la map pour pouvoir le gérer dans ses déplacements
+        m->update();
+        m->draw(window);
+
+        if (mainScreen.getIsInMenu()) {
+            mainScreen.updateMenu(window);
+        }
+        else {
+            mainScreen.destroyAll();
+
+            if (overlay.getIsPaused()) {
+                overlay.updateInterface(window);
+            }
+        }
+        for (auto& bosses : map.vector_boss) { // vector boss dans la map pour pouvoir le gï¿½rer dans ses dï¿½placements
             bosses->update(deltaTime);
             bosses->draw(window);
         }
@@ -45,7 +63,14 @@ void Game::run()
             nuages->draw(window);
         }
 
+        //for (auto& gemmes : map.vector_gemme) {
+        //    for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gÃ©rer dans ses dÃ©placements
+        //        gemmes->interact(*players);
+        //    }
+        //    gemmes->draw(window);
+        //}
+
         // Affiche tout
-        window.display();
+        window.display(); 
     }
 }
