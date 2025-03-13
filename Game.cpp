@@ -8,9 +8,10 @@ void Game::run()
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Kathos", sf::Style::Fullscreen);
     window.setFramerateLimit(60); 
 
-    Player player;
     Map* m = new Map();
-    m->loadMap(player);
+    for (auto& playerv : m->playerVector) {
+        m->loadMap(*playerv);
+    }
 
     Clock clock; // Horloge pour le deltaTime
 
@@ -26,8 +27,12 @@ void Game::run()
 
         // Effacer la fenêtre
         window.clear();
-
-        m->draw(window);
+        for (auto& playerv : m->playerVector) {
+            player.update(deltaTime);
+        }
+   
+        m->update(player);
+        m->draw(window,player);
 
         //cout << deltaTime << endl;
 

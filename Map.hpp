@@ -19,6 +19,8 @@ public:
 
     vector<ifstream*> maps;
 
+    vector<Player*> playerVector;
+
     //Text win;
     //Font font;
 
@@ -43,5 +45,6 @@ public:
 
     void monSwitch(ifstream& _Map, string line, int z, Player& player);
 
-    void draw(RenderWindow& window);
+    void draw(RenderWindow& window, Player& player);
+
 };

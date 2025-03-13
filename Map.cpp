@@ -26,7 +26,8 @@ void Map::collision(Player& player) {
 }
 
 void Map::monSwitch(ifstream& _Map, string _line, int _z, Player& _player) {
-    while (getline(_Map, _line)) {
+	
+	while (getline(_Map, _line)) {
         for (int i = 0; i < _line.size(); i++) {
             switch (_line[i]) {
                 cout << _line[i] << endl;
@@ -38,9 +39,33 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z, Player& _player) {
                 groundGLVector.push_back(gGL);
                 break;
             }
+			case '2':
+			{
+				Sprite* gGM = new Sprite;
+				gGM->setTexture(groundGreenMidTexture);
+				gGM->setPosition({ (float)i * 32,(float)_z * 32 });
+				groundGMVector.push_back(gGM);
+				break;
+			}
+			case '3':
+			{
+				Sprite* gGR = new Sprite;
+				gGR->setTexture(groundGreenRightTexture);
+				gGR->setPosition({ (float)i * 32,(float)_z * 32 });
+				groundGMVector.push_back(gGR);
+				break;
+			}
+			case 'P':
+			{
+				Player* player = new Player;
+				_player.setPosPos((float)i * 32,(float)_z * 32);
+				playerVector.push_back(player);
+				break;
+			}
 
             }
         }
+		_z++;
     }
 }
 
@@ -52,7 +77,7 @@ void Map::loadMap(Player& player) {
 		float z = 0;
 
 		for (auto& mapPractice : maps) {
-			monSwitch(*mapPractice, line, z, player);
+			monSwitch(*mapPractice, line, z, *playerVector[0]);
 		}
 	}
 
@@ -70,9 +95,17 @@ void Map::loadMap(Player& player) {
 
 }
 
-void Map::draw(RenderWindow& window) {
+void Map::draw(RenderWindow& window,Player& player) {
 	for (auto& groundGL : groundGLVector) {
 		window.draw(*groundGL);
 	}
-
+	for (auto& groundGM : groundGMVector) {
+		window.draw(*groundGM);
+	}
+	for (auto& groundGR : groundGRVector) {
+		window.draw(*groundGR);
+	}
+	for (auto& playerv : playerVector) {
+		playerv->draw(window);
+	}
 }
