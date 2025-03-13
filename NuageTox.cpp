@@ -1,29 +1,33 @@
 #include "NuageTox.hpp"
 
-NuageTox::NuageTox(float width, float height) {
-    shape.setSize(sf::Vector2f(width, height));
-    shape.setFillColor(sf::Color(0, 255, 0, 100)); // Vert transparent
+NuageTox::NuageTox() : Entity(position.x, position.y) { //constructeur du boss
+    shape.setSize(sf::Vector2f(50.0f, 50.0f));
+    shape.setFillColor(Color::Green);
 }
+
+//bool NuageTox::isInside()
+//{
+//
+//}
 
 void NuageTox::draw(sf::RenderWindow& window) {
     window.draw(shape);
 }
 
-void NuageTox::checkCollisionWithPlayer(Player& player) {
-    if (shape.getGlobalBounds().intersects(player.getShape().getGlobalBounds())) {
-        cout << "Collision avec le joueur!" << endl;
-        isGameOver = true;
-    }
+void NuageTox::update(float deltaTime) { //déplacements
+    getPos();
 }
 
-Vector2f NuageTox::getPos()
-{
+Vector2f NuageTox::getPos() {
     return position;
 }
 
-Vector2f NuageTox::setPos(float(x), float(y))
-{
+Vector2f NuageTox::setPos(float x, float y) {
     position.x = x;
     position.y = y;
     return position;
+}
+
+sf::RectangleShape NuageTox::getShape() { //prend la shape du joueur
+    return shape;
 }

@@ -36,12 +36,13 @@ void Game::run()
             players->draw(window);
             map.collisionMap(window, *players, deltaTime);
         }
-        for (auto& bosses : map.vector_boss) { // vector player dans la map pour pouvoir le gérer dans ses déplacements
+        for (auto& bosses : map.vector_boss) { // vector boss dans la map pour pouvoir le gérer dans ses déplacements
             bosses->update(deltaTime);
             bosses->draw(window);
         }
-        for (auto& toxes : map.vector_nuageTox) {
-            toxes->draw(window);
+        for (auto& nuages : map.vector_nuage) {
+            nuages->update(deltaTime);
+            nuages->draw(window);
         }
 
         // Affiche tout

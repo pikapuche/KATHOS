@@ -5,10 +5,16 @@ Map::~Map() {
         delete players;
     }
     vector_player.clear();
+
     for (auto bosses : vector_boss) {
         delete bosses;
     }
     vector_boss.clear();
+
+    for (auto nuages : vector_nuage) {
+        delete nuages;
+    }
+    vector_nuage.clear();
 }
 
 bool Map::loadFromFile(string filename) {
@@ -55,12 +61,12 @@ void Map::initAll() {
                 }
                 break;
             }
-            case 'N': // nuages
+            case 'T': // nuage
             {
-                NuageTox* toxes = new NuageTox(100.f, 50.f);
-                vector_nuageTox.push_back(toxes);
-                for (auto& nuage : vector_nuageTox) { // set la position de départ du nuage
+                if (!vector_player.empty()) {
+                    NuageTox* nuage = new NuageTox();
                     nuage->setPos(j * 40.f, i * 40.f);
+                    vector_nuage.push_back(nuage);
                 }
                 break;
             }
@@ -73,14 +79,17 @@ void Map::initAll() {
 void Map::update(float deltaTime) {
     if (isGameOver) return;
 
-    checkPlayerNuageCollision();
-
     for (auto& boss : vector_boss) {
         boss->update(deltaTime);
         boss->checkCollision(vector_Map[0].size() * 70);
     }
 
+    for (auto& nuage : vector_nuage) {
+        nuage->update(deltaTime);
+    }
+
     checkPlayerBossCollision();
+    checkPlayerNuageCollision();
 }
 
 void Map::drawMap(sf::RenderWindow& window) {
@@ -177,9 +186,12 @@ void Map::collisionMap(sf::RenderWindow& window, Player& player, float deltaTime
 void Map::checkPlayerBossCollision() {
     if (vector_player.empty() || vector_boss.empty() || isGameOver) return;
 
-    for (auto& player : vector_player) {
-        for (auto& boss : vector_boss) {
-            if (player->getShape().getGlobalBounds().intersects(boss->getShape().getGlobalBounds())) {
+    for (auto& player : vector_player) 
+    {
+        for (auto& boss : vector_boss)
+        {
+            if (player->getShape().getGlobalBounds().intersects(boss->getShape().getGlobalBounds()))
+            {
                 cout << "Collision entre le joueur et le boss" << endl;
                 isGameOver = true;
             }
@@ -187,19 +199,17 @@ void Map::checkPlayerBossCollision() {
     }
 }
 
-void Map::checkPlayerNuageCollision() 
-{
-    if (vector_player.empty() || isGameOver) return;
+void Map::checkPlayerNuageCollision() {
+    if (vector_player.empty() || vector_nuage.empty() || isGameOver) return;
 
-    for (auto& player : vector_player) 
+    for (auto& player : vector_player)
     {
-        for (auto& nuage : vector_nuageTox)
+        for (auto& nuage : vector_nuage)
         {
-            nuage->checkCollisionWithPlayer(*player);
-
-            if (isGameOver) 
+            if (player->getShape().getGlobalBounds().intersects(nuage->getShape().getGlobalBounds()))
             {
-                std::cout << "Le joueur a touché un nuage toxique" << std::endl;
+                cout << "Collision entre le joueur et le nuage" << endl;
+                isGameOver = true;
             }
         }
     }

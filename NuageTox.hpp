@@ -1,19 +1,22 @@
 #pragma once
 #include "stdafx.hpp"
+#include "Entity.hpp"
 #include "Player.hpp"
 
-class NuageTox {
-public:
-    NuageTox(float width, float height);
-    void draw(sf::RenderWindow& window);
-    void checkCollisionWithPlayer(Player& player);
-
-    Vector2f getPos();
-
-    Vector2f setPos(float(x), float(y));
-
+class NuageTox : public Entity {
 private:
     sf::RectangleShape shape;
-    bool isGameOver = false;
     sf::Vector2f position;
+
+public:
+    NuageTox();
+
+    void update(float deltatime) override;
+    void draw(RenderWindow& window) override;
+    /*bool isInside();*/
+
+    Vector2f getPos();
+    Vector2f setPos(float x, float y);
+
+    RectangleShape getShape();
 };

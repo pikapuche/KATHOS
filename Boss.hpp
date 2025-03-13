@@ -12,15 +12,6 @@ private:
     Player& target;
     float detectionRange;
 
-private:
-    bool isJumping = false;
-    bool isFalling = false;
-    float jumpSpeed = -8.0f;
-    float gravity = 0.4f;
-    float groundY;
-    sf::Clock jumpTimer;
-    sf::Time jumpDuration = sf::seconds(1.5f);
-
 public:
     Boss(Player& target);
 
@@ -29,10 +20,9 @@ public:
     void checkCollision(int mapWidth);
     void chasePlayer();
     bool canSeePlayer();
-    void startJump();
 
     Vector2f getPos();
-    Vector2f setPos(float x, float y);
+    Vector2f setPos(float(x), float(y));
 
     RectangleShape getShape();
 };

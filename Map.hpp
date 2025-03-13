@@ -25,8 +25,8 @@ protected:
 
 public:
     vector<Boss*> vector_boss;
+    vector<NuageTox*> vector_nuage;
     vector<Player*> vector_player;
-    vector<NuageTox*> vector_nuageTox;
 
     ~Map();
 
