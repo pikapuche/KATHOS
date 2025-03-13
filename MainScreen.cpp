@@ -54,7 +54,6 @@ void MainScreen::initMenu(sf::RenderWindow& window) {
 }
 
 void MainScreen::updateMenu(sf::RenderWindow& window) {
-    window.clear();
     window.draw(background);
 
     for (auto& button : buttons) {
@@ -111,7 +110,6 @@ void MainScreen::updateMenu(sf::RenderWindow& window) {
 			}
         }
     }
-    window.display();
 }
 
 void MainScreen::destroyAll() {

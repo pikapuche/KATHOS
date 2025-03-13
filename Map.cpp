@@ -18,7 +18,7 @@ void Map::update() {
 }
 
 void Map::collision() {
-	playerVector[0]->getShape().getGlobalBounds();
+	playerVector[0]->getSprite().getGlobalBounds();
 	//for (auto& monde1 : monde1Vector )  Si touche la sortie donc clear pointeur
 
 	// mettre les collisions
