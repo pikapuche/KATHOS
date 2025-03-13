@@ -13,43 +13,19 @@ Map::Map() : statePlaying(StatePlaying::Practice) {
 
 }
 
-void Map::update() {
-	collision();
+Map::~Map()
+{
+	
 }
 
-void Map::collision() {
-	if (playerVector[0]->getSprite().getGlobalBounds().intersects(groundSprite->getGlobalBounds()) && playerVector[0]->getPosPos().y < groundSprite->getPosition().y)
-	{
+void Map::update(float deltaTime) {
+	collision(deltaTime);
+}
 
+void Map::collision(float deltaTime) {
+	for (auto& ground : groundSprites) {
+		player->collisionPlatform(*ground, deltaTime);
 	}
-	
-	//for (auto& monde1 : monde1Vector )  Si touche la sortie donc clear pointeur
-
-	//void Player::collisionPlatform(RectangleShape & tile, float deltaTime) {
-	//	if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds()) && tile.getPosition().y < position.y) { // si le perso se trouve sous la plateforme il ne la traverse pas 
-	//		position.y = tile.getPosition().y + 40;
-	//		velocity.y = gravity * deltaTime;
-	//		state = NONE;
-	//	}
-	//	else if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds()) && tile.getPosition().y > position.y) { // collision de base 
-	//		position.y = tile.getPosition().y - 64;
-	//		velocity.y = 0;
-	//		state = GROUNDED;
-	//	}
-	//}
-
-	//void Player::collisionFloor(RectangleShape & tile) {
-	//	if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds())) { // si le joueur entre en collision avec le sol alors il set sa position en haut du sol
-	//		setPosPos(getPosPos().x, tile.getPosition().y - 64);
-	//		velocity.y = 0;
-	//		state = GROUNDED;
-	//	}
-	//	else if (tile.getPosition().y < getPosPos().y) { // s'il passe sous le sol
-	//		setPosPos(getPosPos().x, tile.getPosition().y - 64);
-	//	}
-	//}
-
-
 }
 
 void Map::monSwitch(ifstream& _Map, string _line, int _z) {
@@ -60,33 +36,31 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				cout << _line[i] << endl;
 			case '1':
 			{
-				groundSprite = new Sprite;
-				groundSprite->setTexture(groundGreenLeftTexture);
-				groundSprite->setPosition({ (float)i * 32,(float)_z * 32 });
-				groundGLVector.push_back(groundSprite);
+				auto left = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				left->setTexture(groundGreenLeftTexture);
+				left->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(left));  // Utilise std::move pour transf�rer la propri�t�
 				break;
 			}
 			case '2':
 			{
-				groundSprite = new Sprite;
-				groundSprite->setTexture(groundGreenMidTexture);
-				groundSprite->setPosition({ (float)i * 32,(float)_z * 32 });
-				groundGMVector.push_back(groundSprite);
+				auto mid = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				mid->setTexture(groundGreenMidTexture);
+				mid->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(mid));  // Utilise std::move pour transf�rer la propri�t�
 				break;
 			}
 			case '3':
 			{
-				groundSprite = new Sprite;
-				groundSprite->setTexture(groundGreenRightTexture);
-				groundSprite->setPosition({ (float)i * 32,(float)_z * 32 });
-				groundGMVector.push_back(groundSprite);
+				auto right = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				right->setTexture(groundGreenRightTexture);
+				right->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(right));  // Utilise std::move pour transf�rer la propri�t�
 				break;
 			}
 			case 'P':
 			{
-				Player* player = new Player;
-				player->setPosPos((float)i * 32, (float)_z * 32);
-				playerVector.push_back(player);
+				player->setPosPos((float)i * 32, (float)_z * 20);
 				break;
 			}
 
@@ -120,18 +94,10 @@ void Map::loadMap() {
 }
 
 void Map::draw(RenderWindow& window) {
-	for (auto& groundGL : groundGLVector) {
-		window.draw(*groundGL);
+	for (auto& ground : groundSprites) {
+		window.draw(*ground);
 	}
-	for (auto& groundGM : groundGMVector) {
-		window.draw(*groundGM);
-	}
-	for (auto& groundGR : groundGRVector) {
-		window.draw(*groundGR);
-	}
-	for (auto& playerv : playerVector) {
-		playerv->draw(window);
-	}
+	player->draw(window);
 }
 
 void Map::gameOver(RenderWindow& window)
