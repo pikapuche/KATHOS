@@ -9,10 +9,13 @@ Enemy::Enemy(Vector2f wayOne, Vector2f wayTwo) : Entity(texture, position.x, pos
     circle.setFillColor(sf::Color::Red);
     detectionRadius = 25.0f;
     currentState = PATROL;
-    circleOne.setFillColor(Color::Yellow);
-    circleTwo.setFillColor(Color::Blue);
-    circleOne.setPosition(wayOne);
-    circleTwo.setPosition(wayTwo);
+    //circleOne.setFillColor(Color::Yellow);
+    //circleOne.setRadius(25.0f);
+    //circleTwo.setFillColor(Color::Blue);
+    //circleTwo.setRadius(25.0f);
+    //circleOne.setPosition(wayOne);
+    //circleTwo.setPosition(wayTwo);
+
 }
 
 bool Enemy::detectPlayer(Player& player)
@@ -23,8 +26,8 @@ bool Enemy::detectPlayer(Player& player)
 
 void Enemy::patrol(float deltaTime) // a bien restructurer et faire en sorte qu'il se déplace que sur l'axe x et pas sur le y avec le chemin a trouver 
 {
-    //if (position.x != circleOne.getPosition().x) {
-    //    position.x -= SPEED * deltaTime;
+    //if (position.x > circleOne.getPosition().x) {
+    //    position.x += SPEED * deltaTime;
     //}
     //else if (position.x > circleOne.getPosition().x && position.x < circleTwo.getPosition().x) {
     //    position.x -= SPEED * deltaTime;
