@@ -111,7 +111,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			}
 			case 'G':
 			{
-				gemme->setPosPos((float)i * 32, (float)_z * 20);
+				//gemme->setPosPos((float)i * 32, (float)_z * 20);
 				break;
 			}
 
@@ -151,9 +151,9 @@ void Map::draw(RenderWindow& window) {
 	for (auto& ground : groundSprites) {
 		window.draw(*ground);
 	}
-	for (auto& gemme : gemmeSprites) {
-		window.draw(*gemme);
-	}
+	//for (auto& gemme : gemmeSprites) {
+	//	window.draw(*gemme);
+	//}
 	player->draw(window);
 }
 
