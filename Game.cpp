@@ -7,15 +7,13 @@ void Game::run()
     window.setFramerateLimit(60);
 
     MainScreen mainScreen;
-
-    /*MainScreen mainScreen;
     Interface overlay;
     mainScreen.initMenu(window);
     Map m;
     m.loadMap();
 
     Clock clock;
-    /*overlay.initInterface();*/
+    overlay.initInterface();
 
     while (window.isOpen()) {
         Time deltaT = clock.restart();
