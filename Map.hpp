@@ -23,6 +23,8 @@ public:
 
     shared_ptr<Boss> boss = make_shared<Boss>(*player);
 
+    shared_ptr<NuageTox> nuage = make_shared<NuageTox>();
+
     vector<ifstream*> maps;
 
     //Text win;

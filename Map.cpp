@@ -67,6 +67,11 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				boss->setPos((float)i * 32, (float)_z * 20);
 				break;
 			}
+			case 'T':
+			{
+				nuage->setPos((float)i * 32, (float)_z * 20);
+				break;
+			}
 
 			}
 		}
@@ -103,6 +108,7 @@ void Map::draw(RenderWindow& window) {
 	}
 	player->draw(window);
 	boss->draw(window);
+	nuage->draw(window);
 }
 
 void Map::gameOver(RenderWindow& window)

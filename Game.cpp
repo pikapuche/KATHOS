@@ -35,6 +35,7 @@ void Game::run()
         window.clear();
         m.player->update(deltaTime);
         m.boss->update(deltaTime);
+        m.nuage->update(deltaTime);
 
         m.update(deltaTime);
         m.draw(window);
