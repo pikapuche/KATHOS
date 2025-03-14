@@ -64,9 +64,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			}
 			case 'B':
 			{
-				Boss* boss = new Boss(*playerVector[0]);
-				boss->setPos((float)i * 32, (float)_z * 32);
-				bossVector.push_back(boss);
+				boss->setPos((float)i * 32, (float)_z * 20);
 				break;
 			}
 
@@ -104,6 +102,7 @@ void Map::draw(RenderWindow& window) {
 		window.draw(*ground);
 	}
 	player->draw(window);
+	boss->draw(window);
 }
 
 void Map::gameOver(RenderWindow& window)

@@ -1,6 +1,4 @@
 #include "Game.hpp"
-#include "MainScreen.hpp"
-#include "Interface.hpp"
 
 void Game::run()
 {
@@ -9,15 +7,13 @@ void Game::run()
     window.setFramerateLimit(60);
 
     MainScreen mainScreen;
-
-    /*MainScreen mainScreen;
     Interface overlay;
     mainScreen.initMenu(window);
     Map m;
     m.loadMap();
 
     Clock clock;
-    /*overlay.initInterface();*/
+    overlay.initInterface();
 
     while (window.isOpen()) {
         Time deltaT = clock.restart();
@@ -28,16 +24,17 @@ void Game::run()
             if (event.type == Event::Closed) {
                 window.close();
             }
-            /*if (mainScreen.getIsInMenu() && event.key.code == Keyboard::Escape) {
+            if (mainScreen.getIsInMenu() && event.key.code == Keyboard::Escape) {
                 window.close();
             }
             else if (!mainScreen.getIsInMenu() && event.key.code == Keyboard::Escape) {
                 overlay.setIsPaused(true);
-            }*/
+            }
         }
 
         window.clear();
         m.player->update(deltaTime);
+        m.boss->update(deltaTime);
 
         m.update(deltaTime);
         m.draw(window);
