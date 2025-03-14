@@ -5,8 +5,8 @@
 
 class NuageTox : public Entity {
 private:
-    sf::RectangleShape shape;
-    sf::Vector2f position;
+    RectangleShape shape;
+    Vector2f position;
 
 public:
     NuageTox();

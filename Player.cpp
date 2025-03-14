@@ -7,7 +7,7 @@ Player::Player() : Entity(position.x, position.y) { // constructeur de base
     textureSprint.loadFromFile("assets/texture/player/piskelVersion3.png");
     textureIdle.loadFromFile("assets/texture/player/idleV2.png");
     sprite.setTexture(textureSprint);
-    sprite.setTextureRect(sf::IntRect(0, 0, 64, 64));
+    sprite.setTextureRect(IntRect(0, 0, 64, 64));
 }
 
 void Player::movementManager(float deltaTime) { 
@@ -23,24 +23,24 @@ void Player::movementManager(float deltaTime) {
         if (joystickValue > 10 && joystickValue < -10) {
             position.x += 0;
         }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) || joystickValue < -10) { position.x -= SPEED * deltaTime; stateLook = LOOK_LEFT; stateMove = RUN; }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || joystickValue > 10) { position.x += 1 + SPEED * deltaTime; stateLook = LOOK_RIGHT; stateMove = RUN; }
+        else if (Keyboard::isKeyPressed(Keyboard::Q) || joystickValue < -10) { position.x -= SPEED * deltaTime; stateLook = LOOK_LEFT; stateMove = RUN; }
+        else if (Keyboard::isKeyPressed(Keyboard::D) || joystickValue > 10) { position.x += 1 + SPEED * deltaTime; stateLook = LOOK_RIGHT; stateMove = RUN; }
         else {
             stateMove = IDLE;
         }
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Joystick::isButtonPressed(0, 0)) { jump(); }
+    if (Keyboard::isKeyPressed(Keyboard::Space) || Joystick::isButtonPressed(0, 0)) { jump(); }
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) || sf::Joystick::isButtonPressed(0, 2)) { isAttacking = true; }
+    if (Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0, 2)) { isAttacking = true; }
 
     // Si la gâchette gauche est pressée ou que A est pressée OU si la gâchette droite est pressée ou que A est pressée
-    if (((sf::Mouse::isButtonPressed(sf::Mouse::Right) || gachetteValue > 10) || (Keyboard::isKeyPressed(Keyboard::A) || gachetteValue < -10)) && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500) {
+    if (((Mouse::isButtonPressed(Mouse::Right) || gachetteValue > 10) || (Keyboard::isKeyPressed(Keyboard::A) || gachetteValue < -10)) && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500) {
         isDashing = true;
         clock.restart();
     }
 
-    if ((Keyboard::isKeyPressed(Keyboard::LShift) || sf::Joystick::isButtonPressed(0, 8)) && isTakeSpeed) {
+    if ((Keyboard::isKeyPressed(Keyboard::LShift) || Joystick::isButtonPressed(0, 8)) && isTakeSpeed) {
         SPEED = 600;
     }
     else {
@@ -49,12 +49,12 @@ void Player::movementManager(float deltaTime) {
 
     //////////////////////////////  Manette  //////////////////////////////////
 
-    if (sf::Joystick::isConnected(0))
+    if (Joystick::isConnected(0))
     {
         // Verification des gachettes (left = 10 & right = -10)
-        gachetteValue = sf::Joystick::getAxisPosition(0, sf::Joystick::Z);
+        gachetteValue = Joystick::getAxisPosition(0, Joystick::Z);
 
-        joystickValue = sf::Joystick::getAxisPosition(0, sf::Joystick::X); // donne la poussée du joystick gauche sur l'axe X
+        joystickValue = Joystick::getAxisPosition(0, Joystick::X); // donne la poussée du joystick gauche sur l'axe X
 
     }
 
@@ -90,12 +90,12 @@ void Player::animationManager(float deltaTime) {
         if (stateLook == LOOK_LEFT) {
             if (anim_move.x > 6) 
                 anim_move.x = 1;
-            sprite.setTextureRect(sf::IntRect(anim_move.x * 64, anim_move.y * 64, -64, 64));
+            sprite.setTextureRect(IntRect(anim_move.x * 64, anim_move.y * 64, -64, 64));
         }
         else if (stateLook == LOOK_RIGHT) {
             if (anim_move.x > 5)
                 anim_move.x = 0;
-            sprite.setTextureRect(sf::IntRect(anim_move.x * 64, anim_move.y * 64, 64, 64));
+            sprite.setTextureRect(IntRect(anim_move.x * 64, anim_move.y * 64, 64, 64));
         }
         break;
     case IDLE : 
@@ -108,12 +108,12 @@ void Player::animationManager(float deltaTime) {
         if (stateLook == LOOK_LEFT) {
             if (anim_idle.x > 8)
                 anim_idle.x = 1;
-            sprite.setTextureRect(sf::IntRect(anim_idle.x * 64, anim_idle.y * 64, -64, 64));
+            sprite.setTextureRect(IntRect(anim_idle.x * 64, anim_idle.y * 64, -64, 64));
         }
         else if (stateLook == LOOK_RIGHT) {
             if (anim_idle.x > 7)
                 anim_idle.x = 0;
-            sprite.setTextureRect(sf::IntRect(anim_idle.x * 64, anim_idle.y * 64, 64, 64));
+            sprite.setTextureRect(IntRect(anim_idle.x * 64, anim_idle.y * 64, 64, 64));
         }
         break;
     }

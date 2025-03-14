@@ -10,7 +10,6 @@ Map::Map() : statePlaying(StatePlaying::Practice) {
 	groundGreenLeftTexture.loadFromFile("Assets/Map/groundGreenLeft.png");
 	groundGreenMidTexture.loadFromFile("Assets/Map/groundGreenMid.png");
 	groundGreenRightTexture.loadFromFile("Assets/Map/groundGreenRight.png");
-
 }
 
 Map::~Map()
@@ -36,26 +35,26 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				cout << _line[i] << endl;
 			case '1':
 			{
-				auto left = std::make_unique<Sprite>();  // La bonne façon de créer un unique_ptr
+				auto left = std::make_unique<Sprite>();  // La bonne faï¿½on de crï¿½er un unique_ptr
 				left->setTexture(groundGreenLeftTexture);
 				left->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(left));  // Utilise std::move pour transférer la propriété
+				groundSprites.push_back(std::move(left));  // Utilise std::move pour transfï¿½rer la propriï¿½tï¿½
 				break;
 			}
 			case '2':
 			{
-				auto mid = std::make_unique<Sprite>();  // La bonne façon de créer un unique_ptr
+				auto mid = std::make_unique<Sprite>();  // La bonne faï¿½on de crï¿½er un unique_ptr
 				mid->setTexture(groundGreenMidTexture);
 				mid->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(mid));  // Utilise std::move pour transférer la propriété
+				groundSprites.push_back(std::move(mid));  // Utilise std::move pour transfï¿½rer la propriï¿½tï¿½
 				break;
 			}
 			case '3':
 			{
-				auto right = std::make_unique<Sprite>();  // La bonne façon de créer un unique_ptr
+				auto right = std::make_unique<Sprite>();  // La bonne faï¿½on de crï¿½er un unique_ptr
 				right->setTexture(groundGreenRightTexture);
 				right->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(right));  // Utilise std::move pour transférer la propriété
+				groundSprites.push_back(std::move(right));  // Utilise std::move pour transfï¿½rer la propriï¿½tï¿½
 				break;
 			}
 			case 'P':
@@ -118,21 +117,21 @@ void Map::draw(RenderWindow& window) {
 void Map::gameOver(RenderWindow& window)
 {
 	if (isGameOver) {
-		sf::RectangleShape gameOverScreen(sf::Vector2f(window.getSize().x, window.getSize().y));
-		gameOverScreen.setFillColor(sf::Color(0, 0, 0, 150));
+		RectangleShape gameOverScreen(Vector2f(window.getSize().x, window.getSize().y));
+		gameOverScreen.setFillColor(Color(0, 0, 0, 150));
 		window.draw(gameOverScreen);
 
-		sf::Font font;
+		Font font;
 		if (!font.loadFromFile("Assets/Fonts/Minecraft.ttf")) {
 			cout << "Erreur chargement police !" << endl;
 		}
 
-		sf::Text gameOverText;
+		Text gameOverText;
 		gameOverText.setFont(font);
 		gameOverText.setString("GAME OVER");
 		gameOverText.setCharacterSize(80);
-		gameOverText.setFillColor(sf::Color::Red);
-		gameOverText.setStyle(sf::Text::Bold);
+		gameOverText.setFillColor(Color::Red);
+		gameOverText.setStyle(Text::Bold);
 		gameOverText.setPosition((window.getSize().x - gameOverText.getGlobalBounds().width) / 2, (window.getSize().y - gameOverText.getGlobalBounds().height) / 2);
 
 		window.draw(gameOverText);
