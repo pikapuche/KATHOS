@@ -13,12 +13,7 @@ private:
 
     Texture texture;
 
-    bool isJumping;
-    bool canJump;
-    float jumpHeight;
-    float gravity;
-    float timeInAir;
-    float jumpCooldown;
+
 
 public:
     Boss(Player& target);
@@ -28,9 +23,6 @@ public:
     void checkCollision(int mapWidth, int mapHeight);
     void chasePlayer();
     bool canSeePlayer();
-
-    void jumpToPlatform();
-    void fallBackDown();
 
     Vector2f getPos();
     Vector2f setPos(float x, float y);
