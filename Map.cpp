@@ -69,7 +69,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			}
 			case 'T':
 			{
-				nuage->setPos((float)i * 32, (float)_z * 20);
+				nuage->setPos((float)i * 32, (float)_z * 20 - 10);
 				break;
 			}
 
