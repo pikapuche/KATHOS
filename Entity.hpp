@@ -8,7 +8,7 @@ protected :
 	Texture texture;
 	sf::Vector2f position;
 	sf::Vector2f velocity;
-	RectangleShape shape;
+	//RectangleShape shape;
 	RectangleShape attackShape;
 	const float gravity = 981.0f;  // Gravité en pixels par seconde carrée (simulation)
 

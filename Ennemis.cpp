@@ -1,21 +1,18 @@
 #include "Ennemis.hpp"
 
-Enemy::Enemy(Vector2f wayOne, Vector2f wayTwo) : Entity(position.x, position.y)
+Enemy::Enemy() : Entity(position.x, position.y)
 {
-	shape.setFillColor(Color::Magenta);
-	shape.setSize(Vector2f(32.0f, 32.0f));
     circle.setRadius(50.0f);
     circle.setPosition(position);
     circle.setFillColor(sf::Color::Red);
     detectionRadius = 25.0f;
     currentState = PATROL;
-    //circleOne.setFillColor(Color::Yellow);
-    //circleOne.setRadius(25.0f);
-    //circleTwo.setFillColor(Color::Blue);
-    //circleTwo.setRadius(25.0f);
-    //circleOne.setPosition(wayOne);
-    //circleTwo.setPosition(wayTwo);
-
+    circleOne.setFillColor(Color::Yellow);
+    circleOne.setRadius(25.0f);
+    circleTwo.setFillColor(Color::Blue);
+    circleTwo.setRadius(25.0f);
+    texture.loadFromFile("assets/Ennemies/R.png");
+    sprite.setTexture(texture);
 }
 
 bool Enemy::detectPlayer(Player& player)
@@ -49,41 +46,56 @@ void Enemy::patrol(float deltaTime) // a bien restructurer et faire en sorte qu'
 
 //void Enemy::chase(Player& player)
 //{
-//    sf::Vector2f direction = player.getPosPos() - position;
-//    float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-//
-//    if (distance > 0) {
-//        direction /= distance;
-//        position += direction * 0.2f;
-//    }
-//    circle.setPosition(position);
+//    return position;
 //}
 //
-//void Enemy::search(sf::Vector2f lastPlayerPos, float deltaTime)
+//RectangleShape Enemy::getShape() {
+//    return shape;
+//}
+//
+//bool Enemy::setIsGrounded(bool is)
 //{
-//    static float searchTimer = 0.0f;
-//    static sf::Vector2f searchDirection;
+//    isGrounded = is;
+//    return isGrounded;
+//}
 //
-//    if (searchTimer == 0.0f) {
-//        searchDirection = sf::Vector2f(rand() % 2 == 0 ? -1 : 1, rand() % 2 == 0 ? -1 : 1);
-//        searchDirection /= std::sqrt(searchDirection.x * searchDirection.x + searchDirection.y * searchDirection.y);
-//    }
+//bool Enemy::getIsGrounded()
+//{
+//    return isGrounded;
+//}
 //
-//    searchTimer += deltaTime;
-//    if (searchTimer < 10.0f) {
-//        position += searchDirection * 5.f * deltaTime;
+//void Enemy::update(float deltaTime)
+//{
+//}
+//
+//void Enemy::updateReal(float deltaTime, Player& player)
+//{
+//    if (isGrounded) {
+//        velocity.y = 0;
 //    }
 //    else {
-//        searchTimer = 0.0f;
-//        currentState = PATROL;
+//        velocity.y += gravity * deltaTime;  // Appliquer la gravité
 //    }
+//    position.y += velocity.y * deltaTime;
 //
-//    float distance = std::sqrt((lastPlayerPos.x - position.x) * (lastPlayerPos.x - position.x) + (lastPlayerPos.y - position.y) * (lastPlayerPos.y - position.y));
-//    if (distance < detectionRadius) {
-//        searchTimer = 0.0f;
+//    switch (currentState) {
+//    case PATROL:
+//        patrol(deltaTime);
+//        //if (detectPlayer(player)) currentState = CHASE;
+//        break;
 //    }
+//    //case CHASE:
+//    //    chase(player);
+//    //    if (!detectPlayer(player)) {
+//    //        currentState = SEARCH;
+//    //    }
+//    //    break;
 //
-//    circle.setPosition(position);
+//    //case SEARCH:
+//    //    search(lastPlayerPosition, deltaTime);
+//    //    break;
+//    //}
+//    shape.setPosition(position);
 //}
 
 Vector2f Enemy::setPosPos(float x, float y)
@@ -96,10 +108,6 @@ Vector2f Enemy::setPosPos(float x, float y)
 Vector2f Enemy::getPosPos()
 {
     return position;
-}
-
-RectangleShape Enemy::getShape() {
-    return shape;
 }
 
 bool Enemy::setIsGrounded(bool is)
@@ -115,17 +123,13 @@ bool Enemy::getIsGrounded()
 
 void Enemy::update(float deltaTime)
 {
-}
-
-void Enemy::updateReal(float deltaTime, Player& player)
-{
-    if (isGrounded) {
-        velocity.y = 0;
-    }
-    else {
-        velocity.y += gravity * deltaTime;  // Appliquer la gravité
-    }
-    position.y += velocity.y * deltaTime;
+    //if (isGrounded) {
+    //    velocity.y = 0;
+    //}
+    //else {
+    //    velocity.y += gravity * deltaTime;  // Appliquer la gravité
+    //}
+    //position.y += velocity.y * deltaTime;
 
     switch (currentState) {
     case PATROL:
@@ -144,12 +148,14 @@ void Enemy::updateReal(float deltaTime, Player& player)
     //    search(lastPlayerPosition, deltaTime);
     //    break;
     //}
-    shape.setPosition(position);
+    sprite.setPosition(position);
+    circleOne.setPosition(waypointOne);
+    circleTwo.setPosition(waypointTwo);
 }
 
 void Enemy::draw(RenderWindow& window)
 {
-    window.draw(shape);
+    window.draw(sprite);
     window.draw(circleOne);
     window.draw(circleTwo);
 }

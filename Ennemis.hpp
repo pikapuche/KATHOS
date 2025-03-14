@@ -15,15 +15,15 @@ protected :
 
 	float SPEED = 250.f;
 
-	Vector2f waypointOne;
-	Vector2f waypointTwo;
-
 	CircleShape circleOne;
 	CircleShape circleTwo;
 
 public : 
 
-	Enemy(Vector2f wayOne, Vector2f wayTwo);
+	Vector2f waypointOne;
+	Vector2f waypointTwo;
+
+	Enemy();
 
 	bool detectPlayer(Player& player);
 
@@ -44,8 +44,6 @@ public :
 	bool getIsGrounded();
 
 	void update(float deltaTime) override;
-
-	void updateReal(float deltaTime, Player& player);
 
 	void draw(RenderWindow& window) override;
 };

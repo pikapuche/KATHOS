@@ -2,6 +2,7 @@
 #include <iostream>
 #include "SFML/Graphics.hpp"
 #include <fstream>
+#include <cstdlib> 
 #include <vector>
 #include <windows.h>
 #include <thread>

@@ -1,44 +1,43 @@
 #include "Game.hpp"
-#include "MainScreen.hpp"
-#include "Interface.hpp"
-
-//faire collision
 
 void Game::run()
 {
-    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Kathos", sf::Style::Fullscreen);
-
+    RenderWindow window(VideoMode(1920, 1080), "Kathos", Style::Fullscreen);
     window.setVerticalSyncEnabled(true);
-    window.setFramerateLimit(60); 
+    window.setFramerateLimit(60);
 
     MainScreen mainScreen;
-
     Interface overlay;
     mainScreen.initMenu(window);
-    Map* m = new Map();
-    m->loadMap();
+    Map m;
+    m.loadMap();
 
     Clock clock;
-    overlay.initInterface(); // Ensure the texture is loaded once
+    overlay.initInterface();
 
     while (window.isOpen()) {
-        sf::Time deltaT = clock.restart();
+        Time deltaT = clock.restart();
         float deltaTime = deltaT.asSeconds();
-        sf::Event event;
+        Event event;
 
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
+            if (event.type == Event::Closed) {
                 window.close();
             }
-            if (mainScreen.getIsInMenu() && event.key.code == sf::Keyboard::Escape) {
+            /*if (mainScreen.getIsInMenu() && event.key.code == Keyboard::Escape) {
                 window.close();
             }
-            else if (!mainScreen.getIsInMenu() && event.key.code == sf::Keyboard::Escape) {
+            else if (!mainScreen.getIsInMenu() && event.key.code == Keyboard::Escape) {
                 overlay.setIsPaused(true);
-            }
+            }*/
         }
 
         window.clear();
+        m.player->update(deltaTime);
+        m.enemy->update(deltaTime);
+
+        m.update(deltaTime);
+        m.draw(window);
 
         if (!overlay.getIsPaused()) { // Only update game when not paused
             for (auto& playerv : m->playerVector) {
@@ -52,12 +51,12 @@ void Game::run()
             overlay.updateInterface(window); // Draw pause menu when paused
         }
 
-        if (mainScreen.getIsInMenu()) {
-            mainScreen.updateMenu(window);
-        }   
-        else {
-            mainScreen.destroyAll();
-        }
+        //if (mainScreen.getIsInMenu()) {
+        //    mainScreen.updateMenu(window);
+        //}   
+        //else {
+        //    mainScreen.destroyAll();
+        //}
 
         //for (auto& gemmes : map.vector_gemme) {
         //    for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements
@@ -67,6 +66,6 @@ void Game::run()
         //}
 
         // Affiche tout
-        window.display(); 
+        window.display();
     }
 }
