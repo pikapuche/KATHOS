@@ -7,7 +7,17 @@ Boss::Boss(Player& target) : Entity(position.x, position.y), target(target) {
     sprite.setScale(Vector2f(0.22f, 0.22f));
     speed = 200.0f;
     velocity = { -speed, 0.0f };
+    velocity.y = 0;
     detectionRange = 600.0f;
+}
+
+void Boss::jump()
+{
+    if (state == GROUNDED) {  // Sauter uniquement si le boss est sur le sol / saute pas
+        state = JUMP;
+        velocity.y = -jumpForce;  // Appliquer une force initiale vers le haut pour sauter 
+        jumpClock.restart();
+    }
 }
 
 bool Boss::canSeePlayer() {
@@ -35,6 +45,36 @@ void Boss::update(float deltaTime) {
     position += velocity * deltaTime;
     checkCollision(1920, 1080);
     sprite.setPosition(position);
+
+    caca += rand() % 5;
+    cout << caca << endl;
+
+    switch (caca) {
+    case '0':
+    {
+        break;
+    }
+    case '1':
+    {
+        break;
+    }
+    case '2':
+    {
+        jump();
+        break;
+    }
+    case '3':
+    {
+        break;
+    }
+    case '4':
+    {
+        jump();
+        break;
+    }
+    }
+
+    caca = 0;
 }
 
 void Boss::draw(RenderWindow& window) {
@@ -69,4 +109,27 @@ Vector2f Boss::setPos(float x, float y) {
     position.x = x;
     position.y = y;
     return position;
+}
+
+Vector2f Boss::getVelocity() {
+    return velocity;
+}
+
+Vector2f Boss::setVelocity(float veloX, float veloY) {
+    velocity.x = veloX;
+    velocity.y = veloY;
+    return velocity;
+}
+
+float Boss::getJumpForce() {
+    return jumpForce;
+}
+
+float Boss::setJumpForce(float force) {
+    jumpForce = force;
+    return jumpForce;
+}
+
+float Boss::getGravity() {
+    return gravity;
 }

@@ -21,6 +21,7 @@ void Map::update() {
 
 void Map::collision() {
 	playerVector[0]->getSprite().getGlobalBounds();
+	bossVector[0]->getSprite().getGlobalBounds();
 	//for (auto& monde1 : monde1Vector )  Si touche la sortie donc clear pointeur
 }
 

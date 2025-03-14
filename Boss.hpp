@@ -13,10 +13,20 @@ private:
 
     Texture texture;
 
-
+    float jumpForce = 600.f;
+    Clock jumpClock;
 
 public:
     Boss(Player& target);
+
+    int caca;
+
+    enum State { NONE, GROUNDED, JUMP };
+    State state;
+    void jump();
+    float getJumpForce();
+    float setJumpForce(float force);
+    float getGravity();
 
     void update(float deltatime) override;
     void draw(RenderWindow& window) override;
@@ -26,4 +36,7 @@ public:
 
     Vector2f getPos();
     Vector2f setPos(float x, float y);
+
+    Vector2f getVelocity();
+    Vector2f setVelocity(float veloX, float veloY);
 };
