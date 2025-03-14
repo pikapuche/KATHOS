@@ -12,17 +12,19 @@ Map::Map() : statePlaying(StatePlaying::Practice) {
 	groundGreenRightTexture.loadFromFile("Assets/Map/groundGreenRight.png");
 }
 
-void Map::update() {
-	collision();
-	for (auto& bossrv : bossVector) {
-		bossrv->checkCollision(1920, 1080);
-	}
+Map::~Map()
+{
+	
 }
 
-void Map::collision() {
-	playerVector[0]->getSprite().getGlobalBounds();
-	bossVector[0]->getSprite().getGlobalBounds();
-	//for (auto& monde1 : monde1Vector )  Si touche la sortie donc clear pointeur
+void Map::update(float deltaTime) {
+	collision(deltaTime);
+}
+
+void Map::collision(float deltaTime) {
+	for (auto& ground : groundSprites) {
+		player->collisionPlatform(*ground, deltaTime);
+	}
 }
 
 void Map::monSwitch(ifstream& _Map, string _line, int _z) {
@@ -33,33 +35,31 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				cout << _line[i] << endl;
 			case '1':
 			{
-				Sprite* gGL = new Sprite;
-				gGL->setTexture(groundGreenLeftTexture);
-				gGL->setPosition({ (float)i * 32,(float)_z * 32 });
-				groundGLVector.push_back(gGL);
+				auto left = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				left->setTexture(groundGreenLeftTexture);
+				left->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(left));  // Utilise std::move pour transf�rer la propri�t�
 				break;
 			}
 			case '2':
 			{
-				Sprite* gGM = new Sprite;
-				gGM->setTexture(groundGreenMidTexture);
-				gGM->setPosition({ (float)i * 32,(float)_z * 32 });
-				groundGMVector.push_back(gGM);
+				auto mid = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				mid->setTexture(groundGreenMidTexture);
+				mid->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(mid));  // Utilise std::move pour transf�rer la propri�t�
 				break;
 			}
 			case '3':
 			{
-				Sprite* gGR = new Sprite;
-				gGR->setTexture(groundGreenRightTexture);
-				gGR->setPosition({ (float)i * 32,(float)_z * 32 });
-				groundGMVector.push_back(gGR);
+				auto right = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				right->setTexture(groundGreenRightTexture);
+				right->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(right));  // Utilise std::move pour transf�rer la propri�t�
 				break;
 			}
 			case 'P':
 			{
-				Player* player = new Player;
-				player->setPosPos((float)i * 32, (float)_z * 32);
-				playerVector.push_back(player);
+				player->setPosPos((float)i * 32, (float)_z * 20);
 				break;
 			}
 			case 'B':
@@ -100,21 +100,10 @@ void Map::loadMap() {
 }
 
 void Map::draw(RenderWindow& window) {
-	for (auto& groundGL : groundGLVector) {
-		window.draw(*groundGL);
+	for (auto& ground : groundSprites) {
+		window.draw(*ground);
 	}
-	for (auto& groundGM : groundGMVector) {
-		window.draw(*groundGM);
-	}
-	for (auto& groundGR : groundGRVector) {
-		window.draw(*groundGR);
-	}
-	for (auto& playerv : playerVector) {
-		playerv->draw(window);
-	}
-	for (auto& bossrv : bossVector) {
-		bossrv->draw(window);
-	}
+	player->draw(window);
 }
 
 void Map::gameOver(RenderWindow& window)

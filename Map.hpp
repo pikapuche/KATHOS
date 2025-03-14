@@ -17,14 +17,11 @@ public:
 
     //Texture wallTexture;
 
-    vector<Sprite*> groundYLVector, groundYMVector, groundYRVector;
-    vector<Sprite*> groundRLVector, groundRMVector, groundRRVector;
-    vector<Sprite*> groundGLVector, groundGMVector, groundGRVector;
+    vector<unique_ptr<Sprite>> groundSprites;
+
+    shared_ptr<Player> player = make_shared<Player>();
 
     vector<ifstream*> maps;
-
-    vector<Player*> playerVector;
-    vector<Boss*> bossVector;
 
     //Text win;
     //Font font;
@@ -42,9 +39,9 @@ public:
 
     ~Map(); 
 
-    void update(); 
+    void update(float deltaTime);
 
-    void collision();
+    void collision(float deltaTime);
 
     void loadMap();
 

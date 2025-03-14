@@ -8,11 +8,13 @@ void Game::run()
     window.setVerticalSyncEnabled(true);
     window.setFramerateLimit(60);
 
+    MainScreen mainScreen;
+
     /*MainScreen mainScreen;
     Interface overlay;
-    mainScreen.initMenu(window);*/
-    Map* m = new Map();
-    m->loadMap();
+    mainScreen.initMenu(window);
+    Map m;
+    m.loadMap();
 
     Clock clock;
     /*overlay.initInterface();*/
@@ -35,16 +37,26 @@ void Game::run()
         }
 
         window.clear();
-        for (auto& playerv : m->playerVector) {
-            playerv->update(deltaTime);
-        }
-        for (auto& bossrv : m->bossVector) {
-            bossrv->update(deltaTime);
-            bossrv->checkCollision(1920, 1080);
-        }
-        m->update();
-        m->draw(window);
+        m.player->update(deltaTime);
 
+        m.update(deltaTime);
+        m.draw(window);
+
+        //if (mainScreen.getIsInMenu()) {
+        //    mainScreen.updateMenu(window);
+        //}   
+        //else {
+        //    mainScreen.destroyAll();
+        //}
+
+        //for (auto& gemmes : map.vector_gemme) {
+        //    for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements
+        //        gemmes->interact(*players);
+        //    }
+        //    gemmes->draw(window);
+        //}
+
+        // Affiche tout
         window.display();
     }
 }
