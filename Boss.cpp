@@ -46,10 +46,10 @@ void Boss::update(float deltaTime) {
     checkCollision(1920, 1080);
     sprite.setPosition(position);
 
-    caca += rand() % 5;
-    cout << caca << endl;
+    onestla += rand() % 5;
+    cout << onestla << endl;
 
-    switch (caca) {
+    switch (onestla) {
     case '0':
     {
         break;
@@ -74,7 +74,7 @@ void Boss::update(float deltaTime) {
     }
     }
 
-    caca = 0;
+    onestla = 0;
 }
 
 void Boss::draw(RenderWindow& window) {

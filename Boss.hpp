@@ -19,7 +19,7 @@ private:
 public:
     Boss(Player& target);
 
-    int caca;
+    int onestla;
 
     enum State { NONE, GROUNDED, JUMP };
     State state;

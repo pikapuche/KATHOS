@@ -35,26 +35,26 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				cout << _line[i] << endl;
 			case '1':
 			{
-				auto left = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				auto left = make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
 				left->setTexture(groundGreenLeftTexture);
 				left->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(left));  // Utilise std::move pour transf�rer la propri�t�
+				groundSprites.push_back(move(left));  // Utilise move pour transf�rer la propri�t�
 				break;
 			}
 			case '2':
 			{
-				auto mid = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				auto mid = make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
 				mid->setTexture(groundGreenMidTexture);
 				mid->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(mid));  // Utilise std::move pour transf�rer la propri�t�
+				groundSprites.push_back(move(mid));  // Utilise move pour transf�rer la propri�t�
 				break;
 			}
 			case '3':
 			{
-				auto right = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				auto right = make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
 				right->setTexture(groundGreenRightTexture);
 				right->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(right));  // Utilise std::move pour transf�rer la propri�t�
+				groundSprites.push_back(move(right));  // Utilise move pour transf�rer la propri�t�
 				break;
 			}
 			case 'P':
