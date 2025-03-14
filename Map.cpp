@@ -111,7 +111,9 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			}
 			case 'G':
 			{
-				//gemme->setPosPos((float)i * 32, (float)_z * 20);
+				auto gemme = std::make_unique<Gemme>();
+				gemme->updateGemme((float)i * 32 , (float)_z * 20 );
+				gemmeSprites.push_back(std::move(gemme));
 				break;
 			}
 

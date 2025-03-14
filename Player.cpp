@@ -88,8 +88,8 @@ void Player::animationManager(float deltaTime) {
             animRunTimeDecr = 0;
         }
         if (stateLook == LOOK_LEFT) {
-            if (anim_move.x > 6) 
-                anim_move.x = 1;
+            if (anim_move.x > 5) 
+                anim_move.x = 0;
             sprite.setTextureRect(sf::IntRect(anim_move.x * 64, anim_move.y * 64, -64, 64));
         }
         else if (stateLook == LOOK_RIGHT) {
@@ -106,8 +106,8 @@ void Player::animationManager(float deltaTime) {
             animIdleTimeDecr = 0;
         }
         if (stateLook == LOOK_LEFT) {
-            if (anim_idle.x > 8)
-                anim_idle.x = 1;
+            if (anim_idle.x > 7)
+                anim_idle.x = 0;
             sprite.setTextureRect(sf::IntRect(anim_idle.x * 64, anim_idle.y * 64, -64, 64));
         }
         else if (stateLook == LOOK_RIGHT) {
