@@ -1,6 +1,4 @@
 #include "Game.hpp"
-#include "MainScreen.hpp"
-#include "Interface.hpp"
 
 //faire collision
 
@@ -40,6 +38,7 @@ void Game::run()
 
         window.clear();
         m.player->update(deltaTime);
+        m.enemy->update(deltaTime);
 
         m.update(deltaTime);
         m.draw(window);

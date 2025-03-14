@@ -21,6 +21,8 @@ public:
 
     shared_ptr<Player> player = make_shared<Player>();
 
+    shared_ptr<Enemy> enemy = make_shared<Enemy>();
+
     vector<ifstream*> maps;
 
     //Text win;

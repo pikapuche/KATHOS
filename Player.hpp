@@ -101,10 +101,6 @@ public:
 
     bool setHasKey(bool key);
 
-    State getState();
-
-    void setState(State _state);
-
     void update(float deltaTime);
 
     void draw(RenderWindow& window);

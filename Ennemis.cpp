@@ -1,21 +1,18 @@
 #include "Ennemis.hpp"
 
-Enemy::Enemy(Vector2f wayOne, Vector2f wayTwo) : Entity(position.x, position.y)
+Enemy::Enemy() : Entity(position.x, position.y)
 {
-	shape.setFillColor(Color::Magenta);
-	shape.setSize(Vector2f(32.0f, 32.0f));
     circle.setRadius(50.0f);
     circle.setPosition(position);
     circle.setFillColor(sf::Color::Red);
     detectionRadius = 25.0f;
     currentState = PATROL;
-    //circleOne.setFillColor(Color::Yellow);
-    //circleOne.setRadius(25.0f);
-    //circleTwo.setFillColor(Color::Blue);
-    //circleTwo.setRadius(25.0f);
-    //circleOne.setPosition(wayOne);
-    //circleTwo.setPosition(wayTwo);
-
+    circleOne.setFillColor(Color::Yellow);
+    circleOne.setRadius(25.0f);
+    circleTwo.setFillColor(Color::Blue);
+    circleTwo.setRadius(25.0f);
+    texture.loadFromFile("assets/Ennemies/R.png");
+    sprite.setTexture(texture);
 }
 
 bool Enemy::detectPlayer(Player& player)
@@ -98,10 +95,6 @@ Vector2f Enemy::getPosPos()
     return position;
 }
 
-RectangleShape Enemy::getShape() {
-    return shape;
-}
-
 bool Enemy::setIsGrounded(bool is)
 {
     isGrounded = is;
@@ -115,41 +108,21 @@ bool Enemy::getIsGrounded()
 
 void Enemy::update(float deltaTime)
 {
-}
-
-void Enemy::updateReal(float deltaTime, Player& player)
-{
-    if (isGrounded) {
-        velocity.y = 0;
-    }
-    else {
-        velocity.y += gravity * deltaTime;  // Appliquer la gravité
-    }
-    position.y += velocity.y * deltaTime;
-
     switch (currentState) {
     case PATROL:
         patrol(deltaTime);
         //if (detectPlayer(player)) currentState = CHASE;
         break;
     }
-    //case CHASE:
-    //    chase(player);
-    //    if (!detectPlayer(player)) {
-    //        currentState = SEARCH;
-    //    }
-    //    break;
 
-    //case SEARCH:
-    //    search(lastPlayerPosition, deltaTime);
-    //    break;
-    //}
-    shape.setPosition(position);
+    sprite.setPosition(position);
+    circleOne.setPosition(waypointOne);
+    circleTwo.setPosition(waypointTwo);
 }
 
 void Enemy::draw(RenderWindow& window)
 {
-    window.draw(shape);
+    window.draw(sprite);
     window.draw(circleOne);
     window.draw(circleTwo);
 }

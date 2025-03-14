@@ -63,7 +63,21 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				player->setPosPos((float)i * 32, (float)_z * 20);
 				break;
 			}
-
+			case 'W' : 
+			{
+				enemy->waypointOne.x = (float)i * 32;
+				enemy->waypointOne.y = (float)_z * 20;
+				break;
+			}
+			case 'V':
+			{
+				enemy->waypointTwo.x = (float)i * 32;
+				enemy->waypointTwo.y = (float)_z * 20;
+				break;
+			}
+			case 'E': 
+				enemy->setPosPos((float)i * 32, (float)_z * 20);
+				break;
 			}
 		}
 		_z++;
@@ -98,6 +112,7 @@ void Map::draw(RenderWindow& window) {
 		window.draw(*ground);
 	}
 	player->draw(window);
+	enemy->draw(window);
 }
 
 void Map::gameOver(RenderWindow& window)
