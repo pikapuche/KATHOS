@@ -1,4 +1,6 @@
 #include "Interactibles.hpp"
+#include "Player.hpp"
+
 
 void Interactible::setTexture(const std::string& filePath) {
     if (!texture.loadFromFile(filePath)) {
@@ -9,13 +11,22 @@ void Interactible::setTexture(const std::string& filePath) {
     }
 }
 
-//void Interactible::updateProximity(Player& player) {
-//    sf::Vector2f playerPos = player.getPosPos();
-//    sf::Vector2f spritePos = sprite.getPosition();
-//
-//    float distance = std::sqrt(std::pow(playerPos.x - spritePos.x, 2) + std::pow(playerPos.y - spritePos.y, 2));
-//
-//    // Define a threshold for "close enough"
-//    isPlayerNear = (distance < 100.0f); // Adjust the range as needed
-//}
+void Interactible::updateProximity(Player& player) {
+    float distance = std::sqrt(
+        std::pow(sprite.getPosition().x - player.getSprite().getPosition().x, 2) +
+        std::pow(sprite.getPosition().y - player.getSprite().getPosition().y, 2)
+    );
 
+    isPlayerNear = (distance < PROXIMITY_RANGE); // Adjust range for proximity
+}
+
+bool Interactible::playerTryInteract() {
+    if (isPlayerNear) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
+            return true;
+        }
+    }
+    else {
+        return false;
+    }
+}

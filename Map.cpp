@@ -61,14 +61,13 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			}
 			case 'C':
 			{
-				Chest* chest = new Chest;
+				Chest* chest = new Chest(true);
 				chest->setPosPos((float)i * 32, (float)_z * 32 - 17);
 				interactiblesVector.push_back(chest);
 				break;
 			}
 
 			case 'K':
-
 				Key * key = new Key();
 				key->setPosPos((float)i * 32, (float)_z * 32 - 25);
 				interactiblesVector.push_back(key);

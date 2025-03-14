@@ -1,20 +1,14 @@
 #pragma once
 #include "Interactibles.hpp"
 
-enum keytype {
-    DOOR,
-    CHEST
-};
+class Player;
 
 class Key : public Interactible {
-
 private:
-    keytype KeyType;
 
 public:
-
     Key();
+
+    void interact(Player& player) override;
     void setPosPos(float x, float y);
-    keytype getKeyType();
-    void setKeyType(keytype type);
 };

@@ -1,15 +1,15 @@
 #pragma once
 #include "Interactibles.hpp"
 
+class Player;
+
 class Chest : public Interactible {
 private:
-    std::string chestContent;
-    int contentAmount;
-    bool requireKey;
+    bool containsKey;
 
 public:
-    Chest();
+    Chest(bool containKey);
 
-    //void interact(Player& player) override; // Define interaction
+    void interact(Player& player) override;
     void setPosPos(float x, float y);
 };
