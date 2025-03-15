@@ -2,8 +2,6 @@
 #include "stdafx.hpp"
 #include "Player.hpp"
 
-
-
 class Gemme {
 public:
 
@@ -14,7 +12,7 @@ public:
 	Clock gemmeClock;
 	Time animGemmeTime;
 
-	enum class  GemmeState { SPEED, DASH,};
+	enum class  GemmeState { SPEED, DASH };
 
 	GemmeState gemmeState;
 	
