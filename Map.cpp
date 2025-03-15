@@ -24,6 +24,7 @@ void Map::update(float deltaTime) {
 void Map::collision(float deltaTime) {
 	for (auto& ground : groundSprites) {
 		player->collision(*ground, deltaTime);
+		for(auto& enemy : enemies)
 		enemy->collision(*ground, deltaTime);
 	}
 }
@@ -32,30 +33,38 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 	
 	while (getline(_Map, _line)) {
 		for (int i = 0; i < _line.size(); i++) {
-			switch (_line[i]) {
+			//string tileCode = _line.substr(i, 3); // permet de choisir entre trois valeur pour faire pop les bidules dans la map
+			//if (!isdigit(tileCode[0]) || !isdigit(tileCode[1]) || !isdigit(tileCode[2])) // code d'erreur si on trouve pas le numéro rechercher
+			//{
+			//	cout << "Warning: Invalid tile code '" << tileCode << "' at position " << i << "." << endl;
+			//	continue;
+			//}
+			//int tileValue;
+			//tileValue = stoi(tileCode);
+			switch (_line[i]) { // tileValue
 				cout << _line[i] << endl;
 			case '1':
 			{
-				auto left = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				auto left = std::make_unique<Sprite>();  // La bonne facon de cr�er un unique_ptr
 				left->setTexture(groundGreenLeftTexture);
 				left->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(left));  // Utilise std::move pour transf�rer la propri�t�
+				groundSprites.push_back(std::move(left));
 				break;
 			}
 			case '2':
 			{
-				auto mid = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				auto mid = std::make_unique<Sprite>();  // La bonne facon de cr�er un unique_ptr
 				mid->setTexture(groundGreenMidTexture);
 				mid->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(mid));  // Utilise std::move pour transf�rer la propri�t�
+				groundSprites.push_back(std::move(mid));
 				break;
 			}
 			case '3':
 			{
-				auto right = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				auto right = std::make_unique<Sprite>();  // La bonne facon de cr�er un unique_ptr
 				right->setTexture(groundGreenRightTexture);
 				right->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(right));  // Utilise std::move pour transf�rer la propri�t�
+				groundSprites.push_back(std::move(right));
 				break;
 			}
 			case 'P':
@@ -63,21 +72,35 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				player->setPosPos((float)i * 32, (float)_z * 20);
 				break;
 			}
-			case 'W' : 
+			case 'E':
 			{
-				enemy->waypointOne.x = (float)i * 32;
-				enemy->waypointOne.y = (float)_z * 20;
+				auto newEnemy = make_unique<Enemy>();
+				newEnemy->setPosPos((float)i * 32, (float)_z * 20);
+				newEnemy->waypointOne.x = newEnemy->getPosPos().x;
+				newEnemy->waypointOne.y = newEnemy->getPosPos().y;
+				newEnemy->waypointTwo.x = newEnemy->getPosPos().x + 590;
+				newEnemy->waypointTwo.y = newEnemy->getPosPos().y;
+				enemies.push_back(move(newEnemy));
+				break;
+			}
+			/*case 'W':
+			{
+				for (auto& enemy : enemies) {
+					enemy->waypointOne.x = (float)i * 32;
+					enemy->waypointOne.y = (float)_z * 20;
+					//enemies.push_back(std::move(enemy));
+				}
 				break;
 			}
 			case 'V':
 			{
-				enemy->waypointTwo.x = (float)i * 32;
-				enemy->waypointTwo.y = (float)_z * 20;
+				for (auto& enemy : enemies) {
+					enemy->waypointTwo.x = (float)i * 32;
+					enemy->waypointTwo.y = (float)_z * 20;
+					//enemies.push_back(move(newEnemy));
+				}
 				break;
-			}
-			case 'E': 
-				enemy->setPosPos((float)i * 32, (float)_z * 20);
-				break;
+			}*/
 			}
 		}
 		_z++;
@@ -112,6 +135,7 @@ void Map::draw(RenderWindow& window) {
 		window.draw(*ground);
 	}
 	player->draw(window);
+	for(auto& enemy : enemies)
 	enemy->draw(window);
 }
 

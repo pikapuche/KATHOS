@@ -1,16 +1,17 @@
-#include "Ennemis.hpp"
+#include "Ennemies.hpp"
 
 Enemy::Enemy() : Entity(position.x, position.y)
 {
-    circle.setRadius(50.0f);
-    circle.setPosition(position);
-    circle.setFillColor(sf::Color::Red);
+    circleDetect.setRadius(150.0f);
+    circleDetect.setPosition(position);
+    circleDetect.setFillColor(sf::Color(255, 0, 0, 50));
+    circleDetect.setOrigin(132.f, 132.f);
     detectionRadius = 25.0f;
     currentState = PATROL;
     circleOne.setFillColor(Color::Yellow);
-    circleOne.setRadius(25.0f);
+    circleOne.setRadius(10.0f);
     circleTwo.setFillColor(Color::Blue);
-    circleTwo.setRadius(25.0f);
+    circleTwo.setRadius(10.0f);
     texture.loadFromFile("assets/Ennemies/R.png");
     sprite.setTexture(texture);
     boxCol1 = 32;
@@ -161,13 +162,15 @@ void Enemy::update(float deltaTime)
     position.y += velocity.y * deltaTime;
 
     sprite.setPosition(position);
+    circleDetect.setPosition(position);
     circleOne.setPosition(waypointOne);
     circleTwo.setPosition(waypointTwo);
 }
 
 void Enemy::draw(RenderWindow& window)
 {
-    window.draw(sprite);
     window.draw(circleOne);
     window.draw(circleTwo);
+    window.draw(circleDetect);
+    window.draw(sprite);
 }

@@ -34,7 +34,8 @@ void Game::run()
 
         window.clear();
         m.player->update(deltaTime);
-        m.enemy->update(deltaTime);
+        for(auto& enemy : m.enemies)
+        enemy->update(deltaTime);
 
         m.update(deltaTime);
         m.draw(window);

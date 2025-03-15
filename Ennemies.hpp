@@ -11,7 +11,7 @@ protected :
 	StateDirection directionState;
 
 	float detectionRadius;
-	sf::CircleShape circle;
+	sf::CircleShape circleDetect;
 	sf::Vector2f lastPlayerPosition;
 
 	bool isGrounded = false;
