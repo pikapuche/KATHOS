@@ -10,7 +10,6 @@ Map::Map() : statePlaying(StatePlaying::Practice) {
 	groundGreenLeftTexture.loadFromFile("Assets/Map/groundGreenLeft.png");
 	groundGreenMidTexture.loadFromFile("Assets/Map/groundGreenMid.png");
 	groundGreenRightTexture.loadFromFile("Assets/Map/groundGreenRight.png");
-
 }
 
 Map::~Map()
@@ -63,7 +62,21 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				player->setPosPos((float)i * 32, (float)_z * 20);
 				break;
 			}
-
+			case 'W' : 
+			{
+				enemy->waypointOne.x = (float)i * 32;
+				enemy->waypointOne.y = (float)_z * 20;
+				break;
+			}
+			case 'V':
+			{
+				enemy->waypointTwo.x = (float)i * 32;
+				enemy->waypointTwo.y = (float)_z * 20;
+				break;
+			}
+			case 'E': 
+				enemy->setPosPos((float)i * 32, (float)_z * 20);
+				break;
 			}
 		}
 		_z++;
@@ -98,26 +111,27 @@ void Map::draw(RenderWindow& window) {
 		window.draw(*ground);
 	}
 	player->draw(window);
+	enemy->draw(window);
 }
 
 void Map::gameOver(RenderWindow& window)
 {
 	if (isGameOver) {
-		sf::RectangleShape gameOverScreen(sf::Vector2f(window.getSize().x, window.getSize().y));
-		gameOverScreen.setFillColor(sf::Color(0, 0, 0, 150));
+		RectangleShape gameOverScreen(Vector2f(window.getSize().x, window.getSize().y));
+		gameOverScreen.setFillColor(Color(0, 0, 0, 150));
 		window.draw(gameOverScreen);
 
-		sf::Font font;
+		Font font;
 		if (!font.loadFromFile("Assets/Fonts/Minecraft.ttf")) {
 			cout << "Erreur chargement police !" << endl;
 		}
 
-		sf::Text gameOverText;
+		Text gameOverText;
 		gameOverText.setFont(font);
 		gameOverText.setString("GAME OVER");
 		gameOverText.setCharacterSize(80);
-		gameOverText.setFillColor(sf::Color::Red);
-		gameOverText.setStyle(sf::Text::Bold);
+		gameOverText.setFillColor(Color::Red);
+		gameOverText.setStyle(Text::Bold);
 		gameOverText.setPosition((window.getSize().x - gameOverText.getGlobalBounds().width) / 2, (window.getSize().y - gameOverText.getGlobalBounds().height) / 2);
 
 		window.draw(gameOverText);
