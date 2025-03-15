@@ -29,6 +29,8 @@ public:
 
     vector<ifstream*> maps;
 
+    vector<unique_ptr<Interactible>> interactiblesVector;
+
     //Text win;
     //Font font;
 

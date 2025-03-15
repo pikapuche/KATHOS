@@ -1,6 +1,6 @@
 #pragma once
 #include "Entity.hpp"
-#include "Interactibles.hpp"
+
 class Player : public Entity {
 protected:
     Texture textureSprint;
@@ -101,7 +101,7 @@ public:
 
     bool setHasKey(bool key);
 
-    void update(float deltaTime);
+    void update(float deltaTime) override;
 
-    void draw(RenderWindow& window);
+    void draw(RenderWindow& window) override;
 };
