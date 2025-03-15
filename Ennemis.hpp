@@ -4,8 +4,11 @@
 class Enemy : public Entity {
 protected : 
 
-	enum State { PATROL, CHASE, SEARCH };
-	State currentState;
+	enum CurrentState { PATROL, CHASE, SEARCH };
+	CurrentState currentState;
+
+	enum StateDirection { LEFT, RIGHT };
+	StateDirection directionState;
 
 	float detectionRadius;
 	sf::CircleShape circle;
@@ -36,8 +39,6 @@ public :
 	Vector2f setPosPos(float x, float y);
 
 	Vector2f getPosPos();
-
-	RectangleShape getShape();
 
 	bool setIsGrounded(bool is);
 

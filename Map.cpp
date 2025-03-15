@@ -23,7 +23,8 @@ void Map::update(float deltaTime) {
 
 void Map::collision(float deltaTime) {
 	for (auto& ground : groundSprites) {
-		player->collisionPlatform(*ground, deltaTime);
+		player->collision(*ground, deltaTime);
+		enemy->collision(*ground, deltaTime);
 	}
 }
 

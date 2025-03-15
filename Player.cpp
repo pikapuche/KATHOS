@@ -8,6 +8,8 @@ Player::Player() : Entity(position.x, position.y) { // constructeur de base
     textureIdle.loadFromFile("assets/texture/player/idleV2.png");
     sprite.setTexture(textureSprint);
     sprite.setTextureRect(IntRect(0, 0, 64, 64));
+    boxCol1 = 35;
+    boxCol2 = 58;
 }
 
 void Player::movementManager(float deltaTime) { 
@@ -187,32 +189,6 @@ void Player::dash(float deltaTime)
     else {
         sprite.setColor(Color::White);
     }
-}
-
-void Player::collisionPlatform(Sprite& tile, float deltaTime) {
-    if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds()) && tile.getPosition().y < position.y) { // si le perso se trouve sous la plateforme il ne la traverse pas 
-        position.y = tile.getPosition().y + 35;
-        velocity.y = gravity * deltaTime;
-        state = NONE;
-    }
-    else if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds()) && tile.getPosition().y > position.y) { // collision de base 
-        position.y = tile.getPosition().y - 58;
-        velocity.y = 0;
-        state = GROUNDED;
-    }
-}
-
-void Player::collisionFloor(Sprite& tile) {
-    if (tile.getGlobalBounds().intersects(sprite.getGlobalBounds())) { // si le joueur entre en collision avec le sol alors il set sa position en haut du sol
-        setPosPos(getPosPos().x, tile.getPosition().y - 64);
-        velocity.y = 0;
-        state = GROUNDED;
-    }
-    //else if (tile.getPosition().y < getPosPos().y) { // s'il passe sous le sol
-    //    setPosPos(getPosPos().x, tile.getPosition().y - 64);
-    //    velocity.y = 0;
-    //    state = GROUNDED;
-    //}
 }
 
 #pragma region Getteurs / Setteurs

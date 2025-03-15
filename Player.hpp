@@ -42,9 +42,6 @@ protected:
 
 public:
 
-    enum State { NONE, GROUNDED, JUMP };
-    State state;
-
     bool floor = true;
 
     Player();
@@ -58,10 +55,6 @@ public:
     void attack(float deltaTime);
 
     void dash(float deltaTime);
-
-    void collisionPlatform(Sprite& tile, float deltaTime);
-
-    void collisionFloor(Sprite& tile);
 
     Vector2f setPosPos(float x, float y);
 

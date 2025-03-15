@@ -13,6 +13,8 @@ Enemy::Enemy() : Entity(position.x, position.y)
     circleTwo.setRadius(25.0f);
     texture.loadFromFile("assets/Ennemies/R.png");
     sprite.setTexture(texture);
+    boxCol1 = 32;
+    boxCol2 = 32;
 }
 
 bool Enemy::detectPlayer(Player& player)
@@ -23,12 +25,19 @@ bool Enemy::detectPlayer(Player& player)
 
 void Enemy::patrol(float deltaTime) // a bien restructurer et faire en sorte qu'il se déplace que sur l'axe x et pas sur le y avec le chemin a trouver 
 {
-    //if (position.x > circleOne.getPosition().x) {
-    //    position.x += SPEED * deltaTime;
-    //}
-    //else if (position.x > circleOne.getPosition().x && position.x < circleTwo.getPosition().x) {
-    //    position.x -= SPEED * deltaTime;
-    //}
+    if (position.x < circleOne.getPosition().x && directionState != RIGHT) {
+        directionState = RIGHT;
+    }
+    else if (position.x > circleTwo.getPosition().x && directionState != LEFT) {
+        directionState = LEFT;
+    }
+
+    if (directionState == RIGHT) {
+        position.x += SPEED * deltaTime;
+    }
+    else {
+        position.x -= SPEED * deltaTime;
+    }
     //static int currentWaypoint = 0;
     //static sf::Vector2f waypoints[2] = { waypoint1, waypoint2 };
     //sf::Vector2f target = waypoints[currentWaypoint];
@@ -130,7 +139,6 @@ void Enemy::update(float deltaTime)
     //    velocity.y += gravity * deltaTime;  // Appliquer la gravité
     //}
     //position.y += velocity.y * deltaTime;
-
     switch (currentState) {
     case PATROL:
         patrol(deltaTime);
@@ -148,6 +156,10 @@ void Enemy::update(float deltaTime)
     //    search(lastPlayerPosition, deltaTime);
     //    break;
     //}
+
+    velocity.y += gravity * deltaTime;  // Appliquer la gravité
+    position.y += velocity.y * deltaTime;
+
     sprite.setPosition(position);
     circleOne.setPosition(waypointOne);
     circleTwo.setPosition(waypointTwo);
