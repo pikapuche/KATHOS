@@ -5,6 +5,10 @@
 #include "NuageTox.hpp"
 #include "Ennemis.hpp"
 #include "Gemme.hpp"
+#include "Interactibles.hpp"
+#include "Chest.hpp"
+#include "Key.hpp"
+
 
 class Map {
 public:
@@ -25,8 +29,8 @@ public:
 
     vector<ifstream*> maps;
 
-    Sprite* groundSprite;
-
+    vector<unique_ptr<Interactible>> interactiblesVector;
+  
     //Text win;
     //Font font;
 

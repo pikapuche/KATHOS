@@ -37,8 +37,6 @@ public :
 
 	Vector2f getPosPos();
 
-	RectangleShape getShape();
-
 	bool setIsGrounded(bool is);
 
 	bool getIsGrounded();

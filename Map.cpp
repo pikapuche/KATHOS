@@ -1,15 +1,15 @@
 #include "Map.hpp"
 
 Map::Map() : statePlaying(StatePlaying::Practice) {
-	groundYellowLeftTexture.loadFromFile("Assets/Map/groundYellowLeft.png");
-	groundYellowMidTexture.loadFromFile("Assets/Map/groundYellowMid.png");
-	groundYellowRightTexture.loadFromFile("Assets/Map/groundYellowRight.png");
-	groundRedLeftTexture.loadFromFile("Assets/Map/groundRedLeft.png");
-	groundRedMidTexture.loadFromFile("Assets/Map/groundRedMid.png");
-	groundRedRightTexture.loadFromFile("Assets/Map/groundRedRight.png");
-	groundGreenLeftTexture.loadFromFile("Assets/Map/groundGreenLeft.png");
-	groundGreenMidTexture.loadFromFile("Assets/Map/groundGreenMid.png");
-	groundGreenRightTexture.loadFromFile("Assets/Map/groundGreenRight.png");
+	groundYellowLeftTexture.loadFromFile("Assets/texture/Map/groundYellowLeft.png");
+	groundYellowMidTexture.loadFromFile("Assets/texture/Map/groundYellowMid.png");
+	groundYellowRightTexture.loadFromFile("Assets/texture/Map/groundYellowRight.png");
+	groundRedLeftTexture.loadFromFile("Assets/texture/Map/groundRedLeft.png");
+	groundRedMidTexture.loadFromFile("Assets/texture/Map/groundRedMid.png");
+	groundRedRightTexture.loadFromFile("Assets/texture/Map/groundRedRight.png");
+	groundGreenLeftTexture.loadFromFile("Assets/texture/Map/groundGreenLeft.png");
+	groundGreenMidTexture.loadFromFile("Assets/texture/Map/groundGreenMid.png");
+	groundGreenRightTexture.loadFromFile("Assets/texture/Map/groundGreenRight.png");
 }
 
 Map::~Map()
@@ -74,9 +74,26 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				enemy->waypointTwo.y = (float)_z * 20;
 				break;
 			}
+			case 'C':
+			{
+				auto chest = std::make_unique<Chest>();  // La bonne fa�on de cr�er un unique_ptr
+				chest->setPosPos((float)i * 32, (float)_z * 32 - 17);
+				interactiblesVector.push_back(move(chest));
+				break;
+			}
+
+			case 'K': 
+			{
+				auto key = std::make_unique<Key>();  // La bonne fa�on de cr�er un unique_ptr
+				key->setPosPos((float)i * 32, (float)_z * 32 - 25);
+				interactiblesVector.push_back(move(key));
+				break;
+			}
 			case 'E': 
+			{
 				enemy->setPosPos((float)i * 32, (float)_z * 20);
 				break;
+			}
 			}
 		}
 		_z++;

@@ -139,11 +139,14 @@
   <ItemGroup>
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Chest.cpp" />
     <ClCompile Include="Ennemis.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Interactibles.cpp" />
     <ClCompile Include="Interface.cpp" />
     <ClCompile Include="Gemme.cpp" />
+    <ClCompile Include="Key.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainScreen.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -153,10 +156,13 @@
   <ItemGroup>
     <ClInclude Include="Boss.hpp" />
     <ClInclude Include="Button.hpp" />
+    <ClInclude Include="Chest.hpp" />
     <ClInclude Include="Ennemis.hpp" />
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="Game.hpp" />
+    <ClInclude Include="Interactibles.hpp" />
     <ClInclude Include="Interface.hpp" />
+    <ClInclude Include="Key.hpp" />
     <ClInclude Include="MainScreen.hpp" />
     <ClInclude Include="Gemme.hpp" />
     <ClInclude Include="Map.hpp" />
@@ -168,9 +174,6 @@
     <Image Include="assets\texture\titlescreen\background.png" />
     <Image Include="assets\texture\titlescreen\button1.png" />
     <Image Include="assets\texture\titlescreen\button2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="assets\map\mapV1.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

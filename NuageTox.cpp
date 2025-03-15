@@ -9,7 +9,7 @@ void NuageTox::draw(RenderWindow& window) {
     window.draw(shape);
 }
 
-void NuageTox::update(float deltaTime) { //déplacements
+void NuageTox::update(float deltaTime) { //dï¿½placements
     shape.setPosition(position);
 }
 
