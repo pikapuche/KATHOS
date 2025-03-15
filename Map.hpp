@@ -30,7 +30,7 @@ public:
     vector<ifstream*> maps;
 
     vector<unique_ptr<Interactible>> interactiblesVector;
-
+  
     //Text win;
     //Font font;
 
@@ -45,7 +45,7 @@ public:
 
     Map();
 
-    ~Map(); 
+    ~Map();
 
     void update(float deltaTime);
 
