@@ -48,32 +48,27 @@ void Boss::update(float deltaTime) {
     checkCollision(1920, 1080);
     sprite.setPosition(position);
 
-    onestla += rand() % 5;
+    onestla = rand() % 5;
+
     cout << onestla << endl;
 
     switch (onestla) {
-    case '0':
-    {
+    case 0:
         break;
-    }
-    case '1':
-    {
+    case 1:
+        if (state == GROUNDED) {
+            jump();
+        }
         break;
-    }
-    case '2':
-    {
-        jump();
+    case 2:
         break;
-    }
-    case '3':
-    {
+    case 3:
+        if (state == GROUNDED) {
+            jump();
+        }
         break;
-    }
-    case '4':
-    {
-        jump();
+    case 4:
         break;
-    }
     }
 
     onestla = 0;
