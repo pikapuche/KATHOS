@@ -14,7 +14,7 @@ Enemy::Enemy() : Entity(position.x, position.y)
     currentState = PATROL;
     circleOne.setRadius(10.0f); // point de patrouille 1 
     circleTwo.setRadius(10.0f); // point de patrouille 2
-    texture.loadFromFile("assets/Ennemies/R.png");
+    texture.loadFromFile("assets/Ennemies/White.png");
     sprite.setTexture(texture);
     boxCol1 = 32; // valeur qui permet de gérer les collisions (distances entre plateformes)
     boxCol2 = 32; // 
@@ -69,7 +69,7 @@ void Enemy::chase(Player& player, float deltaTime) // suit le perso tant qu'il e
 void Enemy::search(float lastPlayerPosition, float deltaTime) // quand le perso sort de la zone il va jusqu'a sa derniere position et effectue des gauche droite pour le chercher
 {
     cout << "search" << endl;
-    sprite.setColor(Color::Magenta);
+    sprite.setColor(Color::Yellow);
     if (sprite.getGlobalBounds().intersects(circleLastPos.getGlobalBounds()) && !searching) { // si il va a la derniere position du player alors searching = true
         searching = true;
         coolDownSearch.restart();
