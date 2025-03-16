@@ -9,6 +9,8 @@ Boss::Boss(Player& target) : Entity(position.x, position.y), target(target) {
     velocity = { -speed, 0.0f };
     velocity.y = 0;
     detectionRange = 600.0f;
+    boxCol1 = 35;
+    boxCol2 = 58;
 }
 
 void Boss::jump()
