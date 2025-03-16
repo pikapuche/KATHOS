@@ -15,6 +15,13 @@ void Game::run()
     Clock clock;
     overlay.initInterface();
 
+    if (!music.openFromFile("Assets/Musiques/VSOLO musique boss16.wav")) {
+        cout << "euuuuuuuuuuuuuu wtf la zic ?" << endl;
+    }
+    music.setLoop(true);
+    music.setVolume(50.f);
+    music.play();
+
     while (window.isOpen()) {
         Time deltaT = clock.restart();
         float deltaTime = deltaT.asSeconds();
