@@ -8,20 +8,20 @@ Enemy::Enemy() : Entity(position.x, position.y)
         circleTwo.setFillColor(Color::Blue);
         circleLastPos.setFillColor(Color::Cyan);
     }
-    circleDetect.setRadius(150.0f);
+    circleDetect.setRadius(150.0f); // cerlce de detection
     circleDetect.setPosition(position);
     circleDetect.setOrigin(132.f, 132.f);
     currentState = PATROL;
-    circleOne.setRadius(10.0f);
-    circleTwo.setRadius(10.0f);
+    circleOne.setRadius(10.0f); // point de patrouille 1 
+    circleTwo.setRadius(10.0f); // point de patrouille 2
     texture.loadFromFile("assets/Ennemies/R.png");
     sprite.setTexture(texture);
     boxCol1 = 32; // valeur qui permet de gérer les collisions (distances entre plateformes)
     boxCol2 = 32; // 
-    circleLastPos.setRadius(20.f);
+    circleLastPos.setRadius(20.f); // point de derniere position du player
 }
 
-void Enemy::detectPlayer(Player& player) // calcul la distance avec le theoreme du P
+void Enemy::detectPlayer(Player& player) 
 {
     if (enemyState == CHASER) {
         if (circleDetect.getGlobalBounds().intersects(player.getSprite().getGlobalBounds()) && currentState != CHASE) { // si l'ennemi est un chasseur et que le perso entre dans le cercle de detection
@@ -54,7 +54,8 @@ void Enemy::movementManager(float pos, float pos2, float deltaTime) { // permet 
 void Enemy::patrol(float deltaTime) // fait simplement des gauche droite entre 2 points
 {
     cout << "patrol" << endl;
-    sprite.setColor(Color::Blue);
+    if(enemyState == PATROLLER) sprite.setColor(Color::Blue);
+    if (enemyState == CHASER) sprite.setColor(Color::Magenta);
     movementManager(circleOne.getPosition().x, circleTwo.getPosition().x, deltaTime);
 }
 
