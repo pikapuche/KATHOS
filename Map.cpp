@@ -33,14 +33,6 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 	
 	while (getline(_Map, _line)) {
 		for (int i = 0; i < _line.size(); i++) {
-			//string tileCode = _line.substr(i, 3); // permet de choisir entre trois valeur pour faire pop les bidules dans la map
-			//if (!isdigit(tileCode[0]) || !isdigit(tileCode[1]) || !isdigit(tileCode[2])) // code d'erreur si on trouve pas le numéro rechercher
-			//{
-			//	cout << "Warning: Invalid tile code '" << tileCode << "' at position " << i << "." << endl;
-			//	continue;
-			//}
-			//int tileValue;
-			//tileValue = stoi(tileCode);
 			switch (_line[i]) { // tileValue
 				cout << _line[i] << endl;
 			case '1':
@@ -79,6 +71,17 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				newEnemy->waypointOne.x = newEnemy->getPosPos().x;
 				newEnemy->waypointOne.y = newEnemy->getPosPos().y;
 				newEnemy->waypointTwo.x = newEnemy->getPosPos().x + 590;
+				newEnemy->waypointTwo.y = newEnemy->getPosPos().y;
+				enemies.push_back(move(newEnemy));
+				break;
+			}
+			case 'A':
+			{
+				auto newEnemy = make_unique<Enemy>();
+				newEnemy->setPosPos((float)i * 32, (float)_z * 20);
+				newEnemy->waypointOne.x = newEnemy->getPosPos().x - 30;
+				newEnemy->waypointOne.y = newEnemy->getPosPos().y;
+				newEnemy->waypointTwo.x = newEnemy->getPosPos().x + 280;
 				newEnemy->waypointTwo.y = newEnemy->getPosPos().y;
 				enemies.push_back(move(newEnemy));
 				break;
