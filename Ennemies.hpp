@@ -28,6 +28,8 @@ protected :
 
 	Clock coolDownSearch;
 
+	bool DEBUG = false; // permet de rendre visible les points de patrouille et derniere position du player apres la recherche
+
 public :
 
 	enum StateEnemy { PATROLLER, CHASER };

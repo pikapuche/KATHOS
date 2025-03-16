@@ -2,21 +2,23 @@
 
 Enemy::Enemy() : Entity(position.x, position.y)
 {
+    if (DEBUG) {
+        circleDetect.setFillColor(sf::Color(255, 0, 0, 50));
+        circleOne.setFillColor(Color::Yellow);
+        circleTwo.setFillColor(Color::Blue);
+        circleLastPos.setFillColor(Color::Cyan);
+    }
     circleDetect.setRadius(150.0f);
     circleDetect.setPosition(position);
-    circleDetect.setFillColor(sf::Color(255, 0, 0, 50));
     circleDetect.setOrigin(132.f, 132.f);
     currentState = PATROL;
-    circleOne.setFillColor(Color::Yellow);
     circleOne.setRadius(10.0f);
-    circleTwo.setFillColor(Color::Blue);
     circleTwo.setRadius(10.0f);
     texture.loadFromFile("assets/Ennemies/R.png");
     sprite.setTexture(texture);
-    boxCol1 = 32;
-    boxCol2 = 32;
+    boxCol1 = 32; // valeur qui permet de gérer les collisions (distances entre plateformes)
+    boxCol2 = 32; // 
     circleLastPos.setRadius(20.f);
-    circleLastPos.setFillColor(Color::Cyan);
 }
 
 void Enemy::detectPlayer(Player& player) // calcul la distance avec le theoreme du P
@@ -28,6 +30,7 @@ void Enemy::detectPlayer(Player& player) // calcul la distance avec le theoreme 
         else if (!circleDetect.getGlobalBounds().intersects(player.getSprite().getGlobalBounds()) && currentState == CHASE) {
             lastPlayerPosition = player.getSprite().getPosition().x;
             currentState = SEARCH;
+            coolDownSearch.restart(); // au cas où pour éviter que la recherche se termine au nout d'une seconde
         }
     }
 }
@@ -145,11 +148,13 @@ void Enemy::updateReal(float deltaTime, Player& player)
 
 void Enemy::draw(RenderWindow& window)
 {
-    window.draw(circleOne);
-    window.draw(circleTwo);
-    if (enemyState == CHASER) { 
-        window.draw(circleDetect);
-        window.draw(circleLastPos);
+    if (DEBUG) {
+        window.draw(circleOne);
+        window.draw(circleTwo);
+        if (enemyState == CHASER) {
+            window.draw(circleDetect);
+            window.draw(circleLastPos);
+        }
     }
     window.draw(sprite);
 }
