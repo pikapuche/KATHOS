@@ -24,6 +24,7 @@ public:
     enum State { NONE, GROUNDED, JUMP };
     State state;
     void jump();
+    void getDown();
     float getJumpForce();
     float setJumpForce(float force);
     float getGravity();

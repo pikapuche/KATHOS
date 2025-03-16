@@ -21,6 +21,15 @@ void Boss::jump()
     }
 }
 
+void Boss::getDown()
+{
+    if (state == JUMP) {
+        state = GROUNDED;
+        velocity.y = jumpForce;
+        jumpClock.restart();
+    }
+}
+
 bool Boss::canSeePlayer() {
     float distanceX = abs(target.getPosPos().x - position.x);
     float distanceY = abs(target.getPosPos().y - position.y);
@@ -51,11 +60,13 @@ void Boss::update(float deltaTime) {
     case 0:
         break;
     case 1:
+        if (state == JUMP) getDown();
         break;
     case 2:
         if (state == GROUNDED) jump();
         break;
     case 3:
+        if (state == JUMP) getDown();
         break;
     case 4:
         if (state == GROUNDED) jump();
