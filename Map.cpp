@@ -72,6 +72,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				newEnemy->waypointOne.y = newEnemy->getPosPos().y;
 				newEnemy->waypointTwo.x = newEnemy->getPosPos().x + 590;
 				newEnemy->waypointTwo.y = newEnemy->getPosPos().y;
+				newEnemy->enemyState = newEnemy->PATROLLER;
 				enemies.push_back(move(newEnemy));
 				break;
 			}
@@ -83,27 +84,22 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				newEnemy->waypointOne.y = newEnemy->getPosPos().y;
 				newEnemy->waypointTwo.x = newEnemy->getPosPos().x + 280;
 				newEnemy->waypointTwo.y = newEnemy->getPosPos().y;
+				newEnemy->enemyState = newEnemy->PATROLLER;
 				enemies.push_back(move(newEnemy));
 				break;
 			}
-			/*case 'W':
+			case 'K':
 			{
-				for (auto& enemy : enemies) {
-					enemy->waypointOne.x = (float)i * 32;
-					enemy->waypointOne.y = (float)_z * 20;
-					//enemies.push_back(std::move(enemy));
-				}
+				auto newEnemy = make_unique<Enemy>();
+				newEnemy->setPosPos((float)i * 32, (float)_z * 20);
+				newEnemy->waypointOne.x = newEnemy->getPosPos().x - 30;
+				newEnemy->waypointOne.y = newEnemy->getPosPos().y;
+				newEnemy->waypointTwo.x = newEnemy->getPosPos().x + 500;
+				newEnemy->waypointTwo.y = newEnemy->getPosPos().y;
+				newEnemy->enemyState = newEnemy->CHASER;
+				enemies.push_back(move(newEnemy));
 				break;
 			}
-			case 'V':
-			{
-				for (auto& enemy : enemies) {
-					enemy->waypointTwo.x = (float)i * 32;
-					enemy->waypointTwo.y = (float)_z * 20;
-					//enemies.push_back(move(newEnemy));
-				}
-				break;
-			}*/
 			}
 		}
 		_z++;
