@@ -21,13 +21,7 @@ protected:
 
 	bool DEBUG = false; // sert pour voir si y'a des bugs / afficher les hitbox etc
 
-	float boxCol1;
-	float boxCol2;
-
 public:
-
-	enum State { NONE, GROUNDED, JUMP };
-	State state;
 
 	enum State { NONE, GROUNDED, JUMP };
 	State state;
