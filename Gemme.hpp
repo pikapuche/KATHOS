@@ -17,7 +17,7 @@ public:
 
 	Vector2i anim;
 
-	enum class  GemmeState { SPEED, DASH,};
+	enum class  GemmeState { SPEED, DASH };
 
 	GemmeState gemmeState;
 	
