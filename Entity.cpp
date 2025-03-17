@@ -18,5 +18,5 @@ void Entity::collision(Sprite& tile, float deltaTime) {
 }
 Sprite& Entity::getSprite()
 {
-	return sprite;
+    return sprite;
 }

@@ -21,6 +21,10 @@ public:
 
     shared_ptr<Player> player = make_shared<Player>();
 
+    shared_ptr<Boss> boss = make_shared<Boss>(*player);
+
+    shared_ptr<NuageTox> nuage = make_shared<NuageTox>();
+
     vector<unique_ptr<Enemy>> enemies;
 
     vector<ifstream*> maps;
