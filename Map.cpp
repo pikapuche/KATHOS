@@ -214,7 +214,7 @@ void Map::loadMap() {
 		}
 	}
 	if (statePlaying == StatePlaying::Boss) {
-		ifstream Mapb("Assets/Map/mapBoss.txt");
+		ifstream Mapb("Assets/Map/Practice.txt");
 		maps.push_back(&Mapb);
 		string line;
 		float z = 0;
@@ -234,17 +234,17 @@ void Map::draw(RenderWindow& window) {
 	}
 
 	for (auto& player : players)
-	player->draw(window);
+		player->draw(window);
 
 	for(auto& enemy : enemies)
-	enemy->draw(window);
+		enemy->draw(window);
 
 	for (auto& interactv : interactiblesVector) {
 		interactv->draw(window);
 	}
 
 	for (auto& boss : bosses)
-	boss->draw(window);
+		boss->draw(window);
 
 	for (auto& cloud : clouds)
 		cloud->draw(window);
