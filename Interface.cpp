@@ -57,7 +57,22 @@ void Interface::initInterface() {
     highlightRect.setTexture(highlightTexture);
     highlightRect.setColor(Color(255, 255, 255, 255)); // Semi-transparent overlay
 	highlightRect.setOrigin(highlightRect.getGlobalBounds().width / 2, highlightRect.getGlobalBounds().height / 2);
+
+    // Load font
+    if (!font.loadFromFile("Assets/Fonts/Minecraft.ttf")) {
+        std::cerr << "Error loading font!" << std::endl;
+    }
+
+    // Set up timer text
+    textTimer.setFont(font);
+    textTimer.setCharacterSize(24);
+    textTimer.setFillColor(sf::Color::White);
+    textTimer.setPosition(700, 10); // Adjust position (top-right)
+
+    // Start the clock
+    clockTimer.restart();
 }
+
 void Interface::updateInterface(RenderWindow& window) {
     detectControllerInput(); // Detect controller usage
     handleMenuNavigation();  // Handle button navigation
@@ -125,6 +140,23 @@ void Interface::updateInterface(RenderWindow& window) {
         }
     }
 }
+
+void Interface::updateTimer(sf::RenderWindow& window) {
+    if (!isPaused) {
+        // 🕒 Get elapsed time
+        sf::Time elapsed = clockTimer.getElapsedTime();
+        int minutes = static_cast<int>(elapsed.asSeconds()) / 60;
+        int seconds = static_cast<int>(elapsed.asSeconds()) % 60;
+
+        // Format time as "MM:SS"
+        textTimer.setString("Time: " + std::to_string(minutes) + ":" +
+            (seconds < 10 ? "0" : "") + std::to_string(seconds));
+
+        // Draw the timer (always)
+    }
+    window.draw(textTimer);
+}
+
 
 
 bool Interface::getShouldRestart() const{

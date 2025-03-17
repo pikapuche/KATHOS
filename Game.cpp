@@ -54,7 +54,8 @@ void Game::run()
             for (auto& gemme : m.gemmeSprites) {
                 gemme->updateGemme(deltaTime);
             }
-
+            overlay.updateTimer(window);
+            m->draw(window);
             m.update(deltaTime);
         }
 

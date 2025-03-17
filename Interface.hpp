@@ -23,6 +23,11 @@ private:
     Sprite highlightRect; // Overlay to show selection
 	Texture highlightTexture;
 
+
+    sf::Text textTimer;
+    sf::Font font;
+    sf::Clock clockTimer; // Clock to track time
+
 public:
     void initInterface();
 	bool getIsPaused();
@@ -34,4 +39,5 @@ public:
 	bool getUsingController();
 	void detectControllerInput();
     void handleMenuNavigation(); // New function for input
+    void updateTimer(sf::RenderWindow& window);
 };
