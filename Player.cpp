@@ -4,7 +4,7 @@ Player::Player() : Entity(position.x, position.y) { // constructeur de base
     DEBUG = true;
     velocity.y = 0; // Pas de mouvement vertical au depart
     //attackShape.setSize(sf::Vector2f(10.0f, 20.0f)); attack a l'arme
-    attackShape.setSize(sf::Vector2f(50.0f, 25.0f));
+    attackShape.setSize(sf::Vector2f(75.f, 25.0f));
     attackShape.setFillColor(sf::Color::Red);
     textureSprint.loadFromFile("assets/texture/player/playerRunV2piskel.png");
     textureIdle.loadFromFile("assets/texture/player/playerIdleV2piskel.png");
@@ -14,6 +14,7 @@ Player::Player() : Entity(position.x, position.y) { // constructeur de base
     sprite.setTextureRect(IntRect(0, 0, 64, 64));
     boxCol1 = 35;
     boxCol2 = 58;
+    life = 100;
 }
 
 void Player::movementManager(float deltaTime) { 
@@ -53,6 +54,9 @@ void Player::movementManager(float deltaTime) {
             if (state == GROUNDED) {
                 stateMove = IDLE;
             }
+        }
+        if (isAttacking) {
+            stateMove = ATTACKING;
         }
     }
 
@@ -172,14 +176,20 @@ void Player::animationManager(float deltaTime) {
             if (anim_attack.x > 4) {
                 anim_attack.x = 1;
                 isAttacking = false;
+                if (state != GROUNDED) {
+                    stateMove = JUMPING;
+                }
             }
-            attackShape.setPosition(position.x - 20, position.y + 20);
+            attackShape.setPosition(position.x - 50, position.y + 20);
             sprite.setTextureRect(IntRect(anim_attack.x * 64, anim_attack.y * 64, -64, 64));
         }
         else if (stateLook == LOOK_RIGHT) {
             if (anim_attack.x > 3) {
                 anim_attack.x = 0;
                 isAttacking = false;
+                if (state != GROUNDED) {
+                    stateMove = JUMPING;
+                }
             }
             attackShape.setPosition(position.x + 37, position.y + 20);
             sprite.setTextureRect(IntRect(anim_attack.x * 64, anim_attack.y * 64, 64, 64));
@@ -200,41 +210,6 @@ void Player::jump() {
     else if (jumpCount == 1 && jumpClock.getElapsedTime().asMilliseconds() >= 175 && state != GROUNDED) { // compteur permettant de savoir si on peut faire un deuxième saut
         velocity.y = -jumpForce;
         jumpCount = 2;
-    }
-}
-
-void Player::attack(float deltaTime) {
-    // Si le perso a une épée on fait une rotation a l'arme
-    if (isAttacking) {
-        stateMove = ATTACKING;
-        /*
-        if (stateLook == LOOK_RIGHT) {
-            attackShape.setPosition(position.x + 37, position.y + 25);
-            animTimeDecr += deltaTime;
-            if (animTimeDecr > 0.008) {
-                rotaRight += 10;
-                attackShape.setRotation(rotaRight);
-                if (rotaRight >= 300) {
-                    rotaRight = 220;
-                    isAttacking = false;
-                }
-                animTimeDecr = 0;
-            }
-        }
-        if (stateLook == LOOK_LEFT) {
-            attackShape.setPosition(position.x + 24, position.y + 25);
-            animTimeDecr += deltaTime;
-            if (animTimeDecr > 0.008) {
-                rotaLeft -= 10;
-                attackShape.setRotation(rotaLeft);
-                if (rotaLeft <= 50) {
-                    rotaLeft = 130;
-                    isAttacking = false;
-                }
-                animTimeDecr = 0;
-            }
-        }
-        */
     }
 }
 
@@ -361,11 +336,15 @@ bool Player::setHasKey(bool key) {
     return hasKey;
 }
 
+RectangleShape Player::getAttackShape()
+{
+    return attackShape;
+}
+
 #pragma endregion Getteurs / Setteurs
 
 void Player::update(float deltaTime) {
     movementManager(deltaTime);
-    attack(deltaTime);
     dash(deltaTime);
     animationManager(deltaTime);
 }

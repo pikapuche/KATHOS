@@ -21,9 +21,11 @@ void Map::update(float deltaTime) {
 
 void Map::collision(float deltaTime) {
 	for (auto& ground : groundSprites) {
+		for(auto& player : players) 
 		player->collision(*ground, deltaTime);
 		for(auto& enemy : enemies)
 		enemy->collision(*ground, deltaTime);
+		for(auto& boss : bosses)
 		boss->collision(*ground, deltaTime);
 	}
 
@@ -109,7 +111,9 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			}
 			case 'P':
 			{
+				auto player = std::make_unique<Player>();  // La bonne fa�on de cr�er un unique_ptr
 				player->setPosPos((float)i * 32, (float)_z * 20);
+				players.push_back(move(player));
 				break;
 			}
 			case 'G':
@@ -158,7 +162,9 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			}
 			case 'B':
 			{
+				auto boss = make_unique<Boss>();
 				boss->setPos((float)i * 32, (float)_z * 20);
+				bosses.push_back(move(boss));
 				break;
 			}
 			case 'Q':
@@ -175,7 +181,9 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			}
 			case 'T' : 
 			{
-				nuage->setPos((float)i * 32, (float)_z * 20 - 10);
+				auto newCloud = make_unique<NuageTox>();
+				newCloud->setPos((float)i * 32, (float)_z * 20 - 10);
+				clouds.push_back(move(newCloud));
 				break;
 			}
 			}
@@ -224,14 +232,22 @@ void Map::draw(RenderWindow& window) {
 	for (auto& gemme : gemmeSprites) {
 		window.draw(gemme->gemmeSprite);
 	}
+
+	for (auto& player : players)
 	player->draw(window);
+
 	for(auto& enemy : enemies)
 	enemy->draw(window);
+
 	for (auto& interactv : interactiblesVector) {
 		interactv->draw(window);
 	}
+
+	for (auto& boss : bosses)
 	boss->draw(window);
-	nuage->draw(window);
+
+	for (auto& cloud : clouds)
+		cloud->draw(window);
 }
 
 void Map::gameOver(RenderWindow& window)

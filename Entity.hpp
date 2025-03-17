@@ -19,6 +19,8 @@ protected:
 	float boxCol1;
 	float boxCol2;
 
+	int life;
+
 	bool DEBUG = false; // sert pour voir si y'a des bugs / afficher les hitbox etc
 
 public:
@@ -29,8 +31,11 @@ public:
 	Entity(float posX, float posY);
 
 	virtual void collision(Sprite& tile, float deltaTime);
-	virtual void update(float deltaTime) = 0;
 	virtual void draw(RenderWindow& window) = 0;
 
 	Sprite& getSprite();
+
+	int getLife();
+
+	int setLife(int l);
 };

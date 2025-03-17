@@ -156,6 +156,16 @@ void Enemy::search(float lastPlayerPosition, float deltaTime, Player& player) //
     attackPlayer(player);
 }
 
+void Enemy::takeDamage(Player& player)
+{
+    if (player.ATTACKING) {
+        if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds())) {
+            setLife(-10);
+            cout << "aie ca fais mal (ennemy)" << endl;
+        }
+    }
+}
+
 #pragma region Getter / Setter
 
 bool Enemy::setIsGrounded(bool is)
@@ -183,9 +193,7 @@ Vector2f Enemy::getPosPos()
 
 #pragma endregion Getter / Setter
 
-void Enemy::update(float deltaTime) {}
-
-void Enemy::updateReal(float deltaTime, Player& player)
+void Enemy::update(float deltaTime, Player& player)
 {
     switch (currentState) {
     case PATROL:
@@ -203,6 +211,7 @@ void Enemy::updateReal(float deltaTime, Player& player)
         detectPlayer(player);
         break;
     }
+    takeDamage(player);
 }
 
 void Enemy::draw(RenderWindow& window)

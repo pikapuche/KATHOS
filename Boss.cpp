@@ -1,7 +1,7 @@
 #include "Boss.hpp"
 
-Boss::Boss(Player& target) : Entity(position.x, position.y), target(target) {
-    texture.loadFromFile("Assets/texture/Boss/boss2.png");
+Boss::Boss() : Entity(position.x, position.y) {
+    texture.loadFromFile("Assets/texture/Boss/boss.png");
     sprite.setTexture(texture);
     sprite.setScale(Vector2f(1.5f, 1.5f));
     speed = 200.0f;
@@ -19,63 +19,74 @@ void Boss::jump()
 {
     if (state == GROUNDED) {
         state = JUMP;
+        isJumping = true;
         velocity.y = -jumpForce;
         jumpClock.restart();
     }
 }
 
-bool Boss::canSeePlayer() {
-    float distanceX = abs(target.getPosPos().x - position.x);
-    float distanceY = abs(target.getPosPos().y - position.y);
-    return (distanceX < detectionRange && distanceY < 50.0f);
+void Boss::takeDamage(Player& player)
+{
+    if (player.ATTACKING) {
+        if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds())) {
+            setLife(-10);
+            cout << "aie ca fais mal (boss)" << endl;
+        }
+    }
 }
 
+//bool Boss::canSeePlayer() {
+//    float distanceX = abs(target.getPosPos().x - position.x);
+//    float distanceY = abs(target.getPosPos().y - position.y);
+//    return (distanceX < detectionRange && distanceY < 50.0f);
+//}
+
 void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet de gerer le mouvement de l'ennemi
-    if (canSeePlayer())
-    {
-        if (position.x < pos && directionState != RIGHT) {
+    //if (canSeePlayer())
+    //{
+
+    //}
+    if (!isJumping) {
+        if (position.x < pos && directionState != RIGHT) { // faire en sorte qu'il ne puisse pas changer de direction pendant un saut
             directionState = RIGHT;
         }
         else if (position.x > pos2 && directionState != LEFT) {
             directionState = LEFT;
         }
-
-        if (directionState == RIGHT) {
-            position.x += speed * deltaTime;
-        }
-        else {
-            position.x -= speed * deltaTime;
-        }
     }
 
-    velocity.y += gravity * deltaTime;  // Appliquer la gravité
+    if (directionState == RIGHT) {
+        position.x += speed * deltaTime;
+    }
+    else {
+        position.x -= speed * deltaTime;
+    }
+
+    velocity.y += gravity * deltaTime;  // Appliquer la gravitÃ©
     position.y += velocity.y * deltaTime;
 
     sprite.setPosition(position);
     detectionRect.setPosition(position);
 
-    if (sprite.getPosition().y < 0) { // haut de l'écran
+    if (sprite.getPosition().y < 0) { // haut de l'Ã©cran
         sprite.setPosition(position.x, position.y = 64);
     }
-    if (sprite.getPosition().y > 1016) { // bas de l'écran 
-        sprite.setPosition(position.x, position.y = 1016);
-    }
-    if (sprite.getPosition().x < 0) { // gauche de l'écran
+    //if (sprite.getPosition().y > 1016) { // bas de l'Ã©cran 
+    //    sprite.setPosition(position.x, position.y = 1016);
+    //}
+    if (sprite.getPosition().x < 0) { // gauche de l'Ã©cran
         sprite.setPosition(position.x = 0, position.y);
     }
-    if (sprite.getPosition().x > 1856) { // droite de l'écran
+    if (sprite.getPosition().x > 1856) { // droite de l'Ã©cran
         sprite.setPosition(position.x = 1856, position.y);
     }
 }
 
-void Boss::update(float deltatime)
-{
-}
+void Boss::update(float deltaTime, Player& player) {
 
-void Boss::updateReal(float deltaTime, Player& player) {
-    movementManager(player.getSprite().getPosition().x, player.getSprite().getPosition().x, deltaTime);
-
-    onestla = rand() % 5;
+    if (jumpClock.getElapsedTime().asSeconds() <= 2) {
+        onestla = rand() % 5;
+    }
 
     switch (onestla) {
     case 0:
@@ -91,6 +102,12 @@ void Boss::updateReal(float deltaTime, Player& player) {
         jump();
         break;
     }
+
+    if (state == GROUNDED) {
+        isJumping = false;
+    }
+
+    movementManager(player.getSprite().getPosition().x, player.getSprite().getPosition().x, deltaTime);
 }
 
 void Boss::draw(RenderWindow& window) {
