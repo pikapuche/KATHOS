@@ -44,21 +44,17 @@ void Game::run()
         window.clear();
 
         if (!overlay.getIsPaused()) { // Only update game when not paused
-            for (auto& playerv : m->playerVector) {
-                playerv->update(deltaTime);
-            }
-            m->update();
-            m->draw(window);
+            m.player->update(deltaTime);
+            for (auto& enemy : m.enemies)
+                enemy->updateReal(deltaTime, *m.player);
+
+            m.update(deltaTime);
         }
 
         if (overlay.getIsPaused()) {
             overlay.updateInterface(window); // Draw pause menu when paused
         }
-        m.player->update(deltaTime);
-        for(auto& enemy : m.enemies)
-        enemy->updateReal(deltaTime, *m.player);
 
-        m.update(deltaTime);
         m.draw(window);
 
         if (mainScreen.getIsInMenu()) {
