@@ -1,11 +1,5 @@
 #pragma once
-#include "stdafx.hpp"
-#include <iostream>
-#include <vector>
-#include <string>
-
-class Player;
-
+#include "Player.hpp"
 
 class Interactible {
 private:
@@ -17,21 +11,16 @@ protected:
     bool isPlayerNear = false; // True if player is close
 
 public:
-    virtual ~Interactible() {}
 
     bool playerTryInteract();
-
     // Check if player is near
     virtual void updateProximity(Player& player);
-
+    // Getter
+    bool getIsPlayerNear();
     // Define a virtual function for unique interactions
     virtual void interact(Player& player) = 0;
-
-    // Getter
-    bool getIsPlayerNear() const { return isPlayerNear; }
-
     // Draw the interactible (optional)
-    virtual void draw(sf::RenderWindow& window) { window.draw(sprite); }
+    virtual void draw(sf::RenderWindow& window) = 0;
 
     void setTexture(const std::string& filePath);
 };

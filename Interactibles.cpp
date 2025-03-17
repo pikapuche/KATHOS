@@ -1,6 +1,9 @@
 #include "Interactibles.hpp"
-#include "Player.hpp"
 
+bool Interactible::getIsPlayerNear()
+{
+    return isPlayerNear; 
+}
 
 void Interactible::setTexture(const std::string& filePath) {
     if (!texture.loadFromFile(filePath)) {

@@ -1,5 +1,4 @@
 #include "MainScreen.hpp"
-#include <iostream>
 
 bool MainScreen::getIsInMenu() {
     return isInMenu;
@@ -9,12 +8,12 @@ void MainScreen::setIsInMenu(bool menu) {
     isInMenu = menu;
 }
 
-void MainScreen::initMenu(sf::RenderWindow& window) {
+void MainScreen::initMenu(RenderWindow& window) {
     if (!backgroundTexture.loadFromFile("assets/texture/titlescreen/background.png")) {
-        std::cerr << "Failed to load background texture!" << std::endl;
+        cerr << "Failed to load background texture!" << endl;
     }
 
-    background.setScale(sf::Vector2f(1.0f,1.0f));
+    background.setScale(Vector2f(1.0f,1.0f));
     background.setTexture(backgroundTexture);
 
     buttons.push_back(Button(
@@ -53,11 +52,11 @@ void MainScreen::initMenu(sf::RenderWindow& window) {
     ));
 
     if (!highlightTexture.loadFromFile("assets/texture/UI/interfaceButton.png")) {
-        std::cerr << "Failed to load highlight texture!" << std::endl;
+        cerr << "Failed to load highlight texture!" << endl;
     }
 
     highlightRect.setTexture(highlightTexture);
-    highlightRect.setColor(sf::Color(255, 255, 255, 255)); // Normal opacity
+    highlightRect.setColor(Color(255, 255, 255, 255)); // Normal opacity
     highlightRect.setScale(0.82f, 0.82f);
     highlightRect.setOrigin(highlightTexture.getSize().x / 2, highlightTexture.getSize().y / 2);
 }
@@ -93,12 +92,12 @@ void MainScreen::handleControllerNavigation() {
     static bool downPressed = false;
     static bool selectPressed = false;
 
-    bool moveUp = sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Joystick::isButtonPressed(0, 11);
-    bool moveDown = sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Joystick::isButtonPressed(0, 12);
-    bool select = sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) || sf::Joystick::isButtonPressed(0, 0);
+    bool moveUp = Keyboard::isKeyPressed(Keyboard::Up) || Joystick::isButtonPressed(0, 11);
+    bool moveDown = Keyboard::isKeyPressed(Keyboard::Down) || Joystick::isButtonPressed(0, 12);
+    bool select = Keyboard::isKeyPressed(Keyboard::Enter) || Joystick::isButtonPressed(0, 0);
 
     // Get only visible buttons
-    std::vector<int> visibleButtonIndices;
+    vector<int> visibleButtonIndices;
     for (size_t i = 0; i < buttons.size(); ++i) {
         if (!buttons[i].getisHidden()) {
             visibleButtonIndices.push_back(i);
@@ -108,8 +107,8 @@ void MainScreen::handleControllerNavigation() {
     if (visibleButtonIndices.empty()) return; // No buttons to navigate
 
     // Ensure selected index is always within the visible buttons
-    auto findCurrentIndex = std::find(visibleButtonIndices.begin(), visibleButtonIndices.end(), selectedButtonIndex);
-    int currentIndex = (findCurrentIndex != visibleButtonIndices.end()) ? std::distance(visibleButtonIndices.begin(), findCurrentIndex) : 0;
+    auto findCurrentIndex = find(visibleButtonIndices.begin(), visibleButtonIndices.end(), selectedButtonIndex);
+    int currentIndex = (findCurrentIndex != visibleButtonIndices.end()) ? distance(visibleButtonIndices.begin(), findCurrentIndex) : 0;
 
     // Navigate up
     if (moveUp && !upPressed) {
@@ -138,7 +137,7 @@ void MainScreen::handleControllerNavigation() {
 
 
 
-void MainScreen::updateMenu(sf::RenderWindow& window) {
+void MainScreen::updateMenu(RenderWindow& window) {
     interfaceuh.detectControllerInput();
     bool usingController = interfaceuh.getUsingController();
     if (usingController) {
@@ -152,9 +151,9 @@ void MainScreen::updateMenu(sf::RenderWindow& window) {
                 button.setTexture(true);
 
                 //Check when button click
-                if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                if (Mouse::isButtonPressed(Mouse::Left)) {
                     if (!button.getisHidden()) {
-                        std::cout << "Button clicked" << std::endl;
+                        cout << "Button clicked" << endl;
                         switch (button.getType()) { //Check button type in Menu
                         case ButtonType::Play:
                             isInMenu = false; //Start Game
@@ -201,7 +200,7 @@ void MainScreen::updateMenu(sf::RenderWindow& window) {
         }
     }
     if (interfaceuh.getUsingController()) {
-        sf::Vector2f buttonPos = buttons[selectedButtonIndex].getPosition();
+        Vector2f buttonPos = buttons[selectedButtonIndex].getPosition();
 
         // Fix: Center highlight based on button size
         highlightRect.setPosition(buttonPos.x + buttons[selectedButtonIndex].getWidth() / 2 - 80,

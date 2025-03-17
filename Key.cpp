@@ -1,10 +1,9 @@
 #include "Key.hpp"
-#include "Player.hpp"
 
 Key::Key(){
     // Load the Key texture
-    //setTexture("assets/texture/Interactibles/chest.png");
-    sprite.setScale(1.0f, 1.0f);
+    texture.loadFromFile("assets/texture/Interactibles/key.png");
+    sprite.setTexture(texture);
 }
 
 void Key::setPosPos(float x, float y) {
@@ -22,4 +21,9 @@ void Key::interact(Player& player) {
             std::cout << "Already have a key!" << std::endl;
         }
     }
+}
+
+void Key::draw(RenderWindow& window)
+{
+    window.draw(sprite);
 }
