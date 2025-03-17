@@ -1,15 +1,15 @@
 #include "Map.hpp"
 
 Map::Map() : statePlaying(StatePlaying::Practice) {
-	groundYellowLeftTexture.loadFromFile("Assets/Map/groundYellowLeft.png");
-	groundYellowMidTexture.loadFromFile("Assets/Map/groundYellowMid.png");
-	groundYellowRightTexture.loadFromFile("Assets/Map/groundYellowRight.png");
-	groundRedLeftTexture.loadFromFile("Assets/Map/groundRedLeft.png");
-	groundRedMidTexture.loadFromFile("Assets/Map/groundRedMid.png");
-	groundRedRightTexture.loadFromFile("Assets/Map/groundRedRight.png");
-	groundGreenLeftTexture.loadFromFile("Assets/Map/groundGreenLeft.png");
-	groundGreenMidTexture.loadFromFile("Assets/Map/groundGreenMid.png");
-	groundGreenRightTexture.loadFromFile("Assets/Map/groundGreenRight.png");
+	groundYellowLeftTexture.loadFromFile("Assets/texture/Map/groundYellowLeft.png");
+	groundYellowMidTexture.loadFromFile("Assets/texture/Map/groundYellowMid.png");
+	groundYellowRightTexture.loadFromFile("Assets/texture/Map/groundYellowRight.png");
+	groundRedLeftTexture.loadFromFile("Assets/texture/Map/groundRedLeft.png");
+	groundRedMidTexture.loadFromFile("Assets/texture/Map/groundRedMid.png");
+	groundRedRightTexture.loadFromFile("Assets/texture/Map/groundRedRight.png");
+	groundGreenLeftTexture.loadFromFile("Assets/texture/Map/groundGreenLeft.png");
+	groundGreenMidTexture.loadFromFile("Assets/texture/Map/groundGreenMid.png");
+	groundGreenRightTexture.loadFromFile("Assets/texture/Map/groundGreenRight.png");
 }
 
 Map::~Map()
@@ -88,6 +88,20 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				enemies.push_back(move(newEnemy));
 				break;
 			}
+			case 'C':
+			{
+				Chest* chest = new Chest(true);
+				chest->setPosPos((float)i * 32, (float)_z * 32 - 17);
+				interactiblesVector.push_back(chest);
+				break;
+			}
+			case 'W':
+			{
+				Key* key = new Key();
+				key->setPosPos((float)i * 32, (float)_z * 32 - 25);
+				interactiblesVector.push_back(key);
+				break;
+			}
 			case 'K':
 			{
 				boss->setPos((float)i * 32, (float)_z * 20);
@@ -142,6 +156,9 @@ void Map::draw(RenderWindow& window) {
 	player->draw(window);
 	for(auto& enemy : enemies)
 	enemy->draw(window);
+	for (auto& interactv : interactiblesVector) {
+		interactv->draw(window);
+	}
 	boss->draw(window);
 	nuage->draw(window);
 }

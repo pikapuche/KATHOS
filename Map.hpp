@@ -4,6 +4,10 @@
 #include "NuageTox.hpp"
 #include "Ennemies.hpp"
 #include "Gemme.hpp"
+#include "Interactibles.hpp"
+#include "Chest.hpp"
+#include "Key.hpp"
+
 
 class Map {
 public:
@@ -28,6 +32,9 @@ public:
     vector<unique_ptr<Enemy>> enemies;
 
     vector<ifstream*> maps;
+
+    vector<Interactible*> interactiblesVector; // Vector of all Interacts
+
 
     //Text win;
     //Font font;
