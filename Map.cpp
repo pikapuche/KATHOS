@@ -91,9 +91,9 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			}
 			case 'C':
 			{
-				auto chest = std::make_unique<Chest>();  // La bonne fa�on de cr�er un unique_ptr
-				chest->setPosPos((float)i * 32, (float)_z * 32 - 17);
-				interactiblesVector.push_back(chest);
+				Chest* chest = new Chest();
+				chest->setPosPos((float)i * 32, (float)_z * 32 - 25);
+				interactiblesVector.push_back(move(chest));
 				break;
 			}
 			case 'K':
@@ -101,11 +101,6 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				Key* key = new Key();
 				key->setPosPos((float)i * 32, (float)_z * 32 - 25);
 				interactiblesVector.push_back(move(key));
-				break;
-			}
-			case 'E': 
-			{
-				enemy->setPosPos((float)i * 32, (float)_z * 20);
 				break;
 			}
 			case 'B':

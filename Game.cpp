@@ -42,28 +42,27 @@ void Game::run()
         }
 
         window.clear();
-=========
+
         if (!overlay.getIsPaused()) { // Only update game when not paused
             m.player->update(deltaTime);
             for (auto& enemy : m.enemies)
                 enemy->updateReal(deltaTime, *m.player);
-          
+
             m.boss->updateReal(deltaTime, *m.player);
             m.nuage->update(deltaTime);
 
             m.update(deltaTime);
         }
 
-        if (overlay.getIsPaused()) {
+        m.draw(window);
+
         if (overlay.getIsPaused()) {
             overlay.updateInterface(window); // Draw pause menu when paused
-
-        m.draw(window);
-        m.draw(window);
+        }
 
         if (mainScreen.getIsInMenu()) {
             mainScreen.updateMenu(window);
-        }   
+        }
         else {
             mainScreen.destroyAll();
         }
