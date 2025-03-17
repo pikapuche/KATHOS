@@ -9,7 +9,7 @@ Boss::Boss(Player& target) : Entity(position.x, position.y), target(target) {
     detectionRange = 400.0f;
     detectionRect.setSize(Vector2f(detectionRange, 64));
     detectionRect.setFillColor(Color(0, 255, 0, 50));
-    detectionRect.setOrigin(568, 0);
+    detectionRect.setOrigin(368, 0);
     boxCol1 = 64;
     boxCol2 = 64;
     state = GROUNDED;
