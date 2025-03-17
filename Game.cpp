@@ -58,8 +58,12 @@ void Game::run()
                     gemme->updateGemme(deltaTime);
                 }
 
-                m.update(deltaTime);
+                
             }
+            overlay.updateTimer(window);
+            m->draw(window);
+            m.update(deltaTime);
+        }
 
             m.draw(window);
            

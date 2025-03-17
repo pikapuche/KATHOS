@@ -150,6 +150,7 @@ void Interface::updateInterface(RenderWindow& window, Player& player) {
 }
 
 
+
 bool Interface::getShouldRestart() const{
     return shouldRestart;
 }
