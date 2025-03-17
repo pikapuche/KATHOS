@@ -27,6 +27,7 @@ public:
     StateDirection directionState;
 
     void jump();
+    void takeDamage(Player& player);
     float getJumpForce();
     float setJumpForce(float force);
     float getGravity();

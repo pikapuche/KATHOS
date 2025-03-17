@@ -25,6 +25,16 @@ void Boss::jump()
     }
 }
 
+void Boss::takeDamage(Player& player)
+{
+    if (player.ATTACKING) {
+        if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds())) {
+            setLife(-10);
+            cout << "aie ca fais mal (boss)" << endl;
+        }
+    }
+}
+
 //bool Boss::canSeePlayer() {
 //    float distanceX = abs(target.getPosPos().x - position.x);
 //    float distanceY = abs(target.getPosPos().y - position.y);
