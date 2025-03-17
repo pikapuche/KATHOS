@@ -18,6 +18,8 @@ private:
 
     RectangleShape detectionRect;
 
+    int health = 100;
+
 public:
     Boss();
 

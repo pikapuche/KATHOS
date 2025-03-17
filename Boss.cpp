@@ -3,7 +3,7 @@
 Boss::Boss() : Entity(position.x, position.y) {
     texture.loadFromFile("Assets/texture/Boss/boss.png");
     sprite.setTexture(texture);
-    sprite.setScale(Vector2f(0.22f, 0.22f));
+    sprite.setScale(Vector2f(1.5f, 1.5f));
     speed = 200.0f;
     velocity.y = 0;
     detectionRange = 400.0f;
@@ -62,22 +62,22 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
         position.x -= speed * deltaTime;
     }
 
-    velocity.y += gravity * deltaTime;  // Appliquer la gravité
+    velocity.y += gravity * deltaTime;  // Appliquer la gravitÃ©
     position.y += velocity.y * deltaTime;
 
     sprite.setPosition(position);
     detectionRect.setPosition(position);
 
-    if (sprite.getPosition().y < 0) { // haut de l'écran
+    if (sprite.getPosition().y < 0) { // haut de l'Ã©cran
         sprite.setPosition(position.x, position.y = 64);
     }
-    //if (sprite.getPosition().y > 1016) { // bas de l'écran 
+    //if (sprite.getPosition().y > 1016) { // bas de l'Ã©cran 
     //    sprite.setPosition(position.x, position.y = 1016);
     //}
-    if (sprite.getPosition().x < 0) { // gauche de l'écran
+    if (sprite.getPosition().x < 0) { // gauche de l'Ã©cran
         sprite.setPosition(position.x = 0, position.y);
     }
-    if (sprite.getPosition().x > 1856) { // droite de l'écran
+    if (sprite.getPosition().x > 1856) { // droite de l'Ã©cran
         sprite.setPosition(position.x = 1856, position.y);
     }
 }
