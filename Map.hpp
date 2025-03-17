@@ -1,9 +1,8 @@
 #pragma once
-#include "stdafx.hpp"
 #include "Player.hpp"
 #include "Boss.hpp"
 #include "NuageTox.hpp"
-#include "Ennemis.hpp"
+#include "Ennemies.hpp"
 #include "Gemme.hpp"
 #include "Interactibles.hpp"
 #include "Chest.hpp"
@@ -14,6 +13,7 @@ class Map {
 public:
 
     bool isGameOver = false;
+    bool bossZone = false;
 
     Texture groundYellowLeftTexture, groundYellowMidTexture, groundYellowRightTexture;
     Texture groundRedLeftTexture, groundRedMidTexture, groundRedRightTexture;
@@ -25,12 +25,17 @@ public:
 
     shared_ptr<Player> player = make_shared<Player>();
 
-    shared_ptr<Enemy> enemy = make_shared<Enemy>();
+    shared_ptr<Boss> boss = make_shared<Boss>(*player);
+
+    shared_ptr<NuageTox> nuage = make_shared<NuageTox>();
+
+    vector<unique_ptr<Enemy>> enemies;
 
     vector<ifstream*> maps;
 
-    vector<unique_ptr<Interactible>> interactiblesVector;
-  
+    vector<Interactible*> interactiblesVector; // Vector of all Interacts
+
+
     //Text win;
     //Font font;
 

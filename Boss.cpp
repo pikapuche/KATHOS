@@ -1,21 +1,25 @@
 #include "Boss.hpp"
 
-
 Boss::Boss(Player& target) : Entity(position.x, position.y), target(target) {
-    texture.loadFromFile("Assets/Boss/boss.png");
+    texture.loadFromFile("Assets/texture/Boss/boss.png");
     sprite.setTexture(texture);
     sprite.setScale(Vector2f(0.22f, 0.22f));
     speed = 200.0f;
-    velocity = { -speed, 0.0f };
     velocity.y = 0;
-    detectionRange = 600.0f;
+    detectionRange = 400.0f;
+    detectionRect.setSize(Vector2f(detectionRange, 64));
+    detectionRect.setFillColor(Color(0, 255, 0, 50));
+    detectionRect.setOrigin(368, 0);
+    boxCol1 = 64;
+    boxCol2 = 64;
+    state = GROUNDED;
 }
 
 void Boss::jump()
 {
-    if (state == GROUNDED) {  // Sauter uniquement si le boss est sur le sol / saute pas
+    if (state == GROUNDED) {
         state = JUMP;
-        velocity.y = -jumpForce;  // Appliquer une force initiale vers le haut pour sauter 
+        velocity.y = -jumpForce;
         jumpClock.restart();
     }
 }
@@ -23,82 +27,75 @@ void Boss::jump()
 bool Boss::canSeePlayer() {
     float distanceX = abs(target.getPosPos().x - position.x);
     float distanceY = abs(target.getPosPos().y - position.y);
-
     return (distanceX < detectionRange && distanceY < 50.0f);
 }
 
-void Boss::chasePlayer() {
-    if (target.getPosPos().x > position.x)
+void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet de gerer le mouvement de l'ennemi
+    if (canSeePlayer())
     {
-        velocity.x = speed;
+        if (position.x < pos && directionState != RIGHT) {
+            directionState = RIGHT;
+        }
+        else if (position.x > pos2 && directionState != LEFT) {
+            directionState = LEFT;
+        }
+
+        if (directionState == RIGHT) {
+            position.x += speed * deltaTime;
+        }
+        else {
+            position.x -= speed * deltaTime;
+        }
     }
-    else {
-        velocity.x = -speed;
+
+    velocity.y += gravity * deltaTime;  // Appliquer la gravité
+    position.y += velocity.y * deltaTime;
+
+    sprite.setPosition(position);
+    detectionRect.setPosition(position);
+
+    if (sprite.getPosition().y < 0) { // haut de l'écran
+        sprite.setPosition(position.x, position.y = 64);
+    }
+    if (sprite.getPosition().y > 1016) { // bas de l'écran 
+        sprite.setPosition(position.x, position.y = 1016);
+    }
+    if (sprite.getPosition().x < 0) { // gauche de l'écran
+        sprite.setPosition(position.x = 0, position.y);
+    }
+    if (sprite.getPosition().x > 1856) { // droite de l'écran
+        sprite.setPosition(position.x = 1856, position.y);
     }
 }
 
-void Boss::update(float deltaTime) {
-    if (canSeePlayer()) {
-        chasePlayer();
-    }
+void Boss::update(float deltatime)
+{
+}
 
-    position += velocity * deltaTime;
-    checkCollision(1920, 1080);
-    sprite.setPosition(position);
+void Boss::updateReal(float deltaTime, Player& player) {
+    movementManager(player.getSprite().getPosition().x, player.getSprite().getPosition().x, deltaTime);
 
-    caca += rand() % 5;
-    cout << caca << endl;
+    onestla = rand() % 5;
 
-    switch (caca) {
-    case '0':
-    {
+    switch (onestla) {
+    case 0:
         break;
-    }
-    case '1':
-    {
+    case 1:
         break;
-    }
-    case '2':
-    {
+    case 2:
+        jump();
+        break;
+    case 3:
+        break;
+    case 4:
         jump();
         break;
     }
-    case '3':
-    {
-        break;
-    }
-    case '4':
-    {
-        jump();
-        break;
-    }
-    }
-
-    caca = 0;
 }
 
 void Boss::draw(RenderWindow& window) {
     window.draw(sprite);
-}
-
-void Boss::checkCollision(int mapWidth, int mapHeight) {
-    if (position.x <= 0) {
-        position.x = 0;
-        velocity.x = speed;
-    }
-    else if (position.x + sprite.getGlobalBounds().width >= mapWidth) {
-        position.x = mapWidth - sprite.getGlobalBounds().width;
-        velocity.x = -speed;
-    }
-
-    if (position.y <= 0) {
-        position.y = 0;
-        velocity.y = 0;
-    }
-    else if (position.y + sprite.getGlobalBounds().height >= mapHeight) {
-        position.y = mapHeight - sprite.getGlobalBounds().height;
-        velocity.y = 0;
-    }
+    window.draw(detectionRect);
 }
 
 Vector2f Boss::getPos() {

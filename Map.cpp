@@ -23,7 +23,10 @@ void Map::update(float deltaTime) {
 
 void Map::collision(float deltaTime) {
 	for (auto& ground : groundSprites) {
-		player->collisionPlatform(*ground, deltaTime);
+		player->collision(*ground, deltaTime);
+		for(auto& enemy : enemies)
+		enemy->collision(*ground, deltaTime);
+		boss->collision(*ground, deltaTime);
 	}
 }
 
@@ -31,30 +34,30 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 	
 	while (getline(_Map, _line)) {
 		for (int i = 0; i < _line.size(); i++) {
-			switch (_line[i]) {
+			switch (_line[i]) { // tileValue
 				cout << _line[i] << endl;
 			case '1':
 			{
-				auto left = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				auto left = make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
 				left->setTexture(groundGreenLeftTexture);
 				left->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(left));  // Utilise std::move pour transf�rer la propri�t�
+				groundSprites.push_back(move(left));  // Utilise move pour transf�rer la propri�t�
 				break;
 			}
 			case '2':
 			{
-				auto mid = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				auto mid = make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
 				mid->setTexture(groundGreenMidTexture);
 				mid->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(mid));  // Utilise std::move pour transf�rer la propri�t�
+				groundSprites.push_back(move(mid));  // Utilise move pour transf�rer la propri�t�
 				break;
 			}
 			case '3':
 			{
-				auto right = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				auto right = make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
 				right->setTexture(groundGreenRightTexture);
 				right->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(right));  // Utilise std::move pour transf�rer la propri�t�
+				groundSprites.push_back(move(right));  // Utilise move pour transf�rer la propri�t�
 				break;
 			}
 			case 'P':
@@ -62,29 +65,40 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				player->setPosPos((float)i * 32, (float)_z * 20);
 				break;
 			}
-			case 'W' : 
+			case 'E':
 			{
-				enemy->waypointOne.x = (float)i * 32;
-				enemy->waypointOne.y = (float)_z * 20;
+				auto newEnemy = make_unique<Enemy>();
+				newEnemy->setPosPos((float)i * 32, (float)_z * 20);
+				newEnemy->waypointOne.x = newEnemy->getPosPos().x;
+				newEnemy->waypointOne.y = newEnemy->getPosPos().y;
+				newEnemy->waypointTwo.x = newEnemy->getPosPos().x + 590;
+				newEnemy->waypointTwo.y = newEnemy->getPosPos().y;
+				newEnemy->enemyState = newEnemy->PATROLLER;
+				enemies.push_back(move(newEnemy));
 				break;
 			}
-			case 'V':
+			case 'A':
 			{
-				enemy->waypointTwo.x = (float)i * 32;
-				enemy->waypointTwo.y = (float)_z * 20;
+				auto newEnemy = make_unique<Enemy>();
+				newEnemy->setPosPos((float)i * 32, (float)_z * 20);
+				newEnemy->waypointOne.x = newEnemy->getPosPos().x - 30;
+				newEnemy->waypointOne.y = newEnemy->getPosPos().y;
+				newEnemy->waypointTwo.x = newEnemy->getPosPos().x + 280;
+				newEnemy->waypointTwo.y = newEnemy->getPosPos().y;
+				newEnemy->enemyState = newEnemy->PATROLLER;
+				enemies.push_back(move(newEnemy));
 				break;
 			}
 			case 'C':
 			{
 				auto chest = std::make_unique<Chest>();  // La bonne fa�on de cr�er un unique_ptr
 				chest->setPosPos((float)i * 32, (float)_z * 32 - 17);
-				interactiblesVector.push_back(move(chest));
+				interactiblesVector.push_back(chest);
 				break;
 			}
-
-			case 'K': 
+			case 'K':
 			{
-				auto key = std::make_unique<Key>();  // La bonne fa�on de cr�er un unique_ptr
+				Key* key = new Key();
 				key->setPosPos((float)i * 32, (float)_z * 32 - 25);
 				interactiblesVector.push_back(move(key));
 				break;
@@ -92,6 +106,28 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			case 'E': 
 			{
 				enemy->setPosPos((float)i * 32, (float)_z * 20);
+				break;
+			}
+			case 'B':
+			{
+				boss->setPos((float)i * 32, (float)_z * 20);
+				break;
+			}
+			case 'Q':
+			{
+				auto newEnemy = make_unique<Enemy>();
+				newEnemy->setPosPos((float)i * 32, (float)_z * 20);
+				newEnemy->waypointOne.x = newEnemy->getPosPos().x - 30;
+				newEnemy->waypointOne.y = newEnemy->getPosPos().y;
+				newEnemy->waypointTwo.x = newEnemy->getPosPos().x + 500;
+				newEnemy->waypointTwo.y = newEnemy->getPosPos().y;
+				newEnemy->enemyState = newEnemy->CHASER;
+				enemies.push_back(move(newEnemy));
+				break;
+			}
+			case 'T' : 
+			{
+				nuage->setPos((float)i * 32, (float)_z * 20 - 10);
 				break;
 			}
 			}
@@ -128,7 +164,13 @@ void Map::draw(RenderWindow& window) {
 		window.draw(*ground);
 	}
 	player->draw(window);
+	for(auto& enemy : enemies)
 	enemy->draw(window);
+	for (auto& interactv : interactiblesVector) {
+		interactv->draw(window);
+	}
+	boss->draw(window);
+	nuage->draw(window);
 }
 
 void Map::gameOver(RenderWindow& window)

@@ -6,5 +6,8 @@
 
 class Game {
 public : 
+
+    sf::Music music;
+
 	void run();
 };

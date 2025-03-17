@@ -15,6 +15,15 @@ void Game::run()
     Clock clock;
     overlay.initInterface();
 
+    if (m.bossZone) {
+        if (!music.openFromFile("Assets/Musiques/VSOLO musique boss16.wav")) {
+            cout << "euuuuuuuuuuuuuu wtf la zic ?" << endl;
+        }
+        music.setLoop(true);
+        music.setVolume(50.f);
+        music.play();
+    }
+
     while (window.isOpen()) {
         Time deltaT = clock.restart();
         float deltaTime = deltaT.asSeconds();
@@ -24,39 +33,40 @@ void Game::run()
             if (event.type == Event::Closed) {
                 window.close();
             }
-            /*if (mainScreen.getIsInMenu() && event.key.code == Keyboard::Escape) {
+            if (mainScreen.getIsInMenu() && event.key.code == Keyboard::Escape) {
                 window.close();
             }
             else if (!mainScreen.getIsInMenu() && event.key.code == Keyboard::Escape) {
                 overlay.setIsPaused(true);
-            }*/
+            }
         }
 
         window.clear();
+=========
         if (!overlay.getIsPaused()) { // Only update game when not paused
             m.player->update(deltaTime);
-            m.enemy->update(deltaTime);
+            for (auto& enemy : m.enemies)
+                enemy->updateReal(deltaTime, *m.player);
+          
+            m.boss->updateReal(deltaTime, *m.player);
+            m.nuage->update(deltaTime);
 
             m.update(deltaTime);
-            m.draw(window);
         }
-        else {
+
+        if (overlay.getIsPaused()) {
+        if (overlay.getIsPaused()) {
             overlay.updateInterface(window); // Draw pause menu when paused
+
+        m.draw(window);
+        m.draw(window);
+
+        if (mainScreen.getIsInMenu()) {
+            mainScreen.updateMenu(window);
+        }   
+        else {
+            mainScreen.destroyAll();
         }
-
-        //if (mainScreen.getIsInMenu()) {
-        //    mainScreen.updateMenu(window);
-        //}   
-        //else {
-        //    mainScreen.destroyAll();
-        //}
-
-        //for (auto& gemmes : map.vector_gemme) {
-        //    for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements
-        //        gemmes->interact(*players);
-        //    }
-        //    gemmes->draw(window);
-        //}
 
         // Affiche tout
         window.display();

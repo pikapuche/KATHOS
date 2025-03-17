@@ -1,8 +1,5 @@
 #pragma once
 #include "Button.hpp"
-using namespace sf;
-using namespace std;
-
 
 class PauseOverlay {
 private:

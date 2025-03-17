@@ -3,47 +3,47 @@
 
 class Player : public Entity {
 protected:
-    Texture textureSprint;
+    Texture textureSprint; 
     Texture textureIdle;
+    Texture textureJump;
+    Texture textureAttack;
     RectangleShape attackShape;
 
-    enum StateLook { LOOK_RIGHT, LOOK_LEFT };
+    enum StateLook { LOOK_RIGHT, LOOK_LEFT }; // permet de connaitre la direction dans laquelle le joueur regarde
     StateLook stateLook;
 
-    enum StateMove { IDLE, RUN };
+    enum StateMove { IDLE, RUNNING, ATTACKING, JUMPING }; // etat pour animation de course et d'attente
     StateMove stateMove;
 
-    int jumpCount = 0;
+    int jumpCount = 0; // compteur de saut pour double saut
 
     float SPEED = 300.0f;  // Vitesse de déplacement horizontal
     float jumpForce = 600.f;  // Force initiale du saut
 
     float animTimeDecr;
-    float animRunTimeDecr;
+    float animRunTimeDecr; // timer pour les anim (temps entre chaque frame)
     float animIdleTimeDecr;
+    float animJumpTimeDecr;
+    float animAttackTimeDecr;
 
-    float rotaRight = 220;
+    float rotaRight = 220; // rotation pour l'attaque
     float rotaLeft = 120;
 
-    float gachetteValue;
+    float gachetteValue; // valeur pour la manette
     float joystickValue;
 
     bool isAttacking = false;
-
-    bool isTakeDash = false;
-    bool isDashing = false;
-    bool isTakeSpeed = false;
+    bool isTakeDash = false; // recup la gemme de dash
+    bool isDashing = false; // dash
+    bool isTakeSpeed = false; // recup la gemme de sprint
 
     bool hasKey = false;
 
-    Clock jumpClock;
-    Clock coolDownDash;
+    Clock jumpClock; // compteur pour le deuxieme saut (evite l'enchainement)
+    Clock coolDownDash; 
     Clock clock;
 
 public:
-
-    enum State { NONE, GROUNDED, JUMP };
-    State state;
 
     bool floor = true;
 
@@ -58,10 +58,6 @@ public:
     void attack(float deltaTime);
 
     void dash(float deltaTime);
-
-    void collisionPlatform(Sprite& tile, float deltaTime);
-
-    void collisionFloor(Sprite& tile);
 
     Vector2f setPosPos(float x, float y);
 
