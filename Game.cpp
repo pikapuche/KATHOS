@@ -44,18 +44,16 @@ void Game::run()
         window.clear();
 
         if (!overlay.getIsPaused()) { // Only update game when not paused
-            m.player->update(deltaTime);
+            for (auto& player : m.players) {
+                player->update(deltaTime);
 
-            if (m.player->ATTACKING) {
-                for (auto& enemy : m.enemies) {
-                    m.player->attack(deltaTime, *enemy);
-                }
-            }
-            for (auto& enemy : m.enemies) {
-                enemy->update(deltaTime, *m.player);
-            }
+                for (auto& enemy : m.enemies) 
+                enemy->update(deltaTime, *player);
+                
 
-            m.boss->update(deltaTime, *m.player);
+                for(auto& boss : m.bosses)
+                boss->update(deltaTime, *player);
+            }
 
             for (auto& cloud : m.clouds) {
                 cloud->update(deltaTime);

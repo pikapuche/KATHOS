@@ -55,7 +55,7 @@ public:
 
     void jump();
 
-    void attack(float deltaTime, Entity& entity);
+    //void attack(float deltaTime, Entity& entity);
 
     void dash(float deltaTime);
 
@@ -96,6 +96,8 @@ public:
     bool getHasKey();
 
     bool setHasKey(bool key);
+
+    RectangleShape getAttackShape();
 
     void update(float deltaTime);
 

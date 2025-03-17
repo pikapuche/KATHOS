@@ -19,6 +19,7 @@ void Boss::jump()
 {
     if (state == GROUNDED) {
         state = JUMP;
+        isJumping = true;
         velocity.y = -jumpForce;
         jumpClock.restart();
     }
@@ -35,11 +36,13 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
     //{
 
     //}
-    if (position.x < pos && directionState != RIGHT) {
-        directionState = RIGHT;
-    }
-    else if (position.x > pos2 && directionState != LEFT) {
-        directionState = LEFT;
+    if (!isJumping) {
+        if (position.x < pos && directionState != RIGHT) { // faire en sorte qu'il ne puisse pas changer de direction pendant un saut
+            directionState = RIGHT;
+        }
+        else if (position.x > pos2 && directionState != LEFT) {
+            directionState = LEFT;
+        }
     }
 
     if (directionState == RIGHT) {
@@ -58,9 +61,9 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
     if (sprite.getPosition().y < 0) { // haut de l'écran
         sprite.setPosition(position.x, position.y = 64);
     }
-    if (sprite.getPosition().y > 1016) { // bas de l'écran 
-        sprite.setPosition(position.x, position.y = 1016);
-    }
+    //if (sprite.getPosition().y > 1016) { // bas de l'écran 
+    //    sprite.setPosition(position.x, position.y = 1016);
+    //}
     if (sprite.getPosition().x < 0) { // gauche de l'écran
         sprite.setPosition(position.x = 0, position.y);
     }
@@ -70,9 +73,10 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
 }
 
 void Boss::update(float deltaTime, Player& player) {
-    movementManager(player.getSprite().getPosition().x, player.getSprite().getPosition().x, deltaTime);
 
-    onestla = rand() % 5;
+    if (jumpClock.getElapsedTime().asSeconds() <= 2) {
+        onestla = rand() % 5;
+    }
 
     switch (onestla) {
     case 0:
@@ -88,6 +92,12 @@ void Boss::update(float deltaTime, Player& player) {
         jump();
         break;
     }
+
+    if (state == GROUNDED) {
+        isJumping = false;
+    }
+
+    movementManager(player.getSprite().getPosition().x, player.getSprite().getPosition().x, deltaTime);
 }
 
 void Boss::draw(RenderWindow& window) {

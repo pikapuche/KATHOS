@@ -9,6 +9,7 @@ private:
     Vector2f velocity;
     float speed;
     float detectionRange;
+    bool isJumping = false;
 
     Texture texture;
 

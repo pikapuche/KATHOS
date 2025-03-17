@@ -113,6 +113,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			{
 				auto player = std::make_unique<Player>();  // La bonne fa�on de cr�er un unique_ptr
 				player->setPosPos((float)i * 32, (float)_z * 20);
+				players.push_back(move(player));
 				break;
 			}
 			case 'G':
@@ -163,6 +164,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			{
 				auto boss = make_unique<Boss>();
 				boss->setPos((float)i * 32, (float)_z * 20);
+				bosses.push_back(move(boss));
 				break;
 			}
 			case 'Q':
@@ -181,6 +183,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			{
 				auto newCloud = make_unique<NuageTox>();
 				newCloud->setPos((float)i * 32, (float)_z * 20 - 10);
+				clouds.push_back(move(newCloud));
 				break;
 			}
 			}
@@ -220,6 +223,7 @@ void Map::draw(RenderWindow& window) {
 		window.draw(gemme->gemmeSprite);
 	}
 
+	for (auto& player : players)
 	player->draw(window);
 
 	for(auto& enemy : enemies)
@@ -229,6 +233,7 @@ void Map::draw(RenderWindow& window) {
 		interactv->draw(window);
 	}
 
+	for (auto& boss : bosses)
 	boss->draw(window);
 
 	for (auto& cloud : clouds)

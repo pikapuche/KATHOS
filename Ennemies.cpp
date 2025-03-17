@@ -156,6 +156,16 @@ void Enemy::search(float lastPlayerPosition, float deltaTime, Player& player) //
     attackPlayer(player);
 }
 
+void Enemy::takeDamage(Player& player)
+{
+    if (player.ATTACKING) {
+        if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds())) {
+            setLife(-10);
+            cout << "aie ca fais mal (ennemy)" << endl;
+        }
+    }
+}
+
 #pragma region Getter / Setter
 
 bool Enemy::setIsGrounded(bool is)
@@ -201,6 +211,7 @@ void Enemy::update(float deltaTime, Player& player)
         detectPlayer(player);
         break;
     }
+    takeDamage(player);
 }
 
 void Enemy::draw(RenderWindow& window)
