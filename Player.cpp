@@ -62,7 +62,7 @@ void Player::movementManager(float deltaTime) {
 
     if (Keyboard::isKeyPressed(Keyboard::Space) || Joystick::isButtonPressed(0, 0)) { jump(); }
 
-    if (Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0, 2)) { isAttacking = true; }
+    if ((Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0, 2)) && coolDownAttack.getElapsedTime().asSeconds() >= 0.7) { isAttacking = true; coolDownAttack.restart(); }
 
     // Si la gâchette gauche est pressée ou que A est pressée OU si la gâchette droite est pressée ou que A est pressée
     if (((Mouse::isButtonPressed(Mouse::Right) || gachetteValue > 10) || (Keyboard::isKeyPressed(Keyboard::A) || gachetteValue < -10)) && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500) {
@@ -104,6 +104,13 @@ void Player::movementManager(float deltaTime) {
     }
     if (sprite.getPosition().x > 1856) { // droite de l'écran
         sprite.setPosition(position.x = 1856, position.y);
+    }
+
+    if (stateLook == LOOK_LEFT) {
+        attackShape.setPosition(position.x - 50, position.y + 20);
+    }
+    else {
+        attackShape.setPosition(position.x + 37, position.y + 20);
     }
 }
 
@@ -168,7 +175,7 @@ void Player::animationManager(float deltaTime) {
     case ATTACKING :
         animAttackTimeDecr += deltaTime;
         anim_attack.y = 0;
-        if (animAttackTimeDecr > 0.05f) {
+        if (animAttackTimeDecr > 0.10f) {
             anim_attack.x++;
             animAttackTimeDecr = 0;
         }
@@ -176,25 +183,29 @@ void Player::animationManager(float deltaTime) {
             if (anim_attack.x > 4) {
                 anim_attack.x = 1;
                 isAttacking = false;
+                stateWeapon = SPAWN;
                 if (state != GROUNDED) {
                     stateMove = JUMPING;
                 }
             }
-            attackShape.setPosition(position.x - 50, position.y + 20);
-            sprite.setTextureRect(IntRect(anim_attack.x * 64, anim_attack.y * 64, -64, 64));
+            sprite.setTextureRect(IntRect(anim_attack.x * 64, 0, -64, 64));
         }
         else if (stateLook == LOOK_RIGHT) {
             if (anim_attack.x > 3) {
                 anim_attack.x = 0;
                 isAttacking = false;
+                stateWeapon = SPAWN;
                 if (state != GROUNDED) {
                     stateMove = JUMPING;
                 }
             }
-            attackShape.setPosition(position.x + 37, position.y + 20);
-            sprite.setTextureRect(IntRect(anim_attack.x * 64, anim_attack.y * 64, 64, 64));
+            sprite.setTextureRect(IntRect(anim_attack.x * 64, 0, 64, 64));
         }
         break;
+    }
+
+    if (stateMove != ATTACKING) {
+        stateWeapon = NONE;
     }
 }
 
@@ -351,5 +362,5 @@ void Player::update(float deltaTime) {
 
 void Player::draw(RenderWindow& window) {
     window.draw(sprite);
-    if (isAttacking && DEBUG) window.draw(attackShape);
+    if (stateWeapon == SPAWN && DEBUG) window.draw(attackShape);
 }
