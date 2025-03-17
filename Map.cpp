@@ -1,6 +1,6 @@
 #include "Map.hpp"
 
-Map::Map() : statePlaying(StatePlaying::Practice) {
+Map::Map() : statePlaying(StatePlaying::Boss) {
 	groundYellowLeftTexture.loadFromFile("Assets/texture/Map/groundYellowLeft.png");
 	groundYellowMidTexture.loadFromFile("Assets/texture/Map/groundYellowMid.png");
 	groundYellowRightTexture.loadFromFile("Assets/texture/Map/groundYellowRight.png");
@@ -203,6 +203,16 @@ void Map::loadMap() {
 
 		for (auto& mapMonde1 : maps) {
 			monSwitch(*mapMonde1, line, z);
+		}
+	}
+	if (statePlaying == StatePlaying::Boss) {
+		ifstream Mapb("Assets/Map/mapBoss.txt");
+		maps.push_back(&Mapb);
+		string line;
+		float z = 0;
+
+		for (auto& mapBoss : maps) {
+			monSwitch(*mapBoss, line, z);
 		}
 	}
 }

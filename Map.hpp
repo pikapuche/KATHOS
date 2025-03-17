@@ -45,6 +45,7 @@ public:
         Monde1,
         Monde2,
         Monde3,
+        Boss
     };
 
     StatePlaying statePlaying;
