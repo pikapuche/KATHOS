@@ -172,6 +172,9 @@ void Player::animationManager(float deltaTime) {
             if (anim_attack.x > 4) {
                 anim_attack.x = 1;
                 isAttacking = false;
+                if (state != GROUNDED) {
+                    stateMove = JUMPING;
+                }
             }
             attackShape.setPosition(position.x - 20, position.y + 20);
             sprite.setTextureRect(IntRect(anim_attack.x * 64, anim_attack.y * 64, -64, 64));
@@ -180,6 +183,9 @@ void Player::animationManager(float deltaTime) {
             if (anim_attack.x > 3) {
                 anim_attack.x = 0;
                 isAttacking = false;
+                if (state != GROUNDED) {
+                    stateMove = JUMPING;
+                }
             }
             attackShape.setPosition(position.x + 37, position.y + 20);
             sprite.setTextureRect(IntRect(anim_attack.x * 64, anim_attack.y * 64, 64, 64));
