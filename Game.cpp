@@ -33,12 +33,12 @@ void Game::run()
             if (event.type == Event::Closed) {
                 window.close();
             }
-            /*if (mainScreen.getIsInMenu() && event.key.code == Keyboard::Escape) {
+            if (mainScreen.getIsInMenu() && event.key.code == Keyboard::Escape) {
                 window.close();
             }
             else if (!mainScreen.getIsInMenu() && event.key.code == Keyboard::Escape) {
                 overlay.setIsPaused(true);
-            }*/
+            }
         }
 
         window.clear();
@@ -49,12 +49,12 @@ void Game::run()
         m.update(deltaTime);
         m.draw(window);
 
-        //if (mainScreen.getIsInMenu()) {
-        //    mainScreen.updateMenu(window);
-        //}   
-        //else {
-        //    mainScreen.destroyAll();
-        //}
+        if (mainScreen.getIsInMenu()) {
+            mainScreen.updateMenu(window);
+        }   
+        else {
+            mainScreen.destroyAll();
+        }
 
         // Affiche tout
         window.display();
