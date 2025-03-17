@@ -75,8 +75,8 @@
     <LibraryPath>C:\Users\Flash\source\repos\Mini-Projet-Studio\SFML du projet\lib;C:\SFML-2.6.2\lib;C:\Users\quent\source\repos\test de mini projet studio\SFML du projet\lib;C:\Users\nlamarre\source\repos\Mini-Projet-Studio\SFML du projet\lib;$(LibraryPath);$(LibraryPath);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Users\Flash\source\repos\Mini-Projet-Studio\SFML du projet\include;C:\SFML-2.6.2\include;C:\Users\quent\source\repos\test de mini projet studio\SFML du projet\include;C:\Users\nlamarre\Documents\SFML-2.6.2-windows-vc17-64-bit\SFML-2.6.2\include;$(IncludePath);$(IncludePath);$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Flash\source\repos\Mini-Projet-Studio\SFML du projet\lib;C:\SFML-2.6.2\lib;C:\Users\quent\source\repos\test de mini projet studio\SFML du projet\lib;C:\Users\nlamarre\Documents\SFML-2.6.2-windows-vc17-64-bit\SFML-2.6.2\lib;$(LibraryPath);$(LibraryPath);$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\SFML-2.6.2\include;C:\Users\quent\source\repos\test de mini projet studio\SFML du projet\include;C:\Users\nlamarre\Documents\SFML-2.6.2-windows-vc17-64-bit\SFML-2.6.2\include;C:\Users\alves\Downloads\SFML-2.6.2-windows-vc17-64-bit %281%29\SFML-2.6.2\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\SFML-2.6.2\lib;C:\Users\quent\source\repos\test de mini projet studio\SFML du projet\lib;C:\Users\nlamarre\Documents\SFML-2.6.2-windows-vc17-64-bit\SFML-2.6.2\lib;C:\Users\alves\Downloads\SFML-2.6.2-windows-vc17-64-bit %281%29\SFML-2.6.2\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

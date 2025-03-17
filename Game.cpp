@@ -51,6 +51,10 @@ void Game::run()
             m.boss->updateReal(deltaTime, *m.player);
             m.nuage->update(deltaTime);
 
+            for (auto& gemme : m.gemmeSprites) {
+                gemme->updateGemme(deltaTime);
+            }
+
             m.update(deltaTime);
         }
 
