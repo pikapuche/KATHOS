@@ -4,23 +4,25 @@ Enemy::Enemy() : Entity(position.x, position.y)
 {
     DEBUG = true;
     if (DEBUG) {
-        circleDetect.setFillColor(sf::Color(255, 0, 0, 50));
+        //circleDetect.setFillColor(sf::Color(255, 0, 0, 50));
+        rectangleDetect.setFillColor(sf::Color(255, 0, 0, 50));
         circleOne.setFillColor(Color::Yellow);
         circleTwo.setFillColor(Color::Blue);
         circleLastPos.setFillColor(Color::Cyan);
         attackDetect.setFillColor(Color(0, 255, 0, 50));
         attackShape.setFillColor(Color::Yellow);
     }
-    circleDetect.setRadius(150.0f); // cerlce de detection
-    circleDetect.setPosition(position);
-    circleDetect.setOrigin(132.f, 132.f);
+    //circleDetect.setRadius(175.f); // cerlce de detection
+    //circleDetect.setPosition(position);
+    rectangleDetect.setOrigin(318, 11); // 150 (radius) - 64 (taille sprite) + 32 (moitié taille sprite pour centrer)
+    rectangleDetect.setSize(Vector2f(700, 75));
     currentState = PATROL;
     circleOne.setRadius(10.0f); // point de patrouille 1 
     circleTwo.setRadius(10.0f); // point de patrouille 2
     texture.loadFromFile("assets/Ennemies/White.png");
     sprite.setTexture(texture);
-    boxCol1 = 32; // valeur qui permet de gérer les collisions (distances entre plateformes)
-    boxCol2 = 32; // 
+    boxCol1 = 64; // valeur qui permet de gérer les collisions (distances entre plateformes)
+    boxCol2 = 64; // 
     circleLastPos.setRadius(20.f); // point de derniere position du player
     attackDetect.setSize(Vector2f(75.f, 20.f));
     attackShape.setSize(Vector2f(nuage, 20.f));
@@ -29,10 +31,10 @@ Enemy::Enemy() : Entity(position.x, position.y)
 void Enemy::detectPlayer(Player& player) 
 {
     if (enemyState == CHASER) {
-        if (circleDetect.getGlobalBounds().intersects(player.getSprite().getGlobalBounds()) && currentState != CHASE) { // si l'ennemi est un chasseur et que le perso entre dans le cercle de detection
+        if (rectangleDetect.getGlobalBounds().intersects(player.getSprite().getGlobalBounds()) && currentState != CHASE) { // si l'ennemi est un chasseur et que le perso entre dans le cercle de detection
             currentState = CHASE;
         }
-        else if (!circleDetect.getGlobalBounds().intersects(player.getSprite().getGlobalBounds()) && currentState == CHASE) {
+        else if (!rectangleDetect.getGlobalBounds().intersects(player.getSprite().getGlobalBounds()) && currentState == CHASE) {
             lastPlayerPosition = player.getSprite().getPosition().x;
             currentState = SEARCH;
             coolDownSearch.restart(); // au cas où pour éviter que la recherche se termine au nout d'une seconde
@@ -51,16 +53,41 @@ void Enemy::movementManager(float pos, float pos2, float deltaTime) { // permet 
     if (directionState == RIGHT) {
         position.x += SPEED * deltaTime;
         attackDetect.setRotation(0);
-        attackDetect.setPosition(position.x + 32, position.y + 5);
+        attackDetect.setPosition(position.x + 64, position.y + 23);
         attackShape.setRotation(0);
-        attackShape.setPosition(position.x + 32, position.y + 5);
+        attackShape.setPosition(position.x + 64, position.y + 23);
     }
     else {
         position.x -= SPEED * deltaTime;
         attackDetect.setRotation(180);
-        attackDetect.setPosition(position.x, position.y + 25);
+        attackDetect.setPosition(position.x, position.y + 43);
         attackShape.setRotation(180);
-        attackShape.setPosition(position.x, position.y + 25);
+        attackShape.setPosition(position.x, position.y + 43);
+    }
+
+    velocity.y += gravity * deltaTime;  // Appliquer la gravité
+    position.y += velocity.y * deltaTime;
+
+    sprite.setPosition(position);
+    if (enemyState == CHASER) {
+        rectangleDetect.setPosition(position);
+        circleLastPos.setPosition(lastPlayerPosition, sprite.getPosition().y);
+    }
+    circleOne.setPosition(waypointOne);
+    circleTwo.setPosition(waypointTwo);
+    attackShape.setSize(Vector2f(nuage, 20.f));
+
+    if (sprite.getPosition().y < 0) { // haut de l'écran
+        sprite.setPosition(position.x, position.y = 64);
+    }
+    if (sprite.getPosition().y > 1016) { // bas de l'écran 
+        sprite.setPosition(position.x, position.y = 1016);
+    }
+    if (sprite.getPosition().x < 0) { // gauche de l'écran
+        sprite.setPosition(position.x = 0, position.y);
+    }
+    if (sprite.getPosition().x > 1856) { // droite de l'écran
+        sprite.setPosition(position.x = 1856, position.y);
     }
 }
 
@@ -176,18 +203,6 @@ void Enemy::updateReal(float deltaTime, Player& player)
         detectPlayer(player);
         break;
     }
-
-    velocity.y += gravity * deltaTime;  // Appliquer la gravité
-    position.y += velocity.y * deltaTime;
-
-    sprite.setPosition(position);
-    if (enemyState == CHASER) {
-        circleDetect.setPosition(position);
-        circleLastPos.setPosition(lastPlayerPosition, sprite.getPosition().y);
-    }
-    circleOne.setPosition(waypointOne);
-    circleTwo.setPosition(waypointTwo);
-    attackShape.setSize(Vector2f(nuage, 20.f));
 }
 
 void Enemy::draw(RenderWindow& window)
@@ -196,7 +211,7 @@ void Enemy::draw(RenderWindow& window)
         window.draw(circleOne);
         window.draw(circleTwo);
         if (enemyState == CHASER) {
-            window.draw(circleDetect);
+            window.draw(rectangleDetect);
             window.draw(circleLastPos);
         }
     }

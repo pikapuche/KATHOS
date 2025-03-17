@@ -13,7 +13,8 @@ protected :
 	CircleShape circleOne; // cercle 1 de patrouille (DEBUG)
 	CircleShape circleTwo; // cercle 2 de patrouille (DEBUG)
 	CircleShape circleLastPos; // cercle de derniere position du joueur (DEBUG)
-	CircleShape circleDetect; // cercle de detection du joueur 
+	//CircleShape circleDetect; // cercle de detection du joueur 
+	RectangleShape rectangleDetect;
 	RectangleShape attackDetect;
 	RectangleShape attackShape;
 

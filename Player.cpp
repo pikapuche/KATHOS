@@ -95,10 +95,10 @@ void Player::movementManager(float deltaTime) {
     if (sprite.getPosition().y > 1016) { // bas de l'écran 
         sprite.setPosition(position.x, position.y = 1016);
     }
-    if (sprite.getPosition().x < 0) {
+    if (sprite.getPosition().x < 0) { // gauche de l'écran
         sprite.setPosition(position.x = 0, position.y);
     }
-    if (sprite.getPosition().x > 1856) {
+    if (sprite.getPosition().x > 1856) { // droite de l'écran
         sprite.setPosition(position.x = 1856, position.y);
     }
 }
