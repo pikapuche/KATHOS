@@ -10,6 +10,7 @@ Map::Map() : statePlaying(StatePlaying::Practice) {
 	groundGreenLeftTexture.loadFromFile("Assets/texture/Map/groundGreenLeft.png");
 	groundGreenMidTexture.loadFromFile("Assets/texture/Map/groundGreenMid.png");
 	groundGreenRightTexture.loadFromFile("Assets/texture/Map/groundGreenRight.png");
+}
 
 Map::~Map()
 {
@@ -94,12 +95,13 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				interactiblesVector.push_back(chest);
 				break;
 			}
-
-			case 'K':
-				Key * key = new Key();
+			case 'W':
+			{
+				Key* key = new Key();
 				key->setPosPos((float)i * 32, (float)_z * 32 - 25);
 				interactiblesVector.push_back(key);
 				break;
+			}
 			case 'K':
 			{
 				auto newEnemy = make_unique<Enemy>();
