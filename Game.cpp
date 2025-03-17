@@ -28,7 +28,6 @@ void Game::run()
         Time deltaT = clock.restart();
         float deltaTime = deltaT.asSeconds();
         Event event;
-
         while (window.pollEvent(event)) {
             if (event.type == Event::Closed) {
                 window.close();
@@ -40,38 +39,42 @@ void Game::run()
                 overlay.setIsPaused(true);
             }
         }
-
-        window.clear();
-
-        if (!overlay.getIsPaused()) { // Only update game when not paused
-            m.player->update(deltaTime);
-            for (auto& enemy : m.enemies)
-                enemy->updateReal(deltaTime, *m.player);
-
-            m.boss->updateReal(deltaTime, *m.player);
-            m.nuage->update(deltaTime);
-
-            for (auto& gemme : m.gemmeSprites) {
-                gemme->updateGemme(deltaTime);
-            }
-
-            m.update(deltaTime);
-        }
-
-        m.draw(window);
-
-        if (overlay.getIsPaused()) {
-            overlay.updateInterface(window); // Draw pause menu when paused
-        }
-
-        if (mainScreen.getIsInMenu()) {
+        if (mainScreen.getIsInMenu()) { //MENU
             mainScreen.updateMenu(window);
         }
-        else {
+
+        else{ //JEU PRINCIPAL
+            window.clear();
+
+            if (!overlay.getIsPaused()) { // Only update game when not paused
+                m.player->update(deltaTime);
+                for (auto& enemy : m.enemies)
+                    enemy->updateReal(deltaTime, *m.player);
+
+                m.boss->updateReal(deltaTime, *m.player);
+                m.nuage->update(deltaTime);
+
+                for (auto& gemme : m.gemmeSprites) {
+                    gemme->updateGemme(deltaTime);
+                }
+
+                m.update(deltaTime);
+            }
+
+            m.draw(window);
+            
+
+            if (overlay.getIsPaused()) {
+                overlay.updateInterface(window); // Draw pause menu when paused
+            }
+            overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
+
             mainScreen.destroyAll();
+
+
         }
 
-        // Affiche tout
+        // Affiche touter()
         window.display();
     }
 }

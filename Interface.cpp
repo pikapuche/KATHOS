@@ -57,6 +57,20 @@ void Interface::initInterface() {
     highlightRect.setTexture(highlightTexture);
     highlightRect.setColor(Color(255, 255, 255, 255)); // Semi-transparent overlay
 	highlightRect.setOrigin(highlightRect.getGlobalBounds().width / 2, highlightRect.getGlobalBounds().height / 2);
+
+    // Load font
+    if (!timeFont.loadFromFile("Assets/Fonts/Minecraft.ttf")) {
+        std::cerr << "Error loading font!" << std::endl;
+    }
+
+    // Set up timer text
+    timeText.setFont(timeFont);
+    timeText.setCharacterSize(24);
+    timeText.setFillColor(sf::Color::White);
+    timeText.setPosition(1800, 10); // Adjust position (top-right)
+
+    // Start the clock
+    timeClock.restart();
 }
 void Interface::updateInterface(RenderWindow& window) {
     detectControllerInput(); // Detect controller usage
@@ -124,6 +138,7 @@ void Interface::updateInterface(RenderWindow& window) {
             window.draw(highlightRect);
         }
     }
+
 }
 
 
@@ -200,4 +215,38 @@ void Interface::handleMenuNavigation() {
 
     // Move highlight rectangle
     highlightRect.setPosition(buttons[selectedButtonIndex].getPosition());
+}
+
+
+void Interface::updateTimer(RenderWindow& window) {
+    static sf::Time totalElapsedTime; // Store total elapsed time
+    static bool wasPaused = false;    // Track previous pause state
+
+    if (isPaused) {
+        if (!wasPaused) {
+            totalElapsedTime += timeClock.getElapsedTime();
+        }
+    }
+    else {
+        if (wasPaused) {
+            timeClock.restart(); // Restart the clock fresh after unpausing
+        }
+    }
+
+    wasPaused = isPaused;
+
+    // Calculate correct elapsed time
+    sf::Time elapsed = totalElapsedTime;
+    if (!isPaused) {
+        elapsed += timeClock.getElapsedTime();
+    }
+
+    int minutes = static_cast<int>(elapsed.asSeconds()) / 60;
+    int seconds = static_cast<int>(elapsed.asSeconds()) % 60;
+
+    // Format time
+    timeText.setString("Time: " + std::to_string(minutes) + ":" +
+        (seconds < 10 ? "0" : "") + std::to_string(seconds));
+
+    window.draw(timeText); // Ensure it is drawn
 }
