@@ -17,6 +17,7 @@ Map::~Map() {}
 
 void Map::update(float deltaTime) {
 	collision(deltaTime);
+
 }
 
 void Map::collision(float deltaTime) {
@@ -111,8 +112,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			}
 			case 'G':
 			{
-				auto gemme = std::make_unique<Gemme>();
-				gemme->updateGemme((float)i * 32 , (float)_z * 20 );
+				auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20);
 				gemmeSprites.push_back(std::move(gemme));
 				break;
 			}
@@ -153,9 +153,9 @@ void Map::draw(RenderWindow& window) {
 	for (auto& ground : groundSprites) {
 		window.draw(*ground);
 	}
-	//for (auto& gemme : gemmeSprites) {
-	//	window.draw(*gemme);
-	//}
+	for (auto& gemme : gemmeSprites) {
+		window.draw(gemme->gemmeSprite);
+	}
 	player->draw(window);
 }
 

@@ -22,7 +22,6 @@ public:
 
     vector<ifstream*> maps;
 
-
     enum class StatePlaying {
         Practice,
         Monde1,

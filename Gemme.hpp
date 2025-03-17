@@ -2,8 +2,6 @@
 #include "stdafx.hpp"
 #include "Player.hpp"
 
-
-
 class Gemme {
 public:
 
@@ -11,16 +9,21 @@ public:
 	Texture gemmeTexture;
 	Sprite gemmeSprite;
 
+	float animGemmeTime;
+	float animGemme;
+
 	Clock gemmeClock;
-	Time animGemmeTime;
+	//Time animGemmeTime;
+
+	Vector2i anim;
 
 	enum class  GemmeState { SPEED, DASH,};
 
 	GemmeState gemmeState;
 	
-	Gemme();
+	Gemme(float _x, float _y);
 
-	void animationGemme();
+	void animationGemme(float _deltaTime);
 	void interact(Player& player);
-	void updateGemme(float _x, float _y);
+	void updateGemme(float _x, float _y, float _deltaTime);
 };
