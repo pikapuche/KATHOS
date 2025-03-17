@@ -13,6 +13,7 @@ class Map {
 public:
 
     bool isGameOver = false;
+    bool isWin = false;
     bool bossZone = false;
 
     Texture groundYellowLeftTexture, groundYellowMidTexture, groundYellowRightTexture;
@@ -46,6 +47,7 @@ public:
         Monde1,
         Monde2,
         Monde3,
+        Boss
     };
 
     StatePlaying statePlaying;
@@ -65,5 +67,7 @@ public:
     void draw(RenderWindow& window);
 
     void gameOver(RenderWindow& window);
+
+    void Win(RenderWindow& window);
 
 };
