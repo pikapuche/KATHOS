@@ -2,7 +2,7 @@
 #include "stdafx.hpp"
 
 class Entity {
-protected : 
+protected:
 
 	Sprite sprite;
 	Texture texture;
@@ -21,7 +21,7 @@ protected :
 
 	bool DEBUG = false; // sert pour voir si y'a des bugs / afficher les hitbox etc
 
-public : 
+public:
 
 	enum State { NONE, GROUNDED, JUMP };
 	State state;

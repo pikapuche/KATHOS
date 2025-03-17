@@ -37,26 +37,26 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				cout << _line[i] << endl;
 			case '1':
 			{
-				auto left = std::make_unique<Sprite>();  // La bonne facon de cr�er un unique_ptr
+				auto left = make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
 				left->setTexture(groundGreenLeftTexture);
 				left->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(left));
+				groundSprites.push_back(move(left));  // Utilise move pour transf�rer la propri�t�
 				break;
 			}
 			case '2':
 			{
-				auto mid = std::make_unique<Sprite>();  // La bonne facon de cr�er un unique_ptr
+				auto mid = make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
 				mid->setTexture(groundGreenMidTexture);
 				mid->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(mid));
+				groundSprites.push_back(move(mid));  // Utilise move pour transf�rer la propri�t�
 				break;
 			}
 			case '3':
 			{
-				auto right = std::make_unique<Sprite>();  // La bonne facon de cr�er un unique_ptr
+				auto right = make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
 				right->setTexture(groundGreenRightTexture);
 				right->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(right));
+				groundSprites.push_back(move(right));  // Utilise move pour transf�rer la propri�t�
 				break;
 			}
 			case 'P':
@@ -104,6 +104,12 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			}
 			case 'K':
 			{
+				boss->setPos((float)i * 32, (float)_z * 20);
+				break;
+			}
+			case 'T':
+			{
+				nuage->setPos((float)i * 32, (float)_z * 20 - 10);
 				auto newEnemy = make_unique<Enemy>();
 				newEnemy->setPosPos((float)i * 32, (float)_z * 20);
 				newEnemy->waypointOne.x = newEnemy->getPosPos().x - 30;
@@ -153,6 +159,8 @@ void Map::draw(RenderWindow& window) {
 	for (auto& interactv : interactiblesVector) {
 		interactv->draw(window);
 	}
+	boss->draw(window);
+	nuage->draw(window);
 }
 
 void Map::gameOver(RenderWindow& window)
