@@ -1,6 +1,6 @@
 #include "Gemme.hpp"
 
-Gemme::Gemme(float _x, float _y) : gemmeState(GemmeState::NADA) { 
+Gemme::Gemme(float _x, float _y) { 
 	gemmeTexture.loadFromFile("Assets/gemme.png");
 	gemmeSprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
 	gemmeSprite.setTexture(gemmeTexture);

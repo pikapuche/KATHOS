@@ -16,15 +16,11 @@ public:
 	//Time animGemmeTime;
 
 	Vector2i anim;
-
-	enum class  GemmeState {NADA, SPRINT, DASH, DOUBLEJUMP };
-
-	GemmeState gemmeState;
 	
 	Gemme(float _x, float _y);
 
 	void animationGemme(float _deltaTime);
-	Vector2f setPosition(float x, float y);
+	//Vector2f setPosition(float x, float y);
 	//void interact(Player& player);
 	void updateGemme(float _deltaTime);
 };

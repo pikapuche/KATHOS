@@ -20,6 +20,8 @@ public:
     Texture groundGreenLeftTexture, groundGreenMidTexture, groundGreenRightTexture;
 
     enum class  GemmeState { NADA, SPRINT, DASH, DOUBLEJUMP };
+	GemmeState gemmeState;
+
     vector<unique_ptr<Sprite>> groundSprites;
     vector<unique_ptr<Gemme>> gemmeSprites;
 
@@ -33,9 +35,7 @@ public:
 
     vector<ifstream*> maps;
 
-
     vector<Interactible*> interactiblesVector; // Vector of all Interacts
-
 
     //Text win;
     //Font font;
