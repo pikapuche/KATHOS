@@ -21,9 +21,8 @@ void Gemme::animationGemme(float _deltaTime)
 	}
 }
 
-void Gemme::interact(Player& player)
+void Gemme::interact(const std::shared_ptr<Player>& player)
 {
-
 
 }
 

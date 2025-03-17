@@ -1,8 +1,9 @@
 #pragma once
-#include "stdafx.hpp"
+#include "stdafx.hpp" // ??? - (amy)
 #include "Player.hpp"
+#include "Interactibles.hpp"
 
-class Gemme {
+class Gemme : Interactible {
 public:
 
 	sf::Vector2f position;
@@ -25,6 +26,6 @@ public:
 
 	void animationGemme(float _deltaTime);
 	Vector2f setPosition(float x, float y);
-	void interact(Player& player);
+	void interact(const std::shared_ptr<Player>& player);
 	void updateGemme(float _deltaTime);
 };

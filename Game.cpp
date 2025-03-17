@@ -62,11 +62,8 @@ void Game::run()
             }
 
             m.draw(window);
-            
-
-            if (overlay.getIsPaused()) {
-                overlay.updateInterface(window); // Draw pause menu when paused
-            }
+           
+            overlay.updateInterface(window, *m.player); // Draw pause menu when paused
             overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
 
             mainScreen.destroyAll();

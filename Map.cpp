@@ -15,17 +15,36 @@ Map::Map() : statePlaying(StatePlaying::Practice) {
 Map::~Map() {}
 
 void Map::update(float deltaTime) {
-	collision(deltaTime);
+    collision(deltaTime);
 
+    for (auto& interactv : interactiblesVector) {
+        interactv->updateProximity(player);
+		if (interactv->getIsPlayerNear()) {
+			interactv->interact(player);
+		}
+		//Interactibles Animation
+		auto chest = std::dynamic_pointer_cast<Chest>(interactv);
+		if (chest) {
+			chest->updateAnimation(deltaTime);
+		}
+		auto key = std::dynamic_pointer_cast<Key>(interactv);
+		if (key) {
+			key->updateAnimation(deltaTime);
+		}
+    }
 }
+
 
 void Map::collision(float deltaTime) {
 	for (auto& ground : groundSprites) {
 		player->collision(*ground, deltaTime);
-		for(auto& enemy : enemies)
-		enemy->collision(*ground, deltaTime);
+		for (auto& enemy : enemies)
+			enemy->collision(*ground, deltaTime);
 		boss->collision(*ground, deltaTime);
 	}
+	//for (auto& door : interactiblesVector){
+	// player->collision(*door, deltaTime);
+	//}
 
 }
 
@@ -142,20 +161,6 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				enemies.push_back(move(newEnemy));
 				break;
 			}
-			case 'C':
-			{
-				Chest* chest = new Chest();
-				chest->setPosPos((float)i * 32, (float)_z * 32 - 25);
-				interactiblesVector.push_back(move(chest));
-				break;
-			}
-			case 'K':
-			{
-				Key* key = new Key();
-				key->setPosPos((float)i * 32, (float)_z * 32 - 25);
-				interactiblesVector.push_back(move(key));
-				break;
-			}
 			case 'B':
 			{
 				boss->setPos((float)i * 32, (float)_z * 20);
@@ -178,6 +183,41 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				nuage->setPos((float)i * 32, (float)_z * 20 - 10);
 				break;
 			}
+
+			//INTERACTIBLES
+			case 'K':
+			{
+				auto key = std::make_shared<Key>();  // Change to shared_ptrw Key();
+				key->setPosPos((float)i * 32, (float)_z * 20 - 15);
+				interactiblesVector.push_back(move(key));
+				break;
+			}
+			case 'C':
+			{
+				auto chest = std::make_shared<Chest>();  // Change to shared_ptr
+				chest->setPosPos((float)i * 32, (float)_z * 20 - 40);
+				interactiblesVector.push_back(chest);
+				break;
+			}
+			//DOOR WITHOUT BUTTON
+			case 'D':
+			{
+				auto door = std::make_shared<Door>(false);
+				door->setPosPos((float)i * 32, (float)_z * 20 - 40);
+				interactiblesVector.push_back(door);
+				break;
+			}
+
+
+			//DOOR WITH BUTTON
+			case 'd':
+			{
+				auto door = std::make_shared<Door>(true);  // Change to shared_ptr
+				door->setPosPos((float)i * 32, (float)_z * 20 - 40);
+				interactiblesVector.push_back(door);
+				break;
+			}
+
 			}
 		}
 		_z++;
@@ -214,14 +254,24 @@ void Map::draw(RenderWindow& window) {
 	for (auto& gemme : gemmeSprites) {
 		window.draw(gemme->gemmeSprite);
 	}
-	player->draw(window);
+	
 	for(auto& enemy : enemies)
 	enemy->draw(window);
 	for (auto& interactv : interactiblesVector) {
-		interactv->draw(window);
+		if (!interactv->isDoor()) {  // Check if the object is NOT a door
+			interactv->draw(window);
+		}
 	}
+
+	player->draw(window);
 	boss->draw(window);
 	nuage->draw(window);
+	for (auto& interactv : interactiblesVector) {
+		if (interactv->isDoor()) {  // Check if the object is a door
+			interactv->draw(window);
+		}
+	}
+
 }
 
 void Map::gameOver(RenderWindow& window)

@@ -7,6 +7,7 @@
 #include "Interactibles.hpp"
 #include "Chest.hpp"
 #include "Key.hpp"
+#include "Door.hpp"
 
 
 class Map {
@@ -33,7 +34,8 @@ public:
     vector<ifstream*> maps;
 
 
-    vector<Interactible*> interactiblesVector; // Vector of all Interacts
+    std::vector<std::shared_ptr<Interactible>> interactiblesVector;
+
 
 
     //Text win;

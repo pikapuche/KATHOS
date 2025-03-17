@@ -27,6 +27,7 @@ void Interface::setIsPaused(bool paused) {
 
 void Interface::initInterface() {
     pauseOverlay.setTexture("assets/texture/UI/pausedOverlay.png");
+    keyGUItexture.loadFromFile("assets/texture/UI/key.png");
 
     buttons.push_back(Button(
         1920 / 2 - 100, 1080 / 2 - 100,
@@ -71,10 +72,17 @@ void Interface::initInterface() {
 
     // Start the clock
     timeClock.restart();
+
+    keyGUI.setPosition(0, 10);
+    keyGUI.setTexture(keyGUItexture);
 }
-void Interface::updateInterface(RenderWindow& window) {
+void Interface::updateInterface(RenderWindow& window, Player& player) {
     detectControllerInput(); // Detect controller usage
     handleMenuNavigation();  // Handle button navigation
+
+    if (player.getHasKey()) {
+        window.draw(keyGUI);
+    }
 
     if (isPaused) { // Only if paused
         pauseOverlay.draw(window);

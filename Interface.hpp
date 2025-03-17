@@ -1,10 +1,12 @@
 #pragma once
 #include "Button.hpp"
+#include "Player.hpp"
 
 class PauseOverlay {
 private:
     Sprite overlay;
     Texture overlayTexture;
+
 
 public:
     PauseOverlay();
@@ -14,6 +16,9 @@ public:
 
 class Interface {
 private:
+    Texture keyGUItexture;
+    Sprite keyGUI;
+
     bool isPaused;
     PauseOverlay pauseOverlay; // Store the overlay as a member
     vector<Button> buttons;
@@ -27,11 +32,12 @@ private:
     sf::Text timeText;
     sf::Font timeFont;
 
+
 public:
     void initInterface();
 	bool getIsPaused();
 	void setIsPaused(bool paused);
-    void updateInterface(RenderWindow& window);
+    void updateInterface(RenderWindow& window, Player& player);
     bool getShouldRestart() const;
     void resetRestartFlag();
 	void setUsingController(bool usingController);
