@@ -28,6 +28,6 @@ int Entity::getLife()
 
 int Entity::setLife(int l)
 {
-    life -= l;
+    life += l;
     return life;
 }

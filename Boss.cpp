@@ -1,6 +1,6 @@
 #include "Boss.hpp"
 
-Boss::Boss(Player& target) : Entity(position.x, position.y), target(target) {
+Boss::Boss() : Entity(position.x, position.y) {
     texture.loadFromFile("Assets/texture/Boss/boss.png");
     sprite.setTexture(texture);
     sprite.setScale(Vector2f(0.22f, 0.22f));
@@ -24,28 +24,29 @@ void Boss::jump()
     }
 }
 
-bool Boss::canSeePlayer() {
-    float distanceX = abs(target.getPosPos().x - position.x);
-    float distanceY = abs(target.getPosPos().y - position.y);
-    return (distanceX < detectionRange && distanceY < 50.0f);
-}
+//bool Boss::canSeePlayer() {
+//    float distanceX = abs(target.getPosPos().x - position.x);
+//    float distanceY = abs(target.getPosPos().y - position.y);
+//    return (distanceX < detectionRange && distanceY < 50.0f);
+//}
 
 void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet de gerer le mouvement de l'ennemi
-    if (canSeePlayer())
-    {
-        if (position.x < pos && directionState != RIGHT) {
-            directionState = RIGHT;
-        }
-        else if (position.x > pos2 && directionState != LEFT) {
-            directionState = LEFT;
-        }
+    //if (canSeePlayer())
+    //{
 
-        if (directionState == RIGHT) {
-            position.x += speed * deltaTime;
-        }
-        else {
-            position.x -= speed * deltaTime;
-        }
+    //}
+    if (position.x < pos && directionState != RIGHT) {
+        directionState = RIGHT;
+    }
+    else if (position.x > pos2 && directionState != LEFT) {
+        directionState = LEFT;
+    }
+
+    if (directionState == RIGHT) {
+        position.x += speed * deltaTime;
+    }
+    else {
+        position.x -= speed * deltaTime;
     }
 
     velocity.y += gravity * deltaTime;  // Appliquer la gravité
@@ -68,11 +69,7 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
     }
 }
 
-void Boss::update(float deltatime)
-{
-}
-
-void Boss::updateReal(float deltaTime, Player& player) {
+void Boss::update(float deltaTime, Player& player) {
     movementManager(player.getSprite().getPosition().x, player.getSprite().getPosition().x, deltaTime);
 
     onestla = rand() % 5;

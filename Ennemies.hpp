@@ -63,9 +63,7 @@ public :
 
 	bool getIsGrounded(); // retourne s'il touche le sol
 
-	void update(float deltaTime) override; // existe pas mais c'est pas grave
-
-	void updateReal(float deltaTime, Player& player);
+	void update(float deltaTime, Player& player);
 
 	void draw(RenderWindow& window) override;
 };

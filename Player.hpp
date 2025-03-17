@@ -9,12 +9,6 @@ protected:
     Texture textureAttack;
     RectangleShape attackShape;
 
-    enum StateLook { LOOK_RIGHT, LOOK_LEFT }; // permet de connaitre la direction dans laquelle le joueur regarde
-    StateLook stateLook;
-
-    enum StateMove { IDLE, RUNNING, ATTACKING, JUMPING }; // etat pour animation de course et d'attente
-    StateMove stateMove;
-
     int jumpCount = 0; // compteur de saut pour double saut
 
     float SPEED = 300.0f;  // Vitesse de déplacement horizontal
@@ -44,6 +38,12 @@ protected:
     Clock clock;
 
 public:
+
+    enum StateLook { LOOK_RIGHT, LOOK_LEFT }; // permet de connaitre la direction dans laquelle le joueur regarde
+    StateLook stateLook;
+
+    enum StateMove { IDLE, RUNNING, ATTACKING, JUMPING }; // etat pour animation de course et d'attente
+    StateMove stateMove;
 
     bool floor = true;
 
@@ -97,7 +97,7 @@ public:
 
     bool setHasKey(bool key);
 
-    void update(float deltaTime) override;
+    void update(float deltaTime);
 
     void draw(RenderWindow& window) override;
 };

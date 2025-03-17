@@ -8,7 +8,6 @@ private:
     Vector2f position;
     Vector2f velocity;
     float speed;
-    Player& target;
     float detectionRange;
 
     Texture texture;
@@ -19,7 +18,7 @@ private:
     RectangleShape detectionRect;
 
 public:
-    Boss(Player& target);
+    Boss();
 
     int onestla;
 
@@ -31,11 +30,10 @@ public:
     float setJumpForce(float force);
     float getGravity();
 
-    void update(float deltatime) override;
-    void updateReal(float deltatime, Player& player);
+    void update(float deltatime, Player& player);
     void draw(RenderWindow& window) override;
     void movementManager(float pos, float pos2, float deltaTime);
-    bool canSeePlayer();
+    //bool canSeePlayer();
 
     Vector2f getPos();
     Vector2f setPos(float x, float y);

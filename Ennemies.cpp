@@ -183,9 +183,7 @@ Vector2f Enemy::getPosPos()
 
 #pragma endregion Getter / Setter
 
-void Enemy::update(float deltaTime) {}
-
-void Enemy::updateReal(float deltaTime, Player& player)
+void Enemy::update(float deltaTime, Player& player)
 {
     switch (currentState) {
     case PATROL:

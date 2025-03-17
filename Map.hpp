@@ -22,13 +22,15 @@ public:
     vector<unique_ptr<Sprite>> groundSprites;
     vector<unique_ptr<Gemme>> gemmeSprites;
 
-    shared_ptr<Player> player = make_shared<Player>();
+    //shared_ptr<Player> player;
+    vector<unique_ptr<Player>> players;
 
-    shared_ptr<Boss> boss = make_shared<Boss>(*player);
-
-    shared_ptr<NuageTox> nuage = make_shared<NuageTox>();
+    //shared_ptr<Boss> boss;
+    vector<unique_ptr<Boss>> bosses;
 
     vector<unique_ptr<Enemy>> enemies;
+
+    vector<unique_ptr<NuageTox>> clouds;
 
     vector<ifstream*> maps;
 

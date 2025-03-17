@@ -31,7 +31,6 @@ public:
 	Entity(float posX, float posY);
 
 	virtual void collision(Sprite& tile, float deltaTime);
-	virtual void update(float deltaTime) = 0;
 	virtual void draw(RenderWindow& window) = 0;
 
 	Sprite& getSprite();

@@ -14,6 +14,7 @@ Player::Player() : Entity(position.x, position.y) { // constructeur de base
     sprite.setTextureRect(IntRect(0, 0, 64, 64));
     boxCol1 = 35;
     boxCol2 = 58;
+    life = 100;
 }
 
 void Player::movementManager(float deltaTime) { 
@@ -214,7 +215,7 @@ void Player::attack(float deltaTime, Entity& entity) {
     if (isAttacking) {
         stateMove = ATTACKING;
         if (attackShape.getGlobalBounds().intersects(entity.getSprite().getGlobalBounds())) {
-            entity.
+            entity.setLife(-10);
         }
         /*
         if (stateLook == LOOK_RIGHT) {
@@ -374,7 +375,6 @@ bool Player::setHasKey(bool key) {
 
 void Player::update(float deltaTime) {
     movementManager(deltaTime);
-    attack(deltaTime);
     dash(deltaTime);
     animationManager(deltaTime);
 }
