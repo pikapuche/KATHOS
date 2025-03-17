@@ -3,7 +3,7 @@
 Boss::Boss() : Entity(position.x, position.y) {
     texture.loadFromFile("Assets/texture/Boss/boss.png");
     sprite.setTexture(texture);
-    sprite.setScale(Vector2f(1.5f, 1.5f));
+    sprite.setScale(Vector2f(0.22, 0.22));
     speed = 200.0f;
     velocity.y = 0;
     detectionRange = 400.0f;
