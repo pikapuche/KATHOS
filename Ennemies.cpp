@@ -2,11 +2,14 @@
 
 Enemy::Enemy() : Entity(position.x, position.y)
 {
+    DEBUG = true;
     if (DEBUG) {
         circleDetect.setFillColor(sf::Color(255, 0, 0, 50));
         circleOne.setFillColor(Color::Yellow);
         circleTwo.setFillColor(Color::Blue);
         circleLastPos.setFillColor(Color::Cyan);
+        attackDetect.setFillColor(Color(0, 255, 0, 50));
+        attackShape.setFillColor(Color::Yellow);
     }
     circleDetect.setRadius(150.0f); // cerlce de detection
     circleDetect.setPosition(position);
@@ -19,6 +22,8 @@ Enemy::Enemy() : Entity(position.x, position.y)
     boxCol1 = 32; // valeur qui permet de gérer les collisions (distances entre plateformes)
     boxCol2 = 32; // 
     circleLastPos.setRadius(20.f); // point de derniere position du player
+    attackDetect.setSize(Vector2f(75.f, 20.f));
+    attackShape.setSize(Vector2f(nuage, 20.f));
 }
 
 void Enemy::detectPlayer(Player& player) 
@@ -45,30 +50,66 @@ void Enemy::movementManager(float pos, float pos2, float deltaTime) { // permet 
 
     if (directionState == RIGHT) {
         position.x += SPEED * deltaTime;
+        attackDetect.setRotation(0);
+        attackDetect.setPosition(position.x + 32, position.y + 5);
+        attackShape.setRotation(0);
+        attackShape.setPosition(position.x + 32, position.y + 5);
     }
     else {
         position.x -= SPEED * deltaTime;
+        attackDetect.setRotation(180);
+        attackDetect.setPosition(position.x, position.y + 25);
+        attackShape.setRotation(180);
+        attackShape.setPosition(position.x, position.y + 25);
     }
 }
 
-void Enemy::patrol(float deltaTime) // fait simplement des gauche droite entre 2 points
+void Enemy::attackPlayer(Player& player) {
+    if (attackDetect.getGlobalBounds().intersects(player.getSprite().getGlobalBounds())) { // si la zone d'attaque touche le joueur
+        // anim qui fait pop le nuage et au moment où le nuage touche le perso alors paf
+        if (!attack) {
+            clockAttack.restart();
+        }
+        attack = true;
+    }
+
+    if (clockAttack.getElapsedTime().asMilliseconds() > 2 && attack) { // toute les 2 millisecondes le nuage grandi
+        nuage++;
+    }
+    if (nuage == 75.f) {
+        nuage = 0;
+        attack = false;
+    }
+
+    if (attackShape.getGlobalBounds().intersects(player.getSprite().getGlobalBounds())) { // si le nuage touche le perso sa vitesse ralentie
+        if (!slow) {
+            coolDownSlow.restart();
+        }
+        slow = true;
+    }
+
+    if (clockAttack.getElapsedTime().asSeconds() < 2 && slow) { // slow pendant 2 secondes
+        player.setSPEED(205.f);
+    }
+}
+
+void Enemy::patrol(float deltaTime, Player& player) // fait simplement des gauche droite entre 2 points
 {
-    cout << "patrol" << endl;
     if(enemyState == PATROLLER) sprite.setColor(Color::Blue);
     if (enemyState == CHASER) sprite.setColor(Color::Magenta);
     movementManager(circleOne.getPosition().x, circleTwo.getPosition().x, deltaTime);
+    attackPlayer(player);
 }
 
 void Enemy::chase(Player& player, float deltaTime) // suit le perso tant qu'il est dans la zone de detection
 {
-    cout << "chase" << endl;
     sprite.setColor(Color::Red);
     movementManager(player.getSprite().getPosition().x, player.getSprite().getPosition().x, deltaTime);
+    attackPlayer(player);
 }
 
-void Enemy::search(float lastPlayerPosition, float deltaTime) // quand le perso sort de la zone il va jusqu'a sa derniere position et effectue des gauche droite pour le chercher
+void Enemy::search(float lastPlayerPosition, float deltaTime, Player& player) // quand le perso sort de la zone il va jusqu'a sa derniere position et effectue des gauche droite pour le chercher
 {
-    cout << "search" << endl;
     sprite.setColor(Color::Yellow);
     if (sprite.getGlobalBounds().intersects(circleLastPos.getGlobalBounds()) && !searching) { // si il va a la derniere position du player alors searching = true
         searching = true;
@@ -85,6 +126,7 @@ void Enemy::search(float lastPlayerPosition, float deltaTime) // quand le perso 
         searching = false;
         currentState = PATROL;
     }
+    attackPlayer(player);
 }
 
 #pragma region Getter / Setter
@@ -121,7 +163,7 @@ void Enemy::updateReal(float deltaTime, Player& player)
     switch (currentState) {
     case PATROL:
         detectPlayer(player);
-        patrol(deltaTime);
+        patrol(deltaTime, player);
         break;
 
     case CHASE:
@@ -130,7 +172,7 @@ void Enemy::updateReal(float deltaTime, Player& player)
         break;
 
     case SEARCH:
-        search(lastPlayerPosition, deltaTime);
+        search(lastPlayerPosition, deltaTime, player);
         detectPlayer(player);
         break;
     }
@@ -145,6 +187,7 @@ void Enemy::updateReal(float deltaTime, Player& player)
     }
     circleOne.setPosition(waypointOne);
     circleTwo.setPosition(waypointTwo);
+    attackShape.setSize(Vector2f(nuage, 20.f));
 }
 
 void Enemy::draw(RenderWindow& window)
@@ -157,5 +200,7 @@ void Enemy::draw(RenderWindow& window)
             window.draw(circleLastPos);
         }
     }
+    window.draw(attackDetect);
+    window.draw(attackShape);
     window.draw(sprite);
 }

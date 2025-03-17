@@ -4,31 +4,33 @@
 class Enemy : public Entity {
 protected : 
 
-	enum CurrentState { PATROL, CHASE, SEARCH };
+	enum CurrentState { PATROL, CHASE, SEARCH }; // permet de connaitre l'etat dans lequel se trouve l'ennemi
 	CurrentState currentState;
 
-	bool lastState;
-
-	enum StateDirection { LEFT, RIGHT };
+	enum StateDirection { LEFT, RIGHT }; // permet de connaitre la direction de l'ennemi
 	StateDirection directionState;
 
-	float detectionRadius;
-	sf::CircleShape circleDetect;
-	float lastPlayerPosition = - 100;
+	CircleShape circleOne; // cercle 1 de patrouille (DEBUG)
+	CircleShape circleTwo; // cercle 2 de patrouille (DEBUG)
+	CircleShape circleLastPos; // cercle de derniere position du joueur (DEBUG)
+	CircleShape circleDetect; // cercle de detection du joueur 
+	RectangleShape attackDetect;
+	RectangleShape attackShape;
+
+	float detectionRadius; // rayon cercle de detection
+	float lastPlayerPosition = - 100; // pour eviter qu'en mode debug le cercle s'affiche en 0,0;
+	float SPEED = 175.f; 
+	float nuage = 0.f;
 
 	bool isGrounded = false;
-
-	float SPEED = 175.f;
-
-	CircleShape circleOne;
-	CircleShape circleTwo;
-	CircleShape circleLastPos;
-
+	bool lastState; // dernier etat de l'ennemi (DEBUG)
 	bool searching = false;
+	bool attack = false;
+	bool slow = false;
 
 	Clock coolDownSearch;
-
-	bool DEBUG = false; // permet de rendre visible les points de patrouille et derniere position du player apres la recherche
+	Clock clockAttack;
+	Clock coolDownSlow;
 
 public :
 
@@ -40,25 +42,27 @@ public :
 
 	Enemy();
 
-	void detectPlayer(Player& player);
+	void detectPlayer(Player& player); 
 
 	void movementManager(float pos, float pos2, float deltaTime);
 
-	void patrol(float deltaTime);
+	void attackPlayer(Player& player);
+
+	void patrol(float deltaTime, Player& player);
 
 	void chase(Player& player, float deltaTime);
 
-	void search(float lastPlayerPosition, float deltaTime);
+	void search(float lastPlayerPosition, float deltaTime, Player& player);
 
-	Vector2f setPosPos(float x, float y);
+	Vector2f setPosPos(float x, float y); // modifie la position
 
-	Vector2f getPosPos();
+	Vector2f getPosPos(); // retourne la position
 
-	bool setIsGrounded(bool is);
+	bool setIsGrounded(bool is); // modifie s'il touche le sol
 
-	bool getIsGrounded();
+	bool getIsGrounded(); // retourne s'il touche le sol
 
-	void update(float deltaTime) override;
+	void update(float deltaTime) override; // existe pas mais c'est pas grave
 
 	void updateReal(float deltaTime, Player& player);
 

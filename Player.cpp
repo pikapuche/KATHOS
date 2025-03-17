@@ -1,11 +1,15 @@
 #include "Player.hpp"
 
 Player::Player() : Entity(position.x, position.y) { // constructeur de base 
+    DEBUG = true;
     velocity.y = 0; // Pas de mouvement vertical au depart
-    attackShape.setSize(sf::Vector2f(10.0f, 500.0f));
+    //attackShape.setSize(sf::Vector2f(10.0f, 20.0f)); attack a l'arme
+    attackShape.setSize(sf::Vector2f(50.0f, 25.0f));
     attackShape.setFillColor(sf::Color::Red);
-    textureSprint.loadFromFile("assets/texture/player/piskelVersion3.png");
-    textureIdle.loadFromFile("assets/texture/player/idleV2.png");
+    textureSprint.loadFromFile("assets/texture/player/playerRunV2piskel.png");
+    textureIdle.loadFromFile("assets/texture/player/playerIdleV2piskel.png");
+    textureJump.loadFromFile("assets/texture/player/playerJump.png");
+    textureAttack.loadFromFile("assets/texture/player/playerAttackV2piskel.png");
     sprite.setTexture(textureSprint);
     sprite.setTextureRect(IntRect(0, 0, 64, 64));
     boxCol1 = 35;
@@ -17,18 +21,38 @@ void Player::movementManager(float deltaTime) {
     if (stateMove == IDLE) {
         sprite.setTexture(textureIdle);
     }
-    else if (stateMove == RUN) {
+    else if (stateMove == RUNNING) {
         sprite.setTexture(textureSprint);
+    }
+    else if (stateMove == JUMPING) {
+        sprite.setTexture(textureJump);
+    }
+    else if (stateMove == ATTACKING) {
+        sprite.setTexture(textureAttack);
     }
 
     if (!isDashing) {
         if (joystickValue > 10 && joystickValue < -10) {
             position.x += 0;
         }
-        else if (Keyboard::isKeyPressed(Keyboard::Q) || joystickValue < -10) { position.x -= SPEED * deltaTime; stateLook = LOOK_LEFT; stateMove = RUN; }
-        else if (Keyboard::isKeyPressed(Keyboard::D) || joystickValue > 10) { position.x += 1 + SPEED * deltaTime; stateLook = LOOK_RIGHT; stateMove = RUN; }
+        else if (Keyboard::isKeyPressed(Keyboard::Q) || joystickValue < -10)
+        { 
+            position.x -= SPEED * deltaTime; stateLook = LOOK_LEFT; 
+            if (state == GROUNDED) {
+                stateMove = RUNNING;
+            }
+        }
+        else if (Keyboard::isKeyPressed(Keyboard::D) || joystickValue > 10)
+        { 
+            position.x += SPEED * deltaTime; stateLook = LOOK_RIGHT; 
+            if (state == GROUNDED) {
+                stateMove = RUNNING;
+            }
+        }
         else {
-            stateMove = IDLE;
+            if (state == GROUNDED) {
+                stateMove = IDLE;
+            }
         }
     }
 
@@ -82,9 +106,9 @@ void Player::movementManager(float deltaTime) {
 void Player::animationManager(float deltaTime) {
     switch (stateMove)
     {
-    case RUN:
+    case RUNNING:
         animRunTimeDecr += deltaTime;
-        anim_move.y = 0;
+        anim_move.y = 0; // a retrouver sous forme de Vecteur2i dans Entity.hpp
         if (animRunTimeDecr > 0.12f) {
             anim_move.x++;
             animRunTimeDecr = 0;
@@ -118,6 +142,48 @@ void Player::animationManager(float deltaTime) {
             sprite.setTextureRect(IntRect(anim_idle.x * 64, anim_idle.y * 64, 64, 64));
         }
         break;
+    case JUMPING :
+        animJumpTimeDecr += deltaTime;
+        anim_jump.y = 0; 
+        if (animJumpTimeDecr > 0.12f) {
+            anim_jump.x++;
+            animJumpTimeDecr = 0;
+        }
+        if (stateLook == LOOK_LEFT) {
+            if (anim_jump.x > 2)
+                anim_jump.x = 1;
+            sprite.setTextureRect(IntRect(anim_jump.x * 64, anim_jump.y * 64, -64, 64));
+        }
+        else if (stateLook == LOOK_RIGHT) {
+            if (anim_jump.x > 1)
+                anim_jump.x = 0;
+            sprite.setTextureRect(IntRect(anim_jump.x * 64, anim_jump.y * 64, 64, 64));
+        }
+        break;
+    case ATTACKING :
+        animAttackTimeDecr += deltaTime;
+        anim_attack.y = 0;
+        if (animAttackTimeDecr > 0.05f) {
+            anim_attack.x++;
+            animAttackTimeDecr = 0;
+        }
+        if (stateLook == LOOK_LEFT) {
+            if (anim_attack.x > 4) {
+                anim_attack.x = 1;
+                isAttacking = false;
+            }
+            attackShape.setPosition(position.x - 20, position.y + 20);
+            sprite.setTextureRect(IntRect(anim_attack.x * 64, anim_attack.y * 64, -64, 64));
+        }
+        else if (stateLook == LOOK_RIGHT) {
+            if (anim_attack.x > 3) {
+                anim_attack.x = 0;
+                isAttacking = false;
+            }
+            attackShape.setPosition(position.x + 37, position.y + 20);
+            sprite.setTextureRect(IntRect(anim_attack.x * 64, anim_attack.y * 64, 64, 64));
+        }
+        break;
     }
 }
 
@@ -125,6 +191,7 @@ void Player::jump() {
 
     if (state == GROUNDED) {  // Sauter uniquement si le joueur est sur le sol / saute pas
         state = JUMP;
+        stateMove = JUMPING;
         velocity.y = -jumpForce;  // Appliquer une force initiale vers le haut pour sauter 
         jumpCount = 1;
         jumpClock.restart();
@@ -138,8 +205,10 @@ void Player::jump() {
 void Player::attack(float deltaTime) {
     // Si le perso a une épée on fait une rotation a l'arme
     if (isAttacking) {
+        stateMove = ATTACKING;
+        /*
         if (stateLook == LOOK_RIGHT) {
-            attackShape.setPosition(position.x + 37, position.y + 45);
+            attackShape.setPosition(position.x + 37, position.y + 25);
             animTimeDecr += deltaTime;
             if (animTimeDecr > 0.008) {
                 rotaRight += 10;
@@ -152,7 +221,7 @@ void Player::attack(float deltaTime) {
             }
         }
         if (stateLook == LOOK_LEFT) {
-            attackShape.setPosition(position.x + 24, position.y + 37);
+            attackShape.setPosition(position.x + 24, position.y + 25);
             animTimeDecr += deltaTime;
             if (animTimeDecr > 0.008) {
                 rotaLeft -= 10;
@@ -164,6 +233,7 @@ void Player::attack(float deltaTime) {
                 animTimeDecr = 0;
             }
         }
+        */
     }
 }
 
@@ -301,5 +371,5 @@ void Player::update(float deltaTime) {
 
 void Player::draw(RenderWindow& window) {
     window.draw(sprite);
-    if (isAttacking) window.draw(attackShape);
+    if (isAttacking && DEBUG) window.draw(attackShape);
 }

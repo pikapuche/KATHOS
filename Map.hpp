@@ -9,6 +9,7 @@ class Map {
 public:
 
     bool isGameOver = false;
+    bool bossZone = false;
 
     Texture groundYellowLeftTexture, groundYellowMidTexture, groundYellowRightTexture;
     Texture groundRedLeftTexture, groundRedMidTexture, groundRedRightTexture;

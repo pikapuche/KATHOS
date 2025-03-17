@@ -15,12 +15,14 @@ void Game::run()
     Clock clock;
     overlay.initInterface();
 
-    if (!music.openFromFile("Assets/Musiques/VSOLO musique boss16.wav")) {
-        cout << "euuuuuuuuuuuuuu wtf la zic ?" << endl;
+    if (m.bossZone) {
+        if (!music.openFromFile("Assets/Musiques/VSOLO musique boss16.wav")) {
+            cout << "euuuuuuuuuuuuuu wtf la zic ?" << endl;
+        }
+        music.setLoop(true);
+        music.setVolume(50.f);
+        music.play();
     }
-    music.setLoop(true);
-    music.setVolume(50.f);
-    music.play();
 
     while (window.isOpen()) {
         Time deltaT = clock.restart();
@@ -52,13 +54,6 @@ void Game::run()
         //}   
         //else {
         //    mainScreen.destroyAll();
-        //}
-
-        //for (auto& gemmes : map.vector_gemme) {
-        //    for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements
-        //        gemmes->interact(*players);
-        //    }
-        //    gemmes->draw(window);
         //}
 
         // Affiche tout
