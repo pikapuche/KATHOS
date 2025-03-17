@@ -48,8 +48,8 @@ void Game::run()
             for (auto& enemy : m.enemies)
                 enemy->updateReal(deltaTime, *m.player);
           
-        m.boss->update(deltaTime);
-        m.nuage->update(deltaTime);
+            m.boss->updateReal(deltaTime, *m.player);
+            m.nuage->update(deltaTime);
 
             m.update(deltaTime);
         }

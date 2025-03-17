@@ -26,6 +26,7 @@ void Map::collision(float deltaTime) {
 		player->collision(*ground, deltaTime);
 		for(auto& enemy : enemies)
 		enemy->collision(*ground, deltaTime);
+		boss->collision(*ground, deltaTime);
 	}
 }
 
@@ -95,21 +96,20 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				interactiblesVector.push_back(chest);
 				break;
 			}
-			case 'W':
+			case 'K':
 			{
 				Key* key = new Key();
 				key->setPosPos((float)i * 32, (float)_z * 32 - 25);
 				interactiblesVector.push_back(key);
 				break;
 			}
-			case 'K':
+			case 'B':
 			{
 				boss->setPos((float)i * 32, (float)_z * 20);
 				break;
 			}
-			case 'T':
+			case 'Q':
 			{
-				nuage->setPos((float)i * 32, (float)_z * 20 - 10);
 				auto newEnemy = make_unique<Enemy>();
 				newEnemy->setPosPos((float)i * 32, (float)_z * 20);
 				newEnemy->waypointOne.x = newEnemy->getPosPos().x - 30;
@@ -118,6 +118,11 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				newEnemy->waypointTwo.y = newEnemy->getPosPos().y;
 				newEnemy->enemyState = newEnemy->CHASER;
 				enemies.push_back(move(newEnemy));
+				break;
+			}
+			case 'T' : 
+			{
+				nuage->setPos((float)i * 32, (float)_z * 20 - 10);
 				break;
 			}
 			}

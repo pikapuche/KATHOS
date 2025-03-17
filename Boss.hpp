@@ -16,13 +16,18 @@ private:
     float jumpForce = 600.f;
     Clock jumpClock;
 
+    RectangleShape detectionRect;
+
+    bool chase = false;
+
 public:
     Boss(Player& target);
 
     int onestla;
 
-    enum State { NONE, GROUNDED, JUMP };
-    State state;
+    enum StateDirection { LEFT, RIGHT }; // permet de connaitre la direction de l'ennemi
+    StateDirection directionState;
+
     void jump();
     void getDown();
     float getJumpForce();
@@ -30,9 +35,11 @@ public:
     float getGravity();
 
     void update(float deltatime) override;
+    void updateReal(float deltatime, Player& player);
     void draw(RenderWindow& window) override;
     void checkCollision(int mapWidth, int mapHeight);
     void chasePlayer();
+    void movementManager(float pos, float pos2, float deltaTime);
     bool canSeePlayer();
 
     Vector2f getPos();

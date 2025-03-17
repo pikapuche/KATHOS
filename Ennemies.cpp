@@ -14,7 +14,7 @@ Enemy::Enemy() : Entity(position.x, position.y)
     }
     //circleDetect.setRadius(175.f); // cerlce de detection
     //circleDetect.setPosition(position);
-    rectangleDetect.setOrigin(318, 11); // 150 (radius) - 64 (taille sprite) + 32 (moitié taille sprite pour centrer)
+    rectangleDetect.setOrigin(318, 11); // 150 (radius) - 64 (taille sprite) + 32 (moitié taille sprite pour centrer) 
     rectangleDetect.setSize(Vector2f(700, 75));
     currentState = PATROL;
     circleOne.setRadius(10.0f); // point de patrouille 1 
