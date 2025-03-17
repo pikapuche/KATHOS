@@ -19,9 +19,8 @@ public:
     Texture groundRedLeftTexture, groundRedMidTexture, groundRedRightTexture;
     Texture groundGreenLeftTexture, groundGreenMidTexture, groundGreenRightTexture;
 
-    //Texture wallTexture;
-
     vector<unique_ptr<Sprite>> groundSprites;
+    vector<unique_ptr<Gemme>> gemmeSprites;
 
     shared_ptr<Player> player = make_shared<Player>();
 
@@ -32,6 +31,7 @@ public:
     vector<unique_ptr<Enemy>> enemies;
 
     vector<ifstream*> maps;
+
 
     vector<Interactible*> interactiblesVector; // Vector of all Interacts
 

@@ -114,6 +114,7 @@ void Player::animationManager(float deltaTime) {
             animRunTimeDecr = 0;
         }
         if (stateLook == LOOK_LEFT) {
+
             if (anim_move.x > 6) 
                 anim_move.x = 1;
             sprite.setTextureRect(IntRect(anim_move.x * 64, anim_move.y * 64, -64, 64));

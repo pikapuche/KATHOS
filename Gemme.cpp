@@ -1,39 +1,39 @@
 #include "Gemme.hpp"
 
-Gemme::Gemme() : Player() {
-	speedGemmeShape.setSize(Vector2f(32, 32));
-	dashGemmeShape.setSize(Vector2f(32, 32));
+Gemme::Gemme(float _x, float _y) { 
+	gemmeTexture.loadFromFile("Assets/gemme.png");
+	gemmeSprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+	gemmeSprite.setTexture(gemmeTexture);
+	gemmeSprite.setPosition(Vector2f(_x,_y));
+
 }
 
+void Gemme::animationGemme(float _deltaTime)
 Vector2f Gemme::setPosition(float x, float y)
 {
-	position.x = x;
-	position.y = y;
-	return position;
+	animGemmeTime += _deltaTime;
+	anim.y = 0;
+	if (animGemmeTime > 0.12f) {
+		anim.x++;
+		//animGemmeTime = 0;
+	}
+	if (anim.x >= 1)
+		anim.x = 0;
+		gemmeSprite.setTextureRect(sf::IntRect(anim.x * 32, anim.y * 32, 32, 32));
+		
+	
 }
 
 void Gemme::interact(Player& player)
 {
-	if (speedGemmeShape.getGlobalBounds().intersects(player.getSprite().getGlobalBounds())) {
-		player.setIsTakeSpeed(true);
-		cout << "est r�cup";
-	}
 
-	if (dashGemmeShape.getGlobalBounds().intersects(player.getSprite().getGlobalBounds())) {
-		player.setIsTakeDash(true);
-		clock.restart();
-	}
 
-	dashGemmeShape.setPosition(position);
-	speedGemmeShape.setPosition(position);
 }
 
-void Gemme::draw(RenderWindow& window, Player& player)
+void Gemme::updateGemme(float _x, float _y, float _deltaTime)
 {
-	if (!player.getIsTakeSpeed()) {
-		window.draw(speedGemmeShape);
-	}
-	if (!player.getIsTakeDash()) {
-		window.draw(dashGemmeShape);
-	}
-}
+	animationGemme(_deltaTime); 
+	position.x = _x;
+	position.y= _y;
+	gemmeSprite.setPosition(position);
+};

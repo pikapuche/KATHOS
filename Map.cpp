@@ -12,13 +12,11 @@ Map::Map() : statePlaying(StatePlaying::Practice) {
 	groundGreenRightTexture.loadFromFile("Assets/texture/Map/groundGreenRight.png");
 }
 
-Map::~Map()
-{
-	
-}
+Map::~Map() {}
 
 void Map::update(float deltaTime) {
 	collision(deltaTime);
+
 }
 
 void Map::collision(float deltaTime) {
@@ -28,6 +26,7 @@ void Map::collision(float deltaTime) {
 		enemy->collision(*ground, deltaTime);
 		boss->collision(*ground, deltaTime);
 	}
+
 }
 
 void Map::monSwitch(ifstream& _Map, string _line, int _z) {
@@ -54,15 +53,69 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			}
 			case '3':
 			{
-				auto right = make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				auto right = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
 				right->setTexture(groundGreenRightTexture);
 				right->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(move(right));  // Utilise move pour transf�rer la propri�t�
+				groundSprites.push_back(std::move(right));  // Utilise std::move pour transf�rer la propri�t�
+				break;
+			}
+			case '4':
+			{
+				auto left = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				left->setTexture(groundYellowLeftTexture);
+				left->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(left));  // Utilise std::move pour transf�rer la propri�t�
+				break;
+			}
+			case '5':
+			{
+				auto mid = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				mid->setTexture(groundYellowMidTexture);
+				mid->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(mid));  // Utilise std::move pour transf�rer la propri�t�
+				break;
+			}
+			case '6':
+			{
+				auto right = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				right->setTexture(groundYellowRightTexture);
+				right->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(right));  // Utilise std::move pour transf�rer la propri�t�
+				break;
+			}
+			case '7':
+			{
+				auto left = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				left->setTexture(groundRedLeftTexture);
+				left->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(left));  // Utilise std::move pour transf�rer la propri�t�
+				break;
+			}
+			case '8':
+			{
+				auto mid = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				mid->setTexture(groundRedMidTexture);
+				mid->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(mid));  // Utilise std::move pour transf�rer la propri�t�
+				break;
+			}
+			case '9':
+			{
+				auto right = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+				right->setTexture(groundRedRightTexture);
+				right->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(right));  // Utilise std::move pour transf�rer la propri�t�
 				break;
 			}
 			case 'P':
 			{
 				player->setPosPos((float)i * 32, (float)_z * 20);
+				break;
+			}
+			case 'G':
+			{
+				auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20);
+				gemmeSprites.push_back(std::move(gemme));
 				break;
 			}
 			case 'E':
@@ -157,6 +210,9 @@ void Map::loadMap() {
 void Map::draw(RenderWindow& window) {
 	for (auto& ground : groundSprites) {
 		window.draw(*ground);
+	}
+	for (auto& gemme : gemmeSprites) {
+		window.draw(gemme->gemmeSprite);
 	}
 	player->draw(window);
 	for(auto& enemy : enemies)
