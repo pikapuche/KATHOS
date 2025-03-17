@@ -4,7 +4,7 @@ Player::Player() : Entity(position.x, position.y) { // constructeur de base
     DEBUG = true;
     velocity.y = 0; // Pas de mouvement vertical au depart
     //attackShape.setSize(sf::Vector2f(10.0f, 20.0f)); attack a l'arme
-    attackShape.setSize(sf::Vector2f(50.0f, 25.0f));
+    attackShape.setSize(sf::Vector2f(75.f, 25.0f));
     attackShape.setFillColor(sf::Color::Red);
     textureSprint.loadFromFile("assets/texture/player/playerRunV2piskel.png");
     textureIdle.loadFromFile("assets/texture/player/playerIdleV2piskel.png");
@@ -209,10 +209,13 @@ void Player::jump() {
     }
 }
 
-void Player::attack(float deltaTime) {
+void Player::attack(float deltaTime, Entity& entity) {
     // Si le perso a une épée on fait une rotation a l'arme
     if (isAttacking) {
         stateMove = ATTACKING;
+        if (attackShape.getGlobalBounds().intersects(entity.getSprite().getGlobalBounds())) {
+            entity.
+        }
         /*
         if (stateLook == LOOK_RIGHT) {
             attackShape.setPosition(position.x + 37, position.y + 25);

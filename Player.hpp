@@ -55,7 +55,7 @@ public:
 
     void jump();
 
-    void attack(float deltaTime);
+    void attack(float deltaTime, Entity& entity);
 
     void dash(float deltaTime);
 

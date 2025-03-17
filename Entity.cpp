@@ -20,3 +20,14 @@ Sprite& Entity::getSprite()
 {
     return sprite;
 }
+
+int Entity::getLife()
+{
+    return life;
+}
+
+int Entity::setLife(int l)
+{
+    life -= l;
+    return life;
+}
