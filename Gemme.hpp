@@ -17,7 +17,7 @@ public:
 
 	Vector2i anim;
 
-	enum class  GemmeState { SPEED, DASH };
+	enum class  GemmeState {NADA, SPRINT, DASH, DOUBLEJUMP };
 
 	GemmeState gemmeState;
 	
@@ -25,6 +25,6 @@ public:
 
 	void animationGemme(float _deltaTime);
 	Vector2f setPosition(float x, float y);
-	void interact(Player& player);
+	//void interact(Player& player);
 	void updateGemme(float _deltaTime);
 };

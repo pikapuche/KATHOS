@@ -1,11 +1,10 @@
 #include "Gemme.hpp"
 
-Gemme::Gemme(float _x, float _y) { 
+Gemme::Gemme(float _x, float _y) : gemmeState(GemmeState::NADA) { 
 	gemmeTexture.loadFromFile("Assets/gemme.png");
 	gemmeSprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
 	gemmeSprite.setTexture(gemmeTexture);
 	gemmeSprite.setPosition(Vector2f(_x,_y));
-
 }
 
 void Gemme::animationGemme(float _deltaTime)
@@ -19,13 +18,13 @@ void Gemme::animationGemme(float _deltaTime)
 		animGemmeTime = 0;
 		gemmeSprite.setTextureRect(sf::IntRect(0,0, 32, 32));
 	}
-}
-
-void Gemme::interact(Player& player)
-{
-
 
 }
+
+//void Gemme::interact(Player& player)
+//{
+//
+//}
 
 void Gemme::updateGemme(float _deltaTime)
 {

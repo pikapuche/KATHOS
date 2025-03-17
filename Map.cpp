@@ -115,6 +115,21 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			case 'G':
 			{
 				auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20);
+				gemme->gemmeSprite.setColor(Color::Green);
+				gemmeSprites.push_back(std::move(gemme));
+				break;
+			}
+			case 'g':
+			{
+				auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20);
+				gemme->gemmeSprite.setColor(Color::Red);
+				gemmeSprites.push_back(std::move(gemme));
+				break;
+			}
+			case 'I':
+			{
+				auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20);
+				gemme->gemmeSprite.setColor(Color::Blue);
 				gemmeSprites.push_back(std::move(gemme));
 				break;
 			}

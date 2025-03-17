@@ -19,6 +19,7 @@ public:
     Texture groundRedLeftTexture, groundRedMidTexture, groundRedRightTexture;
     Texture groundGreenLeftTexture, groundGreenMidTexture, groundGreenRightTexture;
 
+    enum class  GemmeState { NADA, SPRINT, DASH, DOUBLEJUMP };
     vector<unique_ptr<Sprite>> groundSprites;
     vector<unique_ptr<Gemme>> gemmeSprites;
 
