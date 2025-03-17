@@ -11,52 +11,80 @@ Map::Map() : statePlaying(StatePlaying::Practice) {
 	groundGreenMidTexture.loadFromFile("Assets/texture/Map/groundGreenMid.png");
 	groundGreenRightTexture.loadFromFile("Assets/texture/Map/groundGreenRight.png");
 
+Map::~Map()
+{
+	
 }
 
-void Map::update() {
-	collision();
+void Map::update(float deltaTime) {
+	collision(deltaTime);
 }
 
-void Map::collision() {
-	playerVector[0]->getSprite().getGlobalBounds();
-	//for (auto& monde1 : monde1Vector )  Si touche la sortie donc clear pointeur
+void Map::collision(float deltaTime) {
+	for (auto& ground : groundSprites) {
+		player->collision(*ground, deltaTime);
+		for(auto& enemy : enemies)
+		enemy->collision(*ground, deltaTime);
+	}
 }
 
 void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 	
 	while (getline(_Map, _line)) {
 		for (int i = 0; i < _line.size(); i++) {
-			switch (_line[i]) {
+			switch (_line[i]) { // tileValue
 				cout << _line[i] << endl;
 			case '1':
 			{
-				Sprite* gGL = new Sprite;
-				gGL->setTexture(groundGreenLeftTexture);
-				gGL->setPosition({ (float)i * 32,(float)_z * 32 });
-				groundGLVector.push_back(gGL);
+				auto left = std::make_unique<Sprite>();  // La bonne facon de cr�er un unique_ptr
+				left->setTexture(groundGreenLeftTexture);
+				left->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(left));
 				break;
 			}
 			case '2':
 			{
-				Sprite* gGM = new Sprite;
-				gGM->setTexture(groundGreenMidTexture);
-				gGM->setPosition({ (float)i * 32,(float)_z * 32 });
-				groundGMVector.push_back(gGM);
+				auto mid = std::make_unique<Sprite>();  // La bonne facon de cr�er un unique_ptr
+				mid->setTexture(groundGreenMidTexture);
+				mid->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(mid));
 				break;
 			}
 			case '3':
 			{
-				Sprite* gGR = new Sprite;
-				gGR->setTexture(groundGreenRightTexture);
-				gGR->setPosition({ (float)i * 32,(float)_z * 32 });
-				groundGMVector.push_back(gGR);
+				auto right = std::make_unique<Sprite>();  // La bonne facon de cr�er un unique_ptr
+				right->setTexture(groundGreenRightTexture);
+				right->setPosition({ (float)i * 32, (float)_z * 20 });
+				groundSprites.push_back(std::move(right));
 				break;
 			}
 			case 'P':
 			{
-				Player* player = new Player;
-				player->setPosPos((float)i * 32, (float)_z * 32);
-				playerVector.push_back(player);
+				player->setPosPos((float)i * 32, (float)_z * 20);
+				break;
+			}
+			case 'E':
+			{
+				auto newEnemy = make_unique<Enemy>();
+				newEnemy->setPosPos((float)i * 32, (float)_z * 20);
+				newEnemy->waypointOne.x = newEnemy->getPosPos().x;
+				newEnemy->waypointOne.y = newEnemy->getPosPos().y;
+				newEnemy->waypointTwo.x = newEnemy->getPosPos().x + 590;
+				newEnemy->waypointTwo.y = newEnemy->getPosPos().y;
+				newEnemy->enemyState = newEnemy->PATROLLER;
+				enemies.push_back(move(newEnemy));
+				break;
+			}
+			case 'A':
+			{
+				auto newEnemy = make_unique<Enemy>();
+				newEnemy->setPosPos((float)i * 32, (float)_z * 20);
+				newEnemy->waypointOne.x = newEnemy->getPosPos().x - 30;
+				newEnemy->waypointOne.y = newEnemy->getPosPos().y;
+				newEnemy->waypointTwo.x = newEnemy->getPosPos().x + 280;
+				newEnemy->waypointTwo.y = newEnemy->getPosPos().y;
+				newEnemy->enemyState = newEnemy->PATROLLER;
+				enemies.push_back(move(newEnemy));
 				break;
 			}
 			case 'C':
@@ -72,9 +100,19 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				key->setPosPos((float)i * 32, (float)_z * 32 - 25);
 				interactiblesVector.push_back(key);
 				break;
+			case 'K':
+			{
+				auto newEnemy = make_unique<Enemy>();
+				newEnemy->setPosPos((float)i * 32, (float)_z * 20);
+				newEnemy->waypointOne.x = newEnemy->getPosPos().x - 30;
+				newEnemy->waypointOne.y = newEnemy->getPosPos().y;
+				newEnemy->waypointTwo.x = newEnemy->getPosPos().x + 500;
+				newEnemy->waypointTwo.y = newEnemy->getPosPos().y;
+				newEnemy->enemyState = newEnemy->CHASER;
+				enemies.push_back(move(newEnemy));
+				break;
 			}
-			
-
+			}
 		}
 		_z++;
 	}
@@ -104,18 +142,12 @@ void Map::loadMap() {
 }
 
 void Map::draw(RenderWindow& window) {
-	for (auto& groundGL : groundGLVector) {
-		window.draw(*groundGL);
+	for (auto& ground : groundSprites) {
+		window.draw(*ground);
 	}
-	for (auto& groundGM : groundGMVector) {
-		window.draw(*groundGM);
-	}
-	for (auto& groundGR : groundGRVector) {
-		window.draw(*groundGR);
-	}
-	for (auto& playerv : playerVector) {
-		playerv->draw(window);
-	}
+	player->draw(window);
+	for(auto& enemy : enemies)
+	enemy->draw(window);
 	for (auto& interactv : interactiblesVector) {
 		interactv->draw(window);
 	}
@@ -124,21 +156,21 @@ void Map::draw(RenderWindow& window) {
 void Map::gameOver(RenderWindow& window)
 {
 	if (isGameOver) {
-		sf::RectangleShape gameOverScreen(sf::Vector2f(window.getSize().x, window.getSize().y));
-		gameOverScreen.setFillColor(sf::Color(0, 0, 0, 150));
+		RectangleShape gameOverScreen(Vector2f(window.getSize().x, window.getSize().y));
+		gameOverScreen.setFillColor(Color(0, 0, 0, 150));
 		window.draw(gameOverScreen);
 
-		sf::Font font;
+		Font font;
 		if (!font.loadFromFile("Assets/Fonts/Minecraft.ttf")) {
 			cout << "Erreur chargement police !" << endl;
 		}
 
-		sf::Text gameOverText;
+		Text gameOverText;
 		gameOverText.setFont(font);
 		gameOverText.setString("GAME OVER");
 		gameOverText.setCharacterSize(80);
-		gameOverText.setFillColor(sf::Color::Red);
-		gameOverText.setStyle(sf::Text::Bold);
+		gameOverText.setFillColor(Color::Red);
+		gameOverText.setStyle(Text::Bold);
 		gameOverText.setPosition((window.getSize().x - gameOverText.getGlobalBounds().width) / 2, (window.getSize().y - gameOverText.getGlobalBounds().height) / 2);
 
 		window.draw(gameOverText);

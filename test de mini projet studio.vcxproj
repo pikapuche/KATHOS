@@ -71,12 +71,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\SFML-2.6.2\include;C:\Users\quent\source\repos\test de mini projet studio\SFML du projet\include;C:\Users\nlamarre\source\repos\Mini-Projet-Studio\SFML du projet\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SFML-2.6.2\lib;C:\Users\quent\source\repos\test de mini projet studio\SFML du projet\lib;C:\Users\nlamarre\source\repos\Mini-Projet-Studio\SFML du projet\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Flash\source\repos\Mini-Projet-Studio\SFML du projet\include;C:\SFML-2.6.2\include;C:\Users\quent\source\repos\test de mini projet studio\SFML du projet\include;C:\Users\nlamarre\source\repos\Mini-Projet-Studio\SFML du projet\include;$(IncludePath);$(IncludePath);$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Flash\source\repos\Mini-Projet-Studio\SFML du projet\lib;C:\SFML-2.6.2\lib;C:\Users\quent\source\repos\test de mini projet studio\SFML du projet\lib;C:\Users\nlamarre\source\repos\Mini-Projet-Studio\SFML du projet\lib;$(LibraryPath);$(LibraryPath);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\SFML-2.6.2\include;C:\Users\quent\source\repos\test de mini projet studio\SFML du projet\include;C:\Users\nlamarre\Documents\SFML-2.6.2-windows-vc17-64-bit\SFML-2.6.2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\SFML-2.6.2\lib;C:\Users\quent\source\repos\test de mini projet studio\SFML du projet\lib;C:\Users\nlamarre\Documents\SFML-2.6.2-windows-vc17-64-bit\SFML-2.6.2\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Flash\source\repos\Mini-Projet-Studio\SFML du projet\include;C:\SFML-2.6.2\include;C:\Users\quent\source\repos\test de mini projet studio\SFML du projet\include;C:\Users\nlamarre\Documents\SFML-2.6.2-windows-vc17-64-bit\SFML-2.6.2\include;$(IncludePath);$(IncludePath);$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Flash\source\repos\Mini-Projet-Studio\SFML du projet\lib;C:\SFML-2.6.2\lib;C:\Users\quent\source\repos\test de mini projet studio\SFML du projet\lib;C:\Users\nlamarre\Documents\SFML-2.6.2-windows-vc17-64-bit\SFML-2.6.2\lib;$(LibraryPath);$(LibraryPath);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -141,6 +141,7 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Chest.cpp" />
     <ClCompile Include="Ennemis.cpp" />
+    <ClCompile Include="Ennemies.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Interactibles.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="Button.hpp" />
     <ClInclude Include="Chest.hpp" />
     <ClInclude Include="Ennemis.hpp" />
+    <ClInclude Include="Ennemies.hpp" />
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="Interactibles.hpp" />

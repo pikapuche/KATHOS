@@ -1,20 +1,19 @@
 #include "Interface.hpp"
-#include <iostream>
 
 PauseOverlay::PauseOverlay() {
-    //overlay.setColor(sf::Color(255, 255, 255, 150)); // Slight transparency
+    //overlay.setColor(Color(255, 255, 255, 150)); // Slight transparency
 }
 
-void PauseOverlay::setTexture(const std::string& texturePath) {
+void PauseOverlay::setTexture(const string& texturePath) {
     if (!overlayTexture.loadFromFile(texturePath)) {
-        std::cerr << "Failed to load pause overlay texture from: " << texturePath << std::endl;
+        cerr << "Failed to load pause overlay texture from: " << texturePath << endl;
     }
     else {
         overlay.setTexture(overlayTexture);
     }
 }
 
-void PauseOverlay::draw(sf::RenderWindow& window) {
+void PauseOverlay::draw(RenderWindow& window) {
     window.draw(overlay);
 }
 
@@ -52,14 +51,14 @@ void Interface::initInterface() {
 
     // Highlight rectangle for selection
     if (!highlightTexture.loadFromFile("assets/texture/UI/interfaceButton.png")) {
-        std::cerr << "Failed to load interface button texture!" << std::endl;
+        cerr << "Failed to load interface button texture!" << endl;
     }
 	highlightRect.setScale(0.82f, 0.82f);
     highlightRect.setTexture(highlightTexture);
-    highlightRect.setColor(sf::Color(255, 255, 255, 255)); // Semi-transparent overlay
+    highlightRect.setColor(Color(255, 255, 255, 255)); // Semi-transparent overlay
 	highlightRect.setOrigin(highlightRect.getGlobalBounds().width / 2, highlightRect.getGlobalBounds().height / 2);
 }
-void Interface::updateInterface(sf::RenderWindow& window) {
+void Interface::updateInterface(RenderWindow& window) {
     detectControllerInput(); // Detect controller usage
     handleMenuNavigation();  // Handle button navigation
 
@@ -79,7 +78,7 @@ void Interface::updateInterface(sf::RenderWindow& window) {
 
         // Handle button selection when pressing Enter / A button
         if (isUsingController) {
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) || sf::Joystick::isButtonPressed(0, 0)) {
+            if (Keyboard::isKeyPressed(Keyboard::Enter) || Joystick::isButtonPressed(0, 0)) {
                 switch (buttons[selectedButtonIndex].getType()) {
                 case ButtonType::Resume:
                     isPaused = false;
@@ -95,7 +94,7 @@ void Interface::updateInterface(sf::RenderWindow& window) {
             }
         }
         else if (!isUsingController) {
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+            if (Mouse::isButtonPressed(Mouse::Left)) {
                 for (auto& button : buttons) {
                     if (button.isHovered(window)) {
                         switch (button.getType()) {
@@ -146,30 +145,30 @@ bool Interface::getUsingController() {
 void Interface::detectControllerInput() {
 
     //DEBUG
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+	if (Keyboard::isKeyPressed(Keyboard::Up)) {
         setUsingController(true);
 	}
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+    if (Keyboard::isKeyPressed(Keyboard::Down)) {
         setUsingController(true);
     }
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+	if (Mouse::isButtonPressed(Mouse::Left)) {
         setUsingController(false);
 	}
 
     // Check if any joystick is connected
-    for (unsigned int i = 0; i < sf::Joystick::Count; ++i) {
-        if (sf::Joystick::isConnected(i)) {
+    for (unsigned int i = 0; i < Joystick::Count; ++i) {
+        if (Joystick::isConnected(i)) {
             // Check if any button is pressed
-            for (unsigned int j = 0; j < sf::Joystick::getButtonCount(i); ++j) {
-                if (sf::Joystick::isButtonPressed(i, j)) {
+            for (unsigned int j = 0; j < Joystick::getButtonCount(i); ++j) {
+                if (Joystick::isButtonPressed(i, j)) {
                     setUsingController(true);
                     break;
                 }
             }
 
             // Check if any joystick axis is moved significantly
-            for (int axis = sf::Joystick::X; axis <= sf::Joystick::PovY; ++axis) {
-                if (std::abs(sf::Joystick::getAxisPosition(i, static_cast<sf::Joystick::Axis>(axis))) > 10) {
+            for (int axis = Joystick::X; axis <= Joystick::PovY; ++axis) {
+                if (abs(Joystick::getAxisPosition(i, static_cast<Joystick::Axis>(axis))) > 10) {
                     setUsingController(true);
                     break;
                 }
@@ -182,8 +181,8 @@ void Interface::handleMenuNavigation() {
     static bool upPressed = false;
     static bool downPressed = false;
 
-    bool moveUp = sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Joystick::isButtonPressed(0, 11);
-    bool moveDown = sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Joystick::isButtonPressed(0, 12);
+    bool moveUp = Keyboard::isKeyPressed(Keyboard::Up) || Joystick::isButtonPressed(0, 11);
+    bool moveDown = Keyboard::isKeyPressed(Keyboard::Down) || Joystick::isButtonPressed(0, 12);
 
     // Navigate up
     if (moveUp && !upPressed) {
