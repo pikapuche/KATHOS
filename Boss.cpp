@@ -6,7 +6,7 @@ Boss::Boss(Player& target) : Entity(position.x, position.y), target(target) {
     sprite.setScale(Vector2f(0.22f, 0.22f));
     speed = 200.0f;
     velocity.y = 0;
-    detectionRange = 600.0f;
+    detectionRange = 400.0f;
     detectionRect.setSize(Vector2f(detectionRange, 64));
     detectionRect.setFillColor(Color(0, 255, 0, 50));
     detectionRect.setOrigin(568, 0);
@@ -24,20 +24,28 @@ void Boss::jump()
     }
 }
 
+bool Boss::canSeePlayer() {
+    float distanceX = abs(target.getPosPos().x - position.x);
+    float distanceY = abs(target.getPosPos().y - position.y);
+    return (distanceX < detectionRange && distanceY < 50.0f);
+}
+
 void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet de gerer le mouvement de l'ennemi
+    if (canSeePlayer())
+    {
+        if (position.x < pos && directionState != RIGHT) {
+            directionState = RIGHT;
+        }
+        else if (position.x > pos2 && directionState != LEFT) {
+            directionState = LEFT;
+        }
 
-    if (position.x < pos && directionState != RIGHT) {
-        directionState = RIGHT;
-    }
-    else if (position.x > pos2 && directionState != LEFT) {
-        directionState = LEFT;
-    }
-
-    if (directionState == RIGHT) {
-        position.x += speed * deltaTime;
-    }
-    else {
-        position.x -= speed * deltaTime;
+        if (directionState == RIGHT) {
+            position.x += speed * deltaTime;
+        }
+        else {
+            position.x -= speed * deltaTime;
+        }
     }
 
     velocity.y += gravity * deltaTime;  // Appliquer la gravité
