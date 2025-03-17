@@ -248,3 +248,28 @@ void Map::gameOver(RenderWindow& window)
 		return;
 	}
 }
+
+void Map::Win(RenderWindow& window)
+{
+	if (isWin) {
+		RectangleShape winScreen(Vector2f(window.getSize().x, window.getSize().y));
+		winScreen.setFillColor(Color(0, 0, 0, 150));
+		window.draw(winScreen);
+
+		Font font;
+		if (!font.loadFromFile("Assets/Fonts/Minecraft.ttf")) {
+			cout << "Erreur chargement police !" << endl;
+		}
+
+		Text winText;
+		winText.setFont(font);
+		winText.setString("WIN");
+		winText.setCharacterSize(80);
+		winText.setFillColor(Color::Yellow);
+		winText.setStyle(Text::Bold);
+		winText.setPosition((window.getSize().x - winText.getGlobalBounds().width) / 2, (window.getSize().y - winText.getGlobalBounds().height) / 2);
+
+		window.draw(winText);
+		return;
+	}
+}

@@ -1,9 +1,9 @@
 #include "Boss.hpp"
 
 Boss::Boss(Player& target) : Entity(position.x, position.y), target(target) {
-    texture.loadFromFile("Assets/texture/Boss/boss.png");
+    texture.loadFromFile("Assets/texture/Boss/boss2.png");
     sprite.setTexture(texture);
-    sprite.setScale(Vector2f(0.22f, 0.22f));
+    sprite.setScale(Vector2f(1.5f, 1.5f));
     speed = 200.0f;
     velocity.y = 0;
     detectionRange = 400.0f;

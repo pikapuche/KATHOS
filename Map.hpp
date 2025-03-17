@@ -13,6 +13,7 @@ class Map {
 public:
 
     bool isGameOver = false;
+    bool isWin = false;
     bool bossZone = false;
 
     Texture groundYellowLeftTexture, groundYellowMidTexture, groundYellowRightTexture;
@@ -63,5 +64,7 @@ public:
     void draw(RenderWindow& window);
 
     void gameOver(RenderWindow& window);
+
+    void Win(RenderWindow& window);
 
 };
