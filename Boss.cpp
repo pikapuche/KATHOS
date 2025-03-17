@@ -1,7 +1,7 @@
 #include "Boss.hpp"
 
 Boss::Boss() : Entity(position.x, position.y) {
-    texture.loadFromFile("Assets/texture/Boss/boss.png");
+    texture.loadFromFile("Assets/texture/Boss/boss2.png");
     sprite.setTexture(texture);
     sprite.setScale(Vector2f(1.5f, 1.5f));
     speed = 200.0f;
@@ -13,6 +13,27 @@ Boss::Boss() : Entity(position.x, position.y) {
     boxCol1 = 64;
     boxCol2 = 64;
     state = GROUNDED;
+
+    life = health;
+
+    healthBar.setSize(Vector2f(100.0f, 10.0f));
+    healthBar.setFillColor(Color::Green);
+    healthBar.setOutlineThickness(2);
+    healthBar.setOutlineColor(Color::Black);
+}
+
+int Boss::getLife() {
+    return life;
+}
+
+int Boss::getHealth() {
+    return health;
+}
+
+void Boss::setLife(int amount) {
+    life += amount;
+    if (life < 0) life = 0;
+    if (life > health) life = health;
 }
 
 void Boss::jump()
@@ -31,6 +52,9 @@ void Boss::takeDamage(Player& player)
         if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds())) {
             setLife(-10);
             cout << "aie ca fais mal (boss)" << endl;
+
+            enleverLife = static_cast<float>(getLife()) / getHealth();
+            healthBar.setSize(Vector2f(100.0f * enleverLife, 10.0f));
         }
     }
 }
@@ -108,11 +132,14 @@ void Boss::update(float deltaTime, Player& player) {
     }
 
     movementManager(player.getSprite().getPosition().x, player.getSprite().getPosition().x, deltaTime);
+
+    healthBar.setPosition(sprite.getPosition().x, sprite.getPosition().y - 20);
 }
 
 void Boss::draw(RenderWindow& window) {
     window.draw(sprite);
     window.draw(detectionRect);
+    window.draw(healthBar);
 }
 
 Vector2f Boss::getPos() {

@@ -18,7 +18,10 @@ private:
 
     RectangleShape detectionRect;
 
-    int health = 100;
+    RectangleShape healthBar;
+    int health = 180;
+    int life;
+    float enleverLife;
 
 public:
     Boss();
@@ -37,7 +40,11 @@ public:
     void update(float deltatime, Player& player);
     void draw(RenderWindow& window) override;
     void movementManager(float pos, float pos2, float deltaTime);
-    //bool canSeePlayer();
+
+    int getHealth();
+    int getLife();
+
+    void setLife(int amount);
 
     Vector2f getPos();
     Vector2f setPos(float x, float y);
