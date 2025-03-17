@@ -1,63 +1,132 @@
 #include "Boss.hpp"
 
-Boss::Boss(Player& target) : Entity(position.x, position.y), target(target) { //constructeur du boss
-    texture.loadFromFile("Assets/Boss/boss.png");
+Boss::Boss(Player& target) : Entity(position.x, position.y), target(target) {
+    texture.loadFromFile("Assets/texture/Boss/boss.png");
     sprite.setTexture(texture);
     sprite.setScale(Vector2f(0.22f, 0.22f));
-    sprite.setOrigin(sprite.getGlobalBounds().width/2, sprite.getGlobalBounds().height/2);
     speed = 200.0f;
-    velocity = { -speed, 0.0f };
-    detectionRange = 600.0f;
+    velocity.y = 0;
+    detectionRange = 400.0f;
+    detectionRect.setSize(Vector2f(detectionRange, 64));
+    detectionRect.setFillColor(Color(0, 255, 0, 50));
+    detectionRect.setOrigin(568, 0);
+    boxCol1 = 64;
+    boxCol2 = 64;
+    state = GROUNDED;
 }
 
-bool Boss::canSeePlayer()
+void Boss::jump()
 {
-    float distanceX = std::abs(target.getPosPos().x - position.x);
-    float distanceY = std::abs(target.getPosPos().y - position.y);
+    if (state == GROUNDED) {
+        state = JUMP;
+        velocity.y = -jumpForce;
+        jumpClock.restart();
+    }
+}
 
+bool Boss::canSeePlayer() {
+    float distanceX = abs(target.getPosPos().x - position.x);
+    float distanceY = abs(target.getPosPos().y - position.y);
     return (distanceX < detectionRange && distanceY < 50.0f);
 }
 
-void Boss::chasePlayer()
-{
-    if (target.getPosPos().x > position.x)
+void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet de gerer le mouvement de l'ennemi
+    if (canSeePlayer())
     {
-        velocity.x = speed;
-    }
-    else {
-        velocity.x = -speed;
-    }
-}
+        if (position.x < pos && directionState != RIGHT) {
+            directionState = RIGHT;
+        }
+        else if (position.x > pos2 && directionState != LEFT) {
+            directionState = LEFT;
+        }
 
-void Boss::update(float deltaTime) { //déplacements
-    if (canSeePlayer()) {
-        chasePlayer();
+        if (directionState == RIGHT) {
+            position.x += speed * deltaTime;
+        }
+        else {
+            position.x -= speed * deltaTime;
+        }
     }
-    position += velocity * deltaTime;
+
+    velocity.y += gravity * deltaTime;  // Appliquer la gravité
+    position.y += velocity.y * deltaTime;
+
     sprite.setPosition(position);
+    detectionRect.setPosition(position);
+
+    if (sprite.getPosition().y < 0) { // haut de l'écran
+        sprite.setPosition(position.x, position.y = 64);
+    }
+    if (sprite.getPosition().y > 1016) { // bas de l'écran 
+        sprite.setPosition(position.x, position.y = 1016);
+    }
+    if (sprite.getPosition().x < 0) { // gauche de l'écran
+        sprite.setPosition(position.x = 0, position.y);
+    }
+    if (sprite.getPosition().x > 1856) { // droite de l'écran
+        sprite.setPosition(position.x = 1856, position.y);
+    }
 }
 
-void Boss::draw(sf::RenderWindow& window) {
+void Boss::update(float deltatime)
+{
+}
+
+void Boss::updateReal(float deltaTime, Player& player) {
+    movementManager(player.getSprite().getPosition().x, player.getSprite().getPosition().x, deltaTime);
+
+    onestla = rand() % 5;
+
+    switch (onestla) {
+    case 0:
+        break;
+    case 1:
+        break;
+    case 2:
+        jump();
+        break;
+    case 3:
+        break;
+    case 4:
+        jump();
+        break;
+    }
+}
+
+void Boss::draw(RenderWindow& window) {
     window.draw(sprite);
-}
-
-void Boss::checkCollision(int mapWidth) { //check les collisions et empêche le boss de partir hors de la map sinon c'est pas ouf
-    if (position.x <= 0) {
-        position.x = 0;
-        velocity.x = speed;
-    }
-    else if (position.x + sprite.getScale().x >= mapWidth) {
-        position.x = mapWidth - sprite.getScale().x;
-        velocity.x = -speed;
-    }
+    window.draw(detectionRect);
 }
 
 Vector2f Boss::getPos() {
     return position;
 }
 
-Vector2f Boss::setPos(float(x), float(y)) {
+Vector2f Boss::setPos(float x, float y) {
     position.x = x;
     position.y = y;
     return position;
+}
+
+Vector2f Boss::getVelocity() {
+    return velocity;
+}
+
+Vector2f Boss::setVelocity(float veloX, float veloY) {
+    velocity.x = veloX;
+    velocity.y = veloY;
+    return velocity;
+}
+
+float Boss::getJumpForce() {
+    return jumpForce;
+}
+
+float Boss::setJumpForce(float force) {
+    jumpForce = force;
+    return jumpForce;
+}
+
+float Boss::getGravity() {
+    return gravity;
 }

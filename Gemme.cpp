@@ -9,6 +9,7 @@ Gemme::Gemme(float _x, float _y) {
 }
 
 void Gemme::animationGemme(float _deltaTime)
+Vector2f Gemme::setPosition(float x, float y)
 {
 	animGemmeTime += _deltaTime;
 	anim.y = 0;

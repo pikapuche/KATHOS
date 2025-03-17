@@ -1,61 +1,71 @@
 #include "Game.hpp"
 
-
-//faire collision
-
 void Game::run()
 {
-    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Kathos", sf::Style::Fullscreen);
-
+    RenderWindow window(VideoMode(1920, 1080), "Kathos", Style::Fullscreen);
     window.setVerticalSyncEnabled(true);
     window.setFramerateLimit(60);
 
     MainScreen mainScreen;
-
     Interface overlay;
     mainScreen.initMenu(window);
     Map m;
     m.loadMap();
 
     Clock clock;
-    overlay.initInterface(); // Ensure the texture is loaded once
+    overlay.initInterface();
+
+    if (m.bossZone) {
+        if (!music.openFromFile("Assets/Musiques/VSOLO musique boss16.wav")) {
+            cout << "euuuuuuuuuuuuuu wtf la zic ?" << endl;
+        }
+        music.setLoop(true);
+        music.setVolume(50.f);
+        music.play();
+    }
 
     while (window.isOpen()) {
-        sf::Time deltaT = clock.restart();
+        Time deltaT = clock.restart();
         float deltaTime = deltaT.asSeconds();
-        sf::Event event;
+        Event event;
 
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
+            if (event.type == Event::Closed) {
                 window.close();
             }
-            if (mainScreen.getIsInMenu() && event.key.code == sf::Keyboard::Escape) {
+            if (mainScreen.getIsInMenu() && event.key.code == Keyboard::Escape) {
                 window.close();
             }
-            else if (!mainScreen.getIsInMenu() && event.key.code == sf::Keyboard::Escape) {
+            else if (!mainScreen.getIsInMenu() && event.key.code == Keyboard::Escape) {
                 overlay.setIsPaused(true);
             }
         }
 
         window.clear();
-        m.player->update(deltaTime);
 
-        m.update(deltaTime);
+        if (!overlay.getIsPaused()) { // Only update game when not paused
+            m.player->update(deltaTime);
+            for (auto& enemy : m.enemies)
+                enemy->updateReal(deltaTime, *m.player);
+          
+            m.boss->updateReal(deltaTime, *m.player);
+            m.nuage->update(deltaTime);
+
+            m.update(deltaTime);
+        }
+
+        if (overlay.getIsPaused()) {
+            overlay.updateInterface(window); // Draw pause menu when paused
+        }
+
         m.draw(window);
 
-        //if (mainScreen.getIsInMenu()) {
-        //    mainScreen.updateMenu(window);
-        //}   
-        //else {
-        //    mainScreen.destroyAll();
-        //}
-
-        //for (auto& gemmes : map.vector_gemme) {
-        //    for (auto& players : map.vector_player) { // vector player dans la map pour pouvoir le gérer dans ses déplacements
-        //        gemmes->interact(*players);
-        //    }
-        //    gemmes->draw(window);
-        //}
+        if (mainScreen.getIsInMenu()) {
+            mainScreen.updateMenu(window);
+        }   
+        else {
+            mainScreen.destroyAll();
+        }
 
         // Affiche tout
         window.display();

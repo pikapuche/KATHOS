@@ -1,15 +1,15 @@
 #include "NuageTox.hpp"
 
 NuageTox::NuageTox() : Entity(position.x, position.y) { //constructeur du boss
-    shape.setSize(sf::Vector2f(50.0f, 50.0f));
+    shape.setSize(Vector2f(50.0f, 50.0f));
     shape.setFillColor(Color(0, 90, 0, 150));
 }
 
-void NuageTox::draw(sf::RenderWindow& window) {
+void NuageTox::draw(RenderWindow& window) {
     window.draw(shape);
 }
 
-void NuageTox::update(float deltaTime) { //déplacements
+void NuageTox::update(float deltaTime) { //dï¿½placements
     shape.setPosition(position);
 }
 
@@ -23,6 +23,6 @@ Vector2f NuageTox::setPos(float x, float y) {
     return position;
 }
 
-sf::RectangleShape NuageTox::getShape() { //prend la shape du nuage
+RectangleShape NuageTox::getShape() { //prend la shape du nuage
     return shape;
 }

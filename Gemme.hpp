@@ -24,6 +24,7 @@ public:
 	Gemme(float _x, float _y);
 
 	void animationGemme(float _deltaTime);
+	Vector2f setPosition(float x, float y);
 	void interact(Player& player);
 	void updateGemme(float _x, float _y, float _deltaTime);
 };
