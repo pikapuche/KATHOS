@@ -185,17 +185,6 @@ void Boss::update(float deltaTime, Player& player) {
     case 9:
         cout << onestla << endl;
         break;
-    case 5:
-        break;
-    case 6:
-        break;
-    case 7:
-        jump();
-        break;
-    case 8:
-        break;
-    case 9:
-        break;
     }
 
     if (state == GROUNDED) {
