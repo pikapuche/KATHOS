@@ -46,6 +46,11 @@ void Game::run()
         else{ //JEU PRINCIPAL
             window.clear();
 
+            if (overlay.getShouldRestart()) {
+                m.resetAll();
+                m.loadMap();
+                overlay.resetRestartFlag();
+            }
             if (!overlay.getIsPaused()) { // Only update game when not paused
                 m.player->update(deltaTime);
                 for (auto& enemy : m.enemies)

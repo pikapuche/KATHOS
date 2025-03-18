@@ -298,3 +298,9 @@ void Map::gameOver(RenderWindow& window)
 		return;
 	}
 }
+
+void Map::resetAll() {
+	interactiblesVector.clear();
+	gemmeSprites.clear();
+	enemies.clear();
+}

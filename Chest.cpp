@@ -50,7 +50,6 @@ void Chest::updateAnimation(float deltaTime) {
 void Chest::interact(const std::shared_ptr<Player>& player) {
     if (!isOpen && !isAnimating) {
         if (this->playerTryInteract()) {
-            std::cout << "Chest opening animation starts!" << std::endl;
             isAnimating = true;
             frameIndex = 0;
             animationTime = 0.0f;

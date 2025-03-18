@@ -65,5 +65,7 @@ public:
     void draw(RenderWindow& window);
 
     void gameOver(RenderWindow& window);
+    
+    void resetAll();
 
 };
