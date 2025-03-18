@@ -378,7 +378,7 @@ void Map::draw(RenderWindow& window) {
 	switch (mapState)
 	{	
 	case Map::MapState::PRACTICE:
-		//window.draw(practiceSprite)
+		window.draw(salle5Sprite);
 		break;
 	case Map::MapState::SALLE1:
 		window.draw(salle1Sprite);
