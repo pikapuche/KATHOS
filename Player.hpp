@@ -30,14 +30,19 @@ protected:
     bool isTakeDash = false; // recup la gemme de dash
     bool isDashing = false; // dash
     bool isTakeSpeed = false; // recup la gemme de sprint
+    bool spawnWeapon = false;
 
     bool hasKey = false;
 
     Clock jumpClock; // compteur pour le deuxieme saut (evite l'enchainement)
     Clock coolDownDash; 
+    Clock coolDownAttack;
     Clock clock;
 
 public:
+
+    enum StateWeapon { NONE, SPAWN };
+    StateWeapon stateWeapon;
 
     enum StateLook { LOOK_RIGHT, LOOK_LEFT }; // permet de connaitre la direction dans laquelle le joueur regarde
     StateLook stateLook;
