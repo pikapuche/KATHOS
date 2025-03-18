@@ -58,26 +58,25 @@ void Game::run()
                 for (auto& enemy : m.enemies)
                     enemy->update(deltaTime, *m.player);
 
+                for(auto& boss : m.bosses)
+                boss->update(deltaTime, *m.player);
+            }
 
-                for (auto& boss : m.bosses)
-                    boss->update(deltaTime, *m.player);
-                //}
+            for (auto& cloud : m.clouds) {
+                cloud->update(deltaTime);
+            }
+            for (auto& gemme : m.gemmeSprites) {
+                gemme->updateGemme(deltaTime, m.player);
+            }
+            m.draw(window);
+            m.update(deltaTime);
+        
 
-                for (auto& cloud : m.clouds) {
-                    cloud->update(deltaTime);
-
-                    for (auto& gemme : m.gemmeSprites) {
-                        gemme->updateGemme(deltaTime, m.player);
-                    }
-
-
-                }
-                overlay.updateTimer(window);
-                m.draw(window);
-                m.update(deltaTime);
-
-
-                m.draw(window);
+            m.draw(window);
+           
+            overlay.updateInterface(window, *m.player); // Draw pause menu when paused
+            if (!mainScreen.getIsInMenu())
+            overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
 
                 overlay.updateInterface(window, *m.player); // Draw pause menu when paused
                 overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER

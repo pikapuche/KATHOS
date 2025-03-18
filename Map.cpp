@@ -57,7 +57,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 	while (getline(_Map, _line)) {
 		for (int i = 0; i < _line.size(); i++) {
 			switch (_line[i]) { // tileValue
-				cout << _line[i] << endl;
+				//cout << _line[i] << endl;
 			case '1':
 			{
 				auto left = make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
@@ -301,6 +301,12 @@ void Map::draw(RenderWindow& window) {
 
 	for (auto& cloud : clouds)
 		cloud->draw(window);
+
+	for (auto& interactv : interactiblesVector) {
+		if (interactv->isDoor()) {  // Check if the object is NOT a door
+			interactv->draw(window);
+		}
+	}
 }
 
 void Map::gameOver(RenderWindow& window)
@@ -332,6 +338,7 @@ void Map::resetAll() {
 	interactiblesVector.clear();
 	gemmeSprites.clear();
 	enemies.clear();
+	bosses.clear();
 }
 
 void Map::Win(RenderWindow& window)
