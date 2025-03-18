@@ -38,20 +38,18 @@ public:
 
     void jump();
     void takeDamage(Player& player);
+    void tired();
+    void movementManager(float pos, float pos2, float deltaTime);
+    void animationManager(float deltaTime);
+    void update(float deltatime, Player& player);
+    void draw(RenderWindow& window) override;
+
     float getJumpForce();
     float setJumpForce(float force);
     float getGravity();
-
-    void update(float deltatime, Player& player);
-    void draw(RenderWindow& window) override;
-    void movementManager(float pos, float pos2, float deltaTime);
-    void animationManager(float deltaTime);
     int getLife();
-
     Vector2f getPos();
     Vector2f setPos(float x, float y);
-
     Vector2f getVelocity();
     Vector2f setVelocity(float veloX, float veloY);
-    void tired();
 };

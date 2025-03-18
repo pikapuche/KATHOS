@@ -224,6 +224,7 @@ void Enemy::update(float deltaTime, Player& player)
         break;
     }
     takeDamage(player);
+
 }
 
 void Enemy::draw(RenderWindow& window)

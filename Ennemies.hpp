@@ -56,6 +56,8 @@ public :
 
 	void takeDamage(Player& player);
 
+	void death();
+
 	Vector2f setPosPos(float x, float y); // modifie la position
 
 	Vector2f getPosPos(); // retourne la position

@@ -25,9 +25,7 @@ public:
     vector<unique_ptr<Gemme>> gemmeSprites;
 
     shared_ptr<Player> player = make_shared<Player>();
-    //vector<unique_ptr<Player>> players;
 
-    //shared_ptr<Boss> boss;
     vector<unique_ptr<Boss>> bosses;
 
     vector<unique_ptr<Enemy>> enemies;
