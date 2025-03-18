@@ -53,7 +53,7 @@ void Boss::takeDamage(Player& player)
 {
     if (player.getIsAttacking()) {
         if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds())) {
-            setLife(-2);
+            setLife(-1);
             cout << "aie ca fais mal (boss)" << endl;
 
             healthBar.setSize(Vector2f(life, 10.0f));

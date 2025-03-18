@@ -25,7 +25,7 @@ private:
     RectangleShape detectionRect;
 
     RectangleShape healthBar;
-    int health = 180;
+    int health = 100;
     int life;
 
     bool canJump = false;
