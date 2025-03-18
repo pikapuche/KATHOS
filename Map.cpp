@@ -203,7 +203,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			case 'D':
 			{
 				auto door = std::make_shared<Door>(false);
-				door->setPosPos((float)i * 32, (float)_z * 20 - 40);
+				door->setPosPos((float)i * 32, (float)_z * 20 - 45);
 				interactiblesVector.push_back(door);
 				break;
 			}

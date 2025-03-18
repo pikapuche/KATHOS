@@ -61,9 +61,9 @@ void Game::run()
                 
             }
             overlay.updateTimer(window);
-            m->draw(window);
+            m.draw(window);
             m.update(deltaTime);
-        }
+        
 
             m.draw(window);
            

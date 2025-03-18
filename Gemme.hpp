@@ -3,7 +3,7 @@
 #include "Player.hpp"
 #include "Interactibles.hpp"
 
-class Gemme : Interactible {
+class Gemme {
 public:
 
 	sf::Vector2f position;
