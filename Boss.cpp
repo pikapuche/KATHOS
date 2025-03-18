@@ -42,6 +42,13 @@ void Boss::jump()
     }
 }
 
+void::Boss::tired() {
+    if (state == GROUNDED && state != JUMP) {
+        isTired = true;
+        coolDownTired.restart();
+    }
+}
+
 void Boss::takeDamage(Player& player)
 {
     if (player.ATTACKING) {
@@ -62,11 +69,17 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
         }
     }
 
-    if (directionState == RIGHT) {
-        position.x += speed * deltaTime;
+    if (!isTired)
+    {
+        if (directionState == RIGHT) {
+            position.x += speed * deltaTime;
+        }
+        else {
+            position.x -= speed * deltaTime;
+        }
     }
-    else {
-        position.x -= speed * deltaTime;
+    else if (isTired && coolDownTired.getElapsedTime().asSeconds() >= 3){
+        isTired = false;
     }
 
     if(state != GROUNDED) velocity.y += gravity * deltaTime;  // Appliquer la gravité
@@ -157,15 +170,16 @@ void Boss::update(float deltaTime, Player& player) {
     case 3:
         break;
     case 4:
+        jump();
         break;
     case 5:
         break;
     case 6:
         break;
     case 7:
-        jump();
         break;
     case 8:
+        tired();
         break;
     case 9:
         break;
