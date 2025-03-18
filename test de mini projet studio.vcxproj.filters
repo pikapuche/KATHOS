@@ -3,7 +3,6 @@
   <ItemGroup>
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Button.cpp" />
-    <ClCompile Include="Ennemis.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Interface.cpp" />
@@ -22,11 +21,14 @@
     <ClCompile Include="Key.cpp">
       <Filter>Interactibles</Filter>
     </ClCompile>
+    <ClCompile Include="Ennemies.cpp" />
+    <ClCompile Include="Door.cpp">
+      <Filter>Interactibles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Boss.hpp" />
     <ClInclude Include="Button.hpp" />
-    <ClInclude Include="Ennemis.hpp" />
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="Interface.hpp" />
@@ -45,6 +47,10 @@
     <ClInclude Include="Key.hpp">
       <Filter>Interactibles</Filter>
     </ClInclude>
+    <ClInclude Include="Ennemies.hpp" />
+    <ClInclude Include="Door.hpp">
+      <Filter>Interactibles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\texture\titlescreen\background.png" />
@@ -55,5 +61,8 @@
     <Filter Include="Interactibles">
       <UniqueIdentifier>{5db45add-6838-410d-beda-bed58020e28b}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Assets\Map\Practice.txt" />
   </ItemGroup>
 </Project>

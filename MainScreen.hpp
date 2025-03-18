@@ -1,10 +1,13 @@
 #pragma once
 #include "Interface.hpp"
+#include "Game.hpp"
 
 class MainScreen {
 private:
+    //Game game;
     bool isInMenu = true;
     bool isInSettings = false;
+    bool settingSound = false;
     Sprite background;
     Texture backgroundTexture;
     vector<Button> buttons;
@@ -16,6 +19,16 @@ private:
     int selectedButtonIndex = 0; // Tracks selected button
     Sprite highlightRect; // Highlight for selected button
     Texture highlightTexture; // Texture for the highlight
+
+
+    //Sound Related
+    Sprite soundTilter;
+    Texture soundTilterTexture;
+    Texture soundTilterControllerTexture;
+    Sprite soundBar;
+    Texture soundBarTexture;
+    RectangleShape soundBarFiller;
+
     
 public:
     bool getIsInMenu();
@@ -25,4 +38,5 @@ public:
     void destroyAll();
     void handleControllerNavigation();
 	void handleButtonPress(Button& button);
+    void handleSound(RenderWindow& window);
 };

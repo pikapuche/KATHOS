@@ -11,14 +11,15 @@ protected:
     bool isPlayerNear = false; // True if player is close
 
 public:
+    virtual bool isDoor() const { return false; }  // Default to false for other objects
 
     bool playerTryInteract();
     // Check if player is near
-    virtual void updateProximity(Player& player);
+    virtual void updateProximity(const std::shared_ptr<Player>& player);
     // Getter
     bool getIsPlayerNear();
     // Define a virtual function for unique interactions
-    virtual void interact(Player& player) = 0;
+    virtual void interact(const std::shared_ptr<Player>& player) = 0;
     // Draw the interactible (optional)
     virtual void draw(sf::RenderWindow& window) = 0;
 
