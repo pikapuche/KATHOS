@@ -23,8 +23,8 @@ public:
     vector<unique_ptr<Sprite>> groundSprites;
     vector<unique_ptr<Gemme>> gemmeSprites;
 
-    //shared_ptr<Player> player;
-    vector<unique_ptr<Player>> players;
+    shared_ptr<Player> player = make_shared<Player>();
+    //vector<unique_ptr<Player>> players;
 
     //shared_ptr<Boss> boss;
     vector<unique_ptr<Boss>> bosses;
@@ -37,7 +37,6 @@ public:
 
 
     vector<Interactible*> interactiblesVector; // Vector of all Interacts
-
 
     //Text win;
     //Font font;

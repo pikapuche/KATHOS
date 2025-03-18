@@ -180,10 +180,12 @@ void Player::animationManager(float deltaTime) {
             animAttackTimeDecr = 0;
         }
         if (stateLook == LOOK_LEFT) {
+            if (anim_attack.x == 3) {
+                stateWeapon = SPAWN;
+            }
             if (anim_attack.x > 4) {
                 anim_attack.x = 1;
                 isAttacking = false;
-                stateWeapon = SPAWN;
                 if (state != GROUNDED) {
                     stateMove = JUMPING;
                 }
@@ -191,6 +193,9 @@ void Player::animationManager(float deltaTime) {
             sprite.setTextureRect(IntRect(anim_attack.x * 64, 0, -64, 64));
         }
         else if (stateLook == LOOK_RIGHT) {
+            if (anim_attack.x == 2) {
+                stateWeapon = SPAWN;
+            }
             if (anim_attack.x > 3) {
                 anim_attack.x = 0;
                 isAttacking = false;

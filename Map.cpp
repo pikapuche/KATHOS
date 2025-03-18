@@ -16,19 +16,17 @@ Map::~Map() {}
 
 void Map::update(float deltaTime) {
 	collision(deltaTime);
-
 }
 
 void Map::collision(float deltaTime) {
 	for (auto& ground : groundSprites) {
-		for(auto& player : players) 
+		//for(auto& player : players) 
 		player->collision(*ground, deltaTime);
 		for(auto& enemy : enemies)
 		enemy->collision(*ground, deltaTime);
 		for(auto& boss : bosses)
 		boss->collision(*ground, deltaTime);
 	}
-
 }
 
 void Map::monSwitch(ifstream& _Map, string _line, int _z) {
@@ -111,9 +109,9 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			}
 			case 'P':
 			{
-				auto player = std::make_unique<Player>();  // La bonne fa�on de cr�er un unique_ptr
+				//auto player = std::make_unique<Player>();  // La bonne fa�on de cr�er un unique_ptr
 				player->setPosPos((float)i * 32, (float)_z * 20);
-				players.push_back(move(player));
+				//players.push_back(move(player));
 				break;
 			}
 			case 'G':
@@ -163,6 +161,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			case 'B':
 			{
 				auto boss = make_unique<Boss>();
+				//boss = make_shared<Boss>();
 				boss->setPos((float)i * 32, (float)_z * 20);
 				bosses.push_back(move(boss));
 				break;
@@ -226,6 +225,7 @@ void Map::loadMap() {
 }
 
 void Map::draw(RenderWindow& window) {
+
 	for (auto& ground : groundSprites) {
 		window.draw(*ground);
 	}
@@ -233,7 +233,7 @@ void Map::draw(RenderWindow& window) {
 		window.draw(gemme->gemmeSprite);
 	}
 
-	for (auto& player : players)
+	//for (auto& player : players)
 		player->draw(window);
 
 	for(auto& enemy : enemies)

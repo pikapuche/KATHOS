@@ -20,6 +20,8 @@ private:
 
     int health = 100;
 
+    bool canJump = false;
+
 public:
     Boss();
 

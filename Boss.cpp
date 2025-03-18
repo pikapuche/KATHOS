@@ -1,10 +1,10 @@
 #include "Boss.hpp"
 
 Boss::Boss() : Entity(position.x, position.y) {
-    texture.loadFromFile("Assets/texture/Boss/boss.png");
+    texture.loadFromFile("Assets/texture/Boss/boss-radioactive-Sheet.png");
     sprite.setTexture(texture);
-    sprite.setScale(Vector2f(0.22, 0.22));
-    speed = 200.0f;
+    sprite.setScale(Vector2f(1, 1));
+    speed = 150.f;
     velocity.y = 0;
     detectionRange = 400.0f;
     detectionRect.setSize(Vector2f(detectionRange, 64));
@@ -12,7 +12,6 @@ Boss::Boss() : Entity(position.x, position.y) {
     detectionRect.setOrigin(125, 0);
     boxCol1 = 64;
     boxCol2 = 64;
-    state = GROUNDED;
 }
 
 void Boss::jump()
@@ -21,7 +20,6 @@ void Boss::jump()
         state = JUMP;
         isJumping = true;
         velocity.y = -jumpForce;
-        jumpClock.restart();
     }
 }
 
@@ -46,6 +44,9 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
     //{
 
     //}
+
+
+
     if (!isJumping) {
         if (position.x < pos && directionState != RIGHT) { // faire en sorte qu'il ne puisse pas changer de direction pendant un saut
             directionState = RIGHT;
@@ -62,7 +63,9 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
         position.x -= speed * deltaTime;
     }
 
-    velocity.y += gravity * deltaTime;  // Appliquer la gravité
+    if(state != GROUNDED) velocity.y += gravity * deltaTime;  // Appliquer la gravité
+    else if (state == GROUNDED) velocity.y = 0;
+    
     position.y += velocity.y * deltaTime;
 
     sprite.setPosition(position);
@@ -71,8 +74,8 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
     if (sprite.getPosition().y < 0) { // haut de l'écran
         sprite.setPosition(position.x, position.y = 64);
     }
-    //if (sprite.getPosition().y > 1016) { // bas de l'écran 
-    //    sprite.setPosition(position.x, position.y = 1016);
+    //if (sprite.getPosition().y > 1080) { // bas de l'écran 
+    //    sprite.setPosition(position.x, position.y = 1010);
     //}
     if (sprite.getPosition().x < 0) { // gauche de l'écran
         sprite.setPosition(position.x = 0, position.y);
@@ -84,9 +87,17 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
 
 void Boss::update(float deltaTime, Player& player) {
 
-    if (jumpClock.getElapsedTime().asSeconds() <= 2) {
-        onestla = rand() % 9;
+    if (jumpClock.getElapsedTime().asSeconds() >= 2 && state == GROUNDED) {
+        canJump = true;
     }
+
+    if (canJump) {
+        onestla = rand() % 10;
+        canJump = false;
+        jumpClock.restart();
+    }
+
+    cout << onestla << endl;
 
     switch (onestla) {
     case 0:
@@ -94,17 +105,23 @@ void Boss::update(float deltaTime, Player& player) {
     case 1:
         break;
     case 2:
-        jump();
         break;
     case 3:
         break;
     case 4:
         jump();
         break;
-    }
-
-    if (state == GROUNDED) {
-        isJumping = false;
+    case 5:
+        break;
+    case 6:
+        break;
+    case 7:
+        jump();
+        break;
+    case 8:
+        break;
+    case 9:
+        break;
     }
 
     movementManager(player.getSprite().getPosition().x, player.getSprite().getPosition().x, deltaTime);
