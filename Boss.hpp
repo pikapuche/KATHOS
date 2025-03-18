@@ -23,6 +23,8 @@ private:
     int life;
     float enleverLife;
 
+    bool canJump;
+
 public:
     Boss();
 

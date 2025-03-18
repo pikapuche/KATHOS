@@ -35,7 +35,6 @@ public:
 
     vector<ifstream*> maps;
 
-
     vector<Interactible*> interactiblesVector; // Vector of all Interacts
 
 

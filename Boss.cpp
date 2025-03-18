@@ -12,7 +12,6 @@ Boss::Boss() : Entity(position.x, position.y) {
     detectionRect.setOrigin(368, 0);
     boxCol1 = 64;
     boxCol2 = 64;
-    state = GROUNDED;
 
     life = health;
 
@@ -42,7 +41,6 @@ void Boss::jump()
         state = JUMP;
         isJumping = true;
         velocity.y = -jumpForce;
-        jumpClock.restart();
     }
 }
 
@@ -52,9 +50,6 @@ void Boss::takeDamage(Player& player)
         if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds())) {
             setLife(-10);
             cout << "aie ca fais mal (boss)" << endl;
-
-            enleverLife = static_cast<float>(getLife()) / getHealth();
-            healthBar.setSize(Vector2f(100.0f * enleverLife, 10.0f));
         }
     }
 }
@@ -85,8 +80,8 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
     else {
         position.x -= speed * deltaTime;
     }
-
-    velocity.y += gravity * deltaTime;  // Appliquer la gravité
+    if (state != GROUNDED) velocity.y += gravity * deltaTime;  // Appliquer la gravité
+    if (state == GROUNDED) velocity.y = 0;
     position.y += velocity.y * deltaTime;
 
     sprite.setPosition(position);
@@ -108,22 +103,48 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
 
 void Boss::update(float deltaTime, Player& player) {
 
-    if (jumpClock.getElapsedTime().asSeconds() <= 2) {
-        onestla = rand() % 5;
+    if (jumpClock.getElapsedTime().asSeconds() >= 1 && state==GROUNDED) {
+        canJump = true;
+    }
+
+    if (canJump) {
+        onestla = rand() % 10;
+        canJump = false;
+        jumpClock.restart();
     }
 
     switch (onestla) {
     case 0:
+        cout << onestla << endl;
         break;
     case 1:
+        cout << onestla << endl;
         break;
     case 2:
         jump();
+        cout << onestla << endl;
         break;
     case 3:
+        cout << onestla << endl;
         break;
     case 4:
         jump();
+        cout << onestla << endl;
+        break;
+    case 5:
+        cout << onestla << endl;
+        break;
+    case 6:
+        cout << onestla << endl;
+        break;
+    case 7:
+        cout << onestla << endl;
+        break;
+    case 8:
+        cout << onestla << endl;
+        break;
+    case 9:
+        cout << onestla << endl;
         break;
     }
 
