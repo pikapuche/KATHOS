@@ -51,10 +51,12 @@ void::Boss::tired() {
 
 void Boss::takeDamage(Player& player)
 {
-    if (player.ATTACKING) {
+    if (player.getIsAttacking()) {
         if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds())) {
-            setLife(-10);
+            setLife(-2);
             cout << "aie ca fais mal (boss)" << endl;
+
+            healthBar.setSize(Vector2f(life, 10.0f));
         }
     }
 }
@@ -192,6 +194,7 @@ void Boss::update(float deltaTime, Player& player) {
     movementManager(player.getSprite().getPosition().x, player.getSprite().getPosition().x, deltaTime);
     animationManager(deltaTime);
     healthBar.setPosition(sprite.getPosition().x, sprite.getPosition().y - 20);
+
     takeDamage(player);
 }
 

@@ -27,7 +27,6 @@ private:
     RectangleShape healthBar;
     int health = 180;
     int life;
-    float enleverLife;
 
     bool canJump = false;
 

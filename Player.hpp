@@ -104,6 +104,8 @@ public:
 
     RectangleShape getAttackShape();
 
+    bool getIsAttacking();
+
     void update(float deltaTime);
 
     void draw(RenderWindow& window) override;
