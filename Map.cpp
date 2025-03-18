@@ -32,20 +32,8 @@ Map::Map() : mapState(MapState::PRACTICE) {
 Map::~Map() {}
 
 void Map::update(float deltaTime) {
-	collision(deltaTime);
-}
-
-void Map::clearMap() {
-	maps.clear();
-	groundSprites.clear();
-	gemmeSprites.clear();
-	enemies.clear();
-	interactiblesVector.clear();
-	tpShapeA.clear();
-	tpShapeB.clear();
-}
-    for (auto& interactv : interactiblesVector) {
-        interactv->updateProximity(player);
+	for (auto& interactv : interactiblesVector) {
+		interactv->updateProximity(player);
 		if (interactv->getIsPlayerNear()) {
 			interactv->interact(player);
 		}
@@ -58,20 +46,26 @@ void Map::clearMap() {
 		if (key) {
 			key->updateAnimation(deltaTime);
 		}
-    }
+	}
 
 	collision(deltaTime);
+}
+
+void Map::clearMap() {
+	maps.clear();
+	groundSprites.clear();
+	gemmeSprites.clear();
+	enemies.clear();
+	interactiblesVector.clear();
+	tpShapeA.clear();
+	tpShapeB.clear();
 }
 
 
 void Map::collision(float deltaTime) {
 	for (auto& ground : groundSprites) {
-		//for(auto& player : players) 
 		player->collision(*ground, deltaTime);
 
-	//for (auto& door : interactiblesVector){
-	// player->collision(*door, deltaTime);
-	//}
 		for(auto& enemy : enemies)
 		enemy->collision(*ground, deltaTime);
 		for(auto& boss : bosses)
@@ -235,9 +229,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			}
 			case 'P':
 			{
-				//auto player = std::make_unique<Player>();  // La bonne fa�on de cr�er un unique_ptr
 				player->setPosPos((float)i * 32, (float)_z * 20);
-				//players.push_back(move(player));
 				break;
 			}
 			case 'G': //DASH GEM
@@ -252,13 +244,13 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				gemmeSprites.push_back(std::move(gemme));
 				break;
 			}
-			case 'I':
-			{
-				auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20);
-				gemme->gemmeSprite.setColor(Color::Blue);
-				gemmeSprites.push_back(std::move(gemme));
-				break;
-			}
+			//case 'I':
+			//{
+			//	auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20);
+			//	gemme->gemmeSprite.setColor(Color::Blue);
+			//	gemmeSprites.push_back(std::move(gemme));
+			//	break;
+			//}
 			case 'E':
 			{
 				auto newEnemy = make_unique<Enemy>();
@@ -286,7 +278,6 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			case 'B':
 			{
 				auto boss = make_unique<Boss>();
-				//boss = make_shared<Boss>();
 				boss->setPos((float)i * 32, (float)_z * 20);
 				bosses.push_back(move(boss));
 				break;
