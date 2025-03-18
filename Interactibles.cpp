@@ -14,11 +14,13 @@ void Interactible::setTexture(const std::string& filePath) {
     }
 }
 
-void Interactible::updateProximity(Player& player) {
+void Interactible::updateProximity(const std::shared_ptr<Player>& player)
+{
     float distance = std::sqrt(
-        std::pow(sprite.getPosition().x - player.getSprite().getPosition().x, 2) +
-        std::pow(sprite.getPosition().y - player.getSprite().getPosition().y, 2)
+        std::pow(sprite.getPosition().x - player->getSprite().getPosition().x, 2) +
+        std::pow(sprite.getPosition().y - player->getSprite().getPosition().y, 2)
     );
+
 
     isPlayerNear = (distance < PROXIMITY_RANGE); // Adjust range for proximity
 }
@@ -28,6 +30,7 @@ bool Interactible::playerTryInteract() {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
             return true;
         }
+        return false;
     }
     else {
         return false;

@@ -1,5 +1,6 @@
 #include "Game.hpp"
 
+
 void Game::run()
 {
     RenderWindow window(VideoMode(1920, 1080), "Kathos", Style::Fullscreen);
@@ -28,7 +29,6 @@ void Game::run()
         Time deltaT = clock.restart();
         float deltaTime = deltaT.asSeconds();
         Event event;
-
         while (window.pollEvent(event)) {
             if (event.type == Event::Closed) {
                 window.close();
@@ -40,11 +40,19 @@ void Game::run()
                 overlay.setIsPaused(true);
             }
         }
+        if (mainScreen.getIsInMenu()) { //MENU
+            mainScreen.updateMenu(window);
+        }
 
-        window.clear();
+        else{ //JEU PRINCIPAL
+            window.clear();
 
-        if (!overlay.getIsPaused()) { // Only update game when not paused
-            //for (auto& player : m.players) {
+            if (overlay.getShouldRestart()) {
+                m.resetAll();
+                m.loadMap();
+                overlay.resetRestartFlag();
+            }
+            if (!overlay.getIsPaused()) { // Only update game when not paused
                 m.player->update(deltaTime);
 
                 for (auto& enemy : m.enemies) 
@@ -57,29 +65,29 @@ void Game::run()
 
             for (auto& cloud : m.clouds) {
                 cloud->update(deltaTime);
-            }
 
-            for (auto& gemme : m.gemmeSprites) {
-                gemme->updateGemme(deltaTime);
-            }
+                for (auto& gemme : m.gemmeSprites) {
+                    gemme->updateGemme(deltaTime, m.player);
+                }
 
+                
+            }
+            overlay.updateTimer(window);
+            m.draw(window);
             m.update(deltaTime);
-        }
+        
 
-        m.draw(window);
+            m.draw(window);
+           
+            overlay.updateInterface(window, *m.player); // Draw pause menu when paused
+            overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
 
-        if (overlay.getIsPaused()) {
-            overlay.updateInterface(window); // Draw pause menu when paused
-        }
-
-        if (mainScreen.getIsInMenu()) {
-            mainScreen.updateMenu(window);
-        }
-        else {
             mainScreen.destroyAll();
+
+
         }
 
-        // Affiche tout
+        // Affiche touter()
         window.display();
     }
 }
