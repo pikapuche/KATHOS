@@ -27,6 +27,7 @@ void Interface::setIsPaused(bool paused) {
 
 void Interface::initInterface() {
     pauseOverlay.setTexture("assets/texture/UI/pausedOverlay.png");
+    keyGUItexture.loadFromFile("assets/texture/UI/key.png");
 
     buttons.push_back(Button(
         1920 / 2 - 100, 1080 / 2 - 100,
@@ -57,10 +58,31 @@ void Interface::initInterface() {
     highlightRect.setTexture(highlightTexture);
     highlightRect.setColor(Color(255, 255, 255, 255)); // Semi-transparent overlay
 	highlightRect.setOrigin(highlightRect.getGlobalBounds().width / 2, highlightRect.getGlobalBounds().height / 2);
+
+    // Load font
+    if (!timeFont.loadFromFile("Assets/Fonts/Minecraft.ttf")) {
+        std::cerr << "Error loading font!" << std::endl;
+    }
+
+    // Set up timer text
+    timeText.setFont(timeFont);
+    timeText.setCharacterSize(40);
+    timeText.setFillColor(sf::Color::White);
+    timeText.setPosition(1500, 10); // Adjust position (top-right)
+
+    // Start the clock
+    timeClock.restart();
+
+    keyGUI.setPosition(0, 10);
+    keyGUI.setTexture(keyGUItexture);
 }
-void Interface::updateInterface(RenderWindow& window) {
+void Interface::updateInterface(RenderWindow& window, Player& player) {
     detectControllerInput(); // Detect controller usage
     handleMenuNavigation();  // Handle button navigation
+
+    if (player.getHasKey()) {
+        window.draw(keyGUI);
+    }
 
     if (isPaused) { // Only if paused
         pauseOverlay.draw(window);
@@ -89,6 +111,8 @@ void Interface::updateInterface(RenderWindow& window) {
                 case ButtonType::Restart:
                     shouldRestart = true; // New flag to signal a restart
                     isPaused = false; // Unpause when restarting
+                    totalElapsedTime = sf::Time::Zero; // Reset elapsed time
+                    timeClock.restart();  // Restart the timer
                     return;
                 }
             }
@@ -107,6 +131,8 @@ void Interface::updateInterface(RenderWindow& window) {
                         case ButtonType::Restart:
                             shouldRestart = true; // New flag to signal a restart
                             isPaused = false; // Unpause when restarting
+                            totalElapsedTime = sf::Time::Zero; // Reset elapsed time
+                            timeClock.restart();  // Restart the timer
                             return;
                         }
                     }
@@ -124,7 +150,9 @@ void Interface::updateInterface(RenderWindow& window) {
             window.draw(highlightRect);
         }
     }
+
 }
+
 
 
 bool Interface::getShouldRestart() const{
@@ -200,4 +228,42 @@ void Interface::handleMenuNavigation() {
 
     // Move highlight rectangle
     highlightRect.setPosition(buttons[selectedButtonIndex].getPosition());
+}
+
+
+void Interface::updateTimer(RenderWindow& window) {
+    static bool wasPaused = false;    // Track previous pause state
+
+
+
+    if (isPaused) {
+        if (!wasPaused) {
+            totalElapsedTime += timeClock.getElapsedTime();
+        }
+    }
+    else {
+        if (wasPaused) {
+            timeClock.restart(); // Restart the clock fresh after unpausing
+        }
+    }
+
+    wasPaused = isPaused;
+
+    // Calculate correct elapsed time
+    sf::Time elapsed = totalElapsedTime;
+
+
+
+    if (!isPaused) {
+        elapsed += timeClock.getElapsedTime();
+    }
+
+    int minutes = static_cast<int>(elapsed.asSeconds()) / 60;
+    int seconds = static_cast<int>(elapsed.asSeconds()) % 60;
+    int miliseconds = static_cast<int>(elapsed.asMilliseconds() % 1000);
+
+    // Format time
+    timeText.setString("Time: " + std::to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + std::to_string(seconds) + ":" + std::to_string(miliseconds));
+
+    window.draw(timeText); // Ensure it is drawn
 }

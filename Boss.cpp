@@ -157,7 +157,7 @@ void Boss::update(float deltaTime, Player& player) {
         jumpClock.restart();
     }
 
-    cout << onestla << endl;
+    //cout << onestla << endl;
 
     switch (onestla) {
     case 0:

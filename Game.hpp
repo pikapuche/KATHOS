@@ -5,10 +5,11 @@
 #include "MainScreen.hpp"
 #include "Interface.hpp"
 
+
+
 class Game {
 public : 
-
-    sf::Music music;
-
+	Music music;
+	
 	void run();
 };
