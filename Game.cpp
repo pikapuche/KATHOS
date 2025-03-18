@@ -61,7 +61,7 @@ void Game::run()
                 m.nuage->update(deltaTime);
 
                 for (auto& gemme : m.gemmeSprites) {
-                    gemme->updateGemme(deltaTime);
+                    gemme->updateGemme(deltaTime, m.player);
                 }
 
                 

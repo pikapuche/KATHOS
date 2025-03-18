@@ -131,9 +131,15 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				player->setPosPos((float)i * 32, (float)_z * 20);
 				break;
 			}
-			case 'G':
+			case 'G': //DASH GEM
 			{
-				auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20);
+				auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20, Gemme::GemmeState::DASH);
+				gemmeSprites.push_back(std::move(gemme));
+				break;
+			}
+			case 'S': //SPEED GEM
+			{
+				auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20, Gemme::GemmeState::SPEED);
 				gemmeSprites.push_back(std::move(gemme));
 				break;
 			}
@@ -252,7 +258,9 @@ void Map::draw(RenderWindow& window) {
 		window.draw(*ground);
 	}
 	for (auto& gemme : gemmeSprites) {
-		window.draw(gemme->gemmeSprite);
+		if (!gemme->getGemTaken()) {
+			window.draw(gemme->gemmeSprite);
+		}
 	}
 	
 	for(auto& enemy : enemies)

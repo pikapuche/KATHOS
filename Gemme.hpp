@@ -4,6 +4,8 @@
 #include "Interactibles.hpp"
 
 class Gemme {
+private:
+	bool wasTaken = false;
 public:
 
 	sf::Vector2f position;
@@ -22,10 +24,11 @@ public:
 
 	GemmeState gemmeState;
 	
-	Gemme(float _x, float _y);
+	Gemme(float _x, float _y, GemmeState gemmeState);
 
 	void animationGemme(float _deltaTime);
 	Vector2f setPosition(float x, float y);
 	void interact(const std::shared_ptr<Player>& player);
-	void updateGemme(float _deltaTime);
+	void updateGemme(float _deltaTime, const std::shared_ptr<Player>& player);
+	bool getGemTaken();
 };
