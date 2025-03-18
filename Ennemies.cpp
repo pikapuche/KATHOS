@@ -26,6 +26,8 @@ Enemy::Enemy() : Entity(position.x, position.y)
     circleLastPos.setRadius(20.f); // point de derniere position du player
     attackDetect.setSize(Vector2f(75.f, 20.f));
     attackShape.setSize(Vector2f(nuage, 20.f));
+    lifeBar.setSize(Vector2f(life, 10));
+    lifeBar.setFillColor(Color::Green);
 }
 
 void Enemy::detectPlayer(Player& player) 
@@ -76,6 +78,7 @@ void Enemy::movementManager(float pos, float pos2, float deltaTime) { // permet 
     circleOne.setPosition(waypointOne);
     circleTwo.setPosition(waypointTwo);
     attackShape.setSize(Vector2f(nuage, 20.f));
+    lifeBar.setPosition(position.x, position.y + 80);
 
     if (sprite.getPosition().y < 0) { // haut de l'écran
         sprite.setPosition(position.x, position.y = 64);
@@ -160,7 +163,8 @@ void Enemy::takeDamage(Player& player)
 {
     if (player.ATTACKING) {
         if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds())) {
-            setLife(-10);
+            setLife(-1);
+            lifeBar.setSize(Vector2f(life, 10));
             cout << "aie ca fais mal (ennemy)" << endl;
         }
     }

@@ -28,6 +28,9 @@ protected :
 	bool attack = false;
 	bool slow = false;
 
+	int life = 500;
+	RectangleShape lifeBar;
+
 	Clock coolDownSearch;
 	Clock clockAttack;
 	Clock coolDownSlow;

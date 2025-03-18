@@ -26,8 +26,8 @@ int Entity::getLife()
     return life;
 }
 
-int Entity::setLife(int l)
-{
-    life += l;
-    return life;
+int Entity::setLife(int amount) {
+    life += amount;
+    if (life < 0) life = 0;
+    if (life > health) life = health;
 }
