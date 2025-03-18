@@ -11,6 +11,7 @@ private:
     float detectionRange;
     bool isJumping = false;
 
+    bool isTired = false;
     Texture textureIdle;
     Texture textureAttack;
     float animDecrIdle;
@@ -19,14 +20,11 @@ private:
     float jumpForce = 600.f;
     Clock jumpClock;
 
+    Clock coolDownTired;
+
     RectangleShape detectionRect;
 
-    RectangleShape healthBar;
-    int health = 180;
-    int life;
     float enleverLife;
-
-    bool canJump;
 
     bool canJump = false;
 
@@ -48,14 +46,12 @@ public:
     void draw(RenderWindow& window) override;
     void movementManager(float pos, float pos2, float deltaTime);
     void animationManager(float deltaTime);
-    int getHealth();
     int getLife();
-
-    void setLife(int amount);
 
     Vector2f getPos();
     Vector2f setPos(float x, float y);
 
     Vector2f getVelocity();
     Vector2f setVelocity(float veloX, float veloY);
+    void tired();
 };

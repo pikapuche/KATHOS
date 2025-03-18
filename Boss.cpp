@@ -7,33 +7,19 @@ Boss::Boss() : Entity(position.x, position.y) {
     sprite.setScale(Vector2f(3, 3));
     speed = 150.f;
     velocity.y = 0;
-    detectionRange = 400.0f;
-    detectionRect.setSize(Vector2f(detectionRange, 64));
-    detectionRect.setFillColor(Color(0, 255, 0, 50));
-    detectionRect.setOrigin(125, 0);
     boxCol1 = 1;
     boxCol2 = 1;
-
-    life = health;
-
-    healthBar.setSize(Vector2f(100.0f, 10.0f));
-    healthBar.setFillColor(Color::Green);
-    healthBar.setOutlineThickness(2);
-    healthBar.setOutlineColor(Color::Black);
+    life = 180;
+    lifeBar.setSize(Vector2f(life, 10.0f)); 
+    lifeBar.setFillColor(Color::Green);
+    rectBar.setFillColor(Color::Transparent);
+    rectBar.setOutlineColor(Color::White);
+    rectBar.setOutlineThickness(2);
+    sprite.setOrigin(20, 0);
 }
 
 int Boss::getLife() {
     return life;
-}
-
-int Boss::getHealth() {
-    return health;
-}
-
-void Boss::setLife(int amount) {
-    life += amount;
-    if (life < 0) life = 0;
-    if (life > health) life = health;
 }
 
 void Boss::jump()
@@ -45,13 +31,28 @@ void Boss::jump()
     }
 }
 
+void::Boss::tired() {
+    if (state == GROUNDED && state != JUMP) {
+        isTired = true;
+        coolDownTired.restart();
+    }
+}
+
 void Boss::takeDamage(Player& player)
 {
-    if (player.ATTACKING) {
-        if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds())) {
-            setLife(-10);
-            cout << "aie ca fais mal (boss)" << endl;
-        }
+    if (life > 120) {
+            lifeBar.setFillColor(Color::Green);
+    }
+    else if (life < 60) {
+        lifeBar.setFillColor(Color::Red);
+    }
+    else if (life < 120) {
+        lifeBar.setFillColor(Color::Yellow);
+    }
+    if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds()) && player.stateWeapon == player.SPAWN) {
+        setLife(-1);
+        lifeBar.setSize(Vector2f(life, 10));
+        cout << "aie ca fais mal (boss)" << endl;
     }
 }
 
@@ -65,11 +66,17 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
         }
     }
 
-    if (directionState == RIGHT) {
-        position.x += speed * deltaTime;
+    if (!isTired)
+    {
+        if (directionState == RIGHT) {
+            position.x += speed * deltaTime;
+        }
+        else {
+            position.x -= speed * deltaTime;
+        }
     }
-    else {
-        position.x -= speed * deltaTime;
+    else if (isTired && coolDownTired.getElapsedTime().asSeconds() >= 3){
+        isTired = false;
     }
 
     if(state != GROUNDED) velocity.y += gravity * deltaTime;  // Appliquer la gravité
@@ -83,9 +90,6 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
     if (sprite.getPosition().y < 0) { // haut de l'écran
         sprite.setPosition(position.x, position.y = 64);
     }
-    //if (sprite.getPosition().y > 1080) { // bas de l'écran 
-    //    sprite.setPosition(position.x, position.y = 1010);
-    //}
     if (sprite.getPosition().x < 0) { // gauche de l'écran
         sprite.setPosition(position.x = 0, position.y);
     }
@@ -137,7 +141,6 @@ void Boss::animationManager(float deltaTime) {
     }
 }
 
-
 void Boss::update(float deltaTime, Player& player) {
 
     if (jumpClock.getElapsedTime().asSeconds() >= 1 && state == GROUNDED) {
@@ -150,40 +153,31 @@ void Boss::update(float deltaTime, Player& player) {
         jumpClock.restart();
     }
 
-    cout << onestla << endl;
+    //cout << onestla << endl;
 
     switch (onestla) {
     case 0:
-        cout << onestla << endl;
         break;
     case 1:
-        cout << onestla << endl;
         break;
     case 2:
         jump();
-        cout << onestla << endl;
         break;
     case 3:
-        cout << onestla << endl;
         break;
     case 4:
         jump();
-        cout << onestla << endl;
         break;
     case 5:
-        cout << onestla << endl;
         break;
     case 6:
-        cout << onestla << endl;
         break;
     case 7:
-        cout << onestla << endl;
         break;
     case 8:
-        cout << onestla << endl;
+        tired();
         break;
     case 9:
-        cout << onestla << endl;
         break;
     }
 
@@ -193,13 +187,16 @@ void Boss::update(float deltaTime, Player& player) {
 
     movementManager(player.getSprite().getPosition().x, player.getSprite().getPosition().x, deltaTime);
     animationManager(deltaTime);
-    healthBar.setPosition(sprite.getPosition().x, sprite.getPosition().y - 20);
+    lifeBar.setPosition(sprite.getPosition().x, sprite.getPosition().y - 20);
+    rectBar.setPosition(sprite.getPosition().x, sprite.getPosition().y - 20);
+    takeDamage(player);
 }
 
 void Boss::draw(RenderWindow& window) {
     window.draw(sprite);
     window.draw(detectionRect);
-    window.draw(healthBar);
+    window.draw(lifeBar);
+    window.draw(rectBar);
 }
 
 Vector2f Boss::getPos() {
