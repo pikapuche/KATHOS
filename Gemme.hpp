@@ -16,6 +16,10 @@ public:
 	//Time animGemmeTime;
 
 	Vector2i anim;
+
+	enum class GemmeState { NADA, SPRINT, DASH, DOUBLEJUMP };
+
+	GemmeState gemmeState;
 	
 	Gemme(float _x, float _y);
 
