@@ -40,6 +40,7 @@ public:
 
     void jump();
     void takeDamage(Player& player);
+    void attackPlayer(Player& player);
     float getJumpForce();
     float setJumpForce(float force);
     float getGravity();

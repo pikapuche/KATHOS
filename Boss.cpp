@@ -61,6 +61,10 @@ void Boss::takeDamage(Player& player)
     }
 }
 
+void Boss::attackPlayer(Player& player) {
+    
+}
+
 void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet de gerer le mouvement de l'ennemi
     if (!isJumping) {
         if (position.x < pos && directionState != RIGHT) { // faire en sorte qu'il ne puisse pas changer de direction pendant un saut
