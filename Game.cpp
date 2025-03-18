@@ -44,7 +44,7 @@ void Game::run()
             mainScreen.updateMenu(window);
         }
 
-        else{ //JEU PRINCIPAL
+        else { //JEU PRINCIPAL
             window.clear();
 
             if (overlay.getShouldRestart()) {
@@ -55,9 +55,8 @@ void Game::run()
             if (!overlay.getIsPaused()) { // Only update game when not paused
                 m.player->update(deltaTime);
 
-                for (auto& enemy : m.enemies) 
-                enemy->update(deltaTime, *m.player);
-                
+                for (auto& enemy : m.enemies)
+                    enemy->update(deltaTime, *m.player);
 
                 for(auto& boss : m.bosses)
                 boss->update(deltaTime, *m.player);
@@ -79,11 +78,14 @@ void Game::run()
             if (!mainScreen.getIsInMenu())
             overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
 
-            mainScreen.destroyAll();
+                overlay.updateInterface(window, *m.player); // Draw pause menu when paused
+                overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
+
+                mainScreen.destroyAll();
 
 
+            }
         }
-
         // Affiche touter()
         window.display();
     }
