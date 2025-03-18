@@ -16,7 +16,6 @@ public:
 
 class Interface {
 private:
-    sf::Time totalElapsedTime; // Store total elapsed time
     Texture keyGUItexture;
     Sprite keyGUI;
 

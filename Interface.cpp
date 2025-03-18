@@ -66,9 +66,9 @@ void Interface::initInterface() {
 
     // Set up timer text
     timeText.setFont(timeFont);
-    timeText.setCharacterSize(40);
+    timeText.setCharacterSize(24);
     timeText.setFillColor(sf::Color::White);
-    timeText.setPosition(1500, 10); // Adjust position (top-right)
+    timeText.setPosition(1800, 10); // Adjust position (top-right)
 
     // Start the clock
     timeClock.restart();
@@ -111,8 +111,6 @@ void Interface::updateInterface(RenderWindow& window, Player& player) {
                 case ButtonType::Restart:
                     shouldRestart = true; // New flag to signal a restart
                     isPaused = false; // Unpause when restarting
-                    totalElapsedTime = sf::Time::Zero; // Reset elapsed time
-                    timeClock.restart();  // Restart the timer
                     return;
                 }
             }
@@ -131,8 +129,6 @@ void Interface::updateInterface(RenderWindow& window, Player& player) {
                         case ButtonType::Restart:
                             shouldRestart = true; // New flag to signal a restart
                             isPaused = false; // Unpause when restarting
-                            totalElapsedTime = sf::Time::Zero; // Reset elapsed time
-                            timeClock.restart();  // Restart the timer
                             return;
                         }
                     }
@@ -232,9 +228,8 @@ void Interface::handleMenuNavigation() {
 
 
 void Interface::updateTimer(RenderWindow& window) {
+    static sf::Time totalElapsedTime; // Store total elapsed time
     static bool wasPaused = false;    // Track previous pause state
-
-
 
     if (isPaused) {
         if (!wasPaused) {
@@ -251,19 +246,16 @@ void Interface::updateTimer(RenderWindow& window) {
 
     // Calculate correct elapsed time
     sf::Time elapsed = totalElapsedTime;
-
-
-
     if (!isPaused) {
         elapsed += timeClock.getElapsedTime();
     }
 
     int minutes = static_cast<int>(elapsed.asSeconds()) / 60;
     int seconds = static_cast<int>(elapsed.asSeconds()) % 60;
-    int miliseconds = static_cast<int>(elapsed.asMilliseconds() % 1000);
 
     // Format time
-    timeText.setString("Time: " + std::to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + std::to_string(seconds) + ":" + std::to_string(miliseconds));
+    timeText.setString("Time: " + std::to_string(minutes) + ":" +
+        (seconds < 10 ? "0" : "") + std::to_string(seconds));
 
     window.draw(timeText); // Ensure it is drawn
 }
