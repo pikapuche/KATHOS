@@ -59,6 +59,24 @@ void MainScreen::initMenu(RenderWindow& window) {
     highlightRect.setColor(Color(255, 255, 255, 255)); // Normal opacity
     highlightRect.setScale(0.82f, 0.82f);
     highlightRect.setOrigin(highlightTexture.getSize().x / 2, highlightTexture.getSize().y / 2);
+
+
+
+    soundTilterTexture.loadFromFile("assets/texture/titlescreen/sound/gem.png");
+    soundTilterControllerTexture.loadFromFile("assets/texture/titlescreen/sound/gemController.png");
+    soundBarTexture.loadFromFile("assets/texture/titlescreen/sound/bar.png");
+
+    soundTilter.setTexture(soundTilterTexture);
+    soundBar.setTexture(soundBarTexture);
+    soundTilter.setOrigin(soundTilter.getGlobalBounds().width / 2, soundTilter.getGlobalBounds().height / 2);
+    soundBar.setOrigin(soundBar.getGlobalBounds().width / 2, soundBar.getGlobalBounds().height / 2);
+    soundBar.setPosition(window.getSize().x / 2, window.getSize().y / 2);
+    soundTilter.setPosition(soundBar.getGlobalBounds().width/2, soundBar.getPosition().y);
+        
+}
+
+void MainScreen::handleSound(RenderWindow& window) {
+
 }
 
 void MainScreen::handleButtonPress(Button& button) {
@@ -79,7 +97,10 @@ void MainScreen::handleButtonPress(Button& button) {
         case ButtonType::Return:
             clickCooldown.restart();
             selectedButtonIndex = 2;
-            isInSettings = false;
+            if (settingSound)
+                settingSound = false;
+            else if (!settingSound)
+                isInSettings = false;
             break;
         }
     }
@@ -168,9 +189,15 @@ void MainScreen::updateMenu(RenderWindow& window) {
                             break;
                         case ButtonType::Return:
                             clickCooldown.restart();
-                            isInSettings = false; //Return to Main Menu
+                            if (!settingSound)
+                                isInSettings = false; //Return to Main Menu
+                            else if (settingSound)
+                                settingSound = false;
                             break;
+                        case ButtonType::Sound:
+                            settingSound = true;
                         }
+                        
                     }
                 }
             }
@@ -182,8 +209,19 @@ void MainScreen::updateMenu(RenderWindow& window) {
     for (auto& button : buttons) {
         if (isInSettings) {
             if (button.isInSettings()) {
-				button.setHidden(false);
-                button.draw(window);
+                if (!settingSound) {
+                    button.setHidden(false);
+                    button.draw(window);
+                }
+                else {
+                    for (auto& button : buttons) {
+                        if (button.getType() == ButtonType::Return) {
+                            button.draw(window);
+                        }
+                    }
+                    window.draw(soundTilter);
+                    window.draw(soundBar);
+                }
             }
 			else if (!button.isInSettings()) {
 				button.setHidden(true);

@@ -1,5 +1,6 @@
 #include "Game.hpp"
 
+
 void Game::run()
 {
     RenderWindow window(VideoMode(1920, 1080), "Kathos", Style::Fullscreen);
