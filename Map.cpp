@@ -1,6 +1,6 @@
 #include "Map.hpp"
 
-Map::Map() : statePlaying(StatePlaying::Boss) {
+Map::Map() : mapState(MapState::PRACTICE) {
 	groundYellowLeftTexture.loadFromFile("Assets/texture/Map/groundYellowLeft.png");
 	groundYellowMidTexture.loadFromFile("Assets/texture/Map/groundYellowMid.png");
 	groundYellowRightTexture.loadFromFile("Assets/texture/Map/groundYellowRight.png");
@@ -10,13 +10,40 @@ Map::Map() : statePlaying(StatePlaying::Boss) {
 	groundGreenLeftTexture.loadFromFile("Assets/texture/Map/groundGreenLeft.png");
 	groundGreenMidTexture.loadFromFile("Assets/texture/Map/groundGreenMid.png");
 	groundGreenRightTexture.loadFromFile("Assets/texture/Map/groundGreenRight.png");
+
+	//practiceTexture.loadFromFile("Assets/Map/practice.png");
+	salle1Texture.loadFromFile("Assets/Map/salle1.png");
+	salle2Texture.loadFromFile("Assets/Map/salle2.png");
+	salle3Texture.loadFromFile("Assets/Map/salle3.png");
+	salle4Texture.loadFromFile("Assets/Map/salle4.png");
+	salle5Texture.loadFromFile("Assets/Map/salle5.png");
+	salle6Texture.loadFromFile("Assets/Map/salle6.png");
+
+	//practiceSprite.setTexture(practiceTexture);
+	salle1Sprite.setTexture(salle1Texture);
+	salle2Sprite.setTexture(salle2Texture);
+	salle3Sprite.setTexture(salle3Texture);
+	salle4Sprite.setTexture(salle4Texture);
+	salle5Sprite.setTexture(salle5Texture);
+	salle6Sprite.setTexture(salle6Texture);
+
 }
 
 Map::~Map() {}
 
 void Map::update(float deltaTime) {
-    collision(deltaTime);
+	collision(deltaTime);
+}
 
+void Map::clearMap() {
+	maps.clear();
+	groundSprites.clear();
+	gemmeSprites.clear();
+	enemies.clear();
+	interactiblesVector.clear();
+	tpShapeA.clear();
+	tpShapeB.clear();
+}
     for (auto& interactv : interactiblesVector) {
         interactv->updateProximity(player);
 		if (interactv->getIsPlayerNear()) {
@@ -49,6 +76,64 @@ void Map::collision(float deltaTime) {
 		enemy->collision(*ground, deltaTime);
 		for(auto& boss : bosses)
 		boss->collision(*ground, deltaTime);
+	}
+	for (auto& tpA : tpShapeA) {
+		if (player->getSprite().getGlobalBounds().intersects(tpA->getGlobalBounds())) {
+			clearMap();
+			switch (mapState)
+			{	
+			case Map::MapState::PRACTICE:
+				mapState = MapState::SALLE1;
+				break;
+			case Map::MapState::SALLE1:
+				mapState = MapState::SALLE2;
+				break;
+			case Map::MapState::SALLE2:
+				mapState = MapState::SALLE3;
+				break;
+			case Map::MapState::SALLE3:
+				mapState = MapState::SALLE4;
+				break;
+			case Map::MapState::SALLE4:
+				mapState = MapState::SALLE5;
+				break;
+			case Map::MapState::SALLE5:
+				mapState = MapState::SALLE6;
+				break;
+			default:
+				break;
+			}
+			loadMap();
+		}
+	}
+	for (auto& tpB : tpShapeB) {
+		if (player->getSprite().getGlobalBounds().intersects(tpB->getGlobalBounds())) {
+			clearMap();
+			switch (mapState)
+			{
+			case Map::MapState::SALLE1:
+				mapState = MapState::PRACTICE;
+				break;
+			case Map::MapState::SALLE2:
+				mapState = MapState::SALLE1;
+				break;
+			case Map::MapState::SALLE3:
+				mapState = MapState::SALLE2;
+				break;
+			case Map::MapState::SALLE4:
+				mapState = MapState::SALLE3;
+				break;
+			case Map::MapState::SALLE5:
+				mapState = MapState::SALLE4;
+				break;
+			case Map::MapState::SALLE6:
+				mapState = MapState::SALLE5;
+				break;
+			default:
+				break;
+			}
+			loadMap();
+		}
 	}
 }
 
@@ -130,6 +215,24 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				groundSprites.push_back(std::move(right));  // Utilise std::move pour transf�rer la propri�t�
 				break;
 			}
+			case'+': 
+			{
+				auto tpA = std::make_unique<RectangleShape>();
+				tpA->setSize({ 32, 20 });
+				tpA->setFillColor(Color::White);
+				tpA->setPosition({ (float)i * 32, (float)_z * 20 });
+				tpShapeA.push_back(std::move(tpA));
+				break;
+			}
+			case'-':
+			{
+				auto tpB = std::make_unique<RectangleShape>();
+				tpB->setSize({ 32, 20 });
+				tpB->setFillColor(Color::White);
+				tpB->setPosition({ (float)i * 32, (float)_z * 20 });
+				tpShapeB.push_back(std::move(tpB));
+				break;
+			}
 			case 'P':
 			{
 				//auto player = std::make_unique<Player>();  // La bonne fa�on de cr�er un unique_ptr
@@ -146,6 +249,13 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			case 'S': //SPEED GEM
 			{
 				auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20, Gemme::GemmeState::SPEED);
+				gemmeSprites.push_back(std::move(gemme));
+				break;
+			}
+			case 'I':
+			{
+				auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20);
+				gemme->gemmeSprite.setColor(Color::Blue);
 				gemmeSprites.push_back(std::move(gemme));
 				break;
 			}
@@ -242,7 +352,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 }
 
 void Map::loadMap() {
-	if (statePlaying == StatePlaying::Practice) {
+	if (mapState == MapState::PRACTICE) {
 		ifstream Map0("Assets/Map/Practice.txt");
 		maps.push_back(&Map0);
 		string line;
@@ -252,8 +362,8 @@ void Map::loadMap() {
 			monSwitch(*mapPractice, line, z);
 		}
 	}
-	if (statePlaying == StatePlaying::Monde1) {
-		ifstream Map1("Assets/Map/Monde1.txt");
+	if (mapState == MapState::SALLE1) {
+		ifstream Map1("Assets/Map/Salle1.txt");
 		maps.push_back(&Map1);
 		string line;
 		float z = 0;
@@ -262,20 +372,86 @@ void Map::loadMap() {
 			monSwitch(*mapMonde1, line, z);
 		}
 	}
-	if (statePlaying == StatePlaying::Boss) {
-		ifstream Mapb("Assets/Map/Practice.txt");
-		maps.push_back(&Mapb);
+	if (mapState == MapState::SALLE2) {
+		ifstream Map2("Assets/Map/Salle2.txt");
+		maps.push_back(&Map2);
 		string line;
 		float z = 0;
-
-		for (auto& mapBoss : maps) {
-			monSwitch(*mapBoss, line, z);
+		for (auto& mapMonde2 : maps) {
+			monSwitch(*mapMonde2, line, z);
+		}
+	}
+	if (mapState == MapState::SALLE3) {
+		ifstream Map3("Assets/Map/Salle3.txt");
+		maps.push_back(&Map3);
+		string line;
+		float z = 0;
+		for (auto& mapMonde3 : maps) {
+			monSwitch(*mapMonde3, line, z);
+		}
+	}
+	if (mapState == MapState::SALLE4) {
+		ifstream Map4("Assets/Map/Salle4.txt");
+		maps.push_back(&Map4);
+		string line;
+		float z = 0;
+		for (auto& mapMonde4 : maps) {
+			monSwitch(*mapMonde4, line, z);
+		}
+	}
+	if (mapState == MapState::SALLE5) {
+		ifstream Map5("Assets/Map/Salle5.txt");
+		maps.push_back(&Map5);
+		string line;
+		float z = 0;
+		for (auto& mapMonde5 : maps) {
+			monSwitch(*mapMonde5, line, z);
+		}
+	}
+	if (mapState == MapState::SALLE6) {
+		ifstream Map6("Assets/Map/Salle6.txt");
+		maps.push_back(&Map6);
+		string line;
+		float z = 0;
+		for (auto& mapMonde6 : maps) {
+			monSwitch(*mapMonde6, line, z);
 		}
 	}
 }
 
 void Map::draw(RenderWindow& window) {
-
+	for (auto& tpA : tpShapeA) {
+		window.draw(*tpA);
+	}
+	for (auto& tpB : tpShapeB) {
+		window.draw(*tpB);
+	}
+	switch (mapState)
+	{	
+	case Map::MapState::PRACTICE:
+		window.draw(salle5Sprite);
+		break;
+	case Map::MapState::SALLE1:
+		window.draw(salle1Sprite);
+		break;
+	case Map::MapState::SALLE2:
+		window.draw(salle2Sprite);
+		break;
+	case Map::MapState::SALLE3:
+		window.draw(salle3Sprite);
+		break;
+	case Map::MapState::SALLE4:
+		window.draw(salle4Sprite);
+		break;
+	case Map::MapState::SALLE5:
+		window.draw(salle5Sprite);
+		break;
+	case Map::MapState::SALLE6:
+		window.draw(salle6Sprite);
+		break;
+	default:
+		break;
+	}
 	for (auto& ground : groundSprites) {
 		window.draw(*ground);
 	}
