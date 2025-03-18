@@ -11,10 +11,14 @@ private:
     float detectionRange;
     bool isJumping = false;
 
+    bool isTired = false;
+
     Texture texture;
 
     float jumpForce = 600.f;
     Clock jumpClock;
+
+    Clock coolDownTired;
 
     RectangleShape detectionRect;
 
@@ -53,4 +57,5 @@ public:
 
     Vector2f getVelocity();
     Vector2f setVelocity(float veloX, float veloY);
+    void tired();
 };

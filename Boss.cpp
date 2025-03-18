@@ -44,6 +44,13 @@ void Boss::jump()
     }
 }
 
+void::Boss::tired() {
+    if (state == GROUNDED && state != JUMP) {
+        isTired = true;
+        coolDownTired.restart();
+    }
+}
+
 void Boss::takeDamage(Player& player)
 {
     if (player.ATTACKING) {
@@ -74,12 +81,19 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
         }
     }
 
-    if (directionState == RIGHT) {
-        position.x += speed * deltaTime;
+    if (!isTired)
+    {
+        if (directionState == RIGHT) {
+            position.x += speed * deltaTime;
+        }
+        else {
+            position.x -= speed * deltaTime;
+        }
     }
-    else {
-        position.x -= speed * deltaTime;
+    else if (isTired && coolDownTired.getElapsedTime().asSeconds() >= 3){
+        isTired = false;
     }
+
     if (state != GROUNDED) velocity.y += gravity * deltaTime;  // Appliquer la gravité
     if (state == GROUNDED) velocity.y = 0;
     position.y += velocity.y * deltaTime;
@@ -115,36 +129,27 @@ void Boss::update(float deltaTime, Player& player) {
 
     switch (onestla) {
     case 0:
-        cout << onestla << endl;
         break;
     case 1:
-        cout << onestla << endl;
         break;
     case 2:
         jump();
-        cout << onestla << endl;
         break;
     case 3:
-        cout << onestla << endl;
         break;
     case 4:
         jump();
-        cout << onestla << endl;
         break;
     case 5:
-        cout << onestla << endl;
         break;
     case 6:
-        cout << onestla << endl;
         break;
     case 7:
-        cout << onestla << endl;
         break;
     case 8:
-        cout << onestla << endl;
+        tired();
         break;
     case 9:
-        cout << onestla << endl;
         break;
     }
 
