@@ -6,7 +6,6 @@ Gemme::Gemme(float _x, float _y, GemmeState state) : gemmeState(state) {
 	gemmeSprite.setTexture(gemmeTexture);
 	gemmeSprite.setPosition(Vector2f(_x,_y));
 
-
 	switch (gemmeState) {
 	case GemmeState::DASH:
 		gemmeSprite.setColor(sf::Color(Color::Green));
@@ -34,7 +33,7 @@ void Gemme::interact(const std::shared_ptr<Player>& player)
 {
 	if (gemmeSprite.getGlobalBounds().intersects(player->getSprite().getGlobalBounds())) {
 		if (gemmeState == GemmeState::DASH) {
-			cout << "TAKEN" << endl;
+			//cout << "TAKEN" << endl;
 			player->setIsTakeDash(true);
 			wasTaken = true;
 		}

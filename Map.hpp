@@ -47,25 +47,16 @@ public:
 
     std::vector<std::shared_ptr<Interactible>> interactiblesVector;
 
-
     //Text win;
     //Font font;
-
-    enum class StatePlaying {
-        Practice,
-        Monde1,
-        Monde2,
-        Monde3,
-        Boss
-    };
-
-    StatePlaying statePlaying;
 
     Map();
 
     ~Map();
 
     void update(float deltaTime);
+
+    void deathManager(Enemy& enemy);
 
 	void clearMap();
 

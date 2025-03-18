@@ -1,5 +1,26 @@
 #include "Game.hpp"
 
+void Game::removeDeadEnemies(Map& m) 
+{ // avec chat gpt car j'y arrivais pas tant pis
+    m.enemies.erase(
+        std::remove_if(m.enemies.begin(), m.enemies.end(),
+            [](const std::unique_ptr<Enemy>& enemy) {
+                return enemy->getLife() == 0; // Supprime les ennemis avec 0 PV
+            }),
+        m.enemies.end()
+    );
+}
+
+void Game::removeDeadBosses(Map& m)
+{
+    m.bosses.erase(
+        std::remove_if(m.bosses.begin(), m.bosses.end(),
+            [](const std::unique_ptr<Boss>& boss) {
+                return boss->getLife() == 0; // Supprime les ennemis avec 0 PV
+            }),
+        m.bosses.end()
+    );
+}
 
 void Game::run()
 {
@@ -40,10 +61,10 @@ void Game::run()
                 overlay.setIsPaused(true);
             }
         }
+
         if (mainScreen.getIsInMenu()) { //MENU
             mainScreen.updateMenu(window);
         }
-
         else { //JEU PRINCIPAL
             window.clear();
 
@@ -55,8 +76,10 @@ void Game::run()
             if (!overlay.getIsPaused()) { // Only update game when not paused
                 m.player->update(deltaTime);
 
-                for (auto& enemy : m.enemies)
+
+                for (auto& enemy : m.enemies) {
                     enemy->update(deltaTime, *m.player);
+                }
 
                 for (auto& boss : m.bosses)
                     boss->update(deltaTime, *m.player);
@@ -68,22 +91,15 @@ void Game::run()
             for (auto& gemme : m.gemmeSprites) {
                 gemme->updateGemme(deltaTime, m.player);
             }
-            m.draw(window);
+            removeDeadEnemies(m);
             m.update(deltaTime);
-
-
             m.draw(window);
 
             overlay.updateInterface(window, *m.player); // Draw pause menu when paused
             if (!mainScreen.getIsInMenu())
                 overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
 
-            overlay.updateInterface(window, *m.player); // Draw pause menu when paused
-            overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
-
             mainScreen.destroyAll();
-
-
         }
         // Affiche touter()
         window.display();

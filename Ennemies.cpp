@@ -172,7 +172,7 @@ void Enemy::takeDamage(Player& player)
         lifeBar.setFillColor(Color::Yellow);
     }
     if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds()) && player.stateWeapon == player.SPAWN) {
-        setLife(-1);
+        setLife(-2);
         lifeBar.setSize(Vector2f(life, 10));
         cout << "aie ca fais mal (ennemy)" << endl;
     }
