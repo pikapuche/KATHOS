@@ -1,14 +1,17 @@
 #include "Boss.hpp"
 
 Boss::Boss() : Entity(position.x, position.y) {
-    textureIdle.loadFromFile("Assets/texture/Boss/boss-radioactiveV2.png");
-    textureAttack.loadFromFile("Assets/texture/Boss/boss-radioactive_attackV2.png");
-    sprite.setTexture(textureIdle);
-    sprite.setScale(Vector2f(3, 3));
-    speed = 150.f;
+    texture.loadFromFile("Assets/texture/Boss/boss2.png");
+    sprite.setTexture(texture);
+    sprite.setScale(Vector2f(1.5f, 1.5f));
+    speed = 200.0f;
     velocity.y = 0;
-    boxCol1 = 1;
-    boxCol2 = 1;
+    detectionRange = 400.0f;
+    detectionRect.setSize(Vector2f(detectionRange, 64));
+    detectionRect.setFillColor(Color(0, 255, 0, 50));
+    detectionRect.setOrigin(368, 0);
+    boxCol1 = 64;
+    boxCol2 = 64;
 
     life = health;
 
@@ -16,7 +19,6 @@ Boss::Boss() : Entity(position.x, position.y) {
     healthBar.setFillColor(Color::Green);
     healthBar.setOutlineThickness(2);
     healthBar.setOutlineColor(Color::Black);
-    sprite.setOrigin(20, 0);
 }
 
 int Boss::getLife() {
@@ -59,7 +61,17 @@ void Boss::takeDamage(Player& player)
     }
 }
 
+//bool Boss::canSeePlayer() {
+//    float distanceX = abs(target.getPosPos().x - position.x);
+//    float distanceY = abs(target.getPosPos().y - position.y);
+//    return (distanceX < detectionRange && distanceY < 50.0f);
+//}
+
 void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet de gerer le mouvement de l'ennemi
+    //if (canSeePlayer())
+    //{
+
+    //}
     if (!isJumping) {
         if (position.x < pos && directionState != RIGHT) { // faire en sorte qu'il ne puisse pas changer de direction pendant un saut
             directionState = RIGHT;
@@ -78,13 +90,12 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
             position.x -= speed * deltaTime;
         }
     }
-    else if (isTired && coolDownTired.getElapsedTime().asSeconds() >= 3){
+    else if (isTired && coolDownTired.getElapsedTime().asSeconds() >= 3) {
         isTired = false;
     }
 
-    if(state != GROUNDED) velocity.y += gravity * deltaTime;  // Appliquer la gravité
-    else if (state == GROUNDED) velocity.y = 0; 
-   
+    if (state != GROUNDED) velocity.y += gravity * deltaTime;  // Appliquer la gravité
+    if (state == GROUNDED) velocity.y = 0;
     position.y += velocity.y * deltaTime;
 
     sprite.setPosition(position);
@@ -93,6 +104,9 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
     if (sprite.getPosition().y < 0) { // haut de l'écran
         sprite.setPosition(position.x, position.y = 64);
     }
+    //if (sprite.getPosition().y > 1016) { // bas de l'écran 
+    //    sprite.setPosition(position.x, position.y = 1016);
+    //}
     if (sprite.getPosition().x < 0) { // gauche de l'écran
         sprite.setPosition(position.x = 0, position.y);
     }
@@ -100,50 +114,6 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
         sprite.setPosition(position.x = 1856, position.y);
     }
 }
-
-void Boss::animationManager(float deltaTime) {
-    switch (state) {
-    case GROUNDED:
-        sprite.setTexture(textureIdle);
-        animDecrIdle += deltaTime;
-        anim_idle.y = 0;
-        if (animDecrIdle > 0.12f) {
-            anim_idle.x++;
-            animDecrIdle = 0;
-        }
-        if (directionState == LEFT) {
-            if (anim_idle.x > 20)
-                anim_idle.x = 1;
-            sprite.setTextureRect(IntRect(anim_idle.x * 64, 0, -64, 64));
-        }
-        else if (directionState == RIGHT) {
-            if (anim_idle.x > 19)
-                anim_idle.x = 0;
-            sprite.setTextureRect(IntRect(anim_idle.x * 64, 0, 64, 64));
-        }
-        break;
-    case JUMP:
-        sprite.setTexture(textureAttack);
-        animDecrAttack += deltaTime;
-        anim_jump.y = 0;
-        if (animDecrAttack > 0.12f) {
-            anim_jump.x++;
-            animDecrAttack = 0;
-        }
-        if (directionState == LEFT) {
-            if (anim_jump.x > 6)
-                anim_jump.x = 1;
-            sprite.setTextureRect(IntRect(anim_jump.x * 64, anim_jump.y * 64, -64, 64));
-        }
-        else if (directionState == RIGHT) {
-            if (anim_jump.x > 5)
-                anim_jump.x = 0;
-            sprite.setTextureRect(IntRect(anim_jump.x * 64, anim_jump.y * 64, 64, 64));
-        }
-        break;
-    }
-}
-
 
 void Boss::update(float deltaTime, Player& player) {
 
@@ -156,8 +126,6 @@ void Boss::update(float deltaTime, Player& player) {
         canJump = false;
         jumpClock.restart();
     }
-
-    cout << onestla << endl;
 
     switch (onestla) {
     case 0:
@@ -190,7 +158,7 @@ void Boss::update(float deltaTime, Player& player) {
     }
 
     movementManager(player.getSprite().getPosition().x, player.getSprite().getPosition().x, deltaTime);
-    animationManager(deltaTime);
+
     healthBar.setPosition(sprite.getPosition().x, sprite.getPosition().y - 20);
 }
 
