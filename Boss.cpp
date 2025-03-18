@@ -157,7 +157,7 @@ void Boss::update(float deltaTime, Player& player) {
         jumpClock.restart();
     }
 
-    cout << onestla << endl;
+    //cout << onestla << endl;
 
     switch (onestla) {
     case 0:
@@ -192,6 +192,7 @@ void Boss::update(float deltaTime, Player& player) {
     movementManager(player.getSprite().getPosition().x, player.getSprite().getPosition().x, deltaTime);
     animationManager(deltaTime);
     healthBar.setPosition(sprite.getPosition().x, sprite.getPosition().y - 20);
+    takeDamage(player);
 }
 
 void Boss::draw(RenderWindow& window) {
