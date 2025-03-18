@@ -11,7 +11,10 @@ private:
     float detectionRange;
     bool isJumping = false;
 
-    Texture texture;
+    Texture textureIdle;
+    Texture textureAttack;
+    float animDecrIdle;
+    float animDecrAttack;
 
     float jumpForce = 600.f;
     Clock jumpClock;
@@ -24,6 +27,8 @@ private:
     float enleverLife;
 
     bool canJump;
+
+    bool canJump = false;
 
 public:
     Boss();
@@ -42,7 +47,7 @@ public:
     void update(float deltatime, Player& player);
     void draw(RenderWindow& window) override;
     void movementManager(float pos, float pos2, float deltaTime);
-
+    void animationManager(float deltaTime);
     int getHealth();
     int getLife();
 
