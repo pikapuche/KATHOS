@@ -94,7 +94,7 @@ void Player::movementManager(float deltaTime) {
     sprite.setPosition(position);
 
     if (sprite.getPosition().y < 0) { // haut de l'écran
-        sprite.setPosition(position.x, position.y = 64);
+        sprite.setPosition(position.x, position.y = 0);
     }
     if (sprite.getPosition().y > 1016) { // bas de l'écran 
         sprite.setPosition(position.x, position.y = 1016);

@@ -18,10 +18,6 @@ Boss::Boss() : Entity(position.x, position.y) {
     sprite.setOrigin(20, 0);
 }
 
-int Boss::getLife() {
-    return life;
-}
-
 void Boss::jump()
 {
     if (state == GROUNDED) {
@@ -41,7 +37,7 @@ void::Boss::tired() {
 void Boss::takeDamage(Player& player)
 {
     if (life > 120) {
-            lifeBar.setFillColor(Color::Green);
+        lifeBar.setFillColor(Color::Green);
     }
     else if (life < 60) {
         lifeBar.setFillColor(Color::Red);
@@ -50,7 +46,7 @@ void Boss::takeDamage(Player& player)
         lifeBar.setFillColor(Color::Yellow);
     }
     if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds()) && player.stateWeapon == player.SPAWN) {
-        setLife(-1);
+        setLife(-2);
         lifeBar.setSize(Vector2f(life, 10));
         cout << "aie ca fais mal (boss)" << endl;
     }
@@ -193,10 +189,10 @@ void Boss::update(float deltaTime, Player& player) {
 }
 
 void Boss::draw(RenderWindow& window) {
-    window.draw(sprite);
     window.draw(detectionRect);
     window.draw(lifeBar);
     window.draw(rectBar);
+    window.draw(sprite);
 }
 
 Vector2f Boss::getPos() {

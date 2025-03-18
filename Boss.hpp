@@ -47,7 +47,6 @@ public:
     float getJumpForce();
     float setJumpForce(float force);
     float getGravity();
-    int getLife();
     Vector2f getPos();
     Vector2f setPos(float x, float y);
     Vector2f getVelocity();

@@ -2,25 +2,27 @@
 
 void Game::removeDeadEnemies(Map& m) 
 { // avec chat gpt car j'y arrivais pas tant pis
-    m.enemies.erase(
-        std::remove_if(m.enemies.begin(), m.enemies.end(),
-            [](const std::unique_ptr<Enemy>& enemy) {
-                return enemy->getLife() == 0; // Supprime les ennemis avec 0 PV
-            }),
-        m.enemies.end()
-    );
+    m.enemies.erase(remove_if(m.enemies.begin(), m.enemies.end(), [](const unique_ptr<Enemy>& enemy) { return enemy->getLife() == 0; }), m.enemies.end()); // Supprime les ennemis avec 0 PV
 }
 
 void Game::removeDeadBosses(Map& m)
 {
-    m.bosses.erase(
-        std::remove_if(m.bosses.begin(), m.bosses.end(),
-            [](const std::unique_ptr<Boss>& boss) {
-                return boss->getLife() == 0; // Supprime les ennemis avec 0 PV
-            }),
-        m.bosses.end()
-    );
+    m.bosses.erase(remove_if(m.bosses.begin(), m.bosses.end(), [](const unique_ptr<Boss>& boss) { return boss->getLife() == 0; }), m.bosses.end()); // Supprime les boss avec 0 PV
 }
+
+//void Game::removeDeadBosses(Map& m)
+//{
+//    if (m.bosses.size() == 1 && m.bosses[0]->getLife() == 0) {
+//        m.bosses.clear(); // Supprime directement le seul boss du vecteur
+//    }
+//    else {
+//        m.bosses.erase(
+//            remove_if(m.bosses.begin(), m.bosses.end(),
+//                [](const unique_ptr<Boss>& boss) { return boss->getLife() == 0; }),
+//            m.bosses.end()
+//        );
+//    }
+//}
 
 void Game::run()
 {
@@ -92,6 +94,7 @@ void Game::run()
                 gemme->updateGemme(deltaTime, m.player);
             }
             removeDeadEnemies(m);
+            removeDeadBosses(m);
             m.update(deltaTime);
             m.draw(window);
 

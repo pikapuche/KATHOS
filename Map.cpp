@@ -347,7 +347,7 @@ void Map::loadMap() {
 		}
 	}
 	if (mapState == MapState::SALLE1) {
-		ifstream Map1("Assets/Map/Salle1.txt");
+		ifstream Map1("Assets/Map/mapBoss.txt");
 		maps.push_back(&Map1);
 		string line;
 		float z = 0;

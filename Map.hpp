@@ -56,8 +56,6 @@ public:
 
     void update(float deltaTime);
 
-    void deathManager(Enemy& enemy);
-
 	void clearMap();
 
     void collision(float deltaTime);
