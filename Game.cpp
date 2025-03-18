@@ -61,16 +61,13 @@ void Game::run()
 
                 for(auto& boss : m.bosses)
                 boss->update(deltaTime, *m.player);
-            //}
+            }
 
             for (auto& cloud : m.clouds) {
                 cloud->update(deltaTime);
-
-                for (auto& gemme : m.gemmeSprites) {
-                    gemme->updateGemme(deltaTime, m.player);
-                }
-
-                
+            }
+            for (auto& gemme : m.gemmeSprites) {
+                gemme->updateGemme(deltaTime, m.player);
             }
             m.draw(window);
             m.update(deltaTime);
