@@ -1,10 +1,20 @@
 #include "Gemme.hpp"
 
-Gemme::Gemme(float _x, float _y) : gemmeState(GemmeState::NADA) { 
+Gemme::Gemme(float _x, float _y, GemmeState state) : gemmeState(state) { 
 	gemmeTexture.loadFromFile("Assets/gemme.png");
 	gemmeSprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
 	gemmeSprite.setTexture(gemmeTexture);
 	gemmeSprite.setPosition(Vector2f(_x,_y));
+
+
+	switch (gemmeState) {
+	case GemmeState::DASH:
+		gemmeSprite.setColor(sf::Color(Color::Green));
+		break;
+	case GemmeState::SPEED:
+		gemmeSprite.setColor(sf::Color(175,175,255,100));
+		break;
+	}
 }
 
 void Gemme::animationGemme(float _deltaTime)
@@ -18,25 +28,33 @@ void Gemme::animationGemme(float _deltaTime)
 		animGemmeTime = 0;
 		gemmeSprite.setTextureRect(sf::IntRect(0,0, 32, 32));
 	}
-
-	if (Gemme::gemmeState == Gemme::GemmeState::SPRINT) {
-		gemmeSprite.setColor(Color::Green);
-	}
-	if (Gemme::gemmeState == Gemme::GemmeState::DASH) {
-		gemmeSprite.setColor(Color::Blue);
-	}
-	if (Gemme::gemmeState == Gemme::GemmeState::DOUBLEJUMP){
-		gemmeSprite.setColor(Color::Red);
-	}
-	
 }
 
-//void Gemme::interact(Player& player)
-//{
-//
-//}
+void Gemme::interact(const std::shared_ptr<Player>& player)
+{
+	if (gemmeSprite.getGlobalBounds().intersects(player->getSprite().getGlobalBounds())) {
+		if (gemmeState == GemmeState::DASH) {
+			cout << "TAKEN" << endl;
+			player->setIsTakeDash(true);
+			wasTaken = true;
+		}
+		else if (gemmeState == GemmeState::SPEED) {
+			player->setIsTakeSpeed(true);
+			wasTaken = true;
+		}
+		else {
+			cout << "Something arry" << endl;
+		}
+	}
 
-void Gemme::updateGemme(float _deltaTime)
+}
+
+void Gemme::updateGemme(float _deltaTime, const std::shared_ptr<Player>& player)
 {
 	animationGemme(_deltaTime); 
+	interact(player);
 };
+
+bool Gemme::getGemTaken() {
+	return wasTaken;
+}

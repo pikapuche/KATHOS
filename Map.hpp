@@ -7,12 +7,14 @@
 #include "Interactibles.hpp"
 #include "Chest.hpp"
 #include "Key.hpp"
+#include "Door.hpp"
 
 
 class Map {
 public:
 
     bool isGameOver = false;
+    bool isWin = false;
     bool bossZone = false;
 
     Texture groundYellowLeftTexture, groundYellowMidTexture, groundYellowRightTexture;
@@ -35,18 +37,29 @@ public:
 
     shared_ptr<Player> player = make_shared<Player>();
 
-    shared_ptr<Boss> boss = make_shared<Boss>(*player);
-
-    shared_ptr<NuageTox> nuage = make_shared<NuageTox>();
+    vector<unique_ptr<Boss>> bosses;
 
     vector<unique_ptr<Enemy>> enemies;
 
+    vector<unique_ptr<NuageTox>> clouds;
+
     vector<ifstream*> maps;
 
-    vector<Interactible*> interactiblesVector; // Vector of all Interacts
+    std::vector<std::shared_ptr<Interactible>> interactiblesVector;
+
 
     //Text win;
     //Font font;
+
+    enum class StatePlaying {
+        Practice,
+        Monde1,
+        Monde2,
+        Monde3,
+        Boss
+    };
+
+    StatePlaying statePlaying;
 
     Map();
 
@@ -65,5 +78,9 @@ public:
     void draw(RenderWindow& window);
 
     void gameOver(RenderWindow& window);
+    
+    void resetAll();
+
+    void Win(RenderWindow& window);
 
 };

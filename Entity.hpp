@@ -16,6 +16,10 @@ protected:
 	Vector2i anim_jump;
 	Vector2i anim_attack;
 
+	RectangleShape lifeBar;
+	RectangleShape rectBar;
+	float life;
+
 	float boxCol1;
 	float boxCol2;
 
@@ -29,8 +33,11 @@ public:
 	Entity(float posX, float posY);
 
 	virtual void collision(Sprite& tile, float deltaTime);
-	virtual void update(float deltaTime) = 0;
 	virtual void draw(RenderWindow& window) = 0;
 
 	Sprite& getSprite();
+
+	int getLife();
+
+	void setLife(float l);
 };

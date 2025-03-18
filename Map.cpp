@@ -32,6 +32,22 @@ Map::Map() : mapState(MapState::PRACTICE) {
 Map::~Map() {}
 
 void Map::update(float deltaTime) {
+	for (auto& interactv : interactiblesVector) {
+		interactv->updateProximity(player);
+		if (interactv->getIsPlayerNear()) {
+			interactv->interact(player);
+		}
+		//Interactibles Animation
+		auto chest = std::dynamic_pointer_cast<Chest>(interactv);
+		if (chest) {
+			chest->updateAnimation(deltaTime);
+		}
+		auto key = std::dynamic_pointer_cast<Key>(interactv);
+		if (key) {
+			key->updateAnimation(deltaTime);
+		}
+	}
+
 	collision(deltaTime);
 }
 
@@ -45,11 +61,14 @@ void Map::clearMap() {
 	tpShapeB.clear();
 }
 
+
 void Map::collision(float deltaTime) {
 	for (auto& ground : groundSprites) {
 		player->collision(*ground, deltaTime);
+
 		for(auto& enemy : enemies)
 		enemy->collision(*ground, deltaTime);
+		for(auto& boss : bosses)
 		boss->collision(*ground, deltaTime);
 	}
 	for (auto& tpA : tpShapeA) {
@@ -117,7 +136,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 	while (getline(_Map, _line)) {
 		for (int i = 0; i < _line.size(); i++) {
 			switch (_line[i]) { // tileValue
-				cout << _line[i] << endl;
+				//cout << _line[i] << endl;
 			case '1':
 			{
 				auto left = make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
@@ -213,24 +232,15 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				player->setPosPos((float)i * 32, (float)_z * 20);
 				break;
 			}
-			case 'G':
+			case 'G': //DASH GEM
 			{
-				auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20);
-				gemme->gemmeSprite.setColor(Color::Green);
+				auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20, Gemme::GemmeState::DASH);
 				gemmeSprites.push_back(std::move(gemme));
 				break;
 			}
-			case 'g':
+			case 'S': //SPEED GEM
 			{
-				auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20);
-				gemme->gemmeSprite.setColor(Color::Red);
-				gemmeSprites.push_back(std::move(gemme));
-				break;
-			}
-			case 'I':
-			{
-				auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20);
-				gemme->gemmeSprite.setColor(Color::Blue);
+				auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20, Gemme::GemmeState::SPEED);
 				gemmeSprites.push_back(std::move(gemme));
 				break;
 			}
@@ -258,23 +268,11 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				enemies.push_back(move(newEnemy));
 				break;
 			}
-			case 'C':
-			{
-				Chest* chest = new Chest();
-				chest->setPosPos((float)i * 32, (float)_z * 32 - 25);
-				interactiblesVector.push_back(move(chest));
-				break;
-			}
-			case 'K':
-			{
-				Key* key = new Key();
-				key->setPosPos((float)i * 32, (float)_z * 32 - 25);
-				interactiblesVector.push_back(move(key));
-				break;
-			}
 			case 'B':
 			{
+				auto boss = make_unique<Boss>();
 				boss->setPos((float)i * 32, (float)_z * 20);
+				bosses.push_back(move(boss));
 				break;
 			}
 			case 'Q':
@@ -291,9 +289,46 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			}
 			case 'T' : 
 			{
-				nuage->setPos((float)i * 32, (float)_z * 20 - 10);
+				auto newCloud = make_unique<NuageTox>();
+				newCloud->setPos((float)i * 32, (float)_z * 20 - 10);
+				clouds.push_back(move(newCloud));
 				break;
 			}
+
+			//INTERACTIBLES
+			case 'K':
+			{
+				auto key = std::make_shared<Key>();  // Change to shared_ptrw Key();
+				key->setPosPos((float)i * 32, (float)_z * 20 - 15);
+				interactiblesVector.push_back(move(key));
+				break;
+			}
+			case 'C':
+			{
+				auto chest = std::make_shared<Chest>();  // Change to shared_ptr
+				chest->setPosPos((float)i * 32, (float)_z * 20 - 40);
+				interactiblesVector.push_back(chest);
+				break;
+			}
+			//DOOR WITHOUT BUTTON
+			case 'D':
+			{
+				auto door = std::make_shared<Door>(false);
+				door->setPosPos((float)i * 32, (float)_z * 20 - 45);
+				interactiblesVector.push_back(door);
+				break;
+			}
+
+
+			//DOOR WITH BUTTON
+			case 'd':
+			{
+				auto door = std::make_shared<Door>(true);  // Change to shared_ptr
+				door->setPosPos((float)i * 32, (float)_z * 20 - 40);
+				interactiblesVector.push_back(door);
+				break;
+			}
+
 			}
 		}
 		_z++;
@@ -405,17 +440,33 @@ void Map::draw(RenderWindow& window) {
 		window.draw(*ground);
 	}
 	for (auto& gemme : gemmeSprites) {
-		window.draw(gemme->gemmeSprite);
+		if (!gemme->getGemTaken()) {
+			window.draw(gemme->gemmeSprite);
+		}
+	}
+	//for (auto& player : players)
+		player->draw(window);
+
+  for(auto& enemy : enemies)
+		enemy->draw(window);
+
+	for (auto& interactv : interactiblesVector) {
+		if (!interactv->isDoor()) {  // Check if the object is NOT a door
+			interactv->draw(window);
+		}
 	}
 
-	player->draw(window);
-	for(auto& enemy : enemies)
-	enemy->draw(window);
+	for (auto& boss : bosses)
+		boss->draw(window);
+
+	for (auto& cloud : clouds)
+		cloud->draw(window);
+
 	for (auto& interactv : interactiblesVector) {
-		interactv->draw(window);
+		if (interactv->isDoor()) {  // Check if the object is NOT a door
+			interactv->draw(window);
+		}
 	}
-	boss->draw(window);
-	nuage->draw(window);
 }
 
 void Map::gameOver(RenderWindow& window)
@@ -439,6 +490,38 @@ void Map::gameOver(RenderWindow& window)
 		gameOverText.setPosition((window.getSize().x - gameOverText.getGlobalBounds().width) / 2, (window.getSize().y - gameOverText.getGlobalBounds().height) / 2);
 
 		window.draw(gameOverText);
+		return;
+	}
+}
+
+void Map::resetAll() {
+	interactiblesVector.clear();
+	gemmeSprites.clear();
+	enemies.clear();
+	bosses.clear();
+}
+
+void Map::Win(RenderWindow& window)
+{
+	if (isWin) {
+		RectangleShape winScreen(Vector2f(window.getSize().x, window.getSize().y));
+		winScreen.setFillColor(Color(0, 0, 0, 150));
+		window.draw(winScreen);
+
+		Font font;
+		if (!font.loadFromFile("Assets/Fonts/Minecraft.ttf")) {
+			cout << "Erreur chargement police !" << endl;
+		}
+
+		Text winText;
+		winText.setFont(font);
+		winText.setString("WIN");
+		winText.setCharacterSize(80);
+		winText.setFillColor(Color::Yellow);
+		winText.setStyle(Text::Bold);
+		winText.setPosition((window.getSize().x - winText.getGlobalBounds().width) / 2, (window.getSize().y - winText.getGlobalBounds().height) / 2);
+
+		window.draw(winText);
 		return;
 	}
 }

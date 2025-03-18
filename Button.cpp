@@ -16,7 +16,6 @@ Button::Button(float x, float y, float width, float height, ButtonType type, boo
     button.setPosition(x, y);
     button.setTexture(texture);
     button.setOrigin(width / 2, height / 2);
-
 }
 
 void Button::draw(RenderWindow& window) {

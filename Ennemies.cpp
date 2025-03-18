@@ -4,7 +4,6 @@ Enemy::Enemy() : Entity(position.x, position.y)
 {
     DEBUG = true;
     if (DEBUG) {
-        //circleDetect.setFillColor(sf::Color(255, 0, 0, 50));
         rectangleDetect.setFillColor(sf::Color(255, 0, 0, 50));
         circleOne.setFillColor(Color::Yellow);
         circleTwo.setFillColor(Color::Blue);
@@ -12,8 +11,6 @@ Enemy::Enemy() : Entity(position.x, position.y)
         attackDetect.setFillColor(Color(0, 255, 0, 50));
         attackShape.setFillColor(Color::Yellow);
     }
-    //circleDetect.setRadius(175.f); // cerlce de detection
-    //circleDetect.setPosition(position);
     rectangleDetect.setOrigin(318, 11); // 150 (radius) - 64 (taille sprite) + 32 (moitié taille sprite pour centrer) 
     rectangleDetect.setSize(Vector2f(700, 75));
     currentState = PATROL;
@@ -26,6 +23,12 @@ Enemy::Enemy() : Entity(position.x, position.y)
     circleLastPos.setRadius(20.f); // point de derniere position du player
     attackDetect.setSize(Vector2f(75.f, 20.f));
     attackShape.setSize(Vector2f(nuage, 20.f));
+    life = 50;
+    lifeBar.setSize(Vector2f(life, 10));
+    lifeBar.setFillColor(Color::Green);
+    rectBar.setFillColor(Color::Transparent);
+    rectBar.setOutlineColor(Color::White);
+    rectBar.setOutlineThickness(2);
 }
 
 void Enemy::detectPlayer(Player& player) 
@@ -76,6 +79,7 @@ void Enemy::movementManager(float pos, float pos2, float deltaTime) { // permet 
     circleOne.setPosition(waypointOne);
     circleTwo.setPosition(waypointTwo);
     attackShape.setSize(Vector2f(nuage, 20.f));
+    lifeBar.setPosition(position.x + 5, position.y - 45);
 
     if (sprite.getPosition().y < 0) { // haut de l'écran
         sprite.setPosition(position.x, position.y = 64);
@@ -156,6 +160,24 @@ void Enemy::search(float lastPlayerPosition, float deltaTime, Player& player) //
     attackPlayer(player);
 }
 
+void Enemy::takeDamage(Player& player)
+{
+    if (life > 35) {
+        lifeBar.setFillColor(Color::Green);
+    }
+    else if (life < 15) {
+        lifeBar.setFillColor(Color::Red);
+    }
+    else if (life < 35) {
+        lifeBar.setFillColor(Color::Yellow);
+    }
+    if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds()) && player.stateWeapon == player.SPAWN) {
+        setLife(-1);
+        lifeBar.setSize(Vector2f(life, 10));
+        cout << "aie ca fais mal (ennemy)" << endl;
+    }
+}
+
 #pragma region Getter / Setter
 
 bool Enemy::setIsGrounded(bool is)
@@ -183,9 +205,7 @@ Vector2f Enemy::getPosPos()
 
 #pragma endregion Getter / Setter
 
-void Enemy::update(float deltaTime) {}
-
-void Enemy::updateReal(float deltaTime, Player& player)
+void Enemy::update(float deltaTime, Player& player)
 {
     switch (currentState) {
     case PATROL:
@@ -203,6 +223,8 @@ void Enemy::updateReal(float deltaTime, Player& player)
         detectPlayer(player);
         break;
     }
+    takeDamage(player);
+
 }
 
 void Enemy::draw(RenderWindow& window)
@@ -217,5 +239,6 @@ void Enemy::draw(RenderWindow& window)
     }
     window.draw(attackDetect);
     window.draw(attackShape);
+    window.draw(lifeBar);
     window.draw(sprite);
 }

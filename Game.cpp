@@ -1,5 +1,6 @@
 #include "Game.hpp"
 
+
 void Game::run()
 {
     RenderWindow window(VideoMode(1920, 1080), "Kathos", Style::Fullscreen);
@@ -28,7 +29,6 @@ void Game::run()
         Time deltaT = clock.restart();
         float deltaTime = deltaT.asSeconds();
         Event event;
-
         while (window.pollEvent(event)) {
             if (event.type == Event::Closed) {
                 window.close();
@@ -40,38 +40,52 @@ void Game::run()
                 overlay.setIsPaused(true);
             }
         }
-
-        window.clear();
-
-        if (!overlay.getIsPaused()) { // Only update game when not paused
-            m.player->update(deltaTime);
-            for (auto& enemy : m.enemies)
-                enemy->updateReal(deltaTime, *m.player);
-
-            m.boss->updateReal(deltaTime, *m.player);
-            m.nuage->update(deltaTime);
-
-            for (auto& gemme : m.gemmeSprites) {
-                gemme->updateGemme(deltaTime);
-            }
-
-            m.update(deltaTime);
-        }
-
-        m.draw(window);
-
-        if (overlay.getIsPaused()) {
-            overlay.updateInterface(window); // Draw pause menu when paused
-        }
-
-        if (mainScreen.getIsInMenu()) {
+        if (mainScreen.getIsInMenu()) { //MENU
             mainScreen.updateMenu(window);
         }
-        else {
-            mainScreen.destroyAll();
-        }
 
-        // Affiche tout
+        else { //JEU PRINCIPAL
+            window.clear();
+
+            if (overlay.getShouldRestart()) {
+                m.resetAll();
+                m.loadMap();
+                overlay.resetRestartFlag();
+            }
+            if (!overlay.getIsPaused()) { // Only update game when not paused
+                m.player->update(deltaTime);
+
+                for (auto& enemy : m.enemies)
+                    enemy->update(deltaTime, *m.player);
+
+                for (auto& boss : m.bosses)
+                    boss->update(deltaTime, *m.player);
+            }
+
+            for (auto& cloud : m.clouds) {
+                cloud->update(deltaTime);
+            }
+            for (auto& gemme : m.gemmeSprites) {
+                gemme->updateGemme(deltaTime, m.player);
+            }
+            m.draw(window);
+            m.update(deltaTime);
+
+
+            m.draw(window);
+
+            overlay.updateInterface(window, *m.player); // Draw pause menu when paused
+            if (!mainScreen.getIsInMenu())
+                overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
+
+            overlay.updateInterface(window, *m.player); // Draw pause menu when paused
+            overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
+
+            mainScreen.destroyAll();
+
+
+        }
+        // Affiche touter()
         window.display();
     }
 }
