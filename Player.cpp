@@ -357,6 +357,10 @@ RectangleShape Player::getAttackShape()
     return attackShape;
 }
 
+bool Player::getIsAttacking() {
+    return isAttacking;
+}
+
 #pragma endregion Getteurs / Setteurs
 
 void Player::update(float deltaTime) {
