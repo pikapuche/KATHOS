@@ -8,18 +8,31 @@ private:
     Vector2f position;
     Vector2f velocity;
     float speed;
-    Player& target;
     float detectionRange;
+    bool isJumping = false;
 
-    Texture texture;
+    bool isTired = false;
+    Texture textureIdle;
+    Texture textureAttack;
+    float animDecrIdle;
+    float animDecrAttack;
 
     float jumpForce = 600.f;
     Clock jumpClock;
 
+    Clock coolDownTired;
+
     RectangleShape detectionRect;
 
+    RectangleShape healthBar;
+    int health = 180;
+    int life;
+    float enleverLife;
+
+    bool canJump = false;
+
 public:
-    Boss(Player& target);
+    Boss();
 
     int onestla;
 
@@ -27,19 +40,24 @@ public:
     StateDirection directionState;
 
     void jump();
+    void takeDamage(Player& player);
     float getJumpForce();
     float setJumpForce(float force);
     float getGravity();
 
-    void update(float deltatime) override;
-    void updateReal(float deltatime, Player& player);
+    void update(float deltatime, Player& player);
     void draw(RenderWindow& window) override;
     void movementManager(float pos, float pos2, float deltaTime);
-    bool canSeePlayer();
+    void animationManager(float deltaTime);
+    int getHealth();
+    int getLife();
+
+    void setLife(int amount);
 
     Vector2f getPos();
     Vector2f setPos(float x, float y);
 
     Vector2f getVelocity();
     Vector2f setVelocity(float veloX, float veloY);
+    void tired();
 };

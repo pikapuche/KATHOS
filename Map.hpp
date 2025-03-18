@@ -13,6 +13,7 @@ class Map {
 public:
 
     bool isGameOver = false;
+    bool isWin = false;
     bool bossZone = false;
 
     Texture groundYellowLeftTexture, groundYellowMidTexture, groundYellowRightTexture;
@@ -23,18 +24,18 @@ public:
     vector<unique_ptr<Gemme>> gemmeSprites;
 
     shared_ptr<Player> player = make_shared<Player>();
+    //vector<unique_ptr<Player>> players;
 
-    shared_ptr<Boss> boss = make_shared<Boss>(*player);
-
-    shared_ptr<NuageTox> nuage = make_shared<NuageTox>();
+    //shared_ptr<Boss> boss;
+    vector<unique_ptr<Boss>> bosses;
 
     vector<unique_ptr<Enemy>> enemies;
 
+    vector<unique_ptr<NuageTox>> clouds;
+
     vector<ifstream*> maps;
 
-
     vector<Interactible*> interactiblesVector; // Vector of all Interacts
-
 
     //Text win;
     //Font font;
@@ -44,6 +45,7 @@ public:
         Monde1,
         Monde2,
         Monde3,
+        Boss
     };
 
     StatePlaying statePlaying;
@@ -63,5 +65,7 @@ public:
     void draw(RenderWindow& window);
 
     void gameOver(RenderWindow& window);
+
+    void Win(RenderWindow& window);
 
 };

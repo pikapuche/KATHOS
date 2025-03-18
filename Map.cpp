@@ -1,6 +1,6 @@
 #include "Map.hpp"
 
-Map::Map() : statePlaying(StatePlaying::Practice) {
+Map::Map() : statePlaying(StatePlaying::Boss) {
 	groundYellowLeftTexture.loadFromFile("Assets/texture/Map/groundYellowLeft.png");
 	groundYellowMidTexture.loadFromFile("Assets/texture/Map/groundYellowMid.png");
 	groundYellowRightTexture.loadFromFile("Assets/texture/Map/groundYellowRight.png");
@@ -16,17 +16,17 @@ Map::~Map() {}
 
 void Map::update(float deltaTime) {
 	collision(deltaTime);
-
 }
 
 void Map::collision(float deltaTime) {
 	for (auto& ground : groundSprites) {
+		//for(auto& player : players) 
 		player->collision(*ground, deltaTime);
 		for(auto& enemy : enemies)
 		enemy->collision(*ground, deltaTime);
+		for(auto& boss : bosses)
 		boss->collision(*ground, deltaTime);
 	}
-
 }
 
 void Map::monSwitch(ifstream& _Map, string _line, int _z) {
@@ -109,7 +109,9 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			}
 			case 'P':
 			{
+				//auto player = std::make_unique<Player>();  // La bonne fa�on de cr�er un unique_ptr
 				player->setPosPos((float)i * 32, (float)_z * 20);
+				//players.push_back(move(player));
 				break;
 			}
 			case 'G':
@@ -158,7 +160,10 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			}
 			case 'B':
 			{
+				auto boss = make_unique<Boss>();
+				//boss = make_shared<Boss>();
 				boss->setPos((float)i * 32, (float)_z * 20);
+				bosses.push_back(move(boss));
 				break;
 			}
 			case 'Q':
@@ -175,7 +180,9 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			}
 			case 'T' : 
 			{
-				nuage->setPos((float)i * 32, (float)_z * 20 - 10);
+				auto newCloud = make_unique<NuageTox>();
+				newCloud->setPos((float)i * 32, (float)_z * 20 - 10);
+				clouds.push_back(move(newCloud));
 				break;
 			}
 			}
@@ -205,23 +212,42 @@ void Map::loadMap() {
 			monSwitch(*mapMonde1, line, z);
 		}
 	}
+	if (statePlaying == StatePlaying::Boss) {
+		ifstream Mapb("Assets/Map/Practice.txt");
+		maps.push_back(&Mapb);
+		string line;
+		float z = 0;
+
+		for (auto& mapBoss : maps) {
+			monSwitch(*mapBoss, line, z);
+		}
+	}
 }
 
 void Map::draw(RenderWindow& window) {
+
 	for (auto& ground : groundSprites) {
 		window.draw(*ground);
 	}
 	for (auto& gemme : gemmeSprites) {
 		window.draw(gemme->gemmeSprite);
 	}
-	player->draw(window);
+
+	//for (auto& player : players)
+		player->draw(window);
+
 	for(auto& enemy : enemies)
-	enemy->draw(window);
+		enemy->draw(window);
+
 	for (auto& interactv : interactiblesVector) {
 		interactv->draw(window);
 	}
-	boss->draw(window);
-	nuage->draw(window);
+
+	for (auto& boss : bosses)
+		boss->draw(window);
+
+	for (auto& cloud : clouds)
+		cloud->draw(window);
 }
 
 void Map::gameOver(RenderWindow& window)
@@ -245,6 +271,31 @@ void Map::gameOver(RenderWindow& window)
 		gameOverText.setPosition((window.getSize().x - gameOverText.getGlobalBounds().width) / 2, (window.getSize().y - gameOverText.getGlobalBounds().height) / 2);
 
 		window.draw(gameOverText);
+		return;
+	}
+}
+
+void Map::Win(RenderWindow& window)
+{
+	if (isWin) {
+		RectangleShape winScreen(Vector2f(window.getSize().x, window.getSize().y));
+		winScreen.setFillColor(Color(0, 0, 0, 150));
+		window.draw(winScreen);
+
+		Font font;
+		if (!font.loadFromFile("Assets/Fonts/Minecraft.ttf")) {
+			cout << "Erreur chargement police !" << endl;
+		}
+
+		Text winText;
+		winText.setFont(font);
+		winText.setString("WIN");
+		winText.setCharacterSize(80);
+		winText.setFillColor(Color::Yellow);
+		winText.setStyle(Text::Bold);
+		winText.setPosition((window.getSize().x - winText.getGlobalBounds().width) / 2, (window.getSize().y - winText.getGlobalBounds().height) / 2);
+
+		window.draw(winText);
 		return;
 	}
 }

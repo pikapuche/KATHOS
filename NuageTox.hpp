@@ -11,7 +11,7 @@ private:
 public:
     NuageTox();
 
-    void update(float deltatime) override;
+    void update(float deltatime);
     void draw(RenderWindow& window) override;
 
     Vector2f getPos();
