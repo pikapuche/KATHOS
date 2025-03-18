@@ -13,6 +13,27 @@ Boss::Boss() : Entity(position.x, position.y) {
     detectionRect.setOrigin(125, 0);
     boxCol1 = 1;
     boxCol2 = 1;
+
+    life = health;
+
+    healthBar.setSize(Vector2f(100.0f, 10.0f));
+    healthBar.setFillColor(Color::Green);
+    healthBar.setOutlineThickness(2);
+    healthBar.setOutlineColor(Color::Black);
+}
+
+int Boss::getLife() {
+    return life;
+}
+
+int Boss::getHealth() {
+    return health;
+}
+
+void Boss::setLife(int amount) {
+    life += amount;
+    if (life < 0) life = 0;
+    if (life > health) life = health;
 }
 
 void Boss::jump()
@@ -53,7 +74,7 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
 
     if(state != GROUNDED) velocity.y += gravity * deltaTime;  // Appliquer la gravité
     else if (state == GROUNDED) velocity.y = 0; 
-    
+   
     position.y += velocity.y * deltaTime;
 
     sprite.setPosition(position);
@@ -133,15 +154,36 @@ void Boss::update(float deltaTime, Player& player) {
 
     switch (onestla) {
     case 0:
+        cout << onestla << endl;
         break;
     case 1:
+        cout << onestla << endl;
         break;
     case 2:
+        jump();
+        cout << onestla << endl;
         break;
     case 3:
+        cout << onestla << endl;
         break;
     case 4:
         jump();
+        cout << onestla << endl;
+        break;
+    case 5:
+        cout << onestla << endl;
+        break;
+    case 6:
+        cout << onestla << endl;
+        break;
+    case 7:
+        cout << onestla << endl;
+        break;
+    case 8:
+        cout << onestla << endl;
+        break;
+    case 9:
+        cout << onestla << endl;
         break;
     case 5:
         break;
@@ -162,11 +204,13 @@ void Boss::update(float deltaTime, Player& player) {
 
     movementManager(player.getSprite().getPosition().x, player.getSprite().getPosition().x, deltaTime);
     animationManager(deltaTime);
+    healthBar.setPosition(sprite.getPosition().x, sprite.getPosition().y - 20);
 }
 
 void Boss::draw(RenderWindow& window) {
     window.draw(sprite);
     window.draw(detectionRect);
+    window.draw(healthBar);
 }
 
 Vector2f Boss::getPos() {
