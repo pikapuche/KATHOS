@@ -6,6 +6,15 @@ Gemme::Gemme(float _x, float _y, GemmeState state) : gemmeState(state) {
 	gemmeSprite.setTexture(gemmeTexture);
 	gemmeSprite.setPosition(Vector2f(_x,_y));
 
+
+	switch (gemmeState) {
+	case GemmeState::DASH:
+		gemmeSprite.setColor(sf::Color(Color::Green));
+		break;
+	case GemmeState::SPEED:
+		gemmeSprite.setColor(sf::Color(175,175,255,100));
+		break;
+	}
 }
 
 void Gemme::animationGemme(float _deltaTime)

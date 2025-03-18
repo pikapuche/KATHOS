@@ -66,7 +66,6 @@ void Game::run()
 
                 
             }
-            overlay.updateTimer(window);
             m.draw(window);
             m.update(deltaTime);
         
@@ -74,6 +73,7 @@ void Game::run()
             m.draw(window);
            
             overlay.updateInterface(window, *m.player); // Draw pause menu when paused
+            if (!mainScreen.getIsInMenu())
             overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
 
             mainScreen.destroyAll();
