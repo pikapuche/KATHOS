@@ -16,11 +16,12 @@ protected:
 	Vector2i anim_jump;
 	Vector2i anim_attack;
 
+	RectangleShape lifeBar;
+	RectangleShape rectBar;
+	float life;
+
 	float boxCol1;
 	float boxCol2;
-
-	int health;
-	int life;
 
 	bool DEBUG = false; // sert pour voir si y'a des bugs / afficher les hitbox etc
 
@@ -38,5 +39,5 @@ public:
 
 	int getLife();
 
-	int setLife(int l);
+	void setLife(float l);
 };

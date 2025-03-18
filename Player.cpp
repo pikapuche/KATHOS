@@ -199,7 +199,6 @@ void Player::animationManager(float deltaTime) {
             if (anim_attack.x > 3) {
                 anim_attack.x = 0;
                 isAttacking = false;
-                stateWeapon = SPAWN;
                 if (state != GROUNDED) {
                     stateMove = JUMPING;
                 }
