@@ -7,10 +7,6 @@ Boss::Boss() : Entity(position.x, position.y) {
     sprite.setScale(Vector2f(3, 3));
     speed = 150.f;
     velocity.y = 0;
-    detectionRange = 400.0f;
-    detectionRect.setSize(Vector2f(detectionRange, 64));
-    detectionRect.setFillColor(Color(0, 255, 0, 50));
-    detectionRect.setOrigin(125, 0);
     boxCol1 = 1;
     boxCol2 = 1;
 
@@ -20,6 +16,7 @@ Boss::Boss() : Entity(position.x, position.y) {
     healthBar.setFillColor(Color::Green);
     healthBar.setOutlineThickness(2);
     healthBar.setOutlineColor(Color::Black);
+    sprite.setOrigin(20, 0);
 }
 
 int Boss::getLife() {
@@ -83,9 +80,6 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
     if (sprite.getPosition().y < 0) { // haut de l'écran
         sprite.setPosition(position.x, position.y = 64);
     }
-    //if (sprite.getPosition().y > 1080) { // bas de l'écran 
-    //    sprite.setPosition(position.x, position.y = 1010);
-    //}
     if (sprite.getPosition().x < 0) { // gauche de l'écran
         sprite.setPosition(position.x = 0, position.y);
     }
