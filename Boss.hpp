@@ -26,8 +26,6 @@ private:
     int life;
     float enleverLife;
 
-    bool canJump;
-
     bool canJump = false;
 
 public:

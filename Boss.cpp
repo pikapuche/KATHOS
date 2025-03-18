@@ -154,36 +154,15 @@ void Boss::update(float deltaTime, Player& player) {
 
     switch (onestla) {
     case 0:
-        cout << onestla << endl;
         break;
     case 1:
-        cout << onestla << endl;
         break;
     case 2:
         jump();
-        cout << onestla << endl;
         break;
     case 3:
-        cout << onestla << endl;
         break;
     case 4:
-        jump();
-        cout << onestla << endl;
-        break;
-    case 5:
-        cout << onestla << endl;
-        break;
-    case 6:
-        cout << onestla << endl;
-        break;
-    case 7:
-        cout << onestla << endl;
-        break;
-    case 8:
-        cout << onestla << endl;
-        break;
-    case 9:
-        cout << onestla << endl;
         break;
     case 5:
         break;
