@@ -13,10 +13,9 @@ protected :
 	CircleShape circleOne; // cercle 1 de patrouille (DEBUG)
 	CircleShape circleTwo; // cercle 2 de patrouille (DEBUG)
 	CircleShape circleLastPos; // cercle de derniere position du joueur (DEBUG)
-	//CircleShape circleDetect; // cercle de detection du joueur 
-	RectangleShape rectangleDetect;
-	RectangleShape attackDetect;
-	RectangleShape attackShape;
+	RectangleShape rectangleDetect; // rectangle de detection du joueur
+	RectangleShape attackDetect; // rectangle detection attaque
+	RectangleShape attackShape; // rectangle d'attaque
 
 	float detectionRadius; // rayon cercle de detection
 	float lastPlayerPosition = - 100; // pour eviter qu'en mode debug le cercle s'affiche en 0,0;
@@ -55,6 +54,8 @@ public :
 
 	void search(float lastPlayerPosition, float deltaTime, Player& player);
 
+	void takeDamage(Player& player);
+
 	Vector2f setPosPos(float x, float y); // modifie la position
 
 	Vector2f getPosPos(); // retourne la position
@@ -63,9 +64,7 @@ public :
 
 	bool getIsGrounded(); // retourne s'il touche le sol
 
-	void update(float deltaTime) override; // existe pas mais c'est pas grave
-
-	void updateReal(float deltaTime, Player& player);
+	void update(float deltaTime, Player& player);
 
 	void draw(RenderWindow& window) override;
 };

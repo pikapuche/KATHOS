@@ -9,12 +9,6 @@ protected:
     Texture textureAttack;
     RectangleShape attackShape;
 
-    enum StateLook { LOOK_RIGHT, LOOK_LEFT }; // permet de connaitre la direction dans laquelle le joueur regarde
-    StateLook stateLook;
-
-    enum StateMove { IDLE, RUNNING, ATTACKING, JUMPING }; // etat pour animation de course et d'attente
-    StateMove stateMove;
-
     int jumpCount = 0; // compteur de saut pour double saut
 
     float SPEED = 300.0f;  // Vitesse de déplacement horizontal
@@ -36,14 +30,25 @@ protected:
     bool isTakeDash = false; // recup la gemme de dash
     bool isDashing = false; // dash
     bool isTakeSpeed = false; // recup la gemme de sprint
+    bool spawnWeapon = false;
 
     bool hasKey = false;
 
     Clock jumpClock; // compteur pour le deuxieme saut (evite l'enchainement)
     Clock coolDownDash; 
+    Clock coolDownAttack;
     Clock clock;
 
 public:
+
+    enum StateWeapon { NONE, SPAWN };
+    StateWeapon stateWeapon;
+
+    enum StateLook { LOOK_RIGHT, LOOK_LEFT }; // permet de connaitre la direction dans laquelle le joueur regarde
+    StateLook stateLook;
+
+    enum StateMove { IDLE, RUNNING, ATTACKING, JUMPING }; // etat pour animation de course et d'attente
+    StateMove stateMove;
 
     bool floor = true;
 
@@ -55,7 +60,7 @@ public:
 
     void jump();
 
-    void attack(float deltaTime);
+    //void attack(float deltaTime, Entity& entity);
 
     void dash(float deltaTime);
 
@@ -97,7 +102,9 @@ public:
 
     bool setHasKey(bool key);
 
-    void update(float deltaTime) override;
+    RectangleShape getAttackShape();
+
+    void update(float deltaTime);
 
     void draw(RenderWindow& window) override;
 };
