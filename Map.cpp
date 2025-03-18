@@ -244,13 +244,6 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				gemmeSprites.push_back(std::move(gemme));
 				break;
 			}
-			//case 'I':
-			//{
-			//	auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20);
-			//	gemme->gemmeSprite.setColor(Color::Blue);
-			//	gemmeSprites.push_back(std::move(gemme));
-			//	break;
-			//}
 			case 'E':
 			{
 				auto newEnemy = make_unique<Enemy>();
