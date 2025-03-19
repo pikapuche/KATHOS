@@ -16,7 +16,7 @@ public:
 
 class Interface {
 private:
-    sf::Time totalElapsedTime; // Store total elapsed time
+    Time totalElapsedTime; // Store total elapsed time
     Texture keyGUItexture;
     Sprite keyGUI;
 
@@ -29,11 +29,13 @@ private:
     Sprite highlightRect; // Overlay to show selection
 	Texture highlightTexture;
 
-    sf::Clock timeClock;
-    sf::Text timeText;
-    sf::Font timeFont;
+    Clock timeClock;
+    Text timeText;
+    Font timeFont;
 
+    Time finalTime;
 
+    bool hasWon = false;
 public:
     void initInterface();
 	bool getIsPaused();
@@ -48,4 +50,6 @@ public:
 
     void updateTimer(RenderWindow& window);
 
+    Time getFinalTime() const;
+    void setWinCondition(bool win);
 };

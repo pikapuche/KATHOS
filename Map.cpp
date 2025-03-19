@@ -38,11 +38,11 @@ void Map::update(float deltaTime) {
 			interactv->interact(player);
 		}
 		//Interactibles Animation
-		auto chest = std::dynamic_pointer_cast<Chest>(interactv);
+		auto chest = dynamic_pointer_cast<Chest>(interactv);
 		if (chest) {
 			chest->updateAnimation(deltaTime);
 		}
-		auto key = std::dynamic_pointer_cast<Key>(interactv);
+		auto key = dynamic_pointer_cast<Key>(interactv);
 		if (key) {
 			key->updateAnimation(deltaTime);
 		}
@@ -153,68 +153,68 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				break;
 			}
 			case '3': {
-				auto right = std::make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
+				auto right = make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
 				right->setTexture(groundGreenRightTexture);
 				right->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(right));  // Utilise std::move pour transf rer la propri t 
+				groundSprites.push_back(move(right));  // Utilise move pour transf rer la propri t 
 				break;
 			}
 			case '4': {
-				auto left = std::make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
+				auto left = make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
 				left->setTexture(groundYellowLeftTexture);
 				left->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(left));  // Utilise std::move pour transf rer la propri t 
+				groundSprites.push_back(move(left));  // Utilise move pour transf rer la propri t 
 				break;
 			}
 			case '5': {
-				auto mid = std::make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
+				auto mid = make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
 				mid->setTexture(groundYellowMidTexture);
 				mid->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(mid));  // Utilise std::move pour transf rer la propri t 
+				groundSprites.push_back(move(mid));  // Utilise move pour transf rer la propri t 
 				break;
 			}
 			case '6': {
-				auto right = std::make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
+				auto right = make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
 				right->setTexture(groundYellowRightTexture);
 				right->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(right));  // Utilise std::move pour transf rer la propri t 
+				groundSprites.push_back(move(right));  // Utilise move pour transf rer la propri t 
 				break;
 			}
 			case '7': {
-				auto left = std::make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
+				auto left = make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
 				left->setTexture(groundRedLeftTexture);
 				left->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(left));  // Utilise std::move pour transf rer la propri t 
+				groundSprites.push_back(move(left));  // Utilise move pour transf rer la propri t 
 				break;
 			}
 			case '8': {
-				auto mid = std::make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
+				auto mid = make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
 				mid->setTexture(groundRedMidTexture);
 				mid->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(mid));  // Utilise std::move pour transf rer la propri t 
+				groundSprites.push_back(move(mid));  // Utilise move pour transf rer la propri t 
 				break;
 			}
 			case '9': {
-				auto right = std::make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
+				auto right = make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
 				right->setTexture(groundRedRightTexture);
 				right->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(right));  // Utilise std::move pour transf rer la propri t 
+				groundSprites.push_back(move(right));  // Utilise move pour transf rer la propri t 
 				break;
 			}
 			case'+': {
-				auto tpA = std::make_unique<RectangleShape>();
+				auto tpA = make_unique<RectangleShape>();
 				tpA->setSize({ 32, 20 });
 				tpA->setFillColor(Color::White);
 				tpA->setPosition({ (float)i * 32, (float)_z * 20 });
-				tpShapeA.push_back(std::move(tpA));
+				tpShapeA.push_back(move(tpA));
 				break;
 			}
 			case'-': {
-				auto tpB = std::make_unique<RectangleShape>();
+				auto tpB = make_unique<RectangleShape>();
 				tpB->setSize({ 32, 20 });
 				tpB->setFillColor(Color::White);
 				tpB->setPosition({ (float)i * 32, (float)_z * 20 });
-				tpShapeB.push_back(std::move(tpB));
+				tpShapeB.push_back(move(tpB));
 				break;
 			}
 			case 'P': {
@@ -222,19 +222,19 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				break;
 			}
 			case 'G': {
-				auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20, Gemme::GemmeState::DASH);
-				gemmeSprites.push_back(std::move(gemme));
+				auto gemme = make_unique<Gemme>((float)i * 32, (float)_z * 20, Gemme::GemmeState::DASH);
+				gemmeSprites.push_back(move(gemme));
 				break;
 			}
 			case 'S': {
-				auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20, Gemme::GemmeState::SPEED);
-				gemmeSprites.push_back(std::move(gemme));
+				auto gemme = make_unique<Gemme>((float)i * 32, (float)_z * 20, Gemme::GemmeState::SPEED);
+				gemmeSprites.push_back(move(gemme));
 				break;
 			}
 			case 'J': //JUMP GEM
 			{
-				auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20, Gemme::GemmeState::DOUBLEJUMP);
-				gemmeSprites.push_back(std::move(gemme));
+				auto gemme = make_unique<Gemme>((float)i * 32, (float)_z * 20, Gemme::GemmeState::DOUBLEJUMP);
+				gemmeSprites.push_back(move(gemme));
 				break;
 			}
 			case 'E':
@@ -286,20 +286,20 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 
 					//INTERACTIBLES
 			case 'K': {
-				auto key = std::make_shared<Key>();  // Change to shared_ptrw Key();
+				auto key = make_shared<Key>();  // Change to shared_ptrw Key();
 				key->setPosPos((float)i * 32, (float)_z * 20 - 15);
 				interactiblesVector.push_back(move(key));
 				break;
 			}
 			case 'C': {
-				auto chest = std::make_shared<Chest>();  // Change to shared_ptr
+				auto chest = make_shared<Chest>();  // Change to shared_ptr
 				chest->setPosPos((float)i * 32, (float)_z * 20 - 40);
 				interactiblesVector.push_back(chest);
 				break;
 			}
 					//DOOR WITHOUT BUTTON
 			case 'D': {
-				auto door = std::make_shared<Door>(false);
+				auto door = make_shared<Door>(false);
 				door->setPosPos((float)i * 32, (float)_z * 20 - 45);
 				interactiblesVector.push_back(door);
 				break;
@@ -308,7 +308,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 
 					//DOOR WITH BUTTON
 			case 'd': {
-				auto door = std::make_shared<Door>(true);  // Change to shared_ptr
+				auto door = make_shared<Door>(true);  // Change to shared_ptr
 				door->setPosPos((float)i * 32, (float)_z * 20 - 40);
 				interactiblesVector.push_back(door);
 				break;

@@ -35,9 +35,11 @@ void Game::gameOver(RenderWindow& window)
     }
 }
 
-void Game::Win(RenderWindow& window)
+void Game::Win(RenderWindow& window, Interface& overlay)
 {
     if (isWin) {
+        overlay.setWinCondition(true);
+
         RectangleShape winScreen(Vector2f(window.getSize().x, window.getSize().y));
         winScreen.setFillColor(Color(0, 0, 0, 150));
         window.draw(winScreen);
@@ -56,6 +58,19 @@ void Game::Win(RenderWindow& window)
         winText.setPosition((window.getSize().x - winText.getGlobalBounds().width) / 2, (window.getSize().y - winText.getGlobalBounds().height) / 2);
 
         window.draw(winText);
+
+        Time finalTime = overlay.getFinalTime();
+        int minutes = static_cast<int>(finalTime.asSeconds()) / 60;
+        int seconds = static_cast<int>(finalTime.asSeconds()) % 60;
+        int milliseconds = static_cast<int>(finalTime.asMilliseconds() % 1000);
+
+        Text timeText;
+        timeText.setFont(font);
+        timeText.setCharacterSize(60);
+        timeText.setFillColor(Color::White);
+        timeText.setString("Time: " + to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + to_string(seconds) + ":" + to_string(milliseconds));
+        timeText.setPosition((window.getSize().x - timeText.getGlobalBounds().width) / 2, (window.getSize().y - timeText.getGlobalBounds().height) / 2 + 80);
+        window.draw(timeText);
         return;
     }
 }
@@ -101,6 +116,8 @@ void Game::run()
                 m.clearMap();
                 m.loadMap();
                 overlay.resetRestartFlag();
+                isWin = false;
+                isGameOver = false;
             }
             if (!overlay.getIsPaused()) { // Only update game when not paused
                 m.player->update(deltaTime);
@@ -112,7 +129,10 @@ void Game::run()
 
                 for (auto& boss : m.bosses) {
                     boss->update(deltaTime, *m.player);
-                    if (boss->getLife() <= 0) isWin = true;
+                    if (boss->getLife() <= 0) 
+                    {
+                        isWin = true;
+                    }
                 }
             }
 
@@ -132,7 +152,7 @@ void Game::run()
                 overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
 
             gameOver(window);
-            Win(window);
+            Win(window, overlay);
 
             mainScreen.destroyAll();
         }

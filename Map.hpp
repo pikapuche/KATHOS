@@ -43,7 +43,7 @@ public:
 
     vector<ifstream*> maps;
 
-    std::vector<std::shared_ptr<Interactible>> interactiblesVector;
+    vector<shared_ptr<Interactible>> interactiblesVector;
 
     Music musicBoss;
 

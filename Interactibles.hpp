@@ -6,8 +6,8 @@ private:
     float PROXIMITY_RANGE = 50.0f;
 
 protected:
-    sf::Sprite sprite;
-    sf::Texture texture;
+    Sprite sprite;
+    Texture texture;
     bool isPlayerNear = false; // True if player is close
 
 public:
@@ -15,14 +15,14 @@ public:
 
     bool playerTryInteract();
     // Check if player is near
-    virtual void updateProximity(const std::shared_ptr<Player>& player);
+    virtual void updateProximity(const shared_ptr<Player>& player);
     // Getter
     bool getIsPlayerNear();
 
     // Define a virtual function for unique interactions
-    virtual void interact(const std::shared_ptr<Player>& player) = 0;
+    virtual void interact(const shared_ptr<Player>& player) = 0;
     // Draw the interactible (optional)
-    virtual void draw(sf::RenderWindow& window) = 0;
+    virtual void draw(RenderWindow& window) = 0;
 
-    void setTexture(const std::string& filePath);
+    void setTexture(const string& filePath);
 };
