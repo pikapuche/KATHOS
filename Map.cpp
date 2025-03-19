@@ -456,11 +456,13 @@ void Map::draw(RenderWindow& window) {
 	for (auto& interactv : interactiblesVector) {
 		if (!interactv->isDoor()) {  // Check if the object is NOT a door
 			interactv->draw(window);
+			interactv->drawInspectGUI(window);
 		}
 	}
 	for (auto& interactv : interactiblesVector) {
-		if (interactv->isDoor()) {  // Check if the object is NOT a door
+		if (interactv->isDoor()) {  // Check if the object is a door
 			interactv->draw(window);
+			interactv->drawInspectGUI(window);
 		}
 	}
 }

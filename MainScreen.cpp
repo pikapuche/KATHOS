@@ -99,14 +99,12 @@ void MainScreen::handleSound(RenderWindow& window) {
     if (hoveredTilter && Mouse::isButtonPressed(Mouse::Left)) {
         dragging = true;
     }
-    if (!Mouse::isButtonPressed(Mouse::Left)) {
+    else {
         dragging = false;
     }
 
-    // Controller detection
     bool usingController = interfaceuh.getUsingController();
 
-    // Change tilter texture when using a controller
     if (usingController) {
         selectedButtonIndex = 4;
         soundTilter.setTexture(soundTilterControllerTexture);
@@ -114,38 +112,43 @@ void MainScreen::handleSound(RenderWindow& window) {
     else {
         soundTilter.setTexture(soundTilterTexture);
     }
-
-    // If dragging, move the tilter along the sound bar
-    if (dragging || usingController) {
+    if (dragging) {
         float barLeft = soundBar.getPosition().x + 35 - soundBar.getGlobalBounds().width / 2;
         float barRight = soundBar.getPosition().x - 35 + soundBar.getGlobalBounds().width / 2;
 
-        if (usingController) {
-            // Controller navigation: Adjust sound using left/right
-            if (Joystick::getAxisPosition(0, Joystick::X) > 50 || Keyboard::isKeyPressed(Keyboard::Right)) {
-                soundTilter.move(5.f, 0); // Move right
-            }
-            if (Joystick::getAxisPosition(0, Joystick::X) < -50 || Keyboard::isKeyPressed(Keyboard::Left)) {
-                soundTilter.move(-5.f, 0); // Move left
-            }
+        float newX = mousePos.x;
+        newX = std::max(barLeft, std::min(newX, barRight));
+
+        soundTilter.setPosition(newX, soundBar.getPosition().y - 5);
+
+        float volumePercent = ((newX - barLeft) / (barRight - barLeft)) * 100.0f;
+        music.setVolume(volumePercent);
+
+        float fillerWidth = ((newX - barLeft) / (barRight - barLeft)) * (soundBar.getGlobalBounds().width - 65);
+        soundBarFiller.setSize(Vector2f(fillerWidth, soundBar.getGlobalBounds().height - 40));
+    }
+
+    if (usingController) {
+        float barLeft = soundBar.getPosition().x + 35 - soundBar.getGlobalBounds().width / 2;
+        float barRight = soundBar.getPosition().x - 35 + soundBar.getGlobalBounds().width / 2;
+
+        if (Joystick::getAxisPosition(0, Joystick::X) > 50 || Keyboard::isKeyPressed(Keyboard::Right)) {
+            soundTilter.move(5.f, 0);
+        }
+        if (Joystick::getAxisPosition(0, Joystick::X) < -50 || Keyboard::isKeyPressed(Keyboard::Left)) {
+            soundTilter.move(-5.f, 0);
         }
 
-        // Clamp the tilter position within the sound bar
         float newX = std::max(barLeft, std::min(soundTilter.getPosition().x, barRight));
         soundTilter.setPosition(newX, soundBar.getPosition().y - 5);
 
-        // Convert tilter position to a volume percentage (0-100)
         float volumePercent = ((newX - barLeft) / (barRight - barLeft)) * 100.0f;
-        cout << "Volume: " << volumePercent << "%" << endl;
-
-        // Calculate the width of the filler based on volume
-        float fillerWidth = ((newX - barLeft) / (barRight - barLeft)) * (soundBar.getGlobalBounds().width - 65);
-        if (fillerWidth < 0) fillerWidth = 0;
-        soundBarFiller.setSize(Vector2f(fillerWidth, soundBar.getGlobalBounds().height - 40));
-
-        // Apply new volume
         music.setVolume(volumePercent);
+
+        float fillerWidth = ((newX - barLeft) / (barRight - barLeft)) * (soundBar.getGlobalBounds().width - 65);
+        soundBarFiller.setSize(Vector2f(fillerWidth, soundBar.getGlobalBounds().height - 40));
     }
+
 }
 
 

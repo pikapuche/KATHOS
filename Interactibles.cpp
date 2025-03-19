@@ -30,11 +30,10 @@ void Interactible::updateProximity(const std::shared_ptr<Player>& player, sf::Re
     isPlayerNear = (distance < PROXIMITY_RANGE);
     //std::cout << "updateProximity called! Distance: " << distance << " PlayerNear: " << isPlayerNear << std::endl;
 
-    inspectGUI.setPosition(player->getPosPos().x + guiPos.x, player->getPosPos().y - guiPos.y);
-
-    if (isPlayerNear && !shouldHide) {
-        window.draw(inspectGUI);
-    }
+    if (player->stateLook == 0) //Looking right
+        inspectGUI.setPosition(player->getPosPos().x + guiPos.x, player->getPosPos().y - guiPos.y);
+    else if (player->stateLook == 1) //looking left
+        inspectGUI.setPosition(player->getPosPos().x - guiPos.x, player->getPosPos().y - guiPos.y);
 }
 
 bool Interactible::playerTryInteract() {
@@ -46,5 +45,11 @@ bool Interactible::playerTryInteract() {
     }
     else {
         return false;
+    }
+}
+
+void Interactible::drawInspectGUI(sf::RenderWindow& window) {
+    if (!shouldHide && isPlayerNear) {
+        window.draw(inspectGUI);
     }
 }

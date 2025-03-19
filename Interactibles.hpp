@@ -32,4 +32,5 @@ public:
     virtual void draw(sf::RenderWindow& window) = 0;
 
     void setTexture(const std::string& filePath);
+    void drawInspectGUI(sf::RenderWindow& window);
 };
