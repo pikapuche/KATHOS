@@ -1,10 +1,11 @@
 #include "Boss.hpp"
 
 Boss::Boss() : Entity(position.x, position.y) {
-    texture.loadFromFile("Assets/texture/Boss/boss2.png");
-    sprite.setTexture(texture);
-    sprite.setScale(Vector2f(1.5f, 1.5f));
-    speed = 200.0f;
+    textureIdle.loadFromFile("Assets/texture/Boss/boss-radioactiveV2.png");
+    textureAttack.loadFromFile("Assets/texture/Boss/boss-radioactive_attackV2.png");
+    sprite.setTexture(textureIdle);
+    sprite.setScale(Vector2f(3, 3));
+    speed = 150.f;
     velocity.y = 0;
     boxCol1 = 1;
     boxCol2 = 1;
@@ -46,7 +47,7 @@ void Boss::takeDamage(Player& player)
         lifeBar.setFillColor(Color::Yellow);
     }
     if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds()) && player.stateWeapon == player.SPAWN) {
-        setLife(-0.5);
+        setLife(-1);
         lifeBar.setSize(Vector2f(life, 10));
         cout << "aie ca fais mal (boss)" << endl;
     }
