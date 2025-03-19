@@ -67,16 +67,16 @@ void Map::collision(float deltaTime) {
 	for (auto& ground : groundSprites) {
 		player->collision(*ground, deltaTime);
 
-		for(auto& enemy : enemies)
-		enemy->collision(*ground, deltaTime);
-		for(auto& boss : bosses)
-		boss->collision(*ground, deltaTime);
+		for (auto& enemy : enemies)
+			enemy->collision(*ground, deltaTime);
+		for (auto& boss : bosses)
+			boss->collision(*ground, deltaTime);
 	}
 	for (auto& tpA : tpShapeA) {
 		if (player->getSprite().getGlobalBounds().intersects(tpA->getGlobalBounds())) {
 			clearMap();
 			switch (mapState)
-			{	
+			{
 			case Map::MapState::PRACTICE:
 				mapState = MapState::SALLE1;
 				break;
@@ -133,72 +133,72 @@ void Map::collision(float deltaTime) {
 }
 
 void Map::monSwitch(ifstream& _Map, string _line, int _z) {
-	
+
 	while (getline(_Map, _line)) {
 		for (int i = 0; i < _line.size(); i++) {
 			switch (_line[i]) { // tileValue
 				//cout << _line[i] << endl;
-			case '1':{
-				auto left = make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+			case '1': {
+				auto left = make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
 				left->setTexture(groundGreenLeftTexture);
 				left->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(move(left));  // Utilise move pour transf�rer la propri�t�
+				groundSprites.push_back(move(left));  // Utilise move pour transf rer la propri t 
 				break;
 			}
-			case '2':{
-				auto mid = make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+			case '2': {
+				auto mid = make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
 				mid->setTexture(groundGreenMidTexture);
 				mid->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(move(mid));  // Utilise move pour transf�rer la propri�t�
+				groundSprites.push_back(move(mid));  // Utilise move pour transf rer la propri t 
 				break;
 			}
-			case '3':{
-				auto right = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+			case '3': {
+				auto right = std::make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
 				right->setTexture(groundGreenRightTexture);
 				right->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(right));  // Utilise std::move pour transf�rer la propri�t�
+				groundSprites.push_back(std::move(right));  // Utilise std::move pour transf rer la propri t 
 				break;
 			}
-			case '4':{
-				auto left = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+			case '4': {
+				auto left = std::make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
 				left->setTexture(groundYellowLeftTexture);
 				left->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(left));  // Utilise std::move pour transf�rer la propri�t�
+				groundSprites.push_back(std::move(left));  // Utilise std::move pour transf rer la propri t 
 				break;
 			}
-			case '5':{
-				auto mid = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+			case '5': {
+				auto mid = std::make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
 				mid->setTexture(groundYellowMidTexture);
 				mid->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(mid));  // Utilise std::move pour transf�rer la propri�t�
+				groundSprites.push_back(std::move(mid));  // Utilise std::move pour transf rer la propri t 
 				break;
 			}
-			case '6':{
-				auto right = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+			case '6': {
+				auto right = std::make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
 				right->setTexture(groundYellowRightTexture);
 				right->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(right));  // Utilise std::move pour transf�rer la propri�t�
+				groundSprites.push_back(std::move(right));  // Utilise std::move pour transf rer la propri t 
 				break;
 			}
-			case '7':{
-				auto left = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+			case '7': {
+				auto left = std::make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
 				left->setTexture(groundRedLeftTexture);
 				left->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(left));  // Utilise std::move pour transf�rer la propri�t�
+				groundSprites.push_back(std::move(left));  // Utilise std::move pour transf rer la propri t 
 				break;
 			}
-			case '8':{
-				auto mid = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+			case '8': {
+				auto mid = std::make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
 				mid->setTexture(groundRedMidTexture);
 				mid->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(mid));  // Utilise std::move pour transf�rer la propri�t�
+				groundSprites.push_back(std::move(mid));  // Utilise std::move pour transf rer la propri t 
 				break;
 			}
-			case '9':{
-				auto right = std::make_unique<Sprite>();  // La bonne fa�on de cr�er un unique_ptr
+			case '9': {
+				auto right = std::make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
 				right->setTexture(groundRedRightTexture);
 				right->setPosition({ (float)i * 32, (float)_z * 20 });
-				groundSprites.push_back(std::move(right));  // Utilise std::move pour transf�rer la propri�t�
+				groundSprites.push_back(std::move(right));  // Utilise std::move pour transf rer la propri t 
 				break;
 			}
 			case'+': {
@@ -209,7 +209,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				tpShapeA.push_back(std::move(tpA));
 				break;
 			}
-			case'-':{
+			case'-': {
 				auto tpB = std::make_unique<RectangleShape>();
 				tpB->setSize({ 32, 20 });
 				tpB->setFillColor(Color::White);
@@ -217,7 +217,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				tpShapeB.push_back(std::move(tpB));
 				break;
 			}
-			case 'P':{
+			case 'P': {
 				player->setPosPos((float)i * 32, (float)_z * 20);
 				break;
 			}
@@ -249,7 +249,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				enemies.push_back(move(newEnemy));
 				break;
 			}
-			case 'A':{
+			case 'A': {
 				auto newEnemy = make_unique<Enemy>();
 				newEnemy->setPosPos((float)i * 32, (float)_z * 20);
 				newEnemy->waypointOne.x = newEnemy->getPosPos().x - 30;
@@ -260,13 +260,13 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				enemies.push_back(move(newEnemy));
 				break;
 			}
-			case 'B':{
+			case 'B': {
 				auto boss = make_unique<Boss>();
 				boss->setPos((float)i * 32, (float)_z * 20);
 				bosses.push_back(move(boss));
 				break;
 			}
-			case 'Q':{
+			case 'Q': {
 				auto newEnemy = make_unique<Enemy>();
 				newEnemy->setPosPos((float)i * 32, (float)_z * 20);
 				newEnemy->waypointOne.x = newEnemy->getPosPos().x - 30;
@@ -277,28 +277,28 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				enemies.push_back(move(newEnemy));
 				break;
 			}
-			case 'T' : {
+			case 'T': {
 				auto newCloud = make_unique<NuageTox>();
 				newCloud->setPos((float)i * 32, (float)_z * 20 - 10);
 				clouds.push_back(move(newCloud));
 				break;
 			}
 
-			//INTERACTIBLES
-			case 'K':{
+					//INTERACTIBLES
+			case 'K': {
 				auto key = std::make_shared<Key>();  // Change to shared_ptrw Key();
 				key->setPosPos((float)i * 32, (float)_z * 20 - 15);
 				interactiblesVector.push_back(move(key));
 				break;
 			}
-			case 'C':{
+			case 'C': {
 				auto chest = std::make_shared<Chest>();  // Change to shared_ptr
 				chest->setPosPos((float)i * 32, (float)_z * 20 - 40);
 				interactiblesVector.push_back(chest);
 				break;
 			}
-			//DOOR WITHOUT BUTTON
-			case 'D':{
+					//DOOR WITHOUT BUTTON
+			case 'D': {
 				auto door = std::make_shared<Door>(false);
 				door->setPosPos((float)i * 32, (float)_z * 20 - 45);
 				interactiblesVector.push_back(door);
@@ -306,8 +306,8 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			}
 
 
-			//DOOR WITH BUTTON
-			case 'd':{
+					//DOOR WITH BUTTON
+			case 'd': {
 				auto door = std::make_shared<Door>(true);  // Change to shared_ptr
 				door->setPosPos((float)i * 32, (float)_z * 20 - 40);
 				interactiblesVector.push_back(door);
@@ -342,7 +342,7 @@ void Map::loadMap() {
 			monSwitch(*mapMonde1, line, z);
 		}
 		if (!musicBoss.openFromFile("Assets/Musiques/VSOLO musique boss16.wav")) {
-				cout << "euuuuuuuuuuuuuu wtf la zic ?" << endl;
+			cout << "euuuuuuuuuuuuuu wtf la zic ?" << endl;
 		}
 		musicBoss.setLoop(true);
 		musicBoss.setVolume(5.f);
@@ -404,7 +404,7 @@ void Map::draw(RenderWindow& window) {
 		window.draw(*tpB);
 	}
 	switch (mapState)
-	{	
+	{
 	case Map::MapState::PRACTICE:
 		window.draw(salle5Sprite);
 		break;
@@ -438,16 +438,16 @@ void Map::draw(RenderWindow& window) {
 		}
 	}
 	//for (auto& player : players)
-		player->draw(window);
+	player->draw(window);
 
-		for (auto& enemy : enemies)
-			enemy->draw(window);
+	for (auto& enemy : enemies)
+		enemy->draw(window);
 
-		for (auto& boss : bosses)
-			boss->draw(window);
+	for (auto& boss : bosses)
+		boss->draw(window);
 
-		for (auto& cloud : clouds)
-			cloud->draw(window);
+	for (auto& cloud : clouds)
+		cloud->draw(window);
 
 	/////////////////////////////////////////////////////// c'est quoi la diff ??? ca sert a quoi ???
 

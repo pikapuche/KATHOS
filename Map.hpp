@@ -18,14 +18,14 @@ public:
     Texture groundYellowLeftTexture, groundYellowMidTexture, groundYellowRightTexture;
     Texture groundRedLeftTexture, groundRedMidTexture, groundRedRightTexture;
     Texture groundGreenLeftTexture, groundGreenMidTexture, groundGreenRightTexture;
-    Texture practiceTexture,salle1Texture, salle2Texture, salle3Texture, salle4Texture, salle5Texture, salle6Texture;
+    Texture practiceTexture, salle1Texture, salle2Texture, salle3Texture, salle4Texture, salle5Texture, salle6Texture;
 
-	Sprite practiceSprite, salle1Sprite, salle2Sprite, salle3Sprite, salle4Sprite, salle5Sprite, salle6Sprite;
+    Sprite practiceSprite, salle1Sprite, salle2Sprite, salle3Sprite, salle4Sprite, salle5Sprite, salle6Sprite;
 
     enum class  GemmeState { NADA, SPRINT, DASH, DOUBLEJUMP };
-	GemmeState gemmeState;
+    GemmeState gemmeState;
 
-	enum class MapState { PRACTICE, SALLE1, SALLE2, SALLE3, SALLE4, SALLE5, SALLE6};
+    enum class MapState { PRACTICE, SALLE1, SALLE2, SALLE3, SALLE4, SALLE5, SALLE6 };
     MapState mapState;
 
     vector<unique_ptr<Sprite>> groundSprites;
@@ -53,7 +53,7 @@ public:
 
     void update(float deltaTime);
 
-	  void clearMap();
+    void clearMap();
 
     void collision(float deltaTime);
 

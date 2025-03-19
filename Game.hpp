@@ -10,6 +10,7 @@ public :
 
 	bool isGameOver = false;
 	bool isWin = false;
+
 	bool removeBoss = false;
 
 	void removeDeadEnemies(Map& m);

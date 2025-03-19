@@ -112,6 +112,7 @@ void Game::run()
 
                 for (auto& boss : m.bosses) {
                     boss->update(deltaTime, *m.player);
+                    if (boss->getLife() <= 0) isWin = true;
                 }
             }
 
@@ -129,6 +130,9 @@ void Game::run()
             overlay.updateInterface(window, *m.player); // Draw pause menu when paused
             if (!mainScreen.getIsInMenu())
                 overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
+
+            gameOver(window);
+            Win(window);
 
             mainScreen.destroyAll();
         }
