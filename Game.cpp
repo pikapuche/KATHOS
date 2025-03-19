@@ -1,5 +1,64 @@
 #include "Game.hpp"
 
+void Game::removeDeadEnemies(Map& m) 
+{ // avec chat gpt car j'y arrivais pas tant pis
+    m.enemies.erase(remove_if(m.enemies.begin(), m.enemies.end(), [](const unique_ptr<Enemy>& enemy) { return enemy->getLife() == 0; }), m.enemies.end()); // Supprime les ennemis avec 0 PV
+}
+
+void Game::removeDeadBosses(Map& m)
+{
+    m.bosses.erase(remove_if(m.bosses.begin(), m.bosses.end(), [](const unique_ptr<Boss>& boss) { return boss->getLife() == 0; }), m.bosses.end()); // Supprime les boss avec 0 PV
+}
+
+void Game::gameOver(RenderWindow& window)
+{
+    if (isGameOver) {
+        RectangleShape gameOverScreen(Vector2f(window.getSize().x, window.getSize().y));
+        gameOverScreen.setFillColor(Color(0, 0, 0, 150));
+        window.draw(gameOverScreen);
+
+        Font font;
+        if (!font.loadFromFile("Assets/Fonts/Minecraft.ttf")) {
+            cout << "Erreur chargement police !" << endl;
+        }
+
+        Text gameOverText;
+        gameOverText.setFont(font);
+        gameOverText.setString("GAME OVER");
+        gameOverText.setCharacterSize(80);
+        gameOverText.setFillColor(Color::Red);
+        gameOverText.setStyle(Text::Bold);
+        gameOverText.setPosition((window.getSize().x - gameOverText.getGlobalBounds().width) / 2, (window.getSize().y - gameOverText.getGlobalBounds().height) / 2);
+
+        window.draw(gameOverText);
+        return;
+    }
+}
+
+void Game::Win(RenderWindow& window)
+{
+    if (isWin) {
+        RectangleShape winScreen(Vector2f(window.getSize().x, window.getSize().y));
+        winScreen.setFillColor(Color(0, 0, 0, 150));
+        window.draw(winScreen);
+
+        Font font;
+        if (!font.loadFromFile("Assets/Fonts/Minecraft.ttf")) {
+            cout << "Erreur chargement police !" << endl;
+        }
+
+        Text winText;
+        winText.setFont(font);
+        winText.setString("WIN");
+        winText.setCharacterSize(80);
+        winText.setFillColor(Color::Yellow);
+        winText.setStyle(Text::Bold);
+        winText.setPosition((window.getSize().x - winText.getGlobalBounds().width) / 2, (window.getSize().y - winText.getGlobalBounds().height) / 2);
+
+        window.draw(winText);
+        return;
+    }
+}
 
 void Game::run()
 {
@@ -15,15 +74,6 @@ void Game::run()
 
     Clock clock;
     overlay.initInterface();
-
-    if (m.bossZone) {
-        if (!music.openFromFile("Assets/Musiques/VSOLO musique boss16.wav")) {
-            cout << "euuuuuuuuuuuuuu wtf la zic ?" << endl;
-        }
-        music.setLoop(true);
-        music.setVolume(50.f);
-        music.play();
-    }
 
     while (window.isOpen()) {
         Time deltaT = clock.restart();
@@ -54,8 +104,6 @@ void Game::run()
             overlay.setGameStarted(false);
             mainScreen.updateMenu(window);
         }
-
-
         else { //JEU PRINCIPAL
             if (!overlay.getGameStarted()) {
                 overlay.setGameStarted(true);
@@ -64,18 +112,20 @@ void Game::run()
             window.clear();
 
             if (overlay.getShouldRestart()) {
-                m.resetAll();
+                m.clearMap();
                 m.loadMap();
                 overlay.resetRestartFlag();
             }
             if (!overlay.getIsPaused()) { // Only update game when not paused
                 m.player->update(deltaTime);
+                if (m.player->getLife() <= 0) isGameOver = true;
 
-                for (auto& enemy : m.enemies)
+                for (auto& enemy : m.enemies) {
                     enemy->update(deltaTime, *m.player);
-
-                for (auto& boss : m.bosses)
+                }
+                for (auto& boss : m.bosses) {
                     boss->update(deltaTime, *m.player);
+                }
             }
 
             for (auto& cloud : m.clouds) {
@@ -84,18 +134,16 @@ void Game::run()
             for (auto& gemme : m.gemmeSprites) {
                 gemme->updateGemme(deltaTime, m.player);
             }
-            m.draw(window);
-            m.update(deltaTime, window);
-
-
+            removeDeadEnemies(m);
+            removeDeadBosses(m);
+            m.update(deltaTime);
             m.draw(window);
 
             overlay.updateInterface(window, *m.player); // Draw pause menu when paused
-            overlay.updateTimer(window);
+            if (!mainScreen.getIsInMenu())
+                overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
+
             mainScreen.destroyAll();
-
-
-
         }
         
         // Affiche touter()

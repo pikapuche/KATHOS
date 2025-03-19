@@ -25,6 +25,7 @@ public:
     virtual void updateProximity(const std::shared_ptr<Player>& player, RenderWindow& window);
     // Getter
     bool getIsPlayerNear();
+
     // Define a virtual function for unique interactions
     virtual void interact(const std::shared_ptr<Player>& player) = 0;
     // Draw the interactible (optional)

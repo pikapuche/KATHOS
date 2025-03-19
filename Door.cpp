@@ -78,5 +78,3 @@ void Door::updateProximity(const std::shared_ptr<Player>& player, sf::RenderWind
 void Door::openDoor(bool open) {
 	isOpen = open;
 }
-
-

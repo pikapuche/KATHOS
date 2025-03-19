@@ -1,5 +1,4 @@
 #pragma once
-#include "stdafx.hpp" // ??? - (amy)
 #include "Player.hpp"
 #include "Interactibles.hpp"
 
@@ -20,14 +19,14 @@ public:
 
 	Vector2i anim;
 
-	enum class  GemmeState { SPEED, DASH };
+	enum class  GemmeState { SPEED, DASH, DOUBLEJUMP };
 
 	GemmeState gemmeState;
 	
 	Gemme(float _x, float _y, GemmeState gemmeState);
 
 	void animationGemme(float _deltaTime);
-	Vector2f setPosition(float x, float y);
+	//Vector2f setPosition(float x, float y);
 	void interact(const std::shared_ptr<Player>& player);
 	void updateGemme(float _deltaTime, const std::shared_ptr<Player>& player);
 	bool getGemTaken();
