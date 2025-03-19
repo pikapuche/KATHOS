@@ -1,5 +1,4 @@
 #pragma once
-#include "stdafx.hpp" // ??? - (amy)
 #include "Player.hpp"
 #include "Interactibles.hpp"
 
@@ -20,7 +19,7 @@ public:
 
 	Vector2i anim;
 
-	enum class  GemmeState { SPEED, DASH };
+	enum class  GemmeState { SPEED, DASH, DOUBLEJUMP };
 
 	GemmeState gemmeState;
 	

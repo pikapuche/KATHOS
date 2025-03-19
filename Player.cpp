@@ -222,7 +222,7 @@ void Player::jump() {
         jumpCount = 1;
         jumpClock.restart();
     }
-    else if (jumpCount == 1 && jumpClock.getElapsedTime().asMilliseconds() >= 175 && state != GROUNDED) { // compteur permettant de savoir si on peut faire un deuxième saut
+    else if (jumpCount == 1 && jumpClock.getElapsedTime().asMilliseconds() >= 175 && state != GROUNDED && isTakeJump) { // compteur permettant de savoir si on peut faire un deuxième saut
         velocity.y = -jumpForce;
         jumpCount = 2;
     }
@@ -307,6 +307,12 @@ bool Player::setIsTakeSpeed(bool speed)
 {
     isTakeSpeed = speed;
     return isTakeSpeed;
+}
+
+bool Player::setIsTakeJump(bool jump)
+{
+    isTakeJump = jump;
+    return isTakeJump;
 }
 
 float Player::getJumpForce() {

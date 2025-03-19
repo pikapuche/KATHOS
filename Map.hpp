@@ -68,8 +68,6 @@ public:
 
     void gameOver(RenderWindow& window);
     
-    void resetAll();
-
     void Win(RenderWindow& window);
 
 };

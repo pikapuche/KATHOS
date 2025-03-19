@@ -30,6 +30,7 @@ protected:
     bool isTakeDash = false; // recup la gemme de dash
     bool isDashing = false; // dash
     bool isTakeSpeed = false; // recup la gemme de sprint
+    bool isTakeJump = false;
     bool spawnWeapon = false;
 
     bool hasKey = false;
@@ -83,6 +84,8 @@ public:
     bool getIsTakeSpeed();
 
     bool setIsTakeSpeed(bool speed);
+
+    bool setIsTakeJump(bool jump);
 
     float getJumpForce();
 

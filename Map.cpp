@@ -52,11 +52,12 @@ void Map::update(float deltaTime) {
 }
 
 void Map::clearMap() {
-	maps.clear();
-	groundSprites.clear();
+	interactiblesVector.clear();
 	gemmeSprites.clear();
 	enemies.clear();
-	interactiblesVector.clear();
+	bosses.clear();
+	maps.clear();
+	groundSprites.clear();
 	tpShapeA.clear();
 	tpShapeB.clear();
 }
@@ -241,6 +242,12 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 			case 'S': //SPEED GEM
 			{
 				auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20, Gemme::GemmeState::SPEED);
+				gemmeSprites.push_back(std::move(gemme));
+				break;
+			}
+			case 'J': //JUMP GEM
+			{
+				auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20, Gemme::GemmeState::DOUBLEJUMP);
 				gemmeSprites.push_back(std::move(gemme));
 				break;
 			}
@@ -492,13 +499,6 @@ void Map::gameOver(RenderWindow& window)
 		window.draw(gameOverText);
 		return;
 	}
-}
-
-void Map::resetAll() {
-	interactiblesVector.clear();
-	gemmeSprites.clear();
-	enemies.clear();
-	bosses.clear();
 }
 
 void Map::Win(RenderWindow& window)
