@@ -56,7 +56,7 @@ public:
 
     ~Map();
 
-    void update(float deltaTime);
+    void update(float deltaTime, RenderWindow& window);
 
     void collision(float deltaTime);
 

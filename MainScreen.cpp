@@ -17,21 +17,21 @@ void MainScreen::initMenu(RenderWindow& window) {
     background.setTexture(backgroundTexture);
 
     buttons.push_back(Button(
-        window.getSize().x / 2 - 100, window.getSize().y / 2 - 100,
+        window.getSize().x / 2 - 100, window.getSize().y / 2 - 200,
 		200, 100, ButtonType::Play, false,
         "assets/texture/titlescreen/buttons/playButton.png",
         "assets/texture/titlescreen/buttons/playButtonHover.png"
     ));
 
     buttons.push_back(Button(
-        window.getSize().x / 2 - 100, window.getSize().y / 2 + 300,
+        window.getSize().x / 2 - 100, window.getSize().y / 2 + 200,
         200, 100, ButtonType::Exit, false,
         "assets/texture/titlescreen/buttons/ExitButton.png",
         "assets/texture/titlescreen/buttons/ExitButtonHover.png"
     ));
 
     buttons.push_back(Button(
-        window.getSize().x / 2 - 100, window.getSize().y / 2 + 100,
+        window.getSize().x / 2 - 100, window.getSize().y / 2,
         200, 100, ButtonType::Settings, false,
         "assets/texture/titlescreen/buttons/SettingsButton.png",
         "assets/texture/titlescreen/buttons/SettingsButtonHover.png"
@@ -83,7 +83,9 @@ void MainScreen::handleButtonPress(Button& button) {
     if (!button.getisHidden()) {
         switch (button.getType()) {
         case ButtonType::Play:
-            isInMenu = false;
+            interfaceuh.resetTime();
+            isInMenu = false; //Start Game
+            interfaceuh.setGameStarted(true);
             break;
         case ButtonType::Exit:
             if (clickCooldown.getElapsedTime().asSeconds() > cooldownTime) {
@@ -159,6 +161,10 @@ void MainScreen::handleControllerNavigation() {
 
 
 void MainScreen::updateMenu(RenderWindow& window) {
+    if (isInMenu) {
+        interfaceuh.setGameStarted(false);
+        cout << "interface game started" << endl;
+    }
     interfaceuh.detectControllerInput();
     bool usingController = interfaceuh.getUsingController();
     if (usingController) {
@@ -177,7 +183,9 @@ void MainScreen::updateMenu(RenderWindow& window) {
                         cout << "Button clicked" << endl;
                         switch (button.getType()) { //Check button type in Menu
                         case ButtonType::Play:
+                            interfaceuh.resetTime();
                             isInMenu = false; //Start Game
+                            interfaceuh.setGameStarted(true);
                             break;
                         case ButtonType::Exit:
                             if (clickCooldown.getElapsedTime().asSeconds() > cooldownTime)

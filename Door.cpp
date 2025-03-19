@@ -51,8 +51,27 @@ void Door::interact(const std::shared_ptr<Player>& player) {
 				sprite.setTexture(doorOpenTexture);
 
 				player->setHasKey(false);
+				shouldHide = true;
 			}
 		}
+	}
+}
+
+void Door::updateProximity(const std::shared_ptr<Player>& player, sf::RenderWindow& window)
+{
+	float distance = std::sqrt(
+		std::pow(sprite.getPosition().x - player->getSprite().getPosition().x, 2) +
+		std::pow(sprite.getPosition().y - player->getSprite().getPosition().y, 2)
+	);
+
+
+	isPlayerNear = (distance < 100.0f);
+	std::cout << "updateProximity called! Distance: " << distance << " PlayerNear: " << isPlayerNear << std::endl;
+
+	inspectGUI.setPosition(player->getPosPos().x + guiPos.x, player->getPosPos().y - guiPos.y);
+		
+	if (isPlayerNear && !shouldHide) {
+		window.draw(inspectGUI);
 	}
 }
 

@@ -14,11 +14,11 @@ Map::Map() : statePlaying(StatePlaying::Boss) {
 
 Map::~Map() {}
 
-void Map::update(float deltaTime) {
+void Map::update(float deltaTime, sf::RenderWindow& window) {
     collision(deltaTime);
 
     for (auto& interactv : interactiblesVector) {
-        interactv->updateProximity(player);
+        interactv->updateProximity(player, window);
 		if (interactv->getIsPlayerNear()) {
 			interactv->interact(player);
 		}

@@ -41,10 +41,15 @@ void Game::run()
             }
         }
         if (mainScreen.getIsInMenu()) { //MENU
+            overlay.setGameStarted(false);
             mainScreen.updateMenu(window);
         }
 
         else{ //JEU PRINCIPAL
+            if (!overlay.getGameStarted()) {
+                overlay.setGameStarted(true);
+                overlay.resetTime();  // Optionally reset the timer to 0 at the transition.
+            }
             window.clear();
 
             if (overlay.getShouldRestart()) {
@@ -70,16 +75,15 @@ void Game::run()
                 gemme->updateGemme(deltaTime, m.player);
             }
             m.draw(window);
-            m.update(deltaTime);
+            m.update(deltaTime, window);
         
 
             m.draw(window);
            
             overlay.updateInterface(window, *m.player); // Draw pause menu when paused
-            if (!mainScreen.getIsInMenu())
-            overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
-
+            overlay.updateTimer(window);
             mainScreen.destroyAll();
+
 
 
         }

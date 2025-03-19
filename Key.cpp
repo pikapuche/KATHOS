@@ -38,6 +38,7 @@ void Key::interact(const std::shared_ptr<Player>& player) {
         if (this->playerTryInteract()) {
             player->setHasKey(true);
             isTaken = true;
+            shouldHide = true;
         }
     }
     else {
