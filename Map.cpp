@@ -440,14 +440,14 @@ void Map::draw(RenderWindow& window) {
 	//for (auto& player : players)
 		player->draw(window);
 
-  for(auto& enemy : enemies)
-		enemy->draw(window);
+		for (auto& enemy : enemies)
+			enemy->draw(window);
 
-	for (auto& boss : bosses)
-		boss->draw(window);
+		for (auto& boss : bosses)
+			boss->draw(window);
 
-	for (auto& cloud : clouds)
-		cloud->draw(window);
+		for (auto& cloud : clouds)
+			cloud->draw(window);
 
 	/////////////////////////////////////////////////////// c'est quoi la diff ??? ca sert a quoi ???
 
@@ -456,7 +456,6 @@ void Map::draw(RenderWindow& window) {
 			interactv->draw(window);
 		}
 	}
-}
 	for (auto& interactv : interactiblesVector) {
 		if (interactv->isDoor()) {  // Check if the object is NOT a door
 			interactv->draw(window);
