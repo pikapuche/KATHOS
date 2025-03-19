@@ -60,9 +60,8 @@ void Game::run()
             if (!overlay.getIsPaused()) { // Only update game when not paused
                 m.player->update(deltaTime);
 
-                for (auto& enemy : m.enemies) 
-                enemy->update(deltaTime, *m.player);
-                
+                for (auto& enemy : m.enemies)
+                    enemy->update(deltaTime, *m.player);
 
                 for(auto& boss : m.bosses)
                 boss->update(deltaTime, *m.player);
@@ -86,8 +85,8 @@ void Game::run()
 
 
 
+            }
         }
-
         // Affiche touter()
         window.display();
     }
