@@ -48,7 +48,7 @@ void Game::run()
             window.clear();
 
             if (overlay.getShouldRestart()) {
-                m.resetAll();
+                m.clearMap();
                 m.loadMap();
                 overlay.resetRestartFlag();
             }
