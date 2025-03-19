@@ -170,10 +170,10 @@ bool Interface::getUsingController() {
 void Interface::detectControllerInput() {
 
     //DEBUG
-	if (Keyboard::isKeyPressed(Keyboard::Up)) {
+	if (Keyboard::isKeyPressed(Keyboard::Up) || Joystick::getAxisPosition(0, Joystick::Y)) {
         setUsingController(true);
 	}
-    if (Keyboard::isKeyPressed(Keyboard::Down)) {
+    if (Keyboard::isKeyPressed(Keyboard::Down) || Joystick::getAxisPosition(0, Joystick::Y)) {
         setUsingController(true);
     }
 	if (Mouse::isButtonPressed(Mouse::Left)) {
@@ -206,8 +206,8 @@ void Interface::handleMenuNavigation() {
     static bool upPressed = false;
     static bool downPressed = false;
 
-    bool moveUp = Keyboard::isKeyPressed(Keyboard::Up) || Joystick::isButtonPressed(0, 11);
-    bool moveDown = Keyboard::isKeyPressed(Keyboard::Down) || Joystick::isButtonPressed(0, 12);
+    bool moveUp = Keyboard::isKeyPressed(Keyboard::Up) || Joystick::getAxisPosition(0, Joystick::Y);
+    bool moveDown = Keyboard::isKeyPressed(Keyboard::Down) || Joystick::getAxisPosition(0, Joystick::Y);
 
     // Navigate up
     if (moveUp && !upPressed) {
