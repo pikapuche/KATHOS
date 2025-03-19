@@ -28,9 +28,11 @@ private:
     Sprite soundBar;
     Texture soundBarTexture;
     RectangleShape soundBarFiller;
+    RectangleShape soundBarFillerBG;
 
-    
+    sf::Music& music;
 public:
+    MainScreen(Music& music);
     bool getIsInMenu();
     void setIsInMenu(bool menu);
     void initMenu(RenderWindow& window);

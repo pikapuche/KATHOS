@@ -31,9 +31,11 @@ Map::Map() : mapState(MapState::PRACTICE) {
 
 Map::~Map() {}
 
-void Map::update(float deltaTime) {
-	for (auto& interactv : interactiblesVector) {
-		interactv->updateProximity(player);
+void Map::update(float deltaTime, sf::RenderWindow& window) {
+    collision(deltaTime);
+
+    for (auto& interactv : interactiblesVector) {
+        interactv->updateProximity(player, window);
 		if (interactv->getIsPlayerNear()) {
 			interactv->interact(player);
 		}

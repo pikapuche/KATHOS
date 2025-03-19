@@ -70,9 +70,6 @@ void Interface::initInterface() {
     timeText.setFillColor(sf::Color::White);
     timeText.setPosition(1500, 10); // Adjust position (top-right)
 
-    // Start the clock
-    timeClock.restart();
-
     keyGUI.setPosition(0, 10);
     keyGUI.setTexture(keyGUItexture);
 }
@@ -231,39 +228,62 @@ void Interface::handleMenuNavigation() {
 }
 
 
-void Interface::updateTimer(RenderWindow& window) {
-    static bool wasPaused = false;    // Track previous pause state
+void Interface::updateTimer(sf::RenderWindow& window) {
+    // Only update the timer if the game has started.
+    if (!gameStarted) {
+        // Option 1: Do nothing (timer stays at 0)
+        // Option 2: Reset the timer continuously:
+        timeClock.restart();
+        totalElapsedTime = sf::Time::Zero;
+        return;
+    }
+    else if (gameStarted) {
 
-
-
-    if (isPaused) {
-        if (!wasPaused) {
-            totalElapsedTime += timeClock.getElapsedTime();
+        // Timer update code (same as before)
+        static bool wasPaused = false;    // Track previous pause state
+        if (isPaused) {
+            if (!wasPaused) {
+                totalElapsedTime += timeClock.getElapsedTime();
+            }
         }
-    }
-    else {
-        if (wasPaused) {
-            timeClock.restart(); // Restart the clock fresh after unpausing
+        else {
+            if (wasPaused) {
+                timeClock.restart();
+            }
         }
+        wasPaused = isPaused;
+
+        sf::Time elapsed = totalElapsedTime;
+        if (!isPaused) {
+            elapsed += timeClock.getElapsedTime();
+        }
+
+        int minutes = static_cast<int>(elapsed.asSeconds()) / 60;
+        int seconds = static_cast<int>(elapsed.asSeconds()) % 60;
+        int milliseconds = static_cast<int>(elapsed.asMilliseconds() % 1000);
+
+        timeText.setString("Time: " + std::to_string(minutes) + ":" +
+            (seconds < 10 ? "0" : "") + std::to_string(seconds) + ":" +
+            std::to_string(milliseconds));
+        window.draw(timeText);
     }
+}
 
-    wasPaused = isPaused;
+void Interface::resetTime() {
+    timeClock.restart();
+    totalElapsedTime = sf::Time::Zero;
+}
 
-    // Calculate correct elapsed time
-    sf::Time elapsed = totalElapsedTime;
-
-
-
-    if (!isPaused) {
-        elapsed += timeClock.getElapsedTime();
+void Interface::setGameStarted(bool started) {
+    gameStarted = started;
+    if (!gameStarted) {
+        // Reset the timer so it stays at 0 while in the menu.
+        timeClock.restart();
+        totalElapsedTime = sf::Time::Zero;
     }
+    cout << "successfully set" << endl;
+}
 
-    int minutes = static_cast<int>(elapsed.asSeconds()) / 60;
-    int seconds = static_cast<int>(elapsed.asSeconds()) % 60;
-    int miliseconds = static_cast<int>(elapsed.asMilliseconds() % 1000);
-
-    // Format time
-    timeText.setString("Time: " + std::to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + std::to_string(seconds) + ":" + std::to_string(miliseconds));
-
-    window.draw(timeText); // Ensure it is drawn
+bool Interface::getGameStarted()  const {
+    return gameStarted;
 }

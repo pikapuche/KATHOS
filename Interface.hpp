@@ -20,6 +20,7 @@ private:
     Texture keyGUItexture;
     Sprite keyGUI;
 
+    bool gameStarted = false;
     bool isPaused;
     PauseOverlay pauseOverlay; // Store the overlay as a member
     vector<Button> buttons;
@@ -47,5 +48,8 @@ public:
     void handleMenuNavigation(); // New function for input
 
     void updateTimer(RenderWindow& window);
+    void resetTime();
 
+    void setGameStarted(bool started);
+    bool getGameStarted() const;
 };
