@@ -366,7 +366,7 @@ void Map::loadMap() {
 				cout << "euuuuuuuuuuuuuu wtf la zic ?" << endl;
 		}
 		musicBoss.setLoop(true);
-		musicBoss.setVolume(50.f);
+		musicBoss.setVolume(25.f);
 		musicBoss.play();
 	}
 	if (mapState == MapState::SALLE2) {
