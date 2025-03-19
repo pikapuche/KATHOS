@@ -155,9 +155,6 @@ void MainScreen::handleControllerNavigation() {
     if (!select) selectPressed = false;
 }
 
-
-
-
 void MainScreen::updateMenu(RenderWindow& window) {
     interfaceuh.detectControllerInput();
     bool usingController = interfaceuh.getUsingController();

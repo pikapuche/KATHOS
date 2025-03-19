@@ -59,5 +59,3 @@ void Door::interact(const std::shared_ptr<Player>& player) {
 void Door::openDoor(bool open) {
 	isOpen = open;
 }
-
-

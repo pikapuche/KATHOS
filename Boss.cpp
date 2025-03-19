@@ -11,14 +11,11 @@ Boss::Boss() : Entity(position.x, position.y) {
     life = 180;
     lifeBar.setSize(Vector2f(life, 10.0f)); 
     lifeBar.setFillColor(Color::Green);
+    rectBar.setSize(Vector2f(life, 10));
     rectBar.setFillColor(Color::Transparent);
     rectBar.setOutlineColor(Color::White);
     rectBar.setOutlineThickness(2);
     sprite.setOrigin(20, 0);
-}
-
-int Boss::getLife() {
-    return life;
 }
 
 void Boss::jump()
@@ -40,7 +37,7 @@ void::Boss::tired() {
 void Boss::takeDamage(Player& player)
 {
     if (life > 120) {
-            lifeBar.setFillColor(Color::Green);
+        lifeBar.setFillColor(Color::Green);
     }
     else if (life < 60) {
         lifeBar.setFillColor(Color::Red);
@@ -49,17 +46,20 @@ void Boss::takeDamage(Player& player)
         lifeBar.setFillColor(Color::Yellow);
     }
     if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds()) && player.stateWeapon == player.SPAWN) {
-        setLife(-1);
+        setLife(-0.5);
         lifeBar.setSize(Vector2f(life, 10));
         cout << "aie ca fais mal (boss)" << endl;
     }
 }
 
-//bool Boss::canSeePlayer() {
-//    float distanceX = abs(target.getPosPos().x - position.x);
-//    float distanceY = abs(target.getPosPos().y - position.y);
-//    return (distanceX < detectionRange && distanceY < 50.0f);
-//}
+void Boss::doDamage(Player& player)
+{
+    if (sprite.getGlobalBounds().intersects(player.getSprite().getGlobalBounds()) && !player.getInvincible()) {
+        player.setLife(-5);
+        player.setInvincible(true);
+        player.coolDownInvincible.restart();
+    }
+}
 
 void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet de gerer le mouvement de l'ennemi
     //if (canSeePlayer())
@@ -199,13 +199,14 @@ void Boss::update(float deltaTime, Player& player) {
     lifeBar.setPosition(sprite.getPosition().x, sprite.getPosition().y - 20);
     rectBar.setPosition(sprite.getPosition().x, sprite.getPosition().y - 20);
     takeDamage(player);
+    doDamage(player);
 }
 
 void Boss::draw(RenderWindow& window) {
-    window.draw(sprite);
     window.draw(detectionRect);
     window.draw(lifeBar);
     window.draw(rectBar);
+    window.draw(sprite);
 }
 
 Vector2f Boss::getPos() {
