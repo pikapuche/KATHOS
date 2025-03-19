@@ -337,7 +337,6 @@ float Player::setSPEED(float speed) {
     return SPEED;
 }
 
-
 int Player::setJumpCount(float count)
 {
     jumpCount = count;

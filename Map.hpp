@@ -47,6 +47,8 @@ public:
 
     std::vector<std::shared_ptr<Interactible>> interactiblesVector;
 
+    Music musicBoss;
+
     //Text win;
     //Font font;
 
