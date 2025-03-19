@@ -47,7 +47,7 @@ void Boss::takeDamage(Player& player)
         lifeBar.setFillColor(Color::Yellow);
     }
     if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds()) && player.stateWeapon == player.SPAWN) {
-        setLife(-50);
+        setLife(-0.5);
         lifeBar.setSize(Vector2f(life, 10));
         cout << "aie ca fais mal (boss)" << endl;
     }
@@ -56,7 +56,7 @@ void Boss::takeDamage(Player& player)
 void Boss::doDamage(Player& player)
 {
     if (sprite.getGlobalBounds().intersects(player.getSprite().getGlobalBounds()) && !player.getInvincible()) {
-        player.setLife(-5);
+        player.setLife(-50);
         player.setInvincible(true);
         player.coolDownInvincible.restart();
     }

@@ -17,7 +17,7 @@ public :
 
 	void removeDeadBosses(Map& m);
 
-	void gameOver(RenderWindow& window);
+	void gameOver(RenderWindow& window, Interface& overlay);
 
 	void Win(RenderWindow& window, Interface& overlay);
 

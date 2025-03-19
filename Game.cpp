@@ -10,9 +10,11 @@ void Game::removeDeadBosses(Map& m)
     m.bosses.erase(remove_if(m.bosses.begin(), m.bosses.end(), [](const unique_ptr<Boss>& boss) { return boss->getLife() == 0; }), m.bosses.end()); // Supprime les boss avec 0 PV
 }
 
-void Game::gameOver(RenderWindow& window)
+void Game::gameOver(RenderWindow& window, Interface& overlay)
 {
     if (isGameOver) {
+        overlay.setWinCondition(true); //flemme de changer le nom pour l'instant 
+
         RectangleShape gameOverScreen(Vector2f(window.getSize().x, window.getSize().y));
         gameOverScreen.setFillColor(Color(0, 0, 0, 150));
         window.draw(gameOverScreen);
@@ -31,6 +33,19 @@ void Game::gameOver(RenderWindow& window)
         gameOverText.setPosition((window.getSize().x - gameOverText.getGlobalBounds().width) / 2, (window.getSize().y - gameOverText.getGlobalBounds().height) / 2);
 
         window.draw(gameOverText);
+
+        Time finalTime = overlay.getFinalTime();
+        int minutes = static_cast<int>(finalTime.asSeconds()) / 60;
+        int seconds = static_cast<int>(finalTime.asSeconds()) % 60;
+        int milliseconds = static_cast<int>(finalTime.asMilliseconds() % 1000);
+
+        Text timeText;
+        timeText.setFont(font);
+        timeText.setCharacterSize(60);
+        timeText.setFillColor(Color::White);
+        timeText.setString("Time: " + to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + to_string(seconds) + ":" + to_string(milliseconds));
+        timeText.setPosition((window.getSize().x - timeText.getGlobalBounds().width) / 2, (window.getSize().y - timeText.getGlobalBounds().height) / 2 + 80);
+        window.draw(timeText);
         return;
     }
 }
@@ -119,7 +134,7 @@ void Game::run()
                 isWin = false;
                 isGameOver = false;
             }
-            if (!overlay.getIsPaused()) { // Only update game when not paused
+            if (!overlay.getIsPaused() && !isWin && !isGameOver) { // Only update game when not paused
                 m.player->update(deltaTime);
                 if (m.player->getLife() <= 0) isGameOver = true;
 
@@ -147,11 +162,14 @@ void Game::run()
             m.update(deltaTime);
             m.draw(window);
 
-            overlay.updateInterface(window, *m.player); // Draw pause menu when paused
+            if (!isWin && !isGameOver)
+            {
+                overlay.updateInterface(window, *m.player); // Draw pause menu when paused
+            }
             if (!mainScreen.getIsInMenu())
                 overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
 
-            gameOver(window);
+            gameOver(window, overlay);
             Win(window, overlay);
 
             mainScreen.destroyAll();
