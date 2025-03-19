@@ -47,6 +47,8 @@ public:
 
     std::vector<std::shared_ptr<Interactible>> interactiblesVector;
 
+    Music musicBoss;
+
     //Text win;
     //Font font;
 
@@ -68,8 +70,6 @@ public:
 
     void gameOver(RenderWindow& window);
     
-    void resetAll();
-
     void Win(RenderWindow& window);
 
 };

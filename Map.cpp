@@ -54,9 +54,10 @@ void Map::update(float deltaTime) {
 void Map::clearMap() {
 	maps.clear();
 	groundSprites.clear();
+	interactiblesVector.clear();
 	gemmeSprites.clear();
 	enemies.clear();
-	interactiblesVector.clear();
+	bosses.clear();
 	tpShapeA.clear();
 	tpShapeB.clear();
 }
@@ -355,6 +356,12 @@ void Map::loadMap() {
 		for (auto& mapMonde1 : maps) {
 			monSwitch(*mapMonde1, line, z);
 		}
+		if (!musicBoss.openFromFile("Assets/Musiques/VSOLO musique boss16.wav")) {
+				cout << "euuuuuuuuuuuuuu wtf la zic ?" << endl;
+		}
+		musicBoss.setLoop(true);
+		musicBoss.setVolume(50.f);
+		musicBoss.play();
 	}
 	if (mapState == MapState::SALLE2) {
 		ifstream Map2("Assets/Map/Salle2.txt");
@@ -450,17 +457,19 @@ void Map::draw(RenderWindow& window) {
   for(auto& enemy : enemies)
 		enemy->draw(window);
 
-	for (auto& interactv : interactiblesVector) {
-		if (!interactv->isDoor()) {  // Check if the object is NOT a door
-			interactv->draw(window);
-		}
-	}
-
 	for (auto& boss : bosses)
 		boss->draw(window);
 
 	for (auto& cloud : clouds)
 		cloud->draw(window);
+
+	/////////////////////////////////////////////////////// c'est quoi la diff ??? ca sert a quoi ???
+
+	for (auto& interactv : interactiblesVector) {
+		if (!interactv->isDoor()) {  // Check if the object is NOT a door
+			interactv->draw(window);
+		}
+	}
 
 	for (auto& interactv : interactiblesVector) {
 		if (interactv->isDoor()) {  // Check if the object is NOT a door
@@ -492,13 +501,6 @@ void Map::gameOver(RenderWindow& window)
 		window.draw(gameOverText);
 		return;
 	}
-}
-
-void Map::resetAll() {
-	interactiblesVector.clear();
-	gemmeSprites.clear();
-	enemies.clear();
-	bosses.clear();
 }
 
 void Map::Win(RenderWindow& window)

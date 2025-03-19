@@ -7,7 +7,6 @@
 
 class Game {
 public : 
-	Music music;
 
 	void removeDeadEnemies(Map& m);
 

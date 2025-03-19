@@ -10,20 +10,6 @@ void Game::removeDeadBosses(Map& m)
     m.bosses.erase(remove_if(m.bosses.begin(), m.bosses.end(), [](const unique_ptr<Boss>& boss) { return boss->getLife() == 0; }), m.bosses.end()); // Supprime les boss avec 0 PV
 }
 
-//void Game::removeDeadBosses(Map& m)
-//{
-//    if (m.bosses.size() == 1 && m.bosses[0]->getLife() == 0) {
-//        m.bosses.clear(); // Supprime directement le seul boss du vecteur
-//    }
-//    else {
-//        m.bosses.erase(
-//            remove_if(m.bosses.begin(), m.bosses.end(),
-//                [](const unique_ptr<Boss>& boss) { return boss->getLife() == 0; }),
-//            m.bosses.end()
-//        );
-//    }
-//}
-
 void Game::run()
 {
     RenderWindow window(VideoMode(1920, 1080), "Kathos", Style::Fullscreen);
@@ -38,15 +24,6 @@ void Game::run()
 
     Clock clock;
     overlay.initInterface();
-
-    if (m.bossZone) {
-        if (!music.openFromFile("Assets/Musiques/VSOLO musique boss16.wav")) {
-            cout << "euuuuuuuuuuuuuu wtf la zic ?" << endl;
-        }
-        music.setLoop(true);
-        music.setVolume(50.f);
-        music.play();
-    }
 
     while (window.isOpen()) {
         Time deltaT = clock.restart();
@@ -71,7 +48,7 @@ void Game::run()
             window.clear();
 
             if (overlay.getShouldRestart()) {
-                m.resetAll();
+                m.clearMap();
                 m.loadMap();
                 overlay.resetRestartFlag();
             }
