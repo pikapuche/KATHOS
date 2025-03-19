@@ -15,6 +15,12 @@ Player::Player() : Entity(position.x, position.y) { // constructeur de base
     boxCol1 = 35;
     boxCol2 = 58;
     life = 100;
+    lifeBar.setSize(Vector2f(life, 10));
+    lifeBar.setFillColor(Color::Green);
+    rectBar.setSize(Vector2f(100, 10));
+    rectBar.setFillColor(Color::Transparent);
+    rectBar.setOutlineColor(Color::White);
+    rectBar.setOutlineThickness(2);
 }
 
 void Player::movementManager(float deltaTime) { 
@@ -228,6 +234,33 @@ void Player::jump() {
     }
 }
 
+void Player::lifeGestion()
+{
+    if (life > 100) {
+        lifeBar.setFillColor(Color::Green);
+    }
+    else if (life < 25) {
+        lifeBar.setFillColor(Color::Red);
+    }
+    else if (life < 65) {
+        lifeBar.setFillColor(Color::Yellow);
+    }
+    lifeBar.setSize(Vector2f(life, 10));
+    lifeBar.setPosition(sprite.getPosition().x - 15, sprite.getPosition().y - 20);
+    rectBar.setPosition(sprite.getPosition().x - 15, sprite.getPosition().y - 20);
+}
+
+void Player::takeDamage()
+{
+    if (invincible && coolDownInvincible.getElapsedTime().asSeconds() < 2) {
+        sprite.setColor(Color::Red);
+    }
+    else if (invincible && coolDownInvincible.getElapsedTime().asSeconds() >= 2) {
+        sprite.setColor(Color::White);
+        invincible = false;
+    }
+}
+
 void Player::dash(float deltaTime)
 {
     if (isDashing) {
@@ -356,6 +389,17 @@ bool Player::setHasKey(bool key) {
     return hasKey;
 }
 
+bool Player::getInvincible()
+{
+    return invincible;
+}
+
+bool Player::setInvincible(bool inv)
+{
+    invincible = inv;
+    return invincible;
+}
+
 RectangleShape Player::getAttackShape()
 {
     return attackShape;
@@ -367,9 +411,13 @@ void Player::update(float deltaTime) {
     movementManager(deltaTime);
     dash(deltaTime);
     animationManager(deltaTime);
+    takeDamage();
+    lifeGestion();
 }
 
 void Player::draw(RenderWindow& window) {
     window.draw(sprite);
     if (stateWeapon == SPAWN && DEBUG) window.draw(attackShape);
+    window.draw(lifeBar);
+    window.draw(rectBar);
 }

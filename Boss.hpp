@@ -38,6 +38,7 @@ public:
 
     void jump();
     void takeDamage(Player& player);
+    void doDamage(Player& player);
     void tired();
     void movementManager(float pos, float pos2, float deltaTime);
     void animationManager(float deltaTime);

@@ -52,14 +52,14 @@ void Map::update(float deltaTime) {
 }
 
 void Map::clearMap() {
+	tpShapeA.clear();
+	tpShapeB.clear();
 	interactiblesVector.clear();
 	gemmeSprites.clear();
 	enemies.clear();
 	bosses.clear();
 	maps.clear();
 	groundSprites.clear();
-	tpShapeA.clear();
-	tpShapeB.clear();
 }
 
 
@@ -354,6 +354,7 @@ void Map::loadMap() {
 		}
 	}
 	if (mapState == MapState::SALLE1) {
+		cout << "salle 1" << endl;
 		ifstream Map1("Assets/Map/mapBoss.txt");
 		maps.push_back(&Map1);
 		string line;
@@ -366,10 +367,11 @@ void Map::loadMap() {
 				cout << "euuuuuuuuuuuuuu wtf la zic ?" << endl;
 		}
 		musicBoss.setLoop(true);
-		musicBoss.setVolume(25.f);
+		musicBoss.setVolume(5.f);
 		musicBoss.play();
 	}
 	if (mapState == MapState::SALLE2) {
+		cout << "salle 2" << endl;
 		ifstream Map2("Assets/Map/Salle2.txt");
 		maps.push_back(&Map2);
 		string line;
@@ -481,55 +483,5 @@ void Map::draw(RenderWindow& window) {
 		if (interactv->isDoor()) {  // Check if the object is NOT a door
 			interactv->draw(window);
 		}
-	}
-}
-
-void Map::gameOver(RenderWindow& window)
-{
-	if (isGameOver) {
-		RectangleShape gameOverScreen(Vector2f(window.getSize().x, window.getSize().y));
-		gameOverScreen.setFillColor(Color(0, 0, 0, 150));
-		window.draw(gameOverScreen);
-
-		Font font;
-		if (!font.loadFromFile("Assets/Fonts/Minecraft.ttf")) {
-			cout << "Erreur chargement police !" << endl;
-		}
-
-		Text gameOverText;
-		gameOverText.setFont(font);
-		gameOverText.setString("GAME OVER");
-		gameOverText.setCharacterSize(80);
-		gameOverText.setFillColor(Color::Red);
-		gameOverText.setStyle(Text::Bold);
-		gameOverText.setPosition((window.getSize().x - gameOverText.getGlobalBounds().width) / 2, (window.getSize().y - gameOverText.getGlobalBounds().height) / 2);
-
-		window.draw(gameOverText);
-		return;
-	}
-}
-
-void Map::Win(RenderWindow& window)
-{
-	if (isWin) {
-		RectangleShape winScreen(Vector2f(window.getSize().x, window.getSize().y));
-		winScreen.setFillColor(Color(0, 0, 0, 150));
-		window.draw(winScreen);
-
-		Font font;
-		if (!font.loadFromFile("Assets/Fonts/Minecraft.ttf")) {
-			cout << "Erreur chargement police !" << endl;
-		}
-
-		Text winText;
-		winText.setFont(font);
-		winText.setString("WIN");
-		winText.setCharacterSize(80);
-		winText.setFillColor(Color::Yellow);
-		winText.setStyle(Text::Bold);
-		winText.setPosition((window.getSize().x - winText.getGlobalBounds().width) / 2, (window.getSize().y - winText.getGlobalBounds().height) / 2);
-
-		window.draw(winText);
-		return;
 	}
 }

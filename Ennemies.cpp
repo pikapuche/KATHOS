@@ -26,6 +26,7 @@ Enemy::Enemy() : Entity(position.x, position.y)
     life = 50;
     lifeBar.setSize(Vector2f(life, 10));
     lifeBar.setFillColor(Color::Green);
+    rectBar.setSize(Vector2f(50, 10));
     rectBar.setFillColor(Color::Transparent);
     rectBar.setOutlineColor(Color::White);
     rectBar.setOutlineThickness(2);
@@ -240,5 +241,6 @@ void Enemy::draw(RenderWindow& window)
     window.draw(attackDetect);
     window.draw(attackShape);
     window.draw(lifeBar);
+    window.draw(rectBar);
     window.draw(sprite);
 }

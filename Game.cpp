@@ -10,6 +10,56 @@ void Game::removeDeadBosses(Map& m)
     m.bosses.erase(remove_if(m.bosses.begin(), m.bosses.end(), [](const unique_ptr<Boss>& boss) { return boss->getLife() == 0; }), m.bosses.end()); // Supprime les boss avec 0 PV
 }
 
+void Game::gameOver(RenderWindow& window)
+{
+    if (isGameOver) {
+        RectangleShape gameOverScreen(Vector2f(window.getSize().x, window.getSize().y));
+        gameOverScreen.setFillColor(Color(0, 0, 0, 150));
+        window.draw(gameOverScreen);
+
+        Font font;
+        if (!font.loadFromFile("Assets/Fonts/Minecraft.ttf")) {
+            cout << "Erreur chargement police !" << endl;
+        }
+
+        Text gameOverText;
+        gameOverText.setFont(font);
+        gameOverText.setString("GAME OVER");
+        gameOverText.setCharacterSize(80);
+        gameOverText.setFillColor(Color::Red);
+        gameOverText.setStyle(Text::Bold);
+        gameOverText.setPosition((window.getSize().x - gameOverText.getGlobalBounds().width) / 2, (window.getSize().y - gameOverText.getGlobalBounds().height) / 2);
+
+        window.draw(gameOverText);
+        return;
+    }
+}
+
+void Game::Win(RenderWindow& window)
+{
+    if (isWin) {
+        RectangleShape winScreen(Vector2f(window.getSize().x, window.getSize().y));
+        winScreen.setFillColor(Color(0, 0, 0, 150));
+        window.draw(winScreen);
+
+        Font font;
+        if (!font.loadFromFile("Assets/Fonts/Minecraft.ttf")) {
+            cout << "Erreur chargement police !" << endl;
+        }
+
+        Text winText;
+        winText.setFont(font);
+        winText.setString("WIN");
+        winText.setCharacterSize(80);
+        winText.setFillColor(Color::Yellow);
+        winText.setStyle(Text::Bold);
+        winText.setPosition((window.getSize().x - winText.getGlobalBounds().width) / 2, (window.getSize().y - winText.getGlobalBounds().height) / 2);
+
+        window.draw(winText);
+        return;
+    }
+}
+
 void Game::run()
 {
     RenderWindow window(VideoMode(1920, 1080), "Kathos", Style::Fullscreen);
@@ -54,14 +104,15 @@ void Game::run()
             }
             if (!overlay.getIsPaused()) { // Only update game when not paused
                 m.player->update(deltaTime);
-
+                if (m.player->getLife() <= 0) isGameOver = true;
 
                 for (auto& enemy : m.enemies) {
                     enemy->update(deltaTime, *m.player);
                 }
 
-                for (auto& boss : m.bosses)
+                for (auto& boss : m.bosses) {
                     boss->update(deltaTime, *m.player);
+                }
             }
 
             for (auto& cloud : m.clouds) {
