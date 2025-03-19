@@ -1,5 +1,8 @@
 #include "MainScreen.hpp"
 
+MainScreen::MainScreen(sf::Music& musicRef) : music(musicRef) {} // Pass music reference
+
+
 bool MainScreen::getIsInMenu() {
     return isInMenu;
 }
@@ -68,16 +71,83 @@ void MainScreen::initMenu(RenderWindow& window) {
 
     soundTilter.setTexture(soundTilterTexture);
     soundBar.setTexture(soundBarTexture);
-    soundTilter.setOrigin(soundTilter.getGlobalBounds().width / 2, soundTilter.getGlobalBounds().height / 2);
+    soundTilter.setOrigin(soundTilter.getLocalBounds().width / 2, soundTilter.getLocalBounds().height / 2);
     soundBar.setOrigin(soundBar.getGlobalBounds().width / 2, soundBar.getGlobalBounds().height / 2);
     soundBar.setPosition(window.getSize().x / 2, window.getSize().y / 2);
-    soundTilter.setPosition(soundBar.getGlobalBounds().width/2, soundBar.getPosition().y);
+    soundTilter.setPosition(soundBar.getPosition().x, soundBar.getPosition().y-5);
+
+
+    soundBarFiller.setSize(Vector2f(0, soundBar.getGlobalBounds().height));
+    soundBarFiller.setFillColor(Color(100, 255, 100, 255));
+    soundBarFiller.setPosition(soundBar.getPosition().x+35 - soundBar.getGlobalBounds().width / 2,
+        soundBar.getPosition().y - soundBar.getGlobalBounds().height / 2+15);
+
+    soundBarFillerBG.setSize(Vector2f(0, soundBar.getGlobalBounds().height));
+    soundBarFillerBG.setFillColor(Color(37, 37, 37, 255));
+    soundBarFillerBG.setPosition(soundBar.getPosition().x+35 - soundBar.getGlobalBounds().width / 2,
+        soundBar.getPosition().y - soundBar.getGlobalBounds().height / 2 + 15);
+    soundBarFillerBG.setSize(Vector2f(soundBar.getGlobalBounds().width-65 , soundBar.getGlobalBounds().height - 40));
+
         
 }
 
 void MainScreen::handleSound(RenderWindow& window) {
+    Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
+    bool hoveredTilter = soundTilter.getGlobalBounds().contains(mousePos);
 
+    static bool dragging = false;
+    if (hoveredTilter && Mouse::isButtonPressed(Mouse::Left)) {
+        dragging = true;
+    }
+    if (!Mouse::isButtonPressed(Mouse::Left)) {
+        dragging = false;
+    }
+
+    // Controller detection
+    bool usingController = interfaceuh.getUsingController();
+
+    // Change tilter texture when using a controller
+    if (usingController) {
+        selectedButtonIndex = 4;
+        soundTilter.setTexture(soundTilterControllerTexture);
+    }
+    else {
+        soundTilter.setTexture(soundTilterTexture);
+    }
+
+    // If dragging, move the tilter along the sound bar
+    if (dragging || usingController) {
+        float barLeft = soundBar.getPosition().x + 35 - soundBar.getGlobalBounds().width / 2;
+        float barRight = soundBar.getPosition().x - 35 + soundBar.getGlobalBounds().width / 2;
+
+        if (usingController) {
+            // Controller navigation: Adjust sound using left/right
+            if (Joystick::getAxisPosition(0, Joystick::X) > 50 || Keyboard::isKeyPressed(Keyboard::Right)) {
+                soundTilter.move(5.f, 0); // Move right
+            }
+            if (Joystick::getAxisPosition(0, Joystick::X) < -50 || Keyboard::isKeyPressed(Keyboard::Left)) {
+                soundTilter.move(-5.f, 0); // Move left
+            }
+        }
+
+        // Clamp the tilter position within the sound bar
+        float newX = std::max(barLeft, std::min(soundTilter.getPosition().x, barRight));
+        soundTilter.setPosition(newX, soundBar.getPosition().y - 5);
+
+        // Convert tilter position to a volume percentage (0-100)
+        float volumePercent = ((newX - barLeft) / (barRight - barLeft)) * 100.0f;
+        cout << "Volume: " << volumePercent << "%" << endl;
+
+        // Calculate the width of the filler based on volume
+        float fillerWidth = ((newX - barLeft) / (barRight - barLeft)) * (soundBar.getGlobalBounds().width - 65);
+        if (fillerWidth < 0) fillerWidth = 0;
+        soundBarFiller.setSize(Vector2f(fillerWidth, soundBar.getGlobalBounds().height - 40));
+
+        // Apply new volume
+        music.setVolume(volumePercent);
+    }
 }
+
 
 void MainScreen::handleButtonPress(Button& button) {
     if (!button.getisHidden()) {
@@ -104,12 +174,13 @@ void MainScreen::handleButtonPress(Button& button) {
             else if (!settingSound)
                 isInSettings = false;
             break;
+        case ButtonType::Sound:
+            settingSound = true;
+            break;
         }
+        
     }
 }
-
-
-
 void MainScreen::handleControllerNavigation() {
     static bool upPressed = false;
     static bool downPressed = false;
@@ -157,13 +228,12 @@ void MainScreen::handleControllerNavigation() {
     if (!select) selectPressed = false;
 }
 
-
-
-
 void MainScreen::updateMenu(RenderWindow& window) {
+    if (settingSound) {
+        handleSound(window);
+    }
     if (isInMenu) {
         interfaceuh.setGameStarted(false);
-        cout << "interface game started" << endl;
     }
     interfaceuh.detectControllerInput();
     bool usingController = interfaceuh.getUsingController();
@@ -204,6 +274,7 @@ void MainScreen::updateMenu(RenderWindow& window) {
                             break;
                         case ButtonType::Sound:
                             settingSound = true;
+                            break;
                         }
                         
                     }
@@ -227,8 +298,12 @@ void MainScreen::updateMenu(RenderWindow& window) {
                             button.draw(window);
                         }
                     }
-                    window.draw(soundTilter);
+                    
+
+                    window.draw(soundBarFillerBG);
+                    window.draw(soundBarFiller); // Draw filler first
                     window.draw(soundBar);
+                    window.draw(soundTilter);
                 }
             }
 			else if (!button.isInSettings()) {
