@@ -13,8 +13,6 @@
 class Map {
 public:
 
-    bool isGameOver = false;
-    bool isWin = false;
     bool bossZone = false;
 
     Texture groundYellowLeftTexture, groundYellowMidTexture, groundYellowRightTexture;
@@ -47,13 +45,15 @@ public:
 
     std::vector<std::shared_ptr<Interactible>> interactiblesVector;
 
+    Music musicBoss;
+
     Map();
 
     ~Map();
 
     void update(float deltaTime);
 
-	void clearMap();
+	  void clearMap();
 
     void collision(float deltaTime);
 
@@ -62,9 +62,5 @@ public:
     void monSwitch(ifstream& _Map, string line, int z);
 
     void draw(RenderWindow& window);
-
-    void gameOver(RenderWindow& window);
-
-    void Win(RenderWindow& window);
 
 };

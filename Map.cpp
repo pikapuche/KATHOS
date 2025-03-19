@@ -52,15 +52,14 @@ void Map::update(float deltaTime) {
 }
 
 void Map::clearMap() {
-	maps.clear();
-	groundSprites.clear();
-	gemmeSprites.clear();
-	interactiblesVector.clear();
 	tpShapeA.clear();
 	tpShapeB.clear();
-	bosses.clear();
-	clouds.clear();
+	interactiblesVector.clear();
+	gemmeSprites.clear();
 	enemies.clear();
+	bosses.clear();
+	maps.clear();
+	groundSprites.clear();
 }
 
 
@@ -232,7 +231,14 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				gemmeSprites.push_back(std::move(gemme));
 				break;
 			}
-			case 'E':{
+			case 'J': //JUMP GEM
+			{
+				auto gemme = std::make_unique<Gemme>((float)i * 32, (float)_z * 20, Gemme::GemmeState::DOUBLEJUMP);
+				gemmeSprites.push_back(std::move(gemme));
+				break;
+			}
+			case 'E':
+			{
 				auto newEnemy = make_unique<Enemy>();
 				newEnemy->setPosPos((float)i * 32, (float)_z * 20);
 				newEnemy->waypointOne.x = newEnemy->getPosPos().x;
@@ -326,7 +332,8 @@ void Map::loadMap() {
 		}
 	}
 	if (mapState == MapState::SALLE1) {
-		ifstream Map1("Assets/Map/Salle1.txt");
+		cout << "salle 1" << endl;
+		ifstream Map1("Assets/Map/mapBoss.txt");
 		maps.push_back(&Map1);
 		string line;
 		float z = 0;
@@ -334,8 +341,15 @@ void Map::loadMap() {
 		for (auto& mapMonde1 : maps) {
 			monSwitch(*mapMonde1, line, z);
 		}
+		if (!musicBoss.openFromFile("Assets/Musiques/VSOLO musique boss16.wav")) {
+				cout << "euuuuuuuuuuuuuu wtf la zic ?" << endl;
+		}
+		musicBoss.setLoop(true);
+		musicBoss.setVolume(5.f);
+		musicBoss.play();
 	}
 	if (mapState == MapState::SALLE2) {
+		cout << "salle 2" << endl;
 		ifstream Map2("Assets/Map/Salle2.txt");
 		maps.push_back(&Map2);
 		string line;
@@ -429,71 +443,23 @@ void Map::draw(RenderWindow& window) {
   for(auto& enemy : enemies)
 		enemy->draw(window);
 
-	for (auto& interactv : interactiblesVector) {
-		if (!interactv->isDoor()) {  // Check if the object is NOT a door
-			interactv->draw(window);
-		}
-	}
-
 	for (auto& boss : bosses)
 		boss->draw(window);
 
 	for (auto& cloud : clouds)
 		cloud->draw(window);
 
+	/////////////////////////////////////////////////////// c'est quoi la diff ??? ca sert a quoi ???
+
 	for (auto& interactv : interactiblesVector) {
-		if (interactv->isDoor()) {  // Check if the object is NOT a door
+		if (!interactv->isDoor()) {  // Check if the object is NOT a door
 			interactv->draw(window);
 		}
 	}
 }
-
-void Map::gameOver(RenderWindow& window)
-{
-	if (isGameOver) {
-		RectangleShape gameOverScreen(Vector2f(window.getSize().x, window.getSize().y));
-		gameOverScreen.setFillColor(Color(0, 0, 0, 150));
-		window.draw(gameOverScreen);
-
-		Font font;
-		if (!font.loadFromFile("Assets/Fonts/Minecraft.ttf")) {
-			cout << "Erreur chargement police !" << endl;
+	for (auto& interactv : interactiblesVector) {
+		if (interactv->isDoor()) {  // Check if the object is NOT a door
+			interactv->draw(window);
 		}
-
-		Text gameOverText;
-		gameOverText.setFont(font);
-		gameOverText.setString("GAME OVER");
-		gameOverText.setCharacterSize(80);
-		gameOverText.setFillColor(Color::Red);
-		gameOverText.setStyle(Text::Bold);
-		gameOverText.setPosition((window.getSize().x - gameOverText.getGlobalBounds().width) / 2, (window.getSize().y - gameOverText.getGlobalBounds().height) / 2);
-
-		window.draw(gameOverText);
-		return;
-	}
-}
-
-void Map::Win(RenderWindow& window)
-{
-	if (isWin) {
-		RectangleShape winScreen(Vector2f(window.getSize().x, window.getSize().y));
-		winScreen.setFillColor(Color(0, 0, 0, 150));
-		window.draw(winScreen);
-
-		Font font;
-		if (!font.loadFromFile("Assets/Fonts/Minecraft.ttf")) {
-			cout << "Erreur chargement police !" << endl;
-		}
-
-		Text winText;
-		winText.setFont(font);
-		winText.setString("WIN");
-		winText.setCharacterSize(80);
-		winText.setFillColor(Color::Yellow);
-		winText.setStyle(Text::Bold);
-		winText.setPosition((window.getSize().x - winText.getGlobalBounds().width) / 2, (window.getSize().y - winText.getGlobalBounds().height) / 2);
-
-		window.draw(winText);
-		return;
 	}
 }

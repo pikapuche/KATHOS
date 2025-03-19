@@ -38,6 +38,7 @@ public:
 
     void jump();
     void takeDamage(Player& player);
+    void doDamage(Player& player);
     void tired();
     void movementManager(float pos, float pos2, float deltaTime);
     void animationManager(float deltaTime);
@@ -47,7 +48,6 @@ public:
     float getJumpForce();
     float setJumpForce(float force);
     float getGravity();
-    int getLife();
     Vector2f getPos();
     Vector2f setPos(float x, float y);
     Vector2f getVelocity();
