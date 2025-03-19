@@ -31,9 +31,9 @@ Map::Map() : mapState(MapState::PRACTICE) {
 
 Map::~Map() {}
 
-void Map::update(float deltaTime) {
-	for (auto& interactv : interactiblesVector) {
-		interactv->updateProximity(player);
+void Map::update(float deltaTime, sf::RenderWindow& window) {
+    for (auto& interactv : interactiblesVector) {
+        interactv->updateProximity(player, window);
 		if (interactv->getIsPlayerNear()) {
 			interactv->interact(player);
 		}
@@ -454,11 +454,13 @@ void Map::draw(RenderWindow& window) {
 	for (auto& interactv : interactiblesVector) {
 		if (!interactv->isDoor()) {  // Check if the object is NOT a door
 			interactv->draw(window);
+			interactv->drawInspectGUI(window);
 		}
 	}
 	for (auto& interactv : interactiblesVector) {
-		if (interactv->isDoor()) {  // Check if the object is NOT a door
+		if (interactv->isDoor()) {  // Check if the object is a door
 			interactv->draw(window);
+			interactv->drawInspectGUI(window);
 		}
 	}
 }

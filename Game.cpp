@@ -10,6 +10,17 @@ void Game::removeDeadBosses(Map& m)
     m.bosses.erase(remove_if(m.bosses.begin(), m.bosses.end(), [](const unique_ptr<Boss>& boss) { return boss->getLife() == 0; }), m.bosses.end()); // Supprime les boss avec 0 PV
 }
 
+void Game::initMusic()
+{
+    if (!music.openFromFile("Assets/Musiques/title.wav")) {
+        std::cerr << "Failed to load title music!" << std::endl;
+    }
+    else {
+        music.setLoop(true);
+        music.setVolume(50.f);
+    }
+}
+
 void Game::gameOver(RenderWindow& window)
 {
     if (isGameOver) {
@@ -66,11 +77,12 @@ void Game::run()
     window.setVerticalSyncEnabled(true);
     window.setFramerateLimit(60);
 
-    MainScreen mainScreen;
+    MainScreen mainScreen(music);
     Interface overlay;
     mainScreen.initMenu(window);
     Map m;
     m.loadMap();
+    initMusic();
 
     Clock clock;
     overlay.initInterface();
@@ -90,11 +102,18 @@ void Game::run()
                 overlay.setIsPaused(true);
             }
         }
-
-        if (mainScreen.getIsInMenu()) { //MENU
+        if (mainScreen.getIsInMenu()) { // MENU
+            if (music.getStatus() == sf::SoundSource::Stopped) {
+                music.play();
+            }
+            overlay.setGameStarted(false);
             mainScreen.updateMenu(window);
         }
         else { //JEU PRINCIPAL
+            if (!overlay.getGameStarted()) {
+                overlay.setGameStarted(true);
+                overlay.resetTime();  // Optionally reset the timer to 0 at the transition.
+            }
             window.clear();
 
             if (overlay.getShouldRestart()) {
@@ -109,7 +128,6 @@ void Game::run()
                 for (auto& enemy : m.enemies) {
                     enemy->update(deltaTime, *m.player);
                 }
-
                 for (auto& boss : m.bosses) {
                     boss->update(deltaTime, *m.player);
                 }
@@ -123,15 +141,18 @@ void Game::run()
             }
             removeDeadEnemies(m);
             removeDeadBosses(m);
-            m.update(deltaTime);
+            m.update(deltaTime, window);
             m.draw(window);
 
             overlay.updateInterface(window, *m.player); // Draw pause menu when paused
-            if (!mainScreen.getIsInMenu())
+            if (!mainScreen.getIsInMenu()) {
                 overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
+                music.stop();
+            }
 
             mainScreen.destroyAll();
         }
+        
         // Affiche touter()
         window.display();
     }

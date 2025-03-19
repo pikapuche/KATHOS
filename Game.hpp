@@ -12,9 +12,13 @@ public :
 	bool isWin = false;
 	bool removeBoss = false;
 
+	Music music;
+
 	void removeDeadEnemies(Map& m);
 
 	void removeDeadBosses(Map& m);
+
+	void initMusic();
 
 	void gameOver(RenderWindow& window);
 
