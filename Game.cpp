@@ -10,6 +10,17 @@ void Game::removeDeadBosses(Map& m)
     m.bosses.erase(remove_if(m.bosses.begin(), m.bosses.end(), [](const unique_ptr<Boss>& boss) { return boss->getLife() == 0; }), m.bosses.end()); // Supprime les boss avec 0 PV
 }
 
+void Game::initMusic()
+{
+    if (!music.openFromFile("Assets/Musiques/title.wav")) {
+        std::cerr << "Failed to load title music!" << std::endl;
+    }
+    else {
+        music.setLoop(true);
+        music.setVolume(50.f);
+    }
+}
+
 void Game::gameOver(RenderWindow& window)
 {
     if (isGameOver) {
@@ -71,6 +82,7 @@ void Game::run()
     mainScreen.initMenu(window);
     Map m;
     m.loadMap();
+    initMusic();
 
     Clock clock;
     overlay.initInterface();
@@ -92,14 +104,7 @@ void Game::run()
         }
         if (mainScreen.getIsInMenu()) { // MENU
             if (music.getStatus() == sf::SoundSource::Stopped) {
-                if (!music.openFromFile("Assets/Musiques/title.wav")) {
-                    std::cerr << "Failed to load title music!" << std::endl;
-                }
-                else {
-                    music.setLoop(true);
-                    music.setVolume(50.f);
-                    music.play();
-                }
+                music.play();
             }
             overlay.setGameStarted(false);
             mainScreen.updateMenu(window);
@@ -136,12 +141,14 @@ void Game::run()
             }
             removeDeadEnemies(m);
             removeDeadBosses(m);
-            m.update(deltaTime);
+            m.update(deltaTime, window);
             m.draw(window);
 
             overlay.updateInterface(window, *m.player); // Draw pause menu when paused
-            if (!mainScreen.getIsInMenu())
+            if (!mainScreen.getIsInMenu()) {
                 overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
+                music.stop();
+            }
 
             mainScreen.destroyAll();
         }

@@ -281,7 +281,7 @@ void Interface::setGameStarted(bool started) {
         timeClock.restart();
         totalElapsedTime = sf::Time::Zero;
     }
-    cout << "successfully set" << endl;
+    //cout << "successfully set" << endl;
 }
 
 bool Interface::getGameStarted()  const {

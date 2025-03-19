@@ -66,7 +66,7 @@ void Door::updateProximity(const std::shared_ptr<Player>& player, sf::RenderWind
 
 
 	isPlayerNear = (distance < 100.0f);
-	std::cout << "updateProximity called! Distance: " << distance << " PlayerNear: " << isPlayerNear << std::endl;
+	//std::cout << "updateProximity called! Distance: " << distance << " PlayerNear: " << isPlayerNear << std::endl;
 
 	inspectGUI.setPosition(player->getPosPos().x + guiPos.x, player->getPosPos().y - guiPos.y);
 		
