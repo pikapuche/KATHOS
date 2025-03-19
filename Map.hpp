@@ -47,16 +47,13 @@ public:
 
     Music musicBoss;
 
-    //Text win;
-    //Font font;
-
     Map();
 
     ~Map();
 
     void update(float deltaTime);
 
-	void clearMap();
+	  void clearMap();
 
     void collision(float deltaTime);
 
@@ -65,9 +62,5 @@ public:
     void monSwitch(ifstream& _Map, string line, int z);
 
     void draw(RenderWindow& window);
-
-    void gameOver(RenderWindow& window);
-    
-    void Win(RenderWindow& window);
 
 };
