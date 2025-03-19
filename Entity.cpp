@@ -14,6 +14,7 @@ void Entity::collision(Sprite& tile, float deltaTime) {
         state = GROUNDED;
     }
 }
+
 Sprite& Entity::getSprite()
 {
     return sprite;

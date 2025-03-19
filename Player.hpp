@@ -30,7 +30,9 @@ protected:
     bool isTakeDash = false; // recup la gemme de dash
     bool isDashing = false; // dash
     bool isTakeSpeed = false; // recup la gemme de sprint
+    bool isTakeJump = false;
     bool spawnWeapon = false;
+    bool invincible = false;
 
     bool hasKey = false;
 
@@ -40,6 +42,8 @@ protected:
     Clock clock;
 
 public:
+
+    Clock coolDownInvincible;
 
     enum StateWeapon { NONE, SPAWN };
     StateWeapon stateWeapon;
@@ -59,6 +63,10 @@ public:
     void animationManager(float deltaTime);
 
     void jump();
+
+    void lifeGestion();
+
+    void takeDamage();
 
     //void attack(float deltaTime, Entity& entity);
 
@@ -84,6 +92,8 @@ public:
 
     bool setIsTakeSpeed(bool speed);
 
+    bool setIsTakeJump(bool jump);
+
     float getJumpForce();
 
     float setJumpForce(float force);
@@ -101,6 +111,10 @@ public:
     bool getHasKey();
 
     bool setHasKey(bool key);
+
+    bool getInvincible();
+
+    bool setInvincible(bool inv);
 
     RectangleShape getAttackShape();
 

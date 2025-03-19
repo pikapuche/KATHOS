@@ -26,6 +26,7 @@ Enemy::Enemy() : Entity(position.x, position.y)
     life = 50;
     lifeBar.setSize(Vector2f(life, 10));
     lifeBar.setFillColor(Color::Green);
+    rectBar.setSize(Vector2f(50, 10));
     rectBar.setFillColor(Color::Transparent);
     rectBar.setOutlineColor(Color::White);
     rectBar.setOutlineThickness(2);
@@ -172,7 +173,7 @@ void Enemy::takeDamage(Player& player)
         lifeBar.setFillColor(Color::Yellow);
     }
     if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds()) && player.stateWeapon == player.SPAWN) {
-        setLife(-1);
+        setLife(-2);
         lifeBar.setSize(Vector2f(life, 10));
         cout << "aie ca fais mal (ennemy)" << endl;
     }
@@ -224,6 +225,7 @@ void Enemy::update(float deltaTime, Player& player)
         break;
     }
     takeDamage(player);
+
 }
 
 void Enemy::draw(RenderWindow& window)
@@ -239,5 +241,6 @@ void Enemy::draw(RenderWindow& window)
     window.draw(attackDetect);
     window.draw(attackShape);
     window.draw(lifeBar);
+    window.draw(rectBar);
     window.draw(sprite);
 }

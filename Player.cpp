@@ -15,6 +15,12 @@ Player::Player() : Entity(position.x, position.y) { // constructeur de base
     boxCol1 = 35;
     boxCol2 = 58;
     life = 100;
+    lifeBar.setSize(Vector2f(life, 10));
+    lifeBar.setFillColor(Color::Green);
+    rectBar.setSize(Vector2f(100, 10));
+    rectBar.setFillColor(Color::Transparent);
+    rectBar.setOutlineColor(Color::White);
+    rectBar.setOutlineThickness(2);
 }
 
 void Player::movementManager(float deltaTime) { 
@@ -94,7 +100,7 @@ void Player::movementManager(float deltaTime) {
     sprite.setPosition(position);
 
     if (sprite.getPosition().y < 0) { // haut de l'écran
-        sprite.setPosition(position.x, position.y = 64);
+        sprite.setPosition(position.x, position.y = 0);
     }
     if (sprite.getPosition().y > 1016) { // bas de l'écran 
         sprite.setPosition(position.x, position.y = 1016);
@@ -222,9 +228,36 @@ void Player::jump() {
         jumpCount = 1;
         jumpClock.restart();
     }
-    else if (jumpCount == 1 && jumpClock.getElapsedTime().asMilliseconds() >= 175 && state != GROUNDED) { // compteur permettant de savoir si on peut faire un deuxième saut
+    else if (jumpCount == 1 && jumpClock.getElapsedTime().asMilliseconds() >= 175 && state != GROUNDED && isTakeJump) { // compteur permettant de savoir si on peut faire un deuxième saut
         velocity.y = -jumpForce;
         jumpCount = 2;
+    }
+}
+
+void Player::lifeGestion()
+{
+    if (life > 100) {
+        lifeBar.setFillColor(Color::Green);
+    }
+    else if (life < 25) {
+        lifeBar.setFillColor(Color::Red);
+    }
+    else if (life < 65) {
+        lifeBar.setFillColor(Color::Yellow);
+    }
+    lifeBar.setSize(Vector2f(life, 10));
+    lifeBar.setPosition(sprite.getPosition().x - 15, sprite.getPosition().y - 20);
+    rectBar.setPosition(sprite.getPosition().x - 15, sprite.getPosition().y - 20);
+}
+
+void Player::takeDamage()
+{
+    if (invincible && coolDownInvincible.getElapsedTime().asSeconds() < 2) {
+        sprite.setColor(Color::Red);
+    }
+    else if (invincible && coolDownInvincible.getElapsedTime().asSeconds() >= 2) {
+        sprite.setColor(Color::White);
+        invincible = false;
     }
 }
 
@@ -309,6 +342,12 @@ bool Player::setIsTakeSpeed(bool speed)
     return isTakeSpeed;
 }
 
+bool Player::setIsTakeJump(bool jump)
+{
+    isTakeJump = jump;
+    return isTakeJump;
+}
+
 float Player::getJumpForce() {
     return jumpForce;
 }
@@ -331,7 +370,6 @@ float Player::setSPEED(float speed) {
     return SPEED;
 }
 
-
 int Player::setJumpCount(float count)
 {
     jumpCount = count;
@@ -351,6 +389,17 @@ bool Player::setHasKey(bool key) {
     return hasKey;
 }
 
+bool Player::getInvincible()
+{
+    return invincible;
+}
+
+bool Player::setInvincible(bool inv)
+{
+    invincible = inv;
+    return invincible;
+}
+
 RectangleShape Player::getAttackShape()
 {
     return attackShape;
@@ -362,9 +411,13 @@ void Player::update(float deltaTime) {
     movementManager(deltaTime);
     dash(deltaTime);
     animationManager(deltaTime);
+    takeDamage();
+    lifeGestion();
 }
 
 void Player::draw(RenderWindow& window) {
     window.draw(sprite);
     if (stateWeapon == SPAWN && DEBUG) window.draw(attackShape);
+    window.draw(lifeBar);
+    window.draw(rectBar);
 }

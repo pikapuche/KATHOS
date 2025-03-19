@@ -13,21 +13,28 @@
 class Map {
 public:
 
-    bool isGameOver = false;
-    bool isWin = false;
     bool bossZone = false;
 
     Texture groundYellowLeftTexture, groundYellowMidTexture, groundYellowRightTexture;
     Texture groundRedLeftTexture, groundRedMidTexture, groundRedRightTexture;
     Texture groundGreenLeftTexture, groundGreenMidTexture, groundGreenRightTexture;
+    Texture practiceTexture,salle1Texture, salle2Texture, salle3Texture, salle4Texture, salle5Texture, salle6Texture;
+
+	Sprite practiceSprite, salle1Sprite, salle2Sprite, salle3Sprite, salle4Sprite, salle5Sprite, salle6Sprite;
+
+    enum class  GemmeState { NADA, SPRINT, DASH, DOUBLEJUMP };
+	GemmeState gemmeState;
+
+	enum class MapState { PRACTICE, SALLE1, SALLE2, SALLE3, SALLE4, SALLE5, SALLE6};
+    MapState mapState;
 
     vector<unique_ptr<Sprite>> groundSprites;
+    vector<unique_ptr<RectangleShape>> tpShapeA;
+    vector<unique_ptr<RectangleShape>> tpShapeB;
     vector<unique_ptr<Gemme>> gemmeSprites;
 
     shared_ptr<Player> player = make_shared<Player>();
-    //vector<unique_ptr<Player>> players;
 
-    //shared_ptr<Boss> boss;
     vector<unique_ptr<Boss>> bosses;
 
     vector<unique_ptr<Enemy>> enemies;
@@ -38,25 +45,15 @@ public:
 
     std::vector<std::shared_ptr<Interactible>> interactiblesVector;
 
-
-    //Text win;
-    //Font font;
-
-    enum class StatePlaying {
-        Practice,
-        Monde1,
-        Monde2,
-        Monde3,
-        Boss
-    };
-
-    StatePlaying statePlaying;
+    Music musicBoss;
 
     Map();
 
     ~Map();
 
     void update(float deltaTime);
+
+	  void clearMap();
 
     void collision(float deltaTime);
 
@@ -65,11 +62,5 @@ public:
     void monSwitch(ifstream& _Map, string line, int z);
 
     void draw(RenderWindow& window);
-
-    void gameOver(RenderWindow& window);
-    
-    void resetAll();
-
-    void Win(RenderWindow& window);
 
 };
