@@ -3,7 +3,6 @@
 Player::Player() : Entity(position.x, position.y) { // constructeur de base 
     DEBUG = true;
     velocity.y = 0; // Pas de mouvement vertical au depart
-    //attackShape.setSize(sf::Vector2f(10.0f, 20.0f)); attack a l'arme
     attackShape.setSize(sf::Vector2f(75.f, 25.0f));
     attackShape.setFillColor(sf::Color::Red);
     textureSprint.loadFromFile("assets/texture/player/playerRunV2piskel.png");

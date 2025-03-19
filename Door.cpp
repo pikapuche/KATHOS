@@ -27,15 +27,8 @@ void Door::rotateCheck(const std::shared_ptr<Player>& player) {
 }
 
 void Door::collision(const std::shared_ptr<Player>& player) {
-	Vector2f previousPos = player->getPosPos();
-
-	if (sprite.getGlobalBounds().intersects(player->getSprite().getGlobalBounds()) && (player->getPosPos().x < sprite.getPosition().x)) {
-		player->setPosPos(previousPos.x - 5.1, previousPos.y);
-	}
-
-
-	if (sprite.getGlobalBounds().intersects(player->getSprite().getGlobalBounds()) && (player->getPosPos().x > sprite.getPosition().x)) {
-		player->setPosPos(previousPos.x + 5.1, previousPos.y);
+	if (player->getSprite().getGlobalBounds().intersects(sprite.getGlobalBounds())) {
+		player->setPosPos(sprite.getPosition().x - 64, player->getPosPos().y);
 	}
 }
 

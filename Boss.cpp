@@ -62,10 +62,6 @@ void Boss::doDamage(Player& player)
 }
 
 void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet de gerer le mouvement de l'ennemi
-    //if (canSeePlayer())
-    //{
-
-    //}
     if (!isJumping) {
         if (position.x < pos && directionState != RIGHT) { // faire en sorte qu'il ne puisse pas changer de direction pendant un saut
             directionState = RIGHT;
@@ -98,9 +94,6 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
     if (sprite.getPosition().y < 0) { // haut de l'écran
         sprite.setPosition(position.x, position.y = 64);
     }
-    //if (sprite.getPosition().y > 1016) { // bas de l'écran 
-    //    sprite.setPosition(position.x, position.y = 1016);
-    //}
     if (sprite.getPosition().x < 0) { // gauche de l'écran
         sprite.setPosition(position.x = 0, position.y);
     }
