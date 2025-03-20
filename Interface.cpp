@@ -61,13 +61,13 @@ void Interface::initInterface() {
 
     // Load font
     if (!timeFont.loadFromFile("Assets/Fonts/Minecraft.ttf")) {
-        std::cerr << "Error loading font!" << std::endl;
+        cerr << "Error loading font!" << endl;
     }
 
     // Set up timer text
     timeText.setFont(timeFont);
     timeText.setCharacterSize(40);
-    timeText.setFillColor(sf::Color::White);
+    timeText.setFillColor(Color::White);
     timeText.setPosition(1500, 10); // Adjust position (top-right)
 
     keyGUI.setPosition(0, 10);
@@ -100,7 +100,7 @@ void Interface::updateInterface(RenderWindow& window, Player& player, Controller
                         case ButtonType::Restart:
                             shouldRestart = true; // New flag to signal a restart
                             isPaused = false; // Unpause when restarting
-                            totalElapsedTime = sf::Time::Zero; // Reset elapsed time
+                            totalElapsedTime = Time::Zero; // Reset elapsed time
                             timeClock.restart();  // Restart the timer
                             return;
                         }
@@ -161,16 +161,16 @@ void Interface::updateTimer(sf::RenderWindow& window) {
 
         // Timer update code (same as before)
         static bool wasPaused = false;    // Track previous pause state
-        if (isPaused) {
-            if (!wasPaused) {
-                totalElapsedTime += timeClock.getElapsedTime();
-            }
+        if (hasWon) {
+            timeText.setString("Time: " + to_string(finalTime.asSeconds()));
         }
-        else {
-            if (wasPaused) {
-                timeClock.restart();
-            }
+        else if (isPaused && !wasPaused) {
+            totalElapsedTime += timeClock.getElapsedTime();
         }
+        else if (wasPaused) {
+            timeClock.restart(); // Restart the clock fresh after unpausing
+        }
+
         wasPaused = isPaused;
 
         sf::Time elapsed = totalElapsedTime;
@@ -178,9 +178,18 @@ void Interface::updateTimer(sf::RenderWindow& window) {
             elapsed += timeClock.getElapsedTime();
         }
 
+        if (hasWon && finalTime.asSeconds() == 0) {
+            finalTime = elapsed;
+        }
+
         int minutes = static_cast<int>(elapsed.asSeconds()) / 60;
         int seconds = static_cast<int>(elapsed.asSeconds()) % 60;
         int milliseconds = static_cast<int>(elapsed.asMilliseconds() % 1000);
+        
+    
+
+    // Format time
+    timeText.setString("Time: " + to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + to_string(seconds) + ":" + to_string(milliseconds));
 
         timeText.setString("Time: " + std::to_string(minutes) + ":" +
             (seconds < 10 ? "0" : "") + std::to_string(seconds) + ":" +
@@ -202,6 +211,16 @@ void Interface::setGameStarted(bool started) {
         totalElapsedTime = sf::Time::Zero;
     }
     //cout << "successfully set" << endl;
+}
+
+Time Interface::getFinalTime() const
+{
+    return finalTime;
+}
+
+void Interface::setWinCondition(bool win)
+{
+    hasWon = win;
 }
 
 bool Interface::getGameStarted()  const {

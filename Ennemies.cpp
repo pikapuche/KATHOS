@@ -4,7 +4,7 @@ Enemy::Enemy() : Entity(position.x, position.y)
 {
     DEBUG = true;
     if (DEBUG) {
-        rectangleDetect.setFillColor(sf::Color(255, 0, 0, 50));
+        rectangleDetect.setFillColor(Color(255, 0, 0, 50));
         circleOne.setFillColor(Color::Yellow);
         circleTwo.setFillColor(Color::Blue);
         circleLastPos.setFillColor(Color::Cyan);

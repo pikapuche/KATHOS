@@ -19,11 +19,19 @@ void Game::initMusic()
         music.setLoop(true);
         music.setVolume(50.f);
     }
-}
 
-void Game::gameOver(RenderWindow& window)
+    if (!musicBoss.openFromFile("Assets/Musiques/VSOLO musique boss16.wav")) {
+        cout << "euuuuuuuuuuuuuu wtf la zic ?" << endl;
+    }
+    musicBoss.setLoop(true);
+    musicBoss.setVolume(5.f);
+}
+void Game::gameOver(RenderWindow& window, Interface& overlay)
 {
     if (isGameOver) {
+        musicBoss.stop();
+        overlay.setWinCondition(true); //flemme de changer le nom pour l'instant 
+
         RectangleShape gameOverScreen(Vector2f(window.getSize().x, window.getSize().y));
         gameOverScreen.setFillColor(Color(0, 0, 0, 150));
         window.draw(gameOverScreen);
@@ -42,13 +50,29 @@ void Game::gameOver(RenderWindow& window)
         gameOverText.setPosition((window.getSize().x - gameOverText.getGlobalBounds().width) / 2, (window.getSize().y - gameOverText.getGlobalBounds().height) / 2);
 
         window.draw(gameOverText);
+
+        Time finalTime = overlay.getFinalTime();
+        int minutes = static_cast<int>(finalTime.asSeconds()) / 60;
+        int seconds = static_cast<int>(finalTime.asSeconds()) % 60;
+        int milliseconds = static_cast<int>(finalTime.asMilliseconds() % 1000);
+
+        Text timeText;
+        timeText.setFont(font);
+        timeText.setCharacterSize(60);
+        timeText.setFillColor(Color::White);
+        timeText.setString("Time: " + to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + to_string(seconds) + ":" + to_string(milliseconds));
+        timeText.setPosition((window.getSize().x - timeText.getGlobalBounds().width) / 2, (window.getSize().y - timeText.getGlobalBounds().height) / 2 + 80);
+        window.draw(timeText);
         return;
     }
 }
 
-void Game::Win(RenderWindow& window)
+void Game::Win(RenderWindow& window, Interface& overlay)
 {
     if (isWin) {
+        musicBoss.stop();
+        overlay.setWinCondition(true);
+
         RectangleShape winScreen(Vector2f(window.getSize().x, window.getSize().y));
         winScreen.setFillColor(Color(0, 0, 0, 150));
         window.draw(winScreen);
@@ -67,6 +91,19 @@ void Game::Win(RenderWindow& window)
         winText.setPosition((window.getSize().x - winText.getGlobalBounds().width) / 2, (window.getSize().y - winText.getGlobalBounds().height) / 2);
 
         window.draw(winText);
+
+        Time finalTime = overlay.getFinalTime();
+        int minutes = static_cast<int>(finalTime.asSeconds()) / 60;
+        int seconds = static_cast<int>(finalTime.asSeconds()) % 60;
+        int milliseconds = static_cast<int>(finalTime.asMilliseconds() % 1000);
+
+        Text timeText;
+        timeText.setFont(font);
+        timeText.setCharacterSize(60);
+        timeText.setFillColor(Color::White);
+        timeText.setString("Time: " + to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + to_string(seconds) + ":" + to_string(milliseconds));
+        timeText.setPosition((window.getSize().x - timeText.getGlobalBounds().width) / 2, (window.getSize().y - timeText.getGlobalBounds().height) / 2 + 80);
+        window.draw(timeText);
         return;
     }
 }
@@ -127,8 +164,15 @@ void Game::run()
                 m.clearMap();
                 m.loadMap();
                 overlay.resetRestartFlag();
+                isWin = false;
+                isGameOver = false;
             }
-            if (!overlay.getIsPaused()) { // Only update game when not paused
+            for (auto& cloud : m.clouds) {
+                cloud->collision(*m.player);
+                cloud->update(deltaTime);
+                cloud->draw(window);
+            }
+            if (!overlay.getIsPaused() && !isWin && !isGameOver) { // Only update game when not paused
                 m.player->update(deltaTime);
                 if (m.player->getLife() <= 0) isGameOver = true;
 
@@ -137,12 +181,15 @@ void Game::run()
                 }
                 for (auto& boss : m.bosses) {
                     boss->update(deltaTime, *m.player);
+                    if (boss->getLife() <= 0) 
+                    {
+                        isWin = true;
+                    }
                 }
+
+
             }
 
-            for (auto& cloud : m.clouds) {
-                cloud->update(deltaTime);
-            }
             for (auto& gemme : m.gemmeSprites) {
                 gemme->updateGemme(deltaTime, m.player);
             }
@@ -151,11 +198,23 @@ void Game::run()
             m.update(deltaTime, window);
             m.draw(window);
 
-            overlay.updateInterface(window, *m.player, controller); // Draw pause menu when paused
-            if (!mainScreen.getIsInMenu()) {
+//             overlay.updateInterface(window, *m.player, controller); // Draw pause menu when paused
+//             if (!mainScreen.getIsInMenu()) {
+            if (!isWin && !isGameOver)
+            {
+                if (m.mapBoss && count < 1) {
+                    musicBoss.play();
+                    count++;
+                }
+                overlay.updateInterface(window, *m.player); // Draw pause menu when paused
+            }
+            if (!mainScreen.getIsInMenu())
+            {
                 overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
                 music.stop();
             }
+            gameOver(window, overlay);
+            Win(window, overlay);
 
             mainScreen.destroyAll();
         }

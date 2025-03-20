@@ -7,7 +7,7 @@ private:
 	sf::Vector2f guiPos = { 20.0f, 70.0f };
 
 	bool isOpen = false;
-	sf::Texture doorOpenTexture;
+	Texture doorOpenTexture;
 	bool typeButton;
 public:
 	Door(bool typeButton);
@@ -17,6 +17,6 @@ public:
 	void setPosPos(float x, float y);
 	void draw(RenderWindow& window) override;
 	void openDoor(bool open);
-	void collision(const std::shared_ptr<Player>& player);
-	void rotateCheck(const std::shared_ptr<Player>& player);
+	void collision(const shared_ptr<Player>& player);
+	void rotateCheck(const shared_ptr<Player>& player);
 };
