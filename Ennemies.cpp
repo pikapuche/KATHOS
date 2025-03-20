@@ -14,12 +14,11 @@ Enemy::Enemy() : Entity(position.x, position.y)
     rectangleDetect.setOrigin(318, 11); // 150 (radius) - 64 (taille sprite) + 32 (moitié taille sprite pour centrer) 
     rectangleDetect.setSize(Vector2f(700, 75));
     currentState = PATROL;
-    circleOne.setRadius(10.0f); // point de patrouille 1 
+    circleOne.setRadius(10.0f); // point de patrouille 1
     circleTwo.setRadius(10.0f); // point de patrouille 2
     texture.loadFromFile("Assets/Ennemies/attack move.png");
     textureAttack.loadFromFile("Assets/Ennemies/attack.png");
     textureAttackMove.loadFromFile("Assets/Ennemies/attack move.png");
-    sprite.setTextureRect(IntRect(0, 0, 64, 64));
     sprite.setTexture(texture);
     boxCol1 = 64; // valeur qui permet de gérer les collisions (distances entre plateformes)
     boxCol2 = 64; // 
@@ -29,7 +28,7 @@ Enemy::Enemy() : Entity(position.x, position.y)
     life = 50;
     lifeBar.setSize(Vector2f(life, 10));
     lifeBar.setFillColor(Color::Green);
-    rectBar.setSize(Vector2f(50, 10));
+    rectBar.setSize(Vector2f(life, 10));
     rectBar.setFillColor(Color::Transparent);
     rectBar.setOutlineColor(Color::White);
     rectBar.setOutlineThickness(2);
@@ -54,9 +53,11 @@ void Enemy::detectPlayer(Player& player)
 void Enemy::movementManager(float pos, float pos2, float deltaTime) { // permet de gerer le mouvement de l'ennemi
     if (position.x < pos && directionState != RIGHT) {
         directionState = RIGHT;
+        sprite.setTextureRect(IntRect(0, 0, 64, 64));
     }
     else if (position.x > pos2 && directionState != LEFT) {
         directionState = LEFT;
+        sprite.setTextureRect(IntRect(64, 0, -64, 64));
     }
 
     if (directionState == RIGHT) {
@@ -86,6 +87,7 @@ void Enemy::movementManager(float pos, float pos2, float deltaTime) { // permet 
     circleTwo.setPosition(waypointTwo);
     attackShape.setSize(Vector2f(nuage, 20.f));
     lifeBar.setPosition(position.x + 5, position.y - 45);
+    rectBar.setPosition(position.x + 5, position.y - 45);
 
     if (sprite.getPosition().y < 0) { // haut de l'écran
         sprite.setPosition(position.x, position.y = 64);
@@ -102,96 +104,35 @@ void Enemy::movementManager(float pos, float pos2, float deltaTime) { // permet 
 }
 
 void Enemy::animationManager(float deltaTime) {
-    switch (state) {
-    case PATROL:
-    {
+    if (attack) {
+        sprite.setTexture(textureAttackMove);
+        animAttackTimeDecr += deltaTime;
+        anim_attack.y = 0;
+        if (animAttackTimeDecr > 0.08f) {
+            anim_attack.x++;
+            animAttackTimeDecr = 0;
+        }
+        if (directionState == LEFT) {
+            if (anim_attack.x > 11) {
+                anim_attack.x = 6;
+            }
+            sprite.setTextureRect(IntRect(anim_attack.x * 64, 0, -64, 64));
+        }
+        else if (directionState == RIGHT) {
+            if (anim_attack.x > 11) {
+                anim_attack.x = 5;
+            }
+            sprite.setTextureRect(IntRect(anim_attack.x * 64, 0, 64, 64));
+        }
+    }
+    else {
         sprite.setTexture(texture);
-        //animIdleTimeDecr += deltaTime;
-        //anim_idle.y = 0;
-        //if (animIdleTimeDecr > 0.12f) {
-        //    anim_idle.x++;
-        //    animIdleTimeDecr = 0;
-        //}
-        //if (stateLook == LOOK_LEFT) {
-        //    if (anim_idle.x > 8)
-        //        anim_idle.x = 1;
-        //    sprite.setTextureRect(IntRect(anim_idle.x * 64, anim_idle.y * 64, -64, 64));
-        //}
-        //else if (stateLook == LOOK_RIGHT) {
-        //    if (anim_idle.x > 7)
-        //        anim_idle.x = 0;
-        //    sprite.setTextureRect(IntRect(anim_idle.x * 64, anim_idle.y * 64, 64, 64));
-        //}
-        if (attack) {
-            sprite.setTexture(textureAttackMove);
-            animAttackTimeDecr += deltaTime;
-            anim_attack.y = 0;
-            if (animAttackTimeDecr > 0.07f) {
-                anim_attack.x++;
-                animAttackTimeDecr = 0;
-            }
-            if (directionState == LEFT) {
-                if (anim_attack.x == 5) {
-                    sprite.setTexture(textureAttack);
-                }
-                if (anim_attack.x > 12) {
-                    anim_attack.x = 5;
-                }
-                sprite.setTextureRect(IntRect(anim_attack.x * 64, 0, -64, 64));
-            }
-            else if (directionState == RIGHT) {
-                if (anim_attack.x == 5) {
-                    sprite.setTexture(textureAttack);
-                }
-                if (anim_attack.x > 11) {
-                    anim_attack.x = 5;
-                }
-                sprite.setTextureRect(IntRect(anim_attack.x * 64, 0, 64, 64));
-            }
-        }
-        break;
-    }
-    case CHASE:
-    {
-        if (attack) {
-            sprite.setTexture(textureAttackMove);
-            animAttackTimeDecr += deltaTime;
-            anim_attack.y = 0;
-            if (animAttackTimeDecr > 0.07f) {
-                anim_attack.x++;
-                animAttackTimeDecr = 0;
-            }
-            if (directionState == LEFT) {
-                if (anim_attack.x == 5) {
-                    sprite.setTexture(textureAttack);
-                }
-                if (anim_attack.x > 12) {
-                    anim_attack.x = 5;
-                }
-                sprite.setTextureRect(IntRect(anim_attack.x * 64, 0, -64, 64));
-            }
-            else if (directionState == RIGHT) {
-                if (anim_attack.x == 5) {
-                    sprite.setTexture(textureAttack);
-                }
-                if (anim_attack.x > 11) {
-                    anim_attack.x = 5;
-                }
-                sprite.setTextureRect(IntRect(anim_attack.x * 64, 0, 64, 64));
-            }
-        }
-        break;
-    }
-    case SEARCH:
-    {
-        break;
-    }
+        anim_attack.x = 0;
     }
 }
 
 void Enemy::attackPlayer(Player& player) {
     if (attackDetect.getGlobalBounds().intersects(player.getSprite().getGlobalBounds())) { // si la zone d'attaque touche le joueur
-        // anim qui fait pop le nuage et au moment où le nuage touche le perso alors paf
         if (!attack) {
             clockAttack.restart();
         }
@@ -203,7 +144,7 @@ void Enemy::attackPlayer(Player& player) {
     }
     if (nuage == 75.f) {
         nuage = 0;
-        attack = false;
+        if(!attackDetect.getGlobalBounds().intersects(player.getSprite().getGlobalBounds())) attack = false;
     }
 
     if (attackShape.getGlobalBounds().intersects(player.getSprite().getGlobalBounds())) { // si le nuage touche le perso sa vitesse ralentie
@@ -220,23 +161,18 @@ void Enemy::attackPlayer(Player& player) {
 
 void Enemy::patrol(float deltaTime, Player& player) // fait simplement des gauche droite entre 2 points
 {
-    if(enemyState == PATROLLER) sprite.setColor(Color::Blue);
-    if (enemyState == CHASER) sprite.setColor(Color::Magenta);
     movementManager(circleOne.getPosition().x, circleTwo.getPosition().x, deltaTime);
     attackPlayer(player);
 }
 
 void Enemy::chase(Player& player, float deltaTime) // suit le perso tant qu'il est dans la zone de detection
 {
-    sprite.setColor(Color::Red);
     movementManager(player.getSprite().getPosition().x, player.getSprite().getPosition().x, deltaTime);
-    animationManager(deltaTime);
     attackPlayer(player);
 }
 
 void Enemy::search(float lastPlayerPosition, float deltaTime, Player& player) // quand le perso sort de la zone il va jusqu'a sa derniere position et effectue des gauche droite pour le chercher
 {
-    sprite.setColor(Color::Yellow);
     if (sprite.getGlobalBounds().intersects(circleLastPos.getGlobalBounds()) && !searching) { // si il va a la derniere position du player alors searching = true
         searching = true;
         coolDownSearch.restart();
@@ -269,7 +205,6 @@ void Enemy::takeDamage(Player& player)
     if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds()) && player.stateWeapon == player.SPAWN) {
         setLife(-2);
         lifeBar.setSize(Vector2f(life, 10));
-        cout << "aie ca fais mal (ennemy)" << endl;
     }
 }
 
@@ -304,22 +239,24 @@ void Enemy::update(float deltaTime, Player& player)
 {
     switch (currentState) {
     case PATROL:
+        animationManager(deltaTime);
         detectPlayer(player);
         patrol(deltaTime, player);
         break;
 
     case CHASE:
+        animationManager(deltaTime);
         detectPlayer(player);
         chase(player, deltaTime);
         break;
 
     case SEARCH:
-        search(lastPlayerPosition, deltaTime, player);
+        animationManager(deltaTime);
         detectPlayer(player);
+        search(lastPlayerPosition, deltaTime, player);
         break;
     }
     takeDamage(player);
-
 }
 
 void Enemy::draw(RenderWindow& window)

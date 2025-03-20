@@ -346,6 +346,11 @@ bool Player::setIsTakeSpeed(bool speed)
     return isTakeSpeed;
 }
 
+bool Player::getIsTakeJump()
+{
+    return isTakeJump;
+}
+
 bool Player::setIsTakeJump(bool jump)
 {
     isTakeJump = jump;

@@ -94,6 +94,8 @@ public:
 
     bool setIsTakeSpeed(bool speed);
 
+    bool getIsTakeJump();
+
     bool setIsTakeJump(bool jump);
 
     float getJumpForce();
