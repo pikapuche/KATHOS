@@ -14,7 +14,7 @@ void MainScreen::setIsInMenu(bool menu) {
 }
 
 void MainScreen::initMenu(RenderWindow& window) {
-    if (!backgroundTexture.loadFromFile("assets/texture/titlescreen/background.png")) {
+    if (!backgroundTexture.loadFromFile("assets/texture/titlescreen/backgroundV2.png")) {
         cerr << "Failed to load background texture!" << endl;
     }
 
@@ -22,40 +22,39 @@ void MainScreen::initMenu(RenderWindow& window) {
     background.setTexture(backgroundTexture);
 
     buttons.push_back(Button(
-        window.getSize().x / 2 - 100, window.getSize().y / 2 - 200,
+        window.getSize().x / 2 - 100, window.getSize().y / 2 - 50,
 		200, 100, ButtonType::Play, false,
         "assets/texture/titlescreen/buttons/playButton.png",
         "assets/texture/titlescreen/buttons/playButtonHover.png"
     ));
 
     buttons.push_back(Button(
-        window.getSize().x / 2 - 100, window.getSize().y / 2 + 200,
+        window.getSize().x / 2 - 100, window.getSize().y / 2 + 350,
         200, 100, ButtonType::Exit, false,
         "assets/texture/titlescreen/buttons/ExitButton.png",
         "assets/texture/titlescreen/buttons/ExitButtonHover.png"
     ));
 
     buttons.push_back(Button(
-        window.getSize().x / 2 - 100, window.getSize().y / 2,
+        window.getSize().x / 2 - 100, window.getSize().y / 2 + 150,
         200, 100, ButtonType::Settings, false,
         "assets/texture/titlescreen/buttons/SettingsButton.png",
         "assets/texture/titlescreen/buttons/SettingsButtonHover.png"
     ));
 
     buttons.push_back(Button(
-        window.getSize().x / 2 - 100, window.getSize().y / 2 + -200,
+        window.getSize().x / 2 - 100, window.getSize().y / 2 - 50,
         200, 100, ButtonType::Sound, true,
         "assets/texture/titlescreen/buttons/settings/soundButton.png",
         "assets/texture/titlescreen/buttons/settings/soundButtonHover.png"
     ));
 
     buttons.push_back(Button(
-        window.getSize().x / 2 - 100, window.getSize().y / 2 + 200,
+        window.getSize().x / 2 - 100, window.getSize().y / 2 + 350,
         200, 100, ButtonType::Return, true,
         "assets/texture/titlescreen/buttons/settings/returnButton.png",
         "assets/texture/titlescreen/buttons/settings/returnButtonHover.png"
     ));
-
 
     soundTilterTexture.loadFromFile("assets/texture/titlescreen/sound/gem.png");
     soundTilterControllerTexture.loadFromFile("assets/texture/titlescreen/sound/gemController.png");
@@ -79,8 +78,6 @@ void MainScreen::initMenu(RenderWindow& window) {
     soundBarFillerBG.setPosition(soundBar.getPosition().x+35 - soundBar.getGlobalBounds().width / 2,
         soundBar.getPosition().y - soundBar.getGlobalBounds().height / 2 + 15);
     soundBarFillerBG.setSize(Vector2f(soundBar.getGlobalBounds().width-65 , soundBar.getGlobalBounds().height - 40));
-
-        
 }
 
 void MainScreen::handleSound(RenderWindow& window, Controller& controller) {

@@ -208,21 +208,13 @@ void Interface::updateInterface(RenderWindow& window, Player& player, Controller
         else if (!player.getIsTakeSpeed()) {
             Sprint.setTexture(SprintLockTexture);
         }
-
-        
-
         if (!isPaused) {
             window.draw(Dash);
             window.draw(Sprint);
             window.draw(DJump);
             window.draw(keyGUI);
         }
-
-    
-
 }
-
-
 
 bool Interface::getShouldRestart() const{
     return shouldRestart;
@@ -268,8 +260,6 @@ void Interface::updateTimer(sf::RenderWindow& window) {
         int minutes = static_cast<int>(elapsed.asSeconds()) / 60;
         int seconds = static_cast<int>(elapsed.asSeconds()) % 60;
         int milliseconds = static_cast<int>(elapsed.asMilliseconds() % 1000);
-        
-    
 
     // Format time
     timeText.setString("Time: " + to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + to_string(seconds) + ":" + to_string(milliseconds));
@@ -355,9 +345,6 @@ void Interface::updateGameOver(sf::RenderWindow& window, Controller& controller)
                 }
             }
         }
-        
-
-
 
         for (auto& button : buttons) {
             if (button.getType() == ButtonType::Retry || button.getType() == ButtonType::Exit) {
