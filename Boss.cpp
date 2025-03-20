@@ -17,6 +17,7 @@ Boss::Boss() : Entity(position.x, position.y) {
     rectBar.setOutlineColor(Color::White);
     rectBar.setOutlineThickness(2);
     sprite.setOrigin(20, 0);
+	state = JUMP;
 }
 
 void Boss::jump()
@@ -117,7 +118,7 @@ void Boss::animationManager(float deltaTime) {
         if (directionState == LEFT) {
             if (anim_idle.x > 20)
                 anim_idle.x = 1;
-            sprite.setTextureRect(IntRect(anim_idle.x * 64, 0, -64, 64));
+            sprite.setTextureRect(IntRect(anim_idle.x * 64, 0, -64, 64)); 
         }
         else if (directionState == RIGHT) {
             if (anim_idle.x > 19)
