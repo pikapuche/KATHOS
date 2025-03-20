@@ -1,6 +1,6 @@
 #include "Game.hpp"
 
-void Game::removeDeadEnemies(Map& m) 
+void Game::removeDeadEnemies(Map& m)
 { // avec chat gpt car j'y arrivais pas tant pis
     m.enemies.erase(remove_if(m.enemies.begin(), m.enemies.end(), [](const unique_ptr<Enemy>& enemy) { return enemy->getLife() == 0; }), m.enemies.end()); // Supprime les ennemis avec 0 PV
 }
@@ -26,7 +26,7 @@ void Game::initMusic()
     musicBoss.setLoop(true);
     musicBoss.setVolume(5.f);
 }
-void Game::gameOver(RenderWindow& window, Interface& overlay)
+void Game::gameOver(RenderWindow& window, Interface& overlay, Controller& controller)
 {
     if (isGameOver) {
         musicBoss.stop();
@@ -63,11 +63,12 @@ void Game::gameOver(RenderWindow& window, Interface& overlay)
         timeText.setString("Time: " + to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + to_string(seconds) + ":" + to_string(milliseconds));
         timeText.setPosition((window.getSize().x - timeText.getGlobalBounds().width) / 2, (window.getSize().y - timeText.getGlobalBounds().height) / 2 + 80);
         window.draw(timeText);
+        overlay.updateGameOver(window, controller);
         return;
     }
 }
 
-void Game::Win(RenderWindow& window, Interface& overlay)
+void Game::Win(RenderWindow& window, Interface& overlay, Controller& controller)
 {
     if (isWin) {
         musicBoss.stop();
@@ -104,6 +105,7 @@ void Game::Win(RenderWindow& window, Interface& overlay)
         timeText.setString("Time: " + to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + to_string(seconds) + ":" + to_string(milliseconds));
         timeText.setPosition((window.getSize().x - timeText.getGlobalBounds().width) / 2, (window.getSize().y - timeText.getGlobalBounds().height) / 2 + 80);
         window.draw(timeText);
+        overlay.updateGameOver(window, controller);
         return;
     }
 }
@@ -132,6 +134,7 @@ void Game::run()
         Event event;
         while (window.pollEvent(event)) {
             if (event.type == Event::Closed) {
+                m.clearMap();
                 window.close();
             }
             if (mainScreen.getIsInMenu() && event.key.code == Keyboard::Escape) {
@@ -187,8 +190,6 @@ void Game::run()
                         isWin = true;
                     }
                 }
-
-
             }
 
             for (auto& gemme : m.gemmeSprites) {
@@ -196,7 +197,7 @@ void Game::run()
             }
             removeDeadEnemies(m);
             removeDeadBosses(m);
-            m.update(deltaTime, window);
+            m.update(deltaTime, window, controller);
             m.draw(window);
 
 //             overlay.updateInterface(window, *m.player, controller); // Draw pause menu when paused
@@ -214,8 +215,8 @@ void Game::run()
                 overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
                 music.stop();
             }
-            gameOver(window, overlay);
-            Win(window, overlay);
+            gameOver(window, overlay, controller);
+            Win(window, overlay, controller);
 
             mainScreen.destroyAll();
         }

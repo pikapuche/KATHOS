@@ -25,9 +25,9 @@ public :
 
 	void initMusic();
 
-	void gameOver(RenderWindow& window, Interface& overlay);
+	void gameOver(RenderWindow& window, Interface& overlay, Controller& controller);
 
-	void Win(RenderWindow& window, Interface& overlay);
+	void Win(RenderWindow& window, Interface& overlay, Controller& controller);
 
 	void run();
 };

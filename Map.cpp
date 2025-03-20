@@ -17,7 +17,8 @@ Map::Map() : mapState(MapState::PRACTICE) {
 	salle3Texture.loadFromFile("Assets/Map/Salle3.jpg");
 	salle4Texture.loadFromFile("Assets/Map/Salle2.jpg"); 
 	salle5Texture.loadFromFile("Assets/Map/Salle5.jpg"); 
-	salle6Texture.loadFromFile("Assets/Map/Salle6.png"); 
+	salle6Texture.loadFromFile("Assets/Map/Salle6.png");
+	salle62Texture.loadFromFile("Assets/Map/Salle62.png");
 
 	//practiceSprite.setTexture(practiceTexture);
 	salle1Sprite.setTexture(salle1Texture);
@@ -26,13 +27,16 @@ Map::Map() : mapState(MapState::PRACTICE) {
 	salle4Sprite.setTexture(salle4Texture); salle4Sprite.setScale(-1.f, 1.f); salle4Sprite.setPosition(1940, 0);
 	salle5Sprite.setTexture(salle5Texture);
 	salle6Sprite.setTexture(salle6Texture);
+	salle62Sprite.setTexture(salle62Texture);
+
+
 }
 
 Map::~Map() {}
 
-void Map::update(float deltaTime, sf::RenderWindow& window) {
+void Map::update(float deltaTime, sf::RenderWindow& window, Controller& controller) {
     for (auto& interactv : interactiblesVector) {
-        interactv->updateProximity(player, window);
+        interactv->updateProximity(player, window, controller);
 		if (interactv->getIsPlayerNear()) {
 			interactv->interact(player);
 		}
@@ -332,7 +336,6 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 
 void Map::loadMap() {
 	if (mapState == MapState::PRACTICE) {
-		cout << "practice" << endl;
 		ifstream Map0("Assets/Map/Practice.txt");
 		maps.push_back(&Map0);
 		string line;
@@ -343,7 +346,6 @@ void Map::loadMap() {
 		}
 	}
 	if (mapState == MapState::SALLE1) {
-		cout << "salle 1" << endl;
 		ifstream Map1("Assets/Map/Salle1.txt");
 		maps.push_back(&Map1);
 		string line;
@@ -354,7 +356,6 @@ void Map::loadMap() {
 		}
 	}
 	if (mapState == MapState::SALLE2) {
-		cout << "salle 2" << endl;
 		ifstream Map2("Assets/Map/Salle2.txt");
 		maps.push_back(&Map2);
 		string line;
@@ -398,6 +399,7 @@ void Map::loadMap() {
 		for (auto& mapMonde6 : maps) {
 			monSwitch(*mapMonde6, line, z);
 		}
+		player->setColliderMap(30, 1805);
 		mapBoss = true;
 	}
 }
@@ -443,7 +445,7 @@ void Map::draw(RenderWindow& window) {
 			window.draw(gemme->gemmeSprite);
 		}
 	}
-	//for (auto& player : players)
+
 	player->draw(window);
 
 	for (auto& enemy : enemies)
@@ -456,6 +458,8 @@ void Map::draw(RenderWindow& window) {
 		cloud->draw(window);
 
 	/////////////////////////////////////////////////////// c'est quoi la diff ??? ca sert a quoi ???
+
+	if (mapState == MapState::SALLE6){window.draw(salle62Sprite);}
 
 	for (auto& interactv : interactiblesVector) {
 		if (!interactv->isDoor()) {  // Check if the object is NOT a door

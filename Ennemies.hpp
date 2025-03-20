@@ -21,6 +21,8 @@ protected :
 	float lastPlayerPosition = - 100; // pour eviter qu'en mode debug le cercle s'affiche en 0,0;
 	float SPEED = 175.f; 
 	float nuage = 0.f;
+	float animAttackTimeDecr;
+	float animIdleTimeDecr;
 
 	bool isGrounded = false;
 	bool lastState; // dernier etat de l'ennemi (DEBUG)
@@ -31,6 +33,9 @@ protected :
 	Clock coolDownSearch;
 	Clock clockAttack;
 	Clock coolDownSlow;
+
+	Texture textureAttack;
+	Texture textureAttackMove;
 
 public :
 
@@ -45,6 +50,8 @@ public :
 	void detectPlayer(Player& player); 
 
 	void movementManager(float pos, float pos2, float deltaTime);
+
+	void animationManager(float deltaTime);
 
 	void attackPlayer(Player& player);
 

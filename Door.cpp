@@ -39,7 +39,6 @@ void Door::interact(const shared_ptr<Player>& player) {
 		collision(player);
 		if (!typeButton) {
 			if (player->getHasKey() && this->playerTryInteract()) {
-				cout << "Door opens!" << endl;
 				isOpen = true; // Update isOpen state
 				rotateCheck(player);
 				sprite.setTexture(doorOpenTexture);
@@ -51,8 +50,13 @@ void Door::interact(const shared_ptr<Player>& player) {
 	}
 }
 
-void Door::updateProximity(const std::shared_ptr<Player>& player, sf::RenderWindow& window)
+void Door::updateProximity(const std::shared_ptr<Player>& player, sf::RenderWindow& window, Controller& controller)
 {
+	if (controller.getUsingController())
+		inspectGUI.setTexture(inspectGUIxboxTexture);
+	else
+		inspectGUI.setTexture(inspectGUITexture);
+
 	float distance = std::sqrt(
 		std::pow(sprite.getPosition().x - player->getSprite().getPosition().x, 2) +
 		std::pow(sprite.getPosition().y - player->getSprite().getPosition().y, 2)
