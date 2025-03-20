@@ -20,6 +20,10 @@ Player::Player() : Entity(position.x, position.y) { // constructeur de base
     rectBar.setFillColor(Color::Transparent);
     rectBar.setOutlineColor(Color::White);
     rectBar.setOutlineThickness(2);
+
+    //float posX = sprite.getGlobalBounds().left + sprite.getGlobalBounds().width * 2 / 5;
+    //float posY = sprite.getGlobalBounds().top + sprite.getGlobalBounds().height / 5;
+    //hitbox = FloatRect(posX, posY, sprite.getGlobalBounds().width / 5, sprite.getGlobalBounds().height / 2.5f);
 }
 
 void Player::movementManager(float deltaTime) { 
