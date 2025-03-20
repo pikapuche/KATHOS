@@ -63,3 +63,7 @@ float Button::getHeight() {
 float Button::getWidth() {
     return button.getGlobalBounds().width;
 }
+
+void Button::setPos(float x, float y) {
+    button.setPosition(x, y);
+}

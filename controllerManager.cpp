@@ -95,26 +95,40 @@ Sprite Controller::getHighlight() {
     return highlightRect;
 }
 
-void Controller::updateHighlight(sf::RenderWindow& window, bool inPause) {
+void Controller::updateHighlight(sf::RenderWindow& window, bool inPause, bool inGameOver) {
     switch (currentJoystickIndex) {
     case 0:
-        if (!inPause)
-        highlightRect.setPosition(window.getSize().x / 2 - 30, window.getSize().y / 2 - 200 + 20);
-        if (inPause)
-            highlightRect.setPosition(1920 / 2 - 30, 1080 / 2 - 100+20);
+        if (!inGameOver) {
+            if (!inPause)
+                highlightRect.setPosition(window.getSize().x / 2 - 30, window.getSize().y / 2 - 200 + 20);
+            if (inPause)
+                highlightRect.setPosition(1920 / 2 - 30, 1080 / 2 - 100 + 20);
+        }
+        else {
+            highlightRect.setPosition(1920 / 2 - 5, 1080 / 2 + 250+20);
+        }
         break;
     case 1:
-        if (!inPause)
-        highlightRect.setPosition(window.getSize().x / 2 - 30, window.getSize().y / 2 + 20);
-        if (inPause)
-            highlightRect.setPosition(1920 / 2 - 30, 1080 / 2 + 100+20);
+        if (!inGameOver) {
+            if (!inPause)
+                highlightRect.setPosition(window.getSize().x / 2 - 30, window.getSize().y / 2 + 20);
+            if (inPause)
+                highlightRect.setPosition(1920 / 2 - 30, 1080 / 2 + 100 + 20);
+        }
+        else {
+            highlightRect.setPosition(1920 / 2 - 5, 1080 / 2 + 400+20);
+        }
         break;
     case 2:
-        if (!inPause)
-        highlightRect.setPosition(window.getSize().x / 2 - 30, window.getSize().y / 2 + 200 + 20);
-        if (inPause)
-            highlightRect.setPosition(1920 / 2 - 30, 1080 / 2 + 300+20
-            );
+        if (!inGameOver) {
+            if (!inPause)
+                highlightRect.setPosition(window.getSize().x / 2 - 30, window.getSize().y / 2 + 200 + 20);
+            if (inPause)
+                highlightRect.setPosition(1920 / 2 - 30, 1080 / 2 + 300 + 20);
+        }
+        else {
+            currentJoystickIndex = 0;
+        }
         break;
 
     }

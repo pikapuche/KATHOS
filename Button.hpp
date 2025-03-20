@@ -8,7 +8,8 @@ enum class ButtonType {
     Sound,
     Return,
     Resume,
-    Restart
+    Restart,
+    Retry
 };
 
 class Button {
@@ -30,6 +31,7 @@ public:
 	bool getisHidden();
 	void setHidden(bool hidden);
     Vector2f getPosition();
+    void setPos(float x, float y);
 
     float getHeight();
 	float getWidth();

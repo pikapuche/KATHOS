@@ -43,7 +43,6 @@ void Key::interact(const shared_ptr<Player>& player) {
     }
     else {
         if (this->playerTryInteract()) {
-            cout << "Already have a key!" << endl;
         }
     }
 }
