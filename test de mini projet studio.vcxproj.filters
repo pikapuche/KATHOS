@@ -25,6 +25,7 @@
     <ClCompile Include="Door.cpp">
       <Filter>Interactibles</Filter>
     </ClCompile>
+    <ClCompile Include="controllerManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Boss.hpp" />
@@ -51,6 +52,7 @@
     <ClInclude Include="Door.hpp">
       <Filter>Interactibles</Filter>
     </ClInclude>
+    <ClInclude Include="controllerManager.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\texture\titlescreen\background.png" />

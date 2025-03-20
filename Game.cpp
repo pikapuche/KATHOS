@@ -116,6 +116,7 @@ void Game::run()
 
     MainScreen mainScreen(music);
     Interface overlay;
+    Controller controller;
     mainScreen.initMenu(window);
     Map m;
     m.loadMap();
@@ -125,6 +126,7 @@ void Game::run()
     overlay.initInterface();
 
     while (window.isOpen()) {
+        controller.detectControllerInput();
         Time deltaT = clock.restart();
         float deltaTime = deltaT.asSeconds();
         Event event;
@@ -138,13 +140,18 @@ void Game::run()
             else if (!mainScreen.getIsInMenu() && event.key.code == Keyboard::Escape) {
                 overlay.setIsPaused(true);
             }
+            else if (controller.getUsingController()) {
+                if (!mainScreen.getIsInMenu() && sf::Joystick::isButtonPressed(0,7)) {
+                    overlay.setIsPaused(true);
+                }
+            }
         }
         if (mainScreen.getIsInMenu()) { // MENU
             if (music.getStatus() == sf::SoundSource::Stopped) {
                 music.play();
             }
             overlay.setGameStarted(false);
-            mainScreen.updateMenu(window);
+            mainScreen.updateMenu(window, controller);
         }
         else { //JEU PRINCIPAL
             if (!overlay.getGameStarted()) {
@@ -191,13 +198,15 @@ void Game::run()
             m.update(deltaTime, window);
             m.draw(window);
 
+//             overlay.updateInterface(window, *m.player, controller); // Draw pause menu when paused
+//             if (!mainScreen.getIsInMenu()) {
             if (!isWin && !isGameOver)
             {
                 if (m.mapBoss && count < 1) {
                     musicBoss.play();
                     count++;
                 }
-                overlay.updateInterface(window, *m.player); // Draw pause menu when paused
+                overlay.updateInterface(window, *m.player, controller); // Draw pause menu when paused
             }
             if (!mainScreen.getIsInMenu())
             {
