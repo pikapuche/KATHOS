@@ -21,6 +21,7 @@ Player::Player() : Entity(position.x, position.y) { // constructeur de base
     rectBar.setOutlineColor(Color::White);
     rectBar.setOutlineThickness(2);
     stateLook = LOOK_RIGHT;
+    setColliderMap(leftMain, rightMain);
 }
 
 void Player::movementManager(float deltaTime) { 

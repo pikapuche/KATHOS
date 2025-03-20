@@ -18,7 +18,7 @@ Boss::Boss() : Entity(position.x, position.y) {
     rectBar.setOutlineThickness(2);
     sprite.setOrigin(sprite.getLocalBounds().left / 2, sprite.getLocalBounds().top / 2);
     state = JUMP;
-    directionState = LEFT;
+    directionState == LEFT;
 }
 
 void Boss::jump()
@@ -113,13 +113,11 @@ void Boss::animationManager(float deltaTime) {
             animDecrIdle = 0;
         }
         if (directionState == LEFT) {
-            sprite.setScale(-3, 3);
-            if (anim_idle.x > 19)
-                anim_idle.x = 0;
-            sprite.setTextureRect(IntRect(anim_idle.x * 64, 0, 64, 64));
+            if (anim_idle.x > 20)
+                anim_idle.x = 1;
+            sprite.setTextureRect(IntRect(anim_idle.x * 64, 0, -64, 64));
         }
         else if (directionState == RIGHT) {
-            sprite.setScale(3, 3);
             if (anim_idle.x > 19)
                 anim_idle.x = 0;
             sprite.setTextureRect(IntRect(anim_idle.x * 64, 0, 64, 64));
@@ -134,13 +132,11 @@ void Boss::animationManager(float deltaTime) {
             animDecrAttack = 0;
         }
         if (directionState == LEFT) {
-            sprite.setScale(-3, 3);
-            if (anim_jump.x > 5)
-                anim_jump.x = 0;
-            sprite.setTextureRect(IntRect(anim_jump.x * 64, anim_jump.y * 64, 64, 64));
+            if (anim_jump.x > 6)
+                anim_jump.x = 1;
+            sprite.setTextureRect(IntRect(anim_jump.x * 64, anim_jump.y * 64, -64, 64));
         }
         else if (directionState == RIGHT) {
-            sprite.setScale(3, 3);
             if (anim_jump.x > 5)
                 anim_jump.x = 0;
             sprite.setTextureRect(IntRect(anim_jump.x * 64, anim_jump.y * 64, 64, 64));
