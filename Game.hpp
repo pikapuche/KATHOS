@@ -8,11 +8,15 @@
 class Game {
 public : 
 
+	int count = 0;
+
 	bool isGameOver = false;
 	bool isWin = false;
+
 	bool removeBoss = false;
 
 	Music music;
+	Music musicBoss;
 
 	void removeDeadEnemies(Map& m);
 
@@ -20,9 +24,9 @@ public :
 
 	void initMusic();
 
-	void gameOver(RenderWindow& window);
+	void gameOver(RenderWindow& window, Interface& overlay);
 
-	void Win(RenderWindow& window);
+	void Win(RenderWindow& window, Interface& overlay);
 
 	void run();
 };

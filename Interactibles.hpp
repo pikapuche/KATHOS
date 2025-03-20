@@ -27,10 +27,9 @@ public:
     bool getIsPlayerNear();
 
     // Define a virtual function for unique interactions
-    virtual void interact(const std::shared_ptr<Player>& player) = 0;
+    virtual void interact(const shared_ptr<Player>& player) = 0;
     // Draw the interactible (optional)
-    virtual void draw(sf::RenderWindow& window) = 0;
-
+    virtual void draw(RenderWindow& window) = 0;
     void setTexture(const std::string& filePath);
     void drawInspectGUI(sf::RenderWindow& window);
 };

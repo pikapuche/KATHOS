@@ -5,17 +5,19 @@
 
 class NuageTox : public Entity {
 private:
-    RectangleShape shape;
+    Texture texture;
     Vector2f position;
+    bool slow = false;
 
+    Clock coolDownSlow;
 public:
     NuageTox();
 
     void update(float deltatime);
     void draw(RenderWindow& window) override;
 
+    void collision(Player& player);
+
     Vector2f getPos();
     Vector2f setPos(float x, float y);
-
-    RectangleShape getShape();
 };
