@@ -160,6 +160,11 @@ void Game::run()
                 isWin = false;
                 isGameOver = false;
             }
+            for (auto& cloud : m.clouds) {
+                cloud->collision(*m.player);
+                cloud->update(deltaTime);
+                cloud->draw(window);
+            }
             if (!overlay.getIsPaused() && !isWin && !isGameOver) { // Only update game when not paused
                 m.player->update(deltaTime);
                 if (m.player->getLife() <= 0) isGameOver = true;
@@ -174,11 +179,10 @@ void Game::run()
                         isWin = true;
                     }
                 }
+
+
             }
 
-            for (auto& cloud : m.clouds) {
-                cloud->update(deltaTime);
-            }
             for (auto& gemme : m.gemmeSprites) {
                 gemme->updateGemme(deltaTime, m.player);
             }
