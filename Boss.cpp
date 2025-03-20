@@ -64,6 +64,13 @@ void Boss::doDamage(Player& player)
 }
 
 void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet de gerer le mouvement de l'ennemi
+    if (state == GROUNDED) {
+        sprite.setTexture(textureIdle);
+    }
+    else if (state == JUMP) {
+        sprite.setTexture(textureAttack);
+    }
+
     if (!isJumping) {
         if (position.x < pos && directionState != RIGHT) { // faire en sorte qu'il ne puisse pas changer de direction pendant un saut
             directionState = RIGHT;
@@ -105,7 +112,6 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
 void Boss::animationManager(float deltaTime) {
     switch (state) {
     case GROUNDED:
-        sprite.setTexture(textureIdle);
         animDecrIdle += deltaTime;
         anim_idle.y = 0;
         if (animDecrIdle > 0.12f) {
@@ -124,7 +130,6 @@ void Boss::animationManager(float deltaTime) {
         }
         break;
     case JUMP:
-        sprite.setTexture(textureAttack);
         animDecrAttack += deltaTime;
         anim_jump.y = 0;
         if (animDecrAttack > 0.12f) {
