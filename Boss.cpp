@@ -16,7 +16,9 @@ Boss::Boss() : Entity(position.x, position.y) {
     rectBar.setFillColor(Color::Transparent);
     rectBar.setOutlineColor(Color::White);
     rectBar.setOutlineThickness(2);
-    sprite.setOrigin(20, 0);
+    sprite.setOrigin(sprite.getLocalBounds().left / 2, sprite.getLocalBounds().top / 2);
+    state = JUMP;
+    directionState == LEFT;
 }
 
 void Boss::jump()
@@ -49,7 +51,7 @@ void Boss::takeDamage(Player& player)
     if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds()) && player.stateWeapon == player.SPAWN) {
         setLife(-1);
         lifeBar.setSize(Vector2f(life, 10));
-        cout << "aie ca fais mal (boss)" << endl;
+        //cout << "aie ca fais mal (boss)" << endl;
     }
 }
 
@@ -93,14 +95,11 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
     sprite.setPosition(position);
     detectionRect.setPosition(position);
 
-    if (sprite.getPosition().y < 0) { // haut de l'écran
-        sprite.setPosition(position.x, position.y = 64);
+    if (sprite.getPosition().x < 90) { // gauche de l'écran
+        sprite.setPosition(position.x = 90, position.y);
     }
-    if (sprite.getPosition().x < 0) { // gauche de l'écran
-        sprite.setPosition(position.x = 0, position.y);
-    }
-    if (sprite.getPosition().x > 1856) { // droite de l'écran
-        sprite.setPosition(position.x = 1856, position.y);
+    if (sprite.getPosition().x > 1660) { // droite de l'écran
+        sprite.setPosition(position.x = 1660, position.y);
     }
 }
 

@@ -26,6 +26,9 @@ protected:
     float gachetteValue; // valeur pour la manette
     float joystickValue;
 
+    float leftMain = 0;
+    float rightMain = 1856;
+
     bool isAttacking = false;
     bool isTakeDash = false; // recup la gemme de dash
     bool isDashing = false; // dash
@@ -61,6 +64,8 @@ public:
     Player();
 
     void movementManager(float deltaTime);
+
+    void setColliderMap(float left, float right);
 
     void animationManager(float deltaTime);
 

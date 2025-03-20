@@ -10,7 +10,7 @@ Player::Player() : Entity(position.x, position.y) { // constructeur de base
     textureJump.loadFromFile("assets/texture/player/playerJump.png");
     textureAttack.loadFromFile("assets/texture/player/perso blanc attack V2.png");
     sprite.setTexture(textureSprint);
-    sprite.setTextureRect(IntRect(0, 0, 64, 64));
+    sprite.setTextureRect(IntRect(64, 0, -64, 64));
     boxCol1 = 35;
     boxCol2 = 58;
     life = 100;
@@ -20,10 +20,7 @@ Player::Player() : Entity(position.x, position.y) { // constructeur de base
     rectBar.setFillColor(Color::Transparent);
     rectBar.setOutlineColor(Color::White);
     rectBar.setOutlineThickness(2);
-
-    //float posX = sprite.getGlobalBounds().left + sprite.getGlobalBounds().width * 2 / 5;
-    //float posY = sprite.getGlobalBounds().top + sprite.getGlobalBounds().height / 5;
-    //hitbox = FloatRect(posX, posY, sprite.getGlobalBounds().width / 5, sprite.getGlobalBounds().height / 2.5f);
+    stateLook = LOOK_RIGHT;
 }
 
 void Player::movementManager(float deltaTime) { 
@@ -106,14 +103,14 @@ void Player::movementManager(float deltaTime) {
         sprite.setPosition(position.x, position.y = 0);
         velocity.y = gravity * deltaTime;
     }
-    if (sprite.getPosition().y > 1200) { 
+    if (sprite.getPosition().y > 1200) {
         life = 0;
     }
-    if (sprite.getPosition().x < 0) { // gauche de l'écran
-        sprite.setPosition(position.x = 0, position.y);
+    if (sprite.getPosition().x < leftMain) { // gauche de l'écran
+        sprite.setPosition(position.x = leftMain, position.y);
     }
-    if (sprite.getPosition().x > 1856) { // droite de l'écran
-        sprite.setPosition(position.x = 1856, position.y);
+    if (sprite.getPosition().x > rightMain) { // droite de l'écran
+        sprite.setPosition(position.x = rightMain, position.y);
     }
 
     if (stateLook == LOOK_LEFT) {
@@ -122,6 +119,10 @@ void Player::movementManager(float deltaTime) {
     else {
         attackShape.setPosition(position.x + 37, position.y + 20);
     }
+}
+
+void Player::setColliderMap(float left, float right) {
+    leftMain = left; rightMain = right;
 }
 
 void Player::animationManager(float deltaTime) {

@@ -1,6 +1,6 @@
 #include "Game.hpp"
 
-void Game::removeDeadEnemies(Map& m) 
+void Game::removeDeadEnemies(Map& m)
 { // avec chat gpt car j'y arrivais pas tant pis
     m.enemies.erase(remove_if(m.enemies.begin(), m.enemies.end(), [](const unique_ptr<Enemy>& enemy) { return enemy->getLife() == 0; }), m.enemies.end()); // Supprime les ennemis avec 0 PV
 }
@@ -134,6 +134,7 @@ void Game::run()
         Event event;
         while (window.pollEvent(event)) {
             if (event.type == Event::Closed) {
+                m.clearMap();
                 window.close();
             }
             if (mainScreen.getIsInMenu() && event.key.code == Keyboard::Escape) {
@@ -189,8 +190,6 @@ void Game::run()
                         isWin = true;
                     }
                 }
-
-
             }
 
             for (auto& gemme : m.gemmeSprites) {

@@ -1,6 +1,6 @@
 #include "Map.hpp"
 
-Map::Map() : mapState(MapState::SALLE3) {
+Map::Map() : mapState(MapState::SALLE6) {
 	groundYellowLeftTexture.loadFromFile("Assets/texture/Map/groundYellowLeft.png");
 	groundYellowMidTexture.loadFromFile("Assets/texture/Map/groundYellowMid.png");
 	groundYellowRightTexture.loadFromFile("Assets/texture/Map/groundYellowRight.png");
@@ -398,6 +398,7 @@ void Map::loadMap() {
 		for (auto& mapMonde6 : maps) {
 			monSwitch(*mapMonde6, line, z);
 		}
+		player->setColliderMap(30, 1805);
 		mapBoss = true;
 	}
 }
@@ -443,7 +444,7 @@ void Map::draw(RenderWindow& window) {
 			window.draw(gemme->gemmeSprite);
 		}
 	}
-	//for (auto& player : players)
+
 	player->draw(window);
 
 	for (auto& enemy : enemies)

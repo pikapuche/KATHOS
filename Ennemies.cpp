@@ -32,6 +32,7 @@ Enemy::Enemy() : Entity(position.x, position.y)
     rectBar.setFillColor(Color::Transparent);
     rectBar.setOutlineColor(Color::White);
     rectBar.setOutlineThickness(2);
+    directionState = LEFT;
 }
 
 void Enemy::detectPlayer(Player& player) 
@@ -117,6 +118,7 @@ void Enemy::animationManager(float deltaTime) {
                 anim_attack.x = 6;
             }
             sprite.setTextureRect(IntRect(anim_attack.x * 64, 0, -64, 64));
+            sprite.setPosition(sprite.getPosition().x + 64, sprite.getPosition().y);
         }
         else if (directionState == RIGHT) {
             if (anim_attack.x > 11) {
@@ -155,7 +157,7 @@ void Enemy::attackPlayer(Player& player) {
     }
 
     if (clockAttack.getElapsedTime().asSeconds() < 2 && slow) { // slow pendant 2 secondes
-        player.setSPEED(205.f);
+        player.setSPEED(100.f);
     }
 }
 
