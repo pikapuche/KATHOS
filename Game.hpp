@@ -13,11 +13,15 @@ public :
 
 	bool removeBoss = false;
 
+	Music music;
+
 	void removeDeadEnemies(Map& m);
 
 	void removeDeadBosses(Map& m);
 
-	void gameOver(RenderWindow& window, Interface& overlay);
+	void initMusic();
+
+	void gameOver(RenderWindow& window);
 
 	void Win(RenderWindow& window, Interface& overlay);
 

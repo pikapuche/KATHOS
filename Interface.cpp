@@ -70,9 +70,6 @@ void Interface::initInterface() {
     timeText.setFillColor(Color::White);
     timeText.setPosition(1500, 10); // Adjust position (top-right)
 
-    // Start the clock
-    timeClock.restart();
-
     keyGUI.setPosition(0, 10);
     keyGUI.setTexture(keyGUItexture);
 }
@@ -173,10 +170,10 @@ bool Interface::getUsingController() {
 void Interface::detectControllerInput() {
 
     //DEBUG
-	if (Keyboard::isKeyPressed(Keyboard::Up)) {
+	if (Keyboard::isKeyPressed(Keyboard::Up) || Joystick::getAxisPosition(0, Joystick::Y)) {
         setUsingController(true);
 	}
-    if (Keyboard::isKeyPressed(Keyboard::Down)) {
+    if (Keyboard::isKeyPressed(Keyboard::Down) || Joystick::getAxisPosition(0, Joystick::Y)) {
         setUsingController(true);
     }
 	if (Mouse::isButtonPressed(Mouse::Left)) {
@@ -209,8 +206,8 @@ void Interface::handleMenuNavigation() {
     static bool upPressed = false;
     static bool downPressed = false;
 
-    bool moveUp = Keyboard::isKeyPressed(Keyboard::Up) || Joystick::isButtonPressed(0, 11);
-    bool moveDown = Keyboard::isKeyPressed(Keyboard::Down) || Joystick::isButtonPressed(0, 12);
+    bool moveUp = Keyboard::isKeyPressed(Keyboard::Up) || Joystick::getAxisPosition(0, Joystick::Y);
+    bool moveDown = Keyboard::isKeyPressed(Keyboard::Down) || Joystick::getAxisPosition(0, Joystick::Y);
 
     // Navigate up
     if (moveUp && !upPressed) {
@@ -230,11 +227,20 @@ void Interface::handleMenuNavigation() {
     highlightRect.setPosition(buttons[selectedButtonIndex].getPosition());
 }
 
+void Interface::updateTimer(sf::RenderWindow& window) {
+    // Only update the timer if the game has started.
+    if (!gameStarted) {
+        // Option 1: Do nothing (timer stays at 0)
+        // Option 2: Reset the timer continuously:
+        timeClock.restart();
+        totalElapsedTime = sf::Time::Zero;
+        return;
+    }
+    else if (gameStarted) {
 
-void Interface::updateTimer(RenderWindow& window) {
-    static bool wasPaused = false;    // Track previous pause state
-
-    if (hasWon) {
+        // Timer update code (same as before)
+        static bool wasPaused = false;    // Track previous pause state
+            if (hasWon) {
         timeText.setString("Time: " + to_string(finalTime.asSeconds()));
     }
     else if (isPaused && !wasPaused) {
@@ -244,27 +250,43 @@ void Interface::updateTimer(RenderWindow& window) {
         timeClock.restart(); // Restart the clock fresh after unpausing
     }
 
-    wasPaused = isPaused;
+        wasPaused = isPaused;
 
-    // Calculate correct elapsed time
-    Time elapsed = totalElapsedTime;
+        sf::Time elapsed = totalElapsedTime;
+        if (!isPaused) {
+            elapsed += timeClock.getElapsedTime();
+        }
 
-    if (!isPaused) {
-        elapsed += timeClock.getElapsedTime();
-    }
-
-    if (hasWon && finalTime.asSeconds() == 0) {
+                if (hasWon && finalTime.asSeconds() == 0) {
         finalTime = elapsed;
     }
-
-    int minutes = static_cast<int>(elapsed.asSeconds()) / 60;
-    int seconds = static_cast<int>(elapsed.asSeconds()) % 60;
-    int miliseconds = static_cast<int>(elapsed.asMilliseconds() % 1000);
+        int minutes = static_cast<int>(elapsed.asSeconds()) / 60;
+        int seconds = static_cast<int>(elapsed.asSeconds()) % 60;
+        int milliseconds = static_cast<int>(elapsed.asMilliseconds() % 1000);
 
     // Format time
     timeText.setString("Time: " + to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + to_string(seconds) + ":" + to_string(miliseconds));
 
-    window.draw(timeText); // Ensure it is drawn
+        timeText.setString("Time: " + std::to_string(minutes) + ":" +
+            (seconds < 10 ? "0" : "") + std::to_string(seconds) + ":" +
+            std::to_string(milliseconds));
+        window.draw(timeText);
+    }
+}
+
+void Interface::resetTime() {
+    timeClock.restart();
+    totalElapsedTime = sf::Time::Zero;
+}
+
+void Interface::setGameStarted(bool started) {
+    gameStarted = started;
+    if (!gameStarted) {
+        // Reset the timer so it stays at 0 while in the menu.
+        timeClock.restart();
+        totalElapsedTime = sf::Time::Zero;
+    }
+    //cout << "successfully set" << endl;
 }
 
 Time Interface::getFinalTime() const
@@ -275,4 +297,7 @@ Time Interface::getFinalTime() const
 void Interface::setWinCondition(bool win)
 {
     hasWon = win;
+
+bool Interface::getGameStarted()  const {
+    return gameStarted;
 }

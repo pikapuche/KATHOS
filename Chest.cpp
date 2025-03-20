@@ -53,6 +53,7 @@ void Chest::interact(const shared_ptr<Player>& player) {
             isAnimating = true;
             frameIndex = 0;
             animationTime = 0.0f;
+            shouldHide = true;
         }
     }
 }
