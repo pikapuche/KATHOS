@@ -51,7 +51,6 @@ void Boss::takeDamage(Player& player)
     if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds()) && player.stateWeapon == player.SPAWN) {
         setLife(-1);
         lifeBar.setSize(Vector2f(life, 10));
-        //cout << "aie ca fais mal (boss)" << endl;
     }
 }
 
@@ -114,11 +113,13 @@ void Boss::animationManager(float deltaTime) {
             animDecrIdle = 0;
         }
         if (directionState == LEFT) {
-            if (anim_idle.x > 20)
-                anim_idle.x = 1;
-            sprite.setTextureRect(IntRect(anim_idle.x * 64, 0, -64, 64));
+            sprite.setScale(-3, 3);
+            if (anim_idle.x > 19)
+                anim_idle.x = 0;
+            sprite.setTextureRect(IntRect(anim_idle.x * 64, 0, 64, 64));
         }
         else if (directionState == RIGHT) {
+            sprite.setScale(3, 3);
             if (anim_idle.x > 19)
                 anim_idle.x = 0;
             sprite.setTextureRect(IntRect(anim_idle.x * 64, 0, 64, 64));
@@ -133,11 +134,13 @@ void Boss::animationManager(float deltaTime) {
             animDecrAttack = 0;
         }
         if (directionState == LEFT) {
-            if (anim_jump.x > 6)
-                anim_jump.x = 1;
-            sprite.setTextureRect(IntRect(anim_jump.x * 64, anim_jump.y * 64, -64, 64));
+            sprite.setScale(-3, 3);
+            if (anim_jump.x > 5)
+                anim_jump.x = 0;
+            sprite.setTextureRect(IntRect(anim_jump.x * 64, anim_jump.y * 64, 64, 64));
         }
         else if (directionState == RIGHT) {
+            sprite.setScale(3, 3);
             if (anim_jump.x > 5)
                 anim_jump.x = 0;
             sprite.setTextureRect(IntRect(anim_jump.x * 64, anim_jump.y * 64, 64, 64));
