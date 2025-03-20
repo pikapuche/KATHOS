@@ -9,7 +9,7 @@ Boss::Boss() : Entity(position.x, position.y) {
     velocity.y = 0;
     boxCol1 = 1;
     boxCol2 = 1;
-    life = 180;
+    life = 250;
     lifeBar.setSize(Vector2f(life, 10.0f));
     lifeBar.setFillColor(Color::Green);
     rectBar.setSize(Vector2f(life, 10));
@@ -37,13 +37,13 @@ void::Boss::tired() {
 
 void Boss::takeDamage(Player& player)
 {
-    if (life > 120) {
+    if (life >= 167) {
         lifeBar.setFillColor(Color::Green);
     }
-    else if (life < 60) {
+    else if (life <= 84) {
         lifeBar.setFillColor(Color::Red);
     }
-    else if (life < 120) {
+    else if (life <= 167) {
         lifeBar.setFillColor(Color::Yellow);
     }
     if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds()) && player.stateWeapon == player.SPAWN) {
@@ -56,7 +56,7 @@ void Boss::takeDamage(Player& player)
 void Boss::doDamage(Player& player)
 {
     if (sprite.getGlobalBounds().intersects(player.getSprite().getGlobalBounds()) && !player.getInvincible()) {
-        player.setLife(-8);
+        player.setLife(-10);
         player.setInvincible(true);
         player.coolDownInvincible.restart();
     }

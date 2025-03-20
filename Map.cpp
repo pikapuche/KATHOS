@@ -1,6 +1,6 @@
 #include "Map.hpp"
 
-Map::Map() : mapState(MapState::PRACTICE) {
+Map::Map() : mapState(MapState::SALLE3) {
 	groundYellowLeftTexture.loadFromFile("Assets/texture/Map/groundYellowLeft.png");
 	groundYellowMidTexture.loadFromFile("Assets/texture/Map/groundYellowMid.png");
 	groundYellowRightTexture.loadFromFile("Assets/texture/Map/groundYellowRight.png");

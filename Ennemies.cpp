@@ -16,7 +16,10 @@ Enemy::Enemy() : Entity(position.x, position.y)
     currentState = PATROL;
     circleOne.setRadius(10.0f); // point de patrouille 1 
     circleTwo.setRadius(10.0f); // point de patrouille 2
-    texture.loadFromFile("assets/Ennemies/White.png");
+    texture.loadFromFile("Assets/Ennemies/attack move.png");
+    textureAttack.loadFromFile("Assets/Ennemies/attack.png");
+    textureAttackMove.loadFromFile("Assets/Ennemies/attack move.png");
+    sprite.setTextureRect(IntRect(0, 0, 64, 64));
     sprite.setTexture(texture);
     boxCol1 = 64; // valeur qui permet de gérer les collisions (distances entre plateformes)
     boxCol2 = 64; // 
@@ -37,11 +40,13 @@ void Enemy::detectPlayer(Player& player)
     if (enemyState == CHASER) {
         if (rectangleDetect.getGlobalBounds().intersects(player.getSprite().getGlobalBounds()) && currentState != CHASE) { // si l'ennemi est un chasseur et que le perso entre dans le cercle de detection
             currentState = CHASE;
+            // texture course
         }
         else if (!rectangleDetect.getGlobalBounds().intersects(player.getSprite().getGlobalBounds()) && currentState == CHASE) {
             lastPlayerPosition = player.getSprite().getPosition().x;
             currentState = SEARCH;
-            coolDownSearch.restart(); // au cas où pour éviter que la recherche se termine au nout d'une seconde
+            // texture marche
+            coolDownSearch.restart(); // au cas où pour éviter que la recherche se termine au bout d'une seconde
         }
     }
 }
@@ -96,6 +101,94 @@ void Enemy::movementManager(float pos, float pos2, float deltaTime) { // permet 
     }
 }
 
+void Enemy::animationManager(float deltaTime) {
+    switch (state) {
+    case PATROL:
+    {
+        sprite.setTexture(texture);
+        //animIdleTimeDecr += deltaTime;
+        //anim_idle.y = 0;
+        //if (animIdleTimeDecr > 0.12f) {
+        //    anim_idle.x++;
+        //    animIdleTimeDecr = 0;
+        //}
+        //if (stateLook == LOOK_LEFT) {
+        //    if (anim_idle.x > 8)
+        //        anim_idle.x = 1;
+        //    sprite.setTextureRect(IntRect(anim_idle.x * 64, anim_idle.y * 64, -64, 64));
+        //}
+        //else if (stateLook == LOOK_RIGHT) {
+        //    if (anim_idle.x > 7)
+        //        anim_idle.x = 0;
+        //    sprite.setTextureRect(IntRect(anim_idle.x * 64, anim_idle.y * 64, 64, 64));
+        //}
+        if (attack) {
+            sprite.setTexture(textureAttackMove);
+            animAttackTimeDecr += deltaTime;
+            anim_attack.y = 0;
+            if (animAttackTimeDecr > 0.07f) {
+                anim_attack.x++;
+                animAttackTimeDecr = 0;
+            }
+            if (directionState == LEFT) {
+                if (anim_attack.x == 5) {
+                    sprite.setTexture(textureAttack);
+                }
+                if (anim_attack.x > 12) {
+                    anim_attack.x = 5;
+                }
+                sprite.setTextureRect(IntRect(anim_attack.x * 64, 0, -64, 64));
+            }
+            else if (directionState == RIGHT) {
+                if (anim_attack.x == 5) {
+                    sprite.setTexture(textureAttack);
+                }
+                if (anim_attack.x > 11) {
+                    anim_attack.x = 5;
+                }
+                sprite.setTextureRect(IntRect(anim_attack.x * 64, 0, 64, 64));
+            }
+        }
+        break;
+    }
+    case CHASE:
+    {
+        if (attack) {
+            sprite.setTexture(textureAttackMove);
+            animAttackTimeDecr += deltaTime;
+            anim_attack.y = 0;
+            if (animAttackTimeDecr > 0.07f) {
+                anim_attack.x++;
+                animAttackTimeDecr = 0;
+            }
+            if (directionState == LEFT) {
+                if (anim_attack.x == 5) {
+                    sprite.setTexture(textureAttack);
+                }
+                if (anim_attack.x > 12) {
+                    anim_attack.x = 5;
+                }
+                sprite.setTextureRect(IntRect(anim_attack.x * 64, 0, -64, 64));
+            }
+            else if (directionState == RIGHT) {
+                if (anim_attack.x == 5) {
+                    sprite.setTexture(textureAttack);
+                }
+                if (anim_attack.x > 11) {
+                    anim_attack.x = 5;
+                }
+                sprite.setTextureRect(IntRect(anim_attack.x * 64, 0, 64, 64));
+            }
+        }
+        break;
+    }
+    case SEARCH:
+    {
+        break;
+    }
+    }
+}
+
 void Enemy::attackPlayer(Player& player) {
     if (attackDetect.getGlobalBounds().intersects(player.getSprite().getGlobalBounds())) { // si la zone d'attaque touche le joueur
         // anim qui fait pop le nuage et au moment où le nuage touche le perso alors paf
@@ -137,6 +230,7 @@ void Enemy::chase(Player& player, float deltaTime) // suit le perso tant qu'il e
 {
     sprite.setColor(Color::Red);
     movementManager(player.getSprite().getPosition().x, player.getSprite().getPosition().x, deltaTime);
+    animationManager(deltaTime);
     attackPlayer(player);
 }
 

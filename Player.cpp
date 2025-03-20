@@ -1,7 +1,7 @@
 #include "Player.hpp"
 
 Player::Player() : Entity(position.x, position.y) { // constructeur de base 
-    DEBUG = true;
+    DEBUG = false;
     velocity.y = 0; // Pas de mouvement vertical au depart
     attackShape.setSize(sf::Vector2f(75.f, 25.0f));
     attackShape.setFillColor(sf::Color::Red);
@@ -232,7 +232,7 @@ void Player::jump() {
         jumpCount = 1;
         jumpClock.restart();
     }
-    else if (jumpCount == 1 && jumpClock.getElapsedTime().asMilliseconds() >= 175 && state != GROUNDED && isTakeJump) { // compteur permettant de savoir si on peut faire un deuxième saut
+    else if (jumpCount == 1 && jumpClock.getElapsedTime().asMilliseconds() >= 300 && state != GROUNDED && isTakeJump) { // compteur permettant de savoir si on peut faire un deuxième saut
         velocity.y = -jumpForce;
         jumpCount = 2;
     }
@@ -240,13 +240,13 @@ void Player::jump() {
 
 void Player::lifeGestion()
 {
-    if (life > 100) {
+    if (life >= 60) {
         lifeBar.setFillColor(Color::Green);
     }
-    else if (life < 25) {
+    else if (life < 30) {
         lifeBar.setFillColor(Color::Red);
     }
-    else if (life < 65) {
+    else if (life < 60) {
         lifeBar.setFillColor(Color::Yellow);
     }
     lifeBar.setSize(Vector2f(life, 10));
