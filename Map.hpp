@@ -52,6 +52,8 @@ public:
 
     void update(float deltaTime, RenderWindow& window);
 
+    void reinitilisePlayer();
+
     void clearMap();
 
     void collision(float deltaTime);

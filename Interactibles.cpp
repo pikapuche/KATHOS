@@ -38,7 +38,7 @@ void Interactible::updateProximity(const std::shared_ptr<Player>& player, sf::Re
 
 bool Interactible::playerTryInteract() {
     if (isPlayerNear) {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) || Joystick::isButtonPressed(0, 2)) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) || Joystick::isButtonPressed(0, 3)) {
             return true;
         }
         return false;

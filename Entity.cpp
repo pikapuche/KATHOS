@@ -29,3 +29,7 @@ void Entity::setLife(float l) {
     life += l;
     if (life < 0) life = 0;
 }
+
+void Entity::resetLife(float l) {
+    life = l;
+}

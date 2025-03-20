@@ -40,4 +40,5 @@ public:
 	int getLife();
 
 	void setLife(float l);
+	void resetLife(float l);
 };
