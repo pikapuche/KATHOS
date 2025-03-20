@@ -3,13 +3,13 @@
 Key::Key() {
     // Load the Key sprite sheet (containing both frames)
     if (!textureSheet.loadFromFile("assets/texture/Interactibles/key.png")) {
-        std::cerr << "Error loading key sprite sheet!" << std::endl;
+        cerr << "Error loading key sprite sheet!" << endl;
     }
 
     sprite.setTexture(textureSheet); // ✅ Assign the correct texture
 
     // Set the first frame (assuming 32x32 per frame)
-    frameRect = sf::IntRect(0, 0, 32, 32);
+    frameRect = IntRect(0, 0, 32, 32);
     sprite.setTextureRect(frameRect);
 
     // Initialize animation variables
@@ -33,21 +33,22 @@ void Key::updateAnimation(float deltaTime) {
 }
 
 
-void Key::interact(const std::shared_ptr<Player>& player) {
+void Key::interact(const shared_ptr<Player>& player) {
     if (!player->getHasKey()) {
         if (this->playerTryInteract()) {
             player->setHasKey(true);
             isTaken = true;
+            shouldHide = true;
         }
     }
     else {
         if (this->playerTryInteract()) {
-            std::cout << "Already have a key!" << std::endl;
+            cout << "Already have a key!" << endl;
         }
     }
 }
 
-void Key::draw(sf::RenderWindow& window) {
+void Key::draw(RenderWindow& window) {
     if (!isTaken) {
         window.draw(sprite);
     }

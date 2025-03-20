@@ -4,21 +4,30 @@
 #include "Gemme.hpp"
 #include "MainScreen.hpp"
 #include "Interface.hpp"
+#include "controllerManager.hpp"
 
 class Game {
 public : 
 
+	int count = 0;
+
 	bool isGameOver = false;
 	bool isWin = false;
+
 	bool removeBoss = false;
+
+	Music music;
+	Music musicBoss;
 
 	void removeDeadEnemies(Map& m);
 
 	void removeDeadBosses(Map& m);
 
-	void gameOver(RenderWindow& window);
+	void initMusic();
 
-	void Win(RenderWindow& window);
+	void gameOver(RenderWindow& window, Interface& overlay);
+
+	void Win(RenderWindow& window, Interface& overlay);
 
 	void run();
 };

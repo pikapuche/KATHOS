@@ -3,13 +3,12 @@
 Player::Player() : Entity(position.x, position.y) { // constructeur de base 
     DEBUG = true;
     velocity.y = 0; // Pas de mouvement vertical au depart
-    //attackShape.setSize(sf::Vector2f(10.0f, 20.0f)); attack a l'arme
     attackShape.setSize(sf::Vector2f(75.f, 25.0f));
     attackShape.setFillColor(sf::Color::Red);
     textureSprint.loadFromFile("assets/texture/player/playerRunV2piskel.png");
     textureIdle.loadFromFile("assets/texture/player/playerIdleV2piskel.png");
     textureJump.loadFromFile("assets/texture/player/playerJump.png");
-    textureAttack.loadFromFile("assets/texture/player/playerAttackV2piskel.png");
+    textureAttack.loadFromFile("assets/texture/player/perso blanc attack V2.png");
     sprite.setTexture(textureSprint);
     sprite.setTextureRect(IntRect(0, 0, 64, 64));
     boxCol1 = 35;
@@ -21,6 +20,10 @@ Player::Player() : Entity(position.x, position.y) { // constructeur de base
     rectBar.setFillColor(Color::Transparent);
     rectBar.setOutlineColor(Color::White);
     rectBar.setOutlineThickness(2);
+
+    //float posX = sprite.getGlobalBounds().left + sprite.getGlobalBounds().width * 2 / 5;
+    //float posY = sprite.getGlobalBounds().top + sprite.getGlobalBounds().height / 5;
+    //hitbox = FloatRect(posX, posY, sprite.getGlobalBounds().width / 5, sprite.getGlobalBounds().height / 2.5f);
 }
 
 void Player::movementManager(float deltaTime) { 
@@ -181,7 +184,7 @@ void Player::animationManager(float deltaTime) {
     case ATTACKING :
         animAttackTimeDecr += deltaTime;
         anim_attack.y = 0;
-        if (animAttackTimeDecr > 0.10f) {
+        if (animAttackTimeDecr > 0.07f) {
             anim_attack.x++;
             animAttackTimeDecr = 0;
         }
@@ -189,7 +192,7 @@ void Player::animationManager(float deltaTime) {
             if (anim_attack.x == 3) {
                 stateWeapon = SPAWN;
             }
-            if (anim_attack.x > 4) {
+            if (anim_attack.x > 6) {
                 anim_attack.x = 1;
                 isAttacking = false;
                 if (state != GROUNDED) {
@@ -199,10 +202,10 @@ void Player::animationManager(float deltaTime) {
             sprite.setTextureRect(IntRect(anim_attack.x * 64, 0, -64, 64));
         }
         else if (stateLook == LOOK_RIGHT) {
-            if (anim_attack.x == 2) {
+            if (anim_attack.x == 3) {
                 stateWeapon = SPAWN;
             }
-            if (anim_attack.x > 3) {
+            if (anim_attack.x > 5) {
                 anim_attack.x = 0;
                 isAttacking = false;
                 if (state != GROUNDED) {

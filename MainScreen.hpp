@@ -1,6 +1,7 @@
 #pragma once
 #include "Interface.hpp"
 #include "Game.hpp"
+#include "controllerManager.hpp"
 
 class MainScreen {
 private:
@@ -16,9 +17,6 @@ private:
 
     //Controller Inputs
     Interface interfaceuh; // Add Interface object
-    int selectedButtonIndex = 0; // Tracks selected button
-    Sprite highlightRect; // Highlight for selected button
-    Texture highlightTexture; // Texture for the highlight
 
 
     //Sound Related
@@ -28,15 +26,15 @@ private:
     Sprite soundBar;
     Texture soundBarTexture;
     RectangleShape soundBarFiller;
+    RectangleShape soundBarFillerBG;
 
-    
+    sf::Music& music;
 public:
+    MainScreen(Music& music);
     bool getIsInMenu();
     void setIsInMenu(bool menu);
     void initMenu(RenderWindow& window);
-    void updateMenu(RenderWindow& window);
+    void updateMenu(RenderWindow& window, Controller& controller);
     void destroyAll();
-    void handleControllerNavigation();
-	void handleButtonPress(Button& button);
-    void handleSound(RenderWindow& window);
+    void handleSound(RenderWindow& window, Controller& controller);
 };

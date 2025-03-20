@@ -61,24 +61,19 @@ void Interface::initInterface() {
 
     // Load font
     if (!timeFont.loadFromFile("Assets/Fonts/Minecraft.ttf")) {
-        std::cerr << "Error loading font!" << std::endl;
+        cerr << "Error loading font!" << endl;
     }
 
     // Set up timer text
     timeText.setFont(timeFont);
     timeText.setCharacterSize(40);
-    timeText.setFillColor(sf::Color::White);
+    timeText.setFillColor(Color::White);
     timeText.setPosition(1500, 10); // Adjust position (top-right)
-
-    // Start the clock
-    timeClock.restart();
 
     keyGUI.setPosition(0, 10);
     keyGUI.setTexture(keyGUItexture);
 }
-void Interface::updateInterface(RenderWindow& window, Player& player) {
-    detectControllerInput(); // Detect controller usage
-    handleMenuNavigation();  // Handle button navigation
+void Interface::updateInterface(RenderWindow& window, Player& player, Controller& controller) {
 
     if (player.getHasKey()) {
         window.draw(keyGUI);
@@ -88,36 +83,10 @@ void Interface::updateInterface(RenderWindow& window, Player& player) {
         pauseOverlay.draw(window);
 
         for (size_t i = 0; i < buttons.size(); ++i) {
-            if (isUsingController) {
-                // If using controller, highlight only the selected button
-                buttons[i].setTexture(false);
-			}
-            else {
                 // If using mouse, highlight hovered button
                 buttons[i].setTexture(buttons[i].isHovered(window));
-            }
         }
-
-        // Handle button selection when pressing Enter / A button
-        if (isUsingController) {
-            if (Keyboard::isKeyPressed(Keyboard::Enter) || Joystick::isButtonPressed(0, 0)) {
-                switch (buttons[selectedButtonIndex].getType()) {
-                case ButtonType::Resume:
-                    isPaused = false;
-                    return;
-                case ButtonType::Exit:
-                    window.close();
-                    return;
-                case ButtonType::Restart:
-                    shouldRestart = true; // New flag to signal a restart
-                    isPaused = false; // Unpause when restarting
-                    totalElapsedTime = sf::Time::Zero; // Reset elapsed time
-                    timeClock.restart();  // Restart the timer
-                    return;
-                }
-            }
-        }
-        else if (!isUsingController) {
+        if (!controller.getUsingController()) {
             if (Mouse::isButtonPressed(Mouse::Left)) {
                 for (auto& button : buttons) {
                     if (button.isHovered(window)) {
@@ -131,11 +100,30 @@ void Interface::updateInterface(RenderWindow& window, Player& player) {
                         case ButtonType::Restart:
                             shouldRestart = true; // New flag to signal a restart
                             isPaused = false; // Unpause when restarting
-                            totalElapsedTime = sf::Time::Zero; // Reset elapsed time
+                            totalElapsedTime = Time::Zero; // Reset elapsed time
                             timeClock.restart();  // Restart the timer
                             return;
                         }
                     }
+                }
+            }
+        }
+        else if (controller.getUsingController()) {
+            controller.updateHighlight(window, true);
+            if (Joystick::isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(Keyboard::Enter)) {
+                switch (controller.getCurrentJoystickIndex()) {
+                case 0:
+                    isPaused = false;
+                    return;
+                case 1:
+                    shouldRestart = true; // New flag to signal a restart
+                    isPaused = false; // Unpause when restarting
+                    totalElapsedTime = sf::Time::Zero; // Reset elapsed time
+                    timeClock.restart();  // Restart the timer
+                    return;
+                case 2:
+                    window.close();
+                    return;
                 }
             }
         }
@@ -144,10 +132,8 @@ void Interface::updateInterface(RenderWindow& window, Player& player) {
         for (auto& button : buttons) {
             button.draw(window);
         }
-        if (isUsingController) {
-            // Draw highlight rectangle on selected button
-            highlightRect.setPosition(buttons[selectedButtonIndex].getPosition().x + 50, buttons[selectedButtonIndex].getPosition().y + 25);
-            window.draw(highlightRect);
+        if (controller.getUsingController()) {
+            window.draw(controller.getHighlight());
         }
     }
 
@@ -162,108 +148,81 @@ void Interface::resetRestartFlag() {
     shouldRestart = false;
 }
 
-void Interface::setUsingController(bool usingController) {
-	isUsingController = usingController;
-}
-
-bool Interface::getUsingController() {
-	return isUsingController;
-}
-
-void Interface::detectControllerInput() {
-
-    //DEBUG
-	if (Keyboard::isKeyPressed(Keyboard::Up)) {
-        setUsingController(true);
-	}
-    if (Keyboard::isKeyPressed(Keyboard::Down)) {
-        setUsingController(true);
+void Interface::updateTimer(sf::RenderWindow& window) {
+    // Only update the timer if the game has started.
+    if (!gameStarted) {
+        // Option 1: Do nothing (timer stays at 0)
+        // Option 2: Reset the timer continuously:
+        timeClock.restart();
+        totalElapsedTime = sf::Time::Zero;
+        return;
     }
-	if (Mouse::isButtonPressed(Mouse::Left)) {
-        setUsingController(false);
-	}
+    else if (gameStarted) {
 
-    // Check if any joystick is connected
-    for (unsigned int i = 0; i < Joystick::Count; ++i) {
-        if (Joystick::isConnected(i)) {
-            // Check if any button is pressed
-            for (unsigned int j = 0; j < Joystick::getButtonCount(i); ++j) {
-                if (Joystick::isButtonPressed(i, j)) {
-                    setUsingController(true);
-                    break;
-                }
-            }
-
-            // Check if any joystick axis is moved significantly
-            for (int axis = Joystick::X; axis <= Joystick::PovY; ++axis) {
-                if (abs(Joystick::getAxisPosition(i, static_cast<Joystick::Axis>(axis))) > 10) {
-                    setUsingController(true);
-                    break;
-                }
-            }
+        // Timer update code (same as before)
+        static bool wasPaused = false;    // Track previous pause state
+        if (hasWon) {
+            timeText.setString("Time: " + to_string(finalTime.asSeconds()));
         }
-    }
-}
-
-void Interface::handleMenuNavigation() {
-    static bool upPressed = false;
-    static bool downPressed = false;
-
-    bool moveUp = Keyboard::isKeyPressed(Keyboard::Up) || Joystick::isButtonPressed(0, 11);
-    bool moveDown = Keyboard::isKeyPressed(Keyboard::Down) || Joystick::isButtonPressed(0, 12);
-
-    // Navigate up
-    if (moveUp && !upPressed) {
-        selectedButtonIndex = (selectedButtonIndex - 1 + buttons.size()) % buttons.size();
-        upPressed = true;
-    }
-    if (!moveUp) upPressed = false;
-
-    // Navigate down
-    if (moveDown && !downPressed) {
-        selectedButtonIndex = (selectedButtonIndex + 1) % buttons.size();
-        downPressed = true;
-    }
-    if (!moveDown) downPressed = false;
-
-    // Move highlight rectangle
-    highlightRect.setPosition(buttons[selectedButtonIndex].getPosition());
-}
-
-
-void Interface::updateTimer(RenderWindow& window) {
-    static bool wasPaused = false;    // Track previous pause state
-
-
-
-    if (isPaused) {
-        if (!wasPaused) {
+        else if (isPaused && !wasPaused) {
             totalElapsedTime += timeClock.getElapsedTime();
         }
-    }
-    else {
-        if (wasPaused) {
+        else if (wasPaused) {
             timeClock.restart(); // Restart the clock fresh after unpausing
         }
-    }
 
-    wasPaused = isPaused;
+        wasPaused = isPaused;
 
-    // Calculate correct elapsed time
-    sf::Time elapsed = totalElapsedTime;
+        sf::Time elapsed = totalElapsedTime;
+        if (!isPaused) {
+            elapsed += timeClock.getElapsedTime();
+        }
 
+        if (hasWon && finalTime.asSeconds() == 0) {
+            finalTime = elapsed;
+        }
 
-
-    if (!isPaused) {
-        elapsed += timeClock.getElapsedTime();
-    }
-
-    int minutes = static_cast<int>(elapsed.asSeconds()) / 60;
-    int seconds = static_cast<int>(elapsed.asSeconds()) % 60;
-    int miliseconds = static_cast<int>(elapsed.asMilliseconds() % 1000);
+        int minutes = static_cast<int>(elapsed.asSeconds()) / 60;
+        int seconds = static_cast<int>(elapsed.asSeconds()) % 60;
+        int milliseconds = static_cast<int>(elapsed.asMilliseconds() % 1000);
+        
+    
 
     // Format time
-    timeText.setString("Time: " + std::to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + std::to_string(seconds) + ":" + std::to_string(miliseconds));
+    timeText.setString("Time: " + to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + to_string(seconds) + ":" + to_string(milliseconds));
 
-    window.draw(timeText); // Ensure it is drawn
+        timeText.setString("Time: " + std::to_string(minutes) + ":" +
+            (seconds < 10 ? "0" : "") + std::to_string(seconds) + ":" +
+            std::to_string(milliseconds));
+        window.draw(timeText);
+    }
+}
+
+void Interface::resetTime() {
+    timeClock.restart();
+    totalElapsedTime = sf::Time::Zero;
+}
+
+void Interface::setGameStarted(bool started) {
+    gameStarted = started;
+    if (!gameStarted) {
+        // Reset the timer so it stays at 0 while in the menu.
+        timeClock.restart();
+        totalElapsedTime = sf::Time::Zero;
+    }
+    //cout << "successfully set" << endl;
+}
+
+Time Interface::getFinalTime() const
+{
+    return finalTime;
+}
+
+void Interface::setWinCondition(bool win)
+{
+    hasWon = win;
+}
+
+bool Interface::getGameStarted()  const {
+    return gameStarted;
 }

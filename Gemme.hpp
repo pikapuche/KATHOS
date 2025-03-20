@@ -7,7 +7,7 @@ private:
 	bool wasTaken = false;
 public:
 
-	sf::Vector2f position;
+	Vector2f position;
 	Texture gemmeTexture;
 	Sprite gemmeSprite;
 
@@ -27,7 +27,7 @@ public:
 
 	void animationGemme(float _deltaTime);
 	//Vector2f setPosition(float x, float y);
-	void interact(const std::shared_ptr<Player>& player);
-	void updateGemme(float _deltaTime, const std::shared_ptr<Player>& player);
+	void interact(const shared_ptr<Player>& player);
+	void updateGemme(float _deltaTime, const shared_ptr<Player>& player);
 	bool getGemTaken();
 };

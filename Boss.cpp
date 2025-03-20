@@ -10,7 +10,7 @@ Boss::Boss() : Entity(position.x, position.y) {
     boxCol1 = 1;
     boxCol2 = 1;
     life = 180;
-    lifeBar.setSize(Vector2f(life, 10.0f)); 
+    lifeBar.setSize(Vector2f(life, 10.0f));
     lifeBar.setFillColor(Color::Green);
     rectBar.setSize(Vector2f(life, 10));
     rectBar.setFillColor(Color::Transparent);
@@ -47,7 +47,7 @@ void Boss::takeDamage(Player& player)
         lifeBar.setFillColor(Color::Yellow);
     }
     if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds()) && player.stateWeapon == player.SPAWN) {
-        setLife(-0.5);
+        setLife(-1);
         lifeBar.setSize(Vector2f(life, 10));
         cout << "aie ca fais mal (boss)" << endl;
     }
@@ -56,7 +56,7 @@ void Boss::takeDamage(Player& player)
 void Boss::doDamage(Player& player)
 {
     if (sprite.getGlobalBounds().intersects(player.getSprite().getGlobalBounds()) && !player.getInvincible()) {
-        player.setLife(-5);
+        player.setLife(-8);
         player.setInvincible(true);
         player.coolDownInvincible.restart();
     }
@@ -81,13 +81,13 @@ void Boss::movementManager(float pos, float pos2, float deltaTime) { // permet d
             position.x -= speed * deltaTime;
         }
     }
-    else if (isTired && coolDownTired.getElapsedTime().asSeconds() >= 3){
+    else if (isTired && coolDownTired.getElapsedTime().asSeconds() >= 3) {
         isTired = false;
     }
 
-    if(state != GROUNDED) velocity.y += gravity * deltaTime;  // Appliquer la gravité
-    else if (state == GROUNDED) velocity.y = 0; 
-   
+    if (state != GROUNDED) velocity.y += gravity * deltaTime;  // Appliquer la gravité
+    else if (state == GROUNDED) velocity.y = 0;
+
     position.y += velocity.y * deltaTime;
 
     sprite.setPosition(position);
