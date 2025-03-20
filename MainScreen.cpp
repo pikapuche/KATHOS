@@ -267,7 +267,6 @@ void MainScreen::updateMenu(RenderWindow& window, Controller& controller) {
                         }
                     }
                     
-
                     window.draw(soundBarFillerBG);
                     window.draw(soundBarFiller); // Draw filler first
                     window.draw(soundBar);

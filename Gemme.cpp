@@ -3,6 +3,7 @@
 Gemme::Gemme(float _x, float _y, GemmeState state) : gemmeState(state) { 
 	gemmeTexture.loadFromFile("Assets/gemme.png");
 	gemmeSprite.setTextureRect(IntRect(0, 0, 32, 32));
+	gemmeSprite.setScale(1.5f, 1.5f);
 	gemmeSprite.setTexture(gemmeTexture);
 	gemmeSprite.setPosition(Vector2f(_x,_y));
 

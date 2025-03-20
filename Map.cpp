@@ -1,6 +1,6 @@
 #include "Map.hpp"
 
-Map::Map() : mapState(MapState::PRACTICE) {
+Map::Map() : mapState(MapState::SALLE5) {
 	groundYellowLeftTexture.loadFromFile("Assets/texture/Map/groundYellowLeft.png");
 	groundYellowMidTexture.loadFromFile("Assets/texture/Map/groundYellowMid.png");
 	groundYellowRightTexture.loadFromFile("Assets/texture/Map/groundYellowRight.png");
@@ -17,7 +17,8 @@ Map::Map() : mapState(MapState::PRACTICE) {
 	salle3Texture.loadFromFile("Assets/Map/Salle3.jpg");
 	salle4Texture.loadFromFile("Assets/Map/Salle2.jpg"); 
 	salle5Texture.loadFromFile("Assets/Map/Salle5.jpg"); 
-	salle6Texture.loadFromFile("Assets/Map/Salle6.png"); 
+	salle6Texture.loadFromFile("Assets/Map/Salle6.png");
+	salle62Texture.loadFromFile("Assets/Map/Salle62.png");
 
 	//practiceSprite.setTexture(practiceTexture);
 	salle1Sprite.setTexture(salle1Texture);
@@ -26,6 +27,9 @@ Map::Map() : mapState(MapState::PRACTICE) {
 	salle4Sprite.setTexture(salle4Texture); salle4Sprite.setScale(-1.f, 1.f); salle4Sprite.setPosition(1940, 0);
 	salle5Sprite.setTexture(salle5Texture);
 	salle6Sprite.setTexture(salle6Texture);
+	salle62Sprite.setTexture(salle62Texture);
+
+
 }
 
 Map::~Map() {}
@@ -454,6 +458,8 @@ void Map::draw(RenderWindow& window) {
 		cloud->draw(window);
 
 	/////////////////////////////////////////////////////// c'est quoi la diff ??? ca sert a quoi ???
+
+	if (mapState == MapState::SALLE6){window.draw(salle62Sprite);}
 
 	for (auto& interactv : interactiblesVector) {
 		if (!interactv->isDoor()) {  // Check if the object is NOT a door

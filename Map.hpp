@@ -21,8 +21,10 @@ public:
     Texture groundRedLeftTexture, groundRedMidTexture, groundRedRightTexture;
     Texture groundGreenLeftTexture, groundGreenMidTexture, groundGreenRightTexture;
     Texture practiceTexture, salle1Texture, salle2Texture, salle3Texture, salle4Texture, salle5Texture, salle6Texture;
+	Texture salle62Texture;
 
     Sprite practiceSprite, salle1Sprite, salle2Sprite, salle3Sprite, salle4Sprite, salle5Sprite, salle6Sprite;
+    Sprite salle62Sprite;
 
     enum class  GemmeState { NADA, SPRINT, DASH, DOUBLEJUMP };
     GemmeState gemmeState;
