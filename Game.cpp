@@ -29,6 +29,7 @@ void Game::initMusic()
 void Game::gameOver(RenderWindow& window, Interface& overlay)
 {
     if (isGameOver) {
+        musicBoss.stop();
         overlay.setWinCondition(true); //flemme de changer le nom pour l'instant 
 
         RectangleShape gameOverScreen(Vector2f(window.getSize().x, window.getSize().y));
@@ -69,6 +70,7 @@ void Game::gameOver(RenderWindow& window, Interface& overlay)
 void Game::Win(RenderWindow& window, Interface& overlay)
 {
     if (isWin) {
+        musicBoss.stop();
         overlay.setWinCondition(true);
 
         RectangleShape winScreen(Vector2f(window.getSize().x, window.getSize().y));
@@ -187,7 +189,10 @@ void Game::run()
 
             if (!isWin && !isGameOver)
             {
-                if (m.mapBoss) musicBoss.play();
+                if (m.mapBoss && count < 1) {
+                    musicBoss.play();
+                    count++;
+                }
                 overlay.updateInterface(window, *m.player); // Draw pause menu when paused
             }
             if (!mainScreen.getIsInMenu())

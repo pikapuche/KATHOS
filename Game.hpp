@@ -8,6 +8,8 @@
 class Game {
 public : 
 
+	int count = 0;
+
 	bool isGameOver = false;
 	bool isWin = false;
 
