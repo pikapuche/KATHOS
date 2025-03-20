@@ -18,7 +18,7 @@ Boss::Boss() : Entity(position.x, position.y) {
     rectBar.setOutlineThickness(2);
     sprite.setOrigin(sprite.getLocalBounds().left / 2, sprite.getLocalBounds().top / 2);
     state = JUMP;
-    directionState == LEFT;
+    directionState = LEFT;
 }
 
 void Boss::jump()
