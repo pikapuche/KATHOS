@@ -193,7 +193,7 @@ void MainScreen::updateMenu(RenderWindow& window, Controller& controller) {
             }
             else if (controller.getUsingController()) {
                 button.setTexture(false);
-                controller.updateHighlight(window, false);
+                controller.updateHighlight(window, false, false);
                 if (!settingSound) {
                     if (isInSettings && controller.getCurrentJoystickIndex() == 1)
                         controller.setCurrentJoystickIndex(2);

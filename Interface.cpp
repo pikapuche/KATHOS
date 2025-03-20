@@ -50,6 +50,13 @@ void Interface::initInterface() {
         "assets/texture/titlescreen/buttons/ExitButtonHover.png"
     ));
 
+    buttons.push_back(Button(
+        1920 / 2 - 75, 1080 / 2 + 250,
+        200, 100, ButtonType::Retry, false,
+        "assets/texture/UI/retryButton.png",
+        "assets/texture/UI/retryButtonHover.png"
+    ));
+
     // Highlight rectangle for selection
     if (!highlightTexture.loadFromFile("assets/texture/UI/interfaceButton.png")) {
         cerr << "Failed to load interface button texture!" << endl;
@@ -74,68 +81,69 @@ void Interface::initInterface() {
     keyGUI.setTexture(keyGUItexture);
 }
 void Interface::updateInterface(RenderWindow& window, Player& player, Controller& controller) {
+        if (player.getHasKey()) {
+            window.draw(keyGUI);
+        }
 
-    if (player.getHasKey()) {
-        window.draw(keyGUI);
-    }
+        if (isPaused) { // Only if paused
+            pauseOverlay.draw(window);
 
-    if (isPaused) { // Only if paused
-        pauseOverlay.draw(window);
-
-        for (size_t i = 0; i < buttons.size(); ++i) {
+            for (size_t i = 0; i < buttons.size(); ++i) {
                 // If using mouse, highlight hovered button
                 buttons[i].setTexture(buttons[i].isHovered(window));
-        }
-        if (!controller.getUsingController()) {
-            if (Mouse::isButtonPressed(Mouse::Left)) {
-                for (auto& button : buttons) {
-                    if (button.isHovered(window)) {
-                        switch (button.getType()) {
-                        case ButtonType::Resume:
-                            isPaused = false;
-                            return;
-                        case ButtonType::Exit:
-                            window.close();
-                            return;
-                        case ButtonType::Restart:
-                            shouldRestart = true; // New flag to signal a restart
-                            isPaused = false; // Unpause when restarting
-                            totalElapsedTime = Time::Zero; // Reset elapsed time
-                            timeClock.restart();  // Restart the timer
-                            return;
+            }
+            if (!controller.getUsingController()) {
+                if (Mouse::isButtonPressed(Mouse::Left)) {
+                    for (auto& button : buttons) {
+                        if (button.isHovered(window)) {
+                            switch (button.getType()) {
+                            case ButtonType::Resume:
+                                isPaused = false;
+                                return;
+                            case ButtonType::Exit:
+                                window.close();
+                                return;
+                            case ButtonType::Restart:
+                                shouldRestart = true; // New flag to signal a restart
+                                isPaused = false; // Unpause when restarting
+                                totalElapsedTime = Time::Zero; // Reset elapsed time
+                                timeClock.restart();  // Restart the timer
+                                return;
+                            }
                         }
                     }
                 }
             }
-        }
-        else if (controller.getUsingController()) {
-            controller.updateHighlight(window, true);
-            if (Joystick::isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(Keyboard::Enter)) {
-                switch (controller.getCurrentJoystickIndex()) {
-                case 0:
-                    isPaused = false;
-                    return;
-                case 1:
-                    shouldRestart = true; // New flag to signal a restart
-                    isPaused = false; // Unpause when restarting
-                    totalElapsedTime = sf::Time::Zero; // Reset elapsed time
-                    timeClock.restart();  // Restart the timer
-                    return;
-                case 2:
-                    window.close();
-                    return;
+            else if (controller.getUsingController()) {
+                controller.updateHighlight(window, true, false);
+                if (Joystick::isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(Keyboard::Enter)) {
+                    switch (controller.getCurrentJoystickIndex()) {
+                    case 0:
+                        isPaused = false;
+                        return;
+                    case 1:
+                        shouldRestart = true; // New flag to signal a restart
+                        isPaused = false; // Unpause when restarting
+                        totalElapsedTime = sf::Time::Zero; // Reset elapsed time
+                        timeClock.restart();  // Restart the timer
+                        return;
+                    case 2:
+                        window.close();
+                        return;
+                    }
                 }
             }
-        }
 
-        // Draw all buttons
-        for (auto& button : buttons) {
-            button.draw(window);
+            // Draw all buttons
+            for (auto& button : buttons) {
+                if (button.getType() != ButtonType::Retry)
+                    button.draw(window);
+            }
         }
         if (controller.getUsingController()) {
             window.draw(controller.getHighlight());
         }
-    }
+    
 
 }
 
@@ -225,4 +233,71 @@ void Interface::setWinCondition(bool win)
 
 bool Interface::getGameStarted()  const {
     return gameStarted;
+}
+
+void Interface::updateGameOver(sf::RenderWindow& window, Controller& controller) {
+    if (hasWon) {
+        for (size_t i = 0; i < buttons.size(); ++i) {
+            // If using mouse, highlight hovered button
+            buttons[i].setTexture(buttons[i].isHovered(window));
+        }
+        if (!controller.getUsingController()) {
+            if (Mouse::isButtonPressed(Mouse::Left)) {
+                for (auto& button : buttons) {
+                    if (button.isHovered(window)) {
+                        switch (button.getType()) {
+                        case ButtonType::Retry:
+                            shouldRestart = true; // New flag to signal a restart
+                            isPaused = false; // Unpause when restarting
+                            totalElapsedTime = sf::Time::Zero; // Reset elapsed time
+                            hasWon = false;
+                            timeClock.restart();  // Restart the timer
+                            for (auto& button : buttons) {
+                                if (button.getType() == ButtonType::Exit)
+                                    button.setPos(1920 / 2 - 100, 1080 / 2 + 300);
+                            }
+                            return;
+                        case ButtonType::Exit:
+                            window.close();
+                            return;                        
+                        }
+                    }
+                }
+            }
+        }
+        else if (controller.getUsingController()) {
+            controller.updateHighlight(window, true, true);
+            if (Joystick::isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(Keyboard::Enter)) {
+                switch (controller.getCurrentJoystickIndex()) {
+                case 0:
+                    shouldRestart = true; // New flag to signal a restart
+                    isPaused = false; // Unpause when restarting
+                    totalElapsedTime = sf::Time::Zero; // Reset elapsed time
+                    hasWon = false;
+                    timeClock.restart();  // Restart the timer
+                    for (auto& button : buttons) {
+                        if (button.getType() == ButtonType::Exit)
+                            button.setPos(1920 / 2 - 100, 1080 / 2 + 300);
+                    }
+                    return;
+                case 1:
+                    window.close();
+                    return;
+                }
+            }
+        }
+
+
+
+        for (auto& button : buttons) {
+            if (button.getType() == ButtonType::Retry || button.getType() == ButtonType::Exit) {
+                if (button.getType() == ButtonType::Exit)
+                    button.setPos(1920 / 2 - 75, 1080 / 2 + 400);
+                button.draw(window);
+            }
+        }
+        if (controller.getUsingController() && !shouldRestart) {
+            window.draw(controller.getHighlight());
+        }
+    }
 }

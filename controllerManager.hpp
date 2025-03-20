@@ -34,5 +34,5 @@ public:
 	int getCurrentJoystickIndex();
 	void setCurrentJoystickIndex(int value);
 	Sprite getHighlight();
-	void updateHighlight(sf::RenderWindow& window, bool inPause);
+	void updateHighlight(sf::RenderWindow& window, bool inPause, bool inGameOver);
 };
