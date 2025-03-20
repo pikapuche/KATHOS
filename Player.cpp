@@ -4,7 +4,7 @@ Player::Player() : Entity(position.x, position.y) { // constructeur de base
     DEBUG = false;
     velocity.y = 0; // Pas de mouvement vertical au depart
     attackShape.setSize(sf::Vector2f(75.f, 25.0f));
-    attackShape.setFillColor(sf::Color::Red);
+    attackShape.setFillColor(sf::Color(10,10,10,70));
     textureSprint.loadFromFile("assets/texture/player/playerRunV2piskel.png");
     textureIdle.loadFromFile("assets/texture/player/playerIdleV2piskel.png");
     textureJump.loadFromFile("assets/texture/player/playerJump.png");
@@ -427,7 +427,7 @@ void Player::update(float deltaTime) {
 
 void Player::draw(RenderWindow& window) {
     window.draw(sprite);
-    if (stateWeapon == SPAWN && DEBUG) window.draw(attackShape);
+    if (stateWeapon == SPAWN) window.draw(attackShape);
     window.draw(lifeBar);
     window.draw(rectBar);
 }

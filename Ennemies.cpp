@@ -2,7 +2,7 @@
 
 Enemy::Enemy() : Entity(position.x, position.y)
 {
-    DEBUG = true;
+    DEBUG = false;
     if (DEBUG) {
         rectangleDetect.setFillColor(Color(255, 0, 0, 50));
         circleOne.setFillColor(Color::Yellow);
