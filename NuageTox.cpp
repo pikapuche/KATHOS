@@ -3,7 +3,8 @@
 NuageTox::NuageTox() : Entity(position.x, position.y) { //constructeur du nuage
     texture.loadFromFile("Assets/texture/Map/nuage.png");
     sprite.setTexture(texture);
-    //sprite.setScale(Vector2f(3.f, 3.f));
+    sprite.setScale(Vector2f(3.f, 3.f));
+    sprite.setOrigin({ sprite.getLocalBounds().width / 2,sprite.getLocalBounds().height / 2 });
     sprite.setColor(Color(255, 255, 255, 200));
 }
 
