@@ -206,7 +206,7 @@ void Game::run()
                     musicBoss.play();
                     count++;
                 }
-                overlay.updateInterface(window, *m.player); // Draw pause menu when paused
+                overlay.updateInterface(window, *m.player, controller); // Draw pause menu when paused
             }
             if (!mainScreen.getIsInMenu())
             {

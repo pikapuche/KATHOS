@@ -59,6 +59,7 @@ void Map::clearMap() {
 	enemies.clear();
 	bosses.clear();
 	maps.clear();
+	player.reset();
 	groundSprites.clear();
 }
 
@@ -304,8 +305,6 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				interactiblesVector.push_back(door);
 				break;
 			}
-
-
 					//DOOR WITH BUTTON
 			case 'd': {
 				auto door = make_shared<Door>(true);  // Change to shared_ptr
