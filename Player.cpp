@@ -79,7 +79,7 @@ void Player::movementManager(float deltaTime) {
         clock.restart();
     }
 
-    if ((Keyboard::isKeyPressed(Keyboard::LShift) || Joystick::isButtonPressed(0, 8)) && isTakeSpeed) {
+    if ((Keyboard::isKeyPressed(Keyboard::LShift) || Joystick::isButtonPressed(0, 8) || Joystick::isButtonPressed(0, 5)) && isTakeSpeed) {
         SPEED = 500;
     }
     else {
@@ -104,9 +104,10 @@ void Player::movementManager(float deltaTime) {
 
     if (sprite.getPosition().y < 0) { // haut de l'écran
         sprite.setPosition(position.x, position.y = 0);
+        velocity.y = gravity * deltaTime;
     }
-    if (sprite.getPosition().y > 1016) { // bas de l'écran 
-        sprite.setPosition(position.x, position.y = 1016);
+    if (sprite.getPosition().y > 1200) { 
+        life = 0;
     }
     if (sprite.getPosition().x < 0) { // gauche de l'écran
         sprite.setPosition(position.x = 0, position.y);

@@ -166,6 +166,7 @@ void Game::run()
                 overlay.resetRestartFlag();
                 isWin = false;
                 isGameOver = false;
+                m.player->resetLife(100);
             }
             for (auto& cloud : m.clouds) {
                 cloud->collision(*m.player);

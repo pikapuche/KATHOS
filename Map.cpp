@@ -59,10 +59,13 @@ void Map::clearMap() {
 	bosses.clear();
 	maps.clear();
 	groundSprites.clear();
+	reinitilisePlayer();
 }
 
 void Map::reinitilisePlayer() {
-	//reiniliser player (gemme/clef)
+	player->setIsTakeDash(false);
+	player->setIsTakeJump(false);
+	player->setIsTakeSpeed(false);
 }
 
 
@@ -155,6 +158,9 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 				auto mid = make_unique<Sprite>();  // La bonne fa on de cr er un unique_ptr
 				mid->setTexture(groundGreenMidTexture);
 				mid->setPosition({ (float)i * 32, (float)_z * 20 });
+				if (mapState == MapState::SALLE6) {
+					mid->setColor(Color::Transparent);
+				}
 				groundSprites.push_back(move(mid));  // Utilise move pour transf rer la propri t 
 				break;
 			}
@@ -346,7 +352,6 @@ void Map::loadMap() {
 		for (auto& mapMonde1 : maps) {
 			monSwitch(*mapMonde1, line, z);
 		}
-		mapBoss = true;
 	}
 	if (mapState == MapState::SALLE2) {
 		cout << "salle 2" << endl;
@@ -393,12 +398,7 @@ void Map::loadMap() {
 		for (auto& mapMonde6 : maps) {
 			monSwitch(*mapMonde6, line, z);
 		}
-		if (!musicBoss.openFromFile("Assets/Musiques/VSOLO musique boss16.wav")) {
-			cout << "euuuuuuuuuuuuuu wtf la zic ?" << endl;
-		}
-		musicBoss.setLoop(true);
-		musicBoss.setVolume(5.f);
-		musicBoss.play();
+		mapBoss = true;
 	}
 }
 
