@@ -36,6 +36,8 @@ protected:
 
     bool hasKey = false;
 
+    FloatRect hitbox;
+
     Clock jumpClock; // compteur pour le deuxieme saut (evite l'enchainement)
     Clock coolDownDash; 
     Clock coolDownAttack;
