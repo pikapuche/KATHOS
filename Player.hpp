@@ -93,6 +93,8 @@ public:
 
     bool getIsDashing();
 
+    bool getIsTakeJump();
+
     bool setIsDashing(bool dash);
 
     bool getIsTakeSpeed();

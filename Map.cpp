@@ -30,9 +30,9 @@ Map::Map() : mapState(MapState::PRACTICE) {
 
 Map::~Map() {}
 
-void Map::update(float deltaTime, sf::RenderWindow& window) {
+void Map::update(float deltaTime, sf::RenderWindow& window, Controller& controller) {
     for (auto& interactv : interactiblesVector) {
-        interactv->updateProximity(player, window);
+        interactv->updateProximity(player, window, controller);
 		if (interactv->getIsPlayerNear()) {
 			interactv->interact(player);
 		}
@@ -332,7 +332,6 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 
 void Map::loadMap() {
 	if (mapState == MapState::PRACTICE) {
-		cout << "practice" << endl;
 		ifstream Map0("Assets/Map/Practice.txt");
 		maps.push_back(&Map0);
 		string line;
@@ -343,7 +342,6 @@ void Map::loadMap() {
 		}
 	}
 	if (mapState == MapState::SALLE1) {
-		cout << "salle 1" << endl;
 		ifstream Map1("Assets/Map/Salle1.txt");
 		maps.push_back(&Map1);
 		string line;
@@ -354,7 +352,6 @@ void Map::loadMap() {
 		}
 	}
 	if (mapState == MapState::SALLE2) {
-		cout << "salle 2" << endl;
 		ifstream Map2("Assets/Map/Salle2.txt");
 		maps.push_back(&Map2);
 		string line;

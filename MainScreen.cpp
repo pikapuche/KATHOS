@@ -157,7 +157,6 @@ void MainScreen::updateMenu(RenderWindow& window, Controller& controller) {
                     //Check when button click
                     if (Mouse::isButtonPressed(Mouse::Left)) {
                         if (!button.getisHidden()) {
-                            cout << "Button clicked" << endl;
                             switch (button.getType()) { //Check button type in Menu
                             case ButtonType::Play:
                                 interfaceuh.resetTime();
@@ -205,7 +204,6 @@ void MainScreen::updateMenu(RenderWindow& window, Controller& controller) {
                         controller.setCurrentJoystickIndex(2);
                 }
 
-                cout << "Current Index : " << controller.getCurrentJoystickIndex() << endl;
                 if (Joystick::isButtonPressed(0, 0) || sf::Keyboard::isKeyPressed(Keyboard::Enter)) {
                     if (!isInSettings) {
                         switch (controller.getCurrentJoystickIndex()) {
@@ -291,7 +289,6 @@ void MainScreen::updateMenu(RenderWindow& window, Controller& controller) {
         }
     }
     if (controller.getUsingController()) {
-        cout << "drawing highlight!" << endl;
         window.draw(controller.getHighlight());
     }
 }

@@ -19,6 +19,7 @@ class Interface {
 private:
     Time totalElapsedTime; // Store total elapsed time
     Texture keyGUItexture;
+    Texture keyGUILocktexture;
     Sprite keyGUI;
 
     bool gameStarted = false;
@@ -37,6 +38,27 @@ private:
     Time finalTime;
 
     bool hasWon = false;
+
+    Sprite Sprint;
+    Sprite Dash;
+    Sprite DJump;
+    Sprite SprintButton;
+    Sprite DashButton;
+    Sprite DJumpButton;
+
+    Texture SprintTexture;
+    Texture DashTexture;
+    Texture DJumpTexture;
+    Texture SprintLockTexture;
+    Texture DashLockTexture;
+    Texture DJumpLockTexture;
+    Texture SprintButtonTexture;
+    Texture DashButtonTexture;
+    Texture DJumpButtonTexture;
+    Texture SprintButtonControllerTexture;
+    Texture DashButtonControllerTexture;
+    Texture DJumpButtonControllerTexture;
+
 public:
     void initInterface();
 	bool getIsPaused();

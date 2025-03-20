@@ -11,7 +11,7 @@ Enemy::Enemy() : Entity(position.x, position.y)
         attackDetect.setFillColor(Color(0, 255, 0, 50));
         attackShape.setFillColor(Color::Yellow);
     }
-    rectangleDetect.setOrigin(318, 11); // 150 (radius) - 64 (taille sprite) + 32 (moiti� taille sprite pour centrer) 
+    rectangleDetect.setOrigin(318, 11); // 150 (radius) - 64 (taille sprite) + 32 (moitiï¿½ taille sprite pour centrer) 
     rectangleDetect.setSize(Vector2f(700, 75));
     currentState = PATROL;
     circleOne.setRadius(10.0f); // point de patrouille 1
@@ -19,7 +19,7 @@ Enemy::Enemy() : Entity(position.x, position.y)
     texture.loadFromFile("Assets/Ennemies/walk.png");
     textureAttackMove.loadFromFile("Assets/Ennemies/Shoot.png");
     sprite.setTexture(texture);
-    boxCol1 = 64; // valeur qui permet de g�rer les collisions (distances entre plateformes)
+    boxCol1 = 64; // valeur qui permet de gï¿½rer les collisions (distances entre plateformes)
     boxCol2 = 64; // 
     circleLastPos.setRadius(20.f); // point de derniere position du player
     attackDetect.setSize(Vector2f(75.f, 20.f));
@@ -44,8 +44,7 @@ void Enemy::detectPlayer(Player& player)
         else if (!rectangleDetect.getGlobalBounds().intersects(player.getSprite().getGlobalBounds()) && currentState == CHASE) {
             lastPlayerPosition = player.getSprite().getPosition().x;
             currentState = SEARCH;
-            // texture marche
-            coolDownSearch.restart(); // au cas o� pour �viter que la recherche se termine au bout d'une seconde
+            coolDownSearch.restart(); 
         }
     }
 }
@@ -75,7 +74,7 @@ void Enemy::movementManager(float pos, float pos2, float deltaTime) { // permet 
         attackShape.setPosition(position.x, position.y + 43);
     }
 
-    velocity.y += gravity * deltaTime;  // Appliquer la gravit�
+    velocity.y += gravity * deltaTime;  // Appliquer la gravitï¿½
     position.y += velocity.y * deltaTime;
 
     sprite.setPosition(position);
@@ -89,16 +88,16 @@ void Enemy::movementManager(float pos, float pos2, float deltaTime) { // permet 
     lifeBar.setPosition(position.x + 5, position.y - 26);
     rectBar.setPosition(position.x + 5, position.y - 26);
 
-    if (sprite.getPosition().y < 0) { // haut de l'�cran
+    if (sprite.getPosition().y < 0) { // haut de l'ï¿½cran
         sprite.setPosition(position.x, position.y = 64);
     }
-    if (sprite.getPosition().y > 1016) { // bas de l'�cran 
+    if (sprite.getPosition().y > 1016) { // bas de l'ï¿½cran 
         sprite.setPosition(position.x, position.y = 1016);
     }
-    if (sprite.getPosition().x < 0) { // gauche de l'�cran
+    if (sprite.getPosition().x < 0) { // gauche de l'ï¿½cran
         sprite.setPosition(position.x = 0, position.y);
     }
-    if (sprite.getPosition().x > 1856) { // droite de l'�cran
+    if (sprite.getPosition().x > 1856) { // droite de l'ï¿½cran
         sprite.setPosition(position.x = 1856, position.y);
     }
 }
@@ -152,6 +151,7 @@ void Enemy::animationManager(float deltaTime) {
 
 void Enemy::attackPlayer(Player& player) {
     if (attackDetect.getGlobalBounds().intersects(player.getSprite().getGlobalBounds())) { // si la zone d'attaque touche le joueur
+        // anim qui fait pop le nuage et au moment oï¿½ le nuage touche le perso alors paf
         if (!attack) {
             clockAttack.restart();
         }

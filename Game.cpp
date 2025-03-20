@@ -197,7 +197,7 @@ void Game::run()
             }
             removeDeadEnemies(m);
             removeDeadBosses(m);
-            m.update(deltaTime, window);
+            m.update(deltaTime, window, controller);
             m.draw(window);
 
 //             overlay.updateInterface(window, *m.player, controller); // Draw pause menu when paused
