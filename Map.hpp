@@ -53,7 +53,9 @@ public:
 
     void update(float deltaTime);
 
-	  void clearMap();
+    void reinitilisePlayer();
+
+	void clearMap();
 
     void collision(float deltaTime);
 

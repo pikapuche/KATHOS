@@ -26,7 +26,6 @@ Map::Map() : mapState(MapState::PRACTICE) {
 	salle4Sprite.setTexture(salle4Texture); salle4Sprite.setScale(-1.f, 1.f); salle4Sprite.setPosition(1940, 0);
 	salle5Sprite.setTexture(salle5Texture);
 	salle6Sprite.setTexture(salle6Texture);
-
 }
 
 Map::~Map() {}
@@ -52,14 +51,18 @@ void Map::update(float deltaTime) {
 }
 
 void Map::clearMap() {
-	tpShapeA.clear();
 	tpShapeB.clear();
+	tpShapeA.clear();
 	interactiblesVector.clear();
 	gemmeSprites.clear();
 	enemies.clear();
 	bosses.clear();
 	maps.clear();
 	groundSprites.clear();
+}
+
+void Map::reinitilisePlayer() {
+	//reiniliser player (gemme/clef)
 }
 
 
@@ -75,10 +78,12 @@ void Map::collision(float deltaTime) {
 	for (auto& tpA : tpShapeA) {
 		if (player->getSprite().getGlobalBounds().intersects(tpA->getGlobalBounds())) {
 			clearMap();
+			reinitilisePlayer();
 			switch (mapState)
 			{	
 			case Map::MapState::PRACTICE:
 				mapState = MapState::SALLE1;
+				//reinitialiser le joueur
 				break;
 			case Map::MapState::SALLE1:
 				mapState = MapState::SALLE2;
@@ -104,6 +109,7 @@ void Map::collision(float deltaTime) {
 	for (auto& tpB : tpShapeB) {
 		if (player->getSprite().getGlobalBounds().intersects(tpB->getGlobalBounds())) {
 			clearMap();
+			reinitilisePlayer();
 			switch (mapState)
 			{
 			case Map::MapState::SALLE1:
@@ -322,6 +328,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 
 void Map::loadMap() {
 	if (mapState == MapState::PRACTICE) {
+		cout << "practice" << endl;
 		ifstream Map0("Assets/Map/Practice.txt");
 		maps.push_back(&Map0);
 		string line;

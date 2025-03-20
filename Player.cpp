@@ -77,7 +77,7 @@ void Player::movementManager(float deltaTime) {
     }
 
     if ((Keyboard::isKeyPressed(Keyboard::LShift) || Joystick::isButtonPressed(0, 8)) && isTakeSpeed) {
-        SPEED = 600;
+        SPEED = 500;
     }
     else {
         SPEED = 300;
