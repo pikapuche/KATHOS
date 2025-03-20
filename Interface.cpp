@@ -240,15 +240,15 @@ void Interface::updateTimer(sf::RenderWindow& window) {
 
         // Timer update code (same as before)
         static bool wasPaused = false;    // Track previous pause state
-            if (hasWon) {
-        timeText.setString("Time: " + to_string(finalTime.asSeconds()));
-    }
-    else if (isPaused && !wasPaused) {
-        totalElapsedTime += timeClock.getElapsedTime();
-    }
-    else if (wasPaused) {
-        timeClock.restart(); // Restart the clock fresh after unpausing
-    }
+        if (hasWon) {
+            timeText.setString("Time: " + to_string(finalTime.asSeconds()));
+        }
+        else if (isPaused && !wasPaused) {
+            totalElapsedTime += timeClock.getElapsedTime();
+        }
+        else if (wasPaused) {
+            timeClock.restart(); // Restart the clock fresh after unpausing
+        }
 
         wasPaused = isPaused;
 
@@ -257,15 +257,18 @@ void Interface::updateTimer(sf::RenderWindow& window) {
             elapsed += timeClock.getElapsedTime();
         }
 
-                if (hasWon && finalTime.asSeconds() == 0) {
-        finalTime = elapsed;
-    }
+        if (hasWon && finalTime.asSeconds() == 0) {
+            finalTime = elapsed;
+        }
+
         int minutes = static_cast<int>(elapsed.asSeconds()) / 60;
         int seconds = static_cast<int>(elapsed.asSeconds()) % 60;
         int milliseconds = static_cast<int>(elapsed.asMilliseconds() % 1000);
+        
+    
 
     // Format time
-    timeText.setString("Time: " + to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + to_string(seconds) + ":" + to_string(miliseconds));
+    timeText.setString("Time: " + to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + to_string(seconds) + ":" + to_string(milliseconds));
 
         timeText.setString("Time: " + std::to_string(minutes) + ":" +
             (seconds < 10 ? "0" : "") + std::to_string(seconds) + ":" +
@@ -297,6 +300,7 @@ Time Interface::getFinalTime() const
 void Interface::setWinCondition(bool win)
 {
     hasWon = win;
+}
 
 bool Interface::getGameStarted()  const {
     return gameStarted;

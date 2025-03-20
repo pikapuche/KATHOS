@@ -14,6 +14,7 @@ class Map {
 public:
 
     bool bossZone = false;
+    bool mapBoss = false;
 
     Texture groundYellowLeftTexture, groundYellowMidTexture, groundYellowRightTexture;
     Texture groundRedLeftTexture, groundRedMidTexture, groundRedRightTexture;
@@ -44,8 +45,6 @@ public:
     vector<ifstream*> maps;
 
     vector<shared_ptr<Interactible>> interactiblesVector;
-
-    Music musicBoss;
 
     Map();
 

@@ -341,12 +341,7 @@ void Map::loadMap() {
 		for (auto& mapMonde1 : maps) {
 			monSwitch(*mapMonde1, line, z);
 		}
-		if (!musicBoss.openFromFile("Assets/Musiques/VSOLO musique boss16.wav")) {
-			cout << "euuuuuuuuuuuuuu wtf la zic ?" << endl;
-		}
-		musicBoss.setLoop(true);
-		musicBoss.setVolume(5.f);
-		musicBoss.play();
+		mapBoss = true;
 	}
 	if (mapState == MapState::SALLE2) {
 		cout << "salle 2" << endl;

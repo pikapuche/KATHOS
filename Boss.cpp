@@ -9,7 +9,7 @@ Boss::Boss() : Entity(position.x, position.y) {
     velocity.y = 0;
     boxCol1 = 1;
     boxCol2 = 1;
-    life = 180;
+    life = 12;
     lifeBar.setSize(Vector2f(life, 10.0f));
     lifeBar.setFillColor(Color::Green);
     rectBar.setSize(Vector2f(life, 10));

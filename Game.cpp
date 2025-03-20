@@ -19,6 +19,12 @@ void Game::initMusic()
         music.setLoop(true);
         music.setVolume(50.f);
     }
+
+    if (!musicBoss.openFromFile("Assets/Musiques/VSOLO musique boss16.wav")) {
+        cout << "euuuuuuuuuuuuuu wtf la zic ?" << endl;
+    }
+    musicBoss.setLoop(true);
+    musicBoss.setVolume(5.f);
 }
 void Game::gameOver(RenderWindow& window, Interface& overlay)
 {
@@ -181,9 +187,11 @@ void Game::run()
 
             if (!isWin && !isGameOver)
             {
+                if (m.mapBoss) musicBoss.play();
                 overlay.updateInterface(window, *m.player); // Draw pause menu when paused
             }
             if (!mainScreen.getIsInMenu())
+            {
                 overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
                 music.stop();
             }
