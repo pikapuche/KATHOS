@@ -16,9 +16,8 @@ Enemy::Enemy() : Entity(position.x, position.y)
     currentState = PATROL;
     circleOne.setRadius(10.0f); // point de patrouille 1
     circleTwo.setRadius(10.0f); // point de patrouille 2
-    texture.loadFromFile("Assets/Ennemies/attack move.png");
-    textureAttack.loadFromFile("Assets/Ennemies/attack.png");
-    textureAttackMove.loadFromFile("Assets/Ennemies/attack move.png");
+    texture.loadFromFile("Assets/Ennemies/walk.png");
+    textureAttackMove.loadFromFile("Assets/Ennemies/Shoot.png");
     sprite.setTexture(texture);
     boxCol1 = 64; // valeur qui permet de gérer les collisions (distances entre plateformes)
     boxCol2 = 64; // 
@@ -87,8 +86,8 @@ void Enemy::movementManager(float pos, float pos2, float deltaTime) { // permet 
     circleOne.setPosition(waypointOne);
     circleTwo.setPosition(waypointTwo);
     attackShape.setSize(Vector2f(nuage, 20.f));
-    lifeBar.setPosition(position.x + 5, position.y - 45);
-    rectBar.setPosition(position.x + 5, position.y - 45);
+    lifeBar.setPosition(position.x + 5, position.y - 26);
+    rectBar.setPosition(position.x + 5, position.y - 26);
 
     if (sprite.getPosition().y < 0) { // haut de l'écran
         sprite.setPosition(position.x, position.y = 64);
@@ -114,22 +113,40 @@ void Enemy::animationManager(float deltaTime) {
             animAttackTimeDecr = 0;
         }
         if (directionState == LEFT) {
-            if (anim_attack.x > 11) {
-                anim_attack.x = 6;
+            if (anim_attack.x > 6) {
+                anim_attack.x = 1;
             }
             sprite.setTextureRect(IntRect(anim_attack.x * 64, 0, -64, 64));
             sprite.setPosition(sprite.getPosition().x + 64, sprite.getPosition().y);
         }
         else if (directionState == RIGHT) {
-            if (anim_attack.x > 11) {
-                anim_attack.x = 5;
+            if (anim_attack.x > 5) {
+                anim_attack.x = 0;
             }
             sprite.setTextureRect(IntRect(anim_attack.x * 64, 0, 64, 64));
         }
     }
     else {
         sprite.setTexture(texture);
-        anim_attack.x = 0;
+        animIdleTimeDecr += deltaTime;
+        anim_idle.y = 0;
+        if (animIdleTimeDecr > 0.08f) {
+            anim_idle.x++;
+            animIdleTimeDecr = 0;
+        }
+        if (directionState == LEFT) {
+            if (anim_idle.x > 6) {
+                anim_idle.x = 1;
+            }
+            sprite.setTextureRect(IntRect(anim_idle.x * 64, 0, -64, 64));
+            sprite.setPosition(sprite.getPosition().x + 64, sprite.getPosition().y);
+        }
+        else if (directionState == RIGHT) {
+            if (anim_idle.x > 5) {
+                anim_idle.x = 0;
+            }
+            sprite.setTextureRect(IntRect(anim_idle.x * 64, 0, 64, 64));
+        }
     }
 }
 

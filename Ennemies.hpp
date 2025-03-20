@@ -22,6 +22,7 @@ protected :
 	float SPEED = 175.f; 
 	float nuage = 0.f;
 	float animAttackTimeDecr;
+	float animIdleTimeDecr;
 
 	bool isGrounded = false;
 	bool lastState; // dernier etat de l'ennemi (DEBUG)
