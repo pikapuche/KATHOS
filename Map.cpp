@@ -59,7 +59,6 @@ void Map::clearMap() {
 	enemies.clear();
 	bosses.clear();
 	maps.clear();
-	player.reset();
 	groundSprites.clear();
 }
 
