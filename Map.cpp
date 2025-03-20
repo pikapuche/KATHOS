@@ -395,6 +395,7 @@ void Map::loadMap() {
 		for (auto& mapMonde6 : maps) {
 			monSwitch(*mapMonde6, line, z);
 		}
+		player->setColliderMap(30, 1805);
 		mapBoss = true;
 	}
 }
@@ -440,7 +441,7 @@ void Map::draw(RenderWindow& window) {
 			window.draw(gemme->gemmeSprite);
 		}
 	}
-	//for (auto& player : players)
+
 	player->draw(window);
 
 	for (auto& enemy : enemies)
