@@ -140,6 +140,7 @@
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Chest.cpp" />
+    <ClCompile Include="controllerManager.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="Ennemies.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="Boss.hpp" />
     <ClInclude Include="Button.hpp" />
     <ClInclude Include="Chest.hpp" />
+    <ClInclude Include="controllerManager.hpp" />
     <ClInclude Include="Door.hpp" />
     <ClInclude Include="Ennemies.hpp" />
     <ClInclude Include="Entity.hpp" />
