@@ -204,7 +204,6 @@ void Game::run()
                 overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
                 music.stop();
             }
-
             gameOver(window, overlay);
             Win(window, overlay);
 

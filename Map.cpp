@@ -322,7 +322,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 
 void Map::loadMap() {
 	if (mapState == MapState::PRACTICE) {
-		ifstream Map0("Assets/Map/mapBoss.txt");
+		ifstream Map0("Assets/Map/Practice.txt");
 		maps.push_back(&Map0);
 		string line;
 		float z = 0;

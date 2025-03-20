@@ -9,7 +9,7 @@ Boss::Boss() : Entity(position.x, position.y) {
     velocity.y = 0;
     boxCol1 = 1;
     boxCol2 = 1;
-    life = 12;
+    life = 180;
     lifeBar.setSize(Vector2f(life, 10.0f));
     lifeBar.setFillColor(Color::Green);
     rectBar.setSize(Vector2f(life, 10));
@@ -56,7 +56,7 @@ void Boss::takeDamage(Player& player)
 void Boss::doDamage(Player& player)
 {
     if (sprite.getGlobalBounds().intersects(player.getSprite().getGlobalBounds()) && !player.getInvincible()) {
-        player.setLife(-5);
+        player.setLife(-50);
         player.setInvincible(true);
         player.coolDownInvincible.restart();
     }
