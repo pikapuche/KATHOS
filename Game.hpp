@@ -4,6 +4,7 @@
 #include "Gemme.hpp"
 #include "MainScreen.hpp"
 #include "Interface.hpp"
+#include "controllerManager.hpp"
 
 class Game {
 public : 

@@ -1,6 +1,7 @@
 #pragma once
 #include "Button.hpp"
 #include "Player.hpp"
+#include "controllerManager.hpp"
 
 class PauseOverlay {
 private:
@@ -25,7 +26,6 @@ private:
     PauseOverlay pauseOverlay; // Store the overlay as a member
     vector<Button> buttons;
     bool shouldRestart = false; // Track restart state
-    bool isUsingController;
     int selectedButtonIndex = 0; // Track the currently highlighted button
     Sprite highlightRect; // Overlay to show selection
 	Texture highlightTexture;
@@ -39,13 +39,9 @@ public:
     void initInterface();
 	bool getIsPaused();
 	void setIsPaused(bool paused);
-    void updateInterface(RenderWindow& window, Player& player);
+    void updateInterface(RenderWindow& window, Player& player, Controller& controller);
     bool getShouldRestart() const;
     void resetRestartFlag();
-	void setUsingController(bool usingController);
-	bool getUsingController();
-	void detectControllerInput();
-    void handleMenuNavigation(); // New function for input
 
     void updateTimer(RenderWindow& window);
     void resetTime();
