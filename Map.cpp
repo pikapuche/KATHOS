@@ -15,18 +15,17 @@ Map::Map() : mapState(MapState::PRACTICE) {
 	salle1Texture.loadFromFile("Assets/Map/Salle1.jpg");
 	salle2Texture.loadFromFile("Assets/Map/Salle2.jpg");
 	salle3Texture.loadFromFile("Assets/Map/Salle3.jpg");
-	salle4Texture.loadFromFile("Assets/Map/Salle2.jpg");
-	salle5Texture.loadFromFile("Assets/Map/Salle5.jpg");
-	salle6Texture.loadFromFile("Assets/Map/Salle6.png");
+	salle4Texture.loadFromFile("Assets/Map/Salle2.jpg"); 
+	salle5Texture.loadFromFile("Assets/Map/Salle5.jpg"); 
+	salle6Texture.loadFromFile("Assets/Map/Salle6.png"); 
 
 	//practiceSprite.setTexture(practiceTexture);
 	salle1Sprite.setTexture(salle1Texture);
 	salle2Sprite.setTexture(salle2Texture);
 	salle3Sprite.setTexture(salle3Texture);
-	salle4Sprite.setTexture(salle4Texture);
+	salle4Sprite.setTexture(salle4Texture); salle4Sprite.setScale(-1.f, 1.f); salle4Sprite.setPosition(1940, 0);
 	salle5Sprite.setTexture(salle5Texture);
 	salle6Sprite.setTexture(salle6Texture);
-
 }
 
 Map::~Map() {}
@@ -52,14 +51,18 @@ void Map::update(float deltaTime, sf::RenderWindow& window) {
 }
 
 void Map::clearMap() {
-	tpShapeA.clear();
 	tpShapeB.clear();
+	tpShapeA.clear();
 	interactiblesVector.clear();
 	gemmeSprites.clear();
 	enemies.clear();
 	bosses.clear();
 	maps.clear();
 	groundSprites.clear();
+}
+
+void Map::reinitilisePlayer() {
+	//reiniliser player (gemme/clef)
 }
 
 
@@ -75,10 +78,12 @@ void Map::collision(float deltaTime) {
 	for (auto& tpA : tpShapeA) {
 		if (player->getSprite().getGlobalBounds().intersects(tpA->getGlobalBounds())) {
 			clearMap();
+			reinitilisePlayer();
 			switch (mapState)
 			{
 			case Map::MapState::PRACTICE:
 				mapState = MapState::SALLE1;
+				//reinitialiser le joueur
 				break;
 			case Map::MapState::SALLE1:
 				mapState = MapState::SALLE2;
@@ -104,6 +109,7 @@ void Map::collision(float deltaTime) {
 	for (auto& tpB : tpShapeB) {
 		if (player->getSprite().getGlobalBounds().intersects(tpB->getGlobalBounds())) {
 			clearMap();
+			reinitilisePlayer();
 			switch (mapState)
 			{
 			case Map::MapState::SALLE1:
@@ -320,6 +326,7 @@ void Map::monSwitch(ifstream& _Map, string _line, int _z) {
 
 void Map::loadMap() {
 	if (mapState == MapState::PRACTICE) {
+		cout << "practice" << endl;
 		ifstream Map0("Assets/Map/Practice.txt");
 		maps.push_back(&Map0);
 		string line;
@@ -331,7 +338,7 @@ void Map::loadMap() {
 	}
 	if (mapState == MapState::SALLE1) {
 		cout << "salle 1" << endl;
-		ifstream Map1("Assets/Map/mapBoss.txt");
+		ifstream Map1("Assets/Map/Salle1.txt");
 		maps.push_back(&Map1);
 		string line;
 		float z = 0;
@@ -386,6 +393,12 @@ void Map::loadMap() {
 		for (auto& mapMonde6 : maps) {
 			monSwitch(*mapMonde6, line, z);
 		}
+		if (!musicBoss.openFromFile("Assets/Musiques/VSOLO musique boss16.wav")) {
+			cout << "euuuuuuuuuuuuuu wtf la zic ?" << endl;
+		}
+		musicBoss.setLoop(true);
+		musicBoss.setVolume(5.f);
+		musicBoss.play();
 	}
 }
 
