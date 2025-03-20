@@ -26,7 +26,7 @@ void Game::initMusic()
     musicBoss.setLoop(true);
     musicBoss.setVolume(5.f);
 }
-void Game::gameOver(RenderWindow& window, Interface& overlay)
+void Game::gameOver(RenderWindow& window, Interface& overlay, Controller& controller)
 {
     if (isGameOver) {
         musicBoss.stop();
@@ -63,11 +63,12 @@ void Game::gameOver(RenderWindow& window, Interface& overlay)
         timeText.setString("Time: " + to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + to_string(seconds) + ":" + to_string(milliseconds));
         timeText.setPosition((window.getSize().x - timeText.getGlobalBounds().width) / 2, (window.getSize().y - timeText.getGlobalBounds().height) / 2 + 80);
         window.draw(timeText);
+        overlay.updateGameOver(window, controller);
         return;
     }
 }
 
-void Game::Win(RenderWindow& window, Interface& overlay)
+void Game::Win(RenderWindow& window, Interface& overlay, Controller& controller)
 {
     if (isWin) {
         musicBoss.stop();
@@ -104,6 +105,7 @@ void Game::Win(RenderWindow& window, Interface& overlay)
         timeText.setString("Time: " + to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + to_string(seconds) + ":" + to_string(milliseconds));
         timeText.setPosition((window.getSize().x - timeText.getGlobalBounds().width) / 2, (window.getSize().y - timeText.getGlobalBounds().height) / 2 + 80);
         window.draw(timeText);
+        overlay.updateGameOver(window, controller);
         return;
     }
 }
@@ -214,8 +216,8 @@ void Game::run()
                 overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
                 music.stop();
             }
-            gameOver(window, overlay);
-            Win(window, overlay);
+            gameOver(window, overlay, controller);
+            Win(window, overlay, controller);
 
             mainScreen.destroyAll();
         }

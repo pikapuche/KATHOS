@@ -53,4 +53,6 @@ public:
 
     void setGameStarted(bool started);
     bool getGameStarted() const;
+
+    void updateGameOver(sf::RenderWindow& window, Controller& controller);
 };
