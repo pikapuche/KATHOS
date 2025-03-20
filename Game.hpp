@@ -10,6 +10,7 @@ public :
 
 	bool isGameOver = false;
 	bool isWin = false;
+
 	bool removeBoss = false;
 
 	Music music;
@@ -22,7 +23,7 @@ public :
 
 	void gameOver(RenderWindow& window);
 
-	void Win(RenderWindow& window);
+	void Win(RenderWindow& window, Interface& overlay);
 
 	void run();
 };
