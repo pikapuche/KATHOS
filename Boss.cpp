@@ -49,7 +49,6 @@ void Boss::takeDamage(Player& player)
     if (player.getAttackShape().getGlobalBounds().intersects(sprite.getGlobalBounds()) && player.stateWeapon == player.SPAWN) {
         setLife(-1);
         lifeBar.setSize(Vector2f(life, 10));
-        cout << "aie ca fais mal (boss)" << endl;
     }
 }
 

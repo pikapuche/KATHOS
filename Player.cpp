@@ -281,7 +281,6 @@ void Player::dash(float deltaTime)
             isDashing = false;
             SPEED = 300.f;
             coolDownDash.restart();
-            cout << "dash stop" << endl;
         }
     }
     else {
@@ -338,6 +337,11 @@ bool Player::setIsDashing(bool dash)
 bool Player::getIsTakeSpeed()
 {
     return isTakeSpeed;
+}
+
+bool Player::getIsTakeJump()
+{
+    return isTakeJump;
 }
 
 bool Player::setIsTakeSpeed(bool speed)

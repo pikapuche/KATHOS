@@ -51,7 +51,6 @@ void Gemme::interact(const shared_ptr<Player>& player)
 			wasTaken = true;
 		}
 		else {
-			cout << "Something arry" << endl;
 		}
 	}
 

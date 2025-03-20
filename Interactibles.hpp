@@ -1,5 +1,6 @@
 #pragma once
 #include "Player.hpp"
+#include "controllerManager.hpp"
 
 class Interactible {
 private:
@@ -12,6 +13,7 @@ protected:
     sf::Texture texture;
     sf::Sprite inspectGUI;
     sf::Texture inspectGUITexture;
+    sf::Texture inspectGUIxboxTexture;
     bool isPlayerNear = false; // True if player is close
     bool shouldHide = false;
 
@@ -22,7 +24,7 @@ public:
 
     bool playerTryInteract();
     // Check if player is near
-    virtual void updateProximity(const std::shared_ptr<Player>& player, RenderWindow& window);
+    virtual void updateProximity(const std::shared_ptr<Player>& player, RenderWindow& window, Controller& controller);
     // Getter
     bool getIsPlayerNear();
 

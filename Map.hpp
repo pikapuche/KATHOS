@@ -8,6 +8,7 @@
 #include "Chest.hpp"
 #include "Key.hpp"
 #include "Door.hpp"
+#include "controllerManager.hpp"
 
 
 class Map {
@@ -50,7 +51,7 @@ public:
 
     ~Map();
 
-    void update(float deltaTime, RenderWindow& window);
+    void update(float deltaTime, RenderWindow& window, Controller& controller);
 
     void reinitilisePlayer();
 

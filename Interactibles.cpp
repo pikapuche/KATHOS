@@ -2,6 +2,7 @@
 
 Interactible::Interactible(){
     inspectGUITexture.loadFromFile("Assets/texture/UI/inspect.png");
+    inspectGUIxboxTexture.loadFromFile("Assets/texture/UI/inspect_xbox.png");
     inspectGUI.setTexture(inspectGUITexture);
 }
 
@@ -19,8 +20,14 @@ void Interactible::setTexture(const string& filePath) {
     }
 }
 
-void Interactible::updateProximity(const std::shared_ptr<Player>& player, sf::RenderWindow& window)
+void Interactible::updateProximity(const std::shared_ptr<Player>& player, sf::RenderWindow& window, Controller& controller)
 {
+    if (controller.getUsingController())
+        inspectGUI.setTexture(inspectGUIxboxTexture);
+    else
+        inspectGUI.setTexture(inspectGUITexture);
+        
+
     float distance = sqrt(
         pow(sprite.getPosition().x - player->getSprite().getPosition().x, 2) +
         pow(sprite.getPosition().y - player->getSprite().getPosition().y, 2)
