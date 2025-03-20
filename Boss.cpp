@@ -56,7 +56,7 @@ void Boss::takeDamage(Player& player)
 void Boss::doDamage(Player& player)
 {
     if (sprite.getGlobalBounds().intersects(player.getSprite().getGlobalBounds()) && !player.getInvincible()) {
-        player.setLife(-50);
+        player.setLife(-5);
         player.setInvincible(true);
         player.coolDownInvincible.restart();
     }
