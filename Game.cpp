@@ -26,7 +26,7 @@ void Game::initMusic()
     musicBoss.setLoop(true);
     musicBoss.setVolume(10.f);
 }
-void Game::gameOver(RenderWindow& window, Interface& overlay, Controller& controller)
+void Game::gameOver(RenderWindow& window, Interface& overlay, Controller& controller, Map& map)
 {
     if (isGameOver) {
         musicBoss.stop();
@@ -63,12 +63,12 @@ void Game::gameOver(RenderWindow& window, Interface& overlay, Controller& contro
         timeText.setString("Time: " + to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + to_string(seconds) + ":" + to_string(milliseconds));
         timeText.setPosition((window.getSize().x - timeText.getGlobalBounds().width) / 2, (window.getSize().y - timeText.getGlobalBounds().height) / 2 + 80);
         window.draw(timeText);
-        overlay.updateGameOver(window, controller);
+        overlay.updateGameOver(window, controller, map);
         return;
     }
 }
 
-void Game::Win(RenderWindow& window, Interface& overlay, Controller& controller)
+void Game::Win(RenderWindow& window, Interface& overlay, Controller& controller, Map& map)
 {
     if (isWin) {
         musicBoss.stop();
@@ -105,7 +105,7 @@ void Game::Win(RenderWindow& window, Interface& overlay, Controller& controller)
         timeText.setString("Time: " + to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + to_string(seconds) + ":" + to_string(milliseconds));
         timeText.setPosition((window.getSize().x - timeText.getGlobalBounds().width) / 2, (window.getSize().y - timeText.getGlobalBounds().height) / 2 + 80);
         window.draw(timeText);
-        overlay.updateGameOver(window, controller);
+        overlay.updateGameOver(window, controller, map);
         return;
     }
 }
@@ -208,15 +208,15 @@ void Game::run()
                     musicBoss.play();
                     count++;
                 }
-                overlay.updateInterface(window, *m.player, controller); // Draw pause menu when paused
+                overlay.updateInterface(window, *m.player, controller, m); // Draw pause menu when paused
             }
             if (!mainScreen.getIsInMenu())
             {
                 overlay.updateTimer(window); // ← THIS LINE UPDATES THE TIMER
                 music.stop();
             }
-            gameOver(window, overlay, controller);
-            Win(window, overlay, controller);
+            gameOver(window, overlay, controller, m);
+            Win(window, overlay, controller, m);
 
             mainScreen.destroyAll();
         }

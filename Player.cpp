@@ -77,7 +77,7 @@ void Player::movementManager(float deltaTime) {
     if ((Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0, 2)) && coolDownAttack.getElapsedTime().asSeconds() >= 0.7) { isAttacking = true; coolDownAttack.restart(); }
 
     // Si la gâchette gauche est pressée ou que A est pressée OU si la gâchette droite est pressée ou que A est pressée
-    if (((Mouse::isButtonPressed(Mouse::Right) || gachetteValue > 10) || (Keyboard::isKeyPressed(Keyboard::A) || gachetteValue < -10)) && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500) {
+    if (((Mouse::isButtonPressed(Mouse::Right) || gachetteValue > 50) || (Keyboard::isKeyPressed(Keyboard::A) || gachetteValue < -50)) && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500) {
         isDashing = true;
         clock.restart();
     }

@@ -2,15 +2,15 @@
 
 Enemy::Enemy() : Entity(position.x, position.y)
 {
-    DEBUG = true;
+    DEBUG = false;
     if (DEBUG) {
-        rectangleDetect.setFillColor(Color(255, 0, 0, 50));
         circleOne.setFillColor(Color::Yellow);
         circleTwo.setFillColor(Color::Blue);
         circleLastPos.setFillColor(Color::Cyan);
-        attackDetect.setFillColor(Color(0, 255, 0, 50));
-        attackShape.setFillColor(Color::Yellow);
     }
+    rectangleDetect.setFillColor(Color(255, 0, 0, 50));
+    attackDetect.setFillColor(Color(0, 255, 0, 50));
+    attackShape.setFillColor(Color::Yellow);
     rectangleDetect.setOrigin(318, 11); // 150 (radius) - 64 (taille sprite) + 32 (moitiï¿½ taille sprite pour centrer) 
     rectangleDetect.setSize(Vector2f(700, 75));
     currentState = PATROL;
