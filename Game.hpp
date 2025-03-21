@@ -17,6 +17,8 @@ public :
 	bool removeBoss = false;
 
 	Music music;
+	Music musicBoss;
+	Music musicLevel1;
 
 	void removeDeadEnemies(Map& m);
 

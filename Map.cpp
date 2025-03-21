@@ -1,6 +1,6 @@
 #include "Map.hpp"
 
-Map::Map() : mapState(MapState::SALLE6) {
+Map::Map() : mapState(MapState::PRACTICE) {
 	groundYellowLeftTexture.loadFromFile("Assets/texture/Map/groundYellowLeft.png");
 	groundYellowMidTexture.loadFromFile("Assets/texture/Map/groundYellowMid.png");
 	groundYellowRightTexture.loadFromFile("Assets/texture/Map/groundYellowRight.png");
@@ -31,17 +31,6 @@ Map::Map() : mapState(MapState::SALLE6) {
 }
 
 Map::~Map() {}
-
-void Map::initMusic()
-{
-	musicBoss.openFromFile("Assets/Musiques/VSOLO musique boss16.wav");
-	musicBoss.setLoop(true);
-	musicBoss.setVolume(Volume);
-
-	musicLevel1.openFromFile("Assets/Musiques/Monde 1 aventure.wav");
-	musicLevel1.setLoop(true);
-	musicLevel1.setVolume(Volume);
-}
 
 void Map::update(float deltaTime, sf::RenderWindow& window, Controller& controller) {
     for (auto& interactv : interactiblesVector) {

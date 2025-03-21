@@ -19,10 +19,17 @@ void Game::initMusic()
         music.setLoop(true);
         music.setVolume(50.f);
     }
+
+    if (!musicBoss.openFromFile("Assets/Musiques/VSOLO musique boss16.wav")) {
+        cout << "euuuuuuuuuuuuuu wtf la zic ?" << endl;
+    }
+    musicBoss.setLoop(true);
+    musicBoss.setVolume(10.f);
 }
 void Game::gameOver(RenderWindow& window, Interface& overlay, Controller& controller)
 {
     if (isGameOver) {
+        musicBoss.stop();
         overlay.setWinCondition(true); //flemme de changer le nom pour l'instant 
 
         RectangleShape gameOverScreen(Vector2f(window.getSize().x, window.getSize().y));
@@ -64,6 +71,7 @@ void Game::gameOver(RenderWindow& window, Interface& overlay, Controller& contro
 void Game::Win(RenderWindow& window, Interface& overlay, Controller& controller)
 {
     if (isWin) {
+        musicBoss.stop();
         overlay.setWinCondition(true);
 
         RectangleShape winScreen(Vector2f(window.getSize().x, window.getSize().y));
@@ -136,7 +144,7 @@ void Game::run()
                 overlay.setIsPaused(true);
             }
             else if (controller.getUsingController()) {
-                if (!mainScreen.getIsInMenu() && sf::Joystick::isButtonPressed(0,7)) {
+                if (!mainScreen.getIsInMenu() && sf::Joystick::isButtonPressed(0, 7)) {
                     overlay.setIsPaused(true);
                 }
             }
@@ -177,7 +185,7 @@ void Game::run()
                 }
                 for (auto& boss : m.bosses) {
                     boss->update(deltaTime, *m.player);
-                    if (boss->getLife() <= 0) 
+                    if (boss->getLife() <= 0)
                     {
                         isWin = true;
                     }
@@ -192,12 +200,12 @@ void Game::run()
             m.update(deltaTime, window, controller);
             m.draw(window);
 
-//             overlay.updateInterface(window, *m.player, controller); // Draw pause menu when paused
-//             if (!mainScreen.getIsInMenu()) {
+            //             overlay.updateInterface(window, *m.player, controller); // Draw pause menu when paused
+            //             if (!mainScreen.getIsInMenu()) {
             if (!isWin && !isGameOver)
             {
                 if (m.mapBoss && count < 1) {
-                    m.musicBoss.play();
+                    musicBoss.play();
                     count++;
                 }
                 overlay.updateInterface(window, *m.player, controller); // Draw pause menu when paused
@@ -212,7 +220,7 @@ void Game::run()
 
             mainScreen.destroyAll();
         }
-        
+
         // Affiche touter()
         window.display();
     }

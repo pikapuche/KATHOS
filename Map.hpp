@@ -51,14 +51,10 @@ public:
 
     vector<shared_ptr<Interactible>> interactiblesVector;
 
-    Music musicBoss;
-    Music musicLevel1;
 
     Map();
 
     ~Map();
-
-    void initMusic();
 
     void update(float deltaTime, RenderWindow& window, Controller& controller);
 

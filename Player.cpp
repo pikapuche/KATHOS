@@ -26,7 +26,7 @@ Player::Player() : Entity(position.x, position.y) { // constructeur de base
     bufferDoubleJump.loadFromFile("Assets/SoundEffects/double jump.wav");
     bufferHit.loadFromFile("Assets/SoundEffects/coup atteint.wav");
     bufferMiss.loadFromFile("Assets/SoundEffects/coup dans le vide.wav");
-    sound.setVolume(25);
+    sound.setVolume(0);
 }
 
 void Player::movementManager(float deltaTime) { 
