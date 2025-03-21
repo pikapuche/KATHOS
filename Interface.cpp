@@ -115,7 +115,7 @@ void Interface::initInterface() {
     //DJump.setScale(1.5f, 1.5f);
 
 }
-void Interface::updateInterface(RenderWindow& window, Player& player, Controller& controller) {
+void Interface::updateInterface(RenderWindow& window, Player& player, Controller& controller, Map& map) {
 
         if (isPaused) { // Only if paused
             pauseOverlay.draw(window);
@@ -136,6 +136,7 @@ void Interface::updateInterface(RenderWindow& window, Player& player, Controller
                                 window.close();
                                 return;
                             case ButtonType::Restart:
+                                map.mapState = Map::MapState::PRACTICE;
                                 shouldRestart = true; // New flag to signal a restart
                                 isPaused = false; // Unpause when restarting
                                 totalElapsedTime = Time::Zero; // Reset elapsed time
@@ -154,6 +155,7 @@ void Interface::updateInterface(RenderWindow& window, Player& player, Controller
                         isPaused = false;
                         return;
                     case 1:
+                        map.mapState = Map::MapState::PRACTICE;
                         shouldRestart = true; // New flag to signal a restart
                         isPaused = false; // Unpause when restarting
                         totalElapsedTime = sf::Time::Zero; // Reset elapsed time
@@ -300,7 +302,7 @@ bool Interface::getGameStarted()  const {
     return gameStarted;
 }
 
-void Interface::updateGameOver(sf::RenderWindow& window, Controller& controller) {
+void Interface::updateGameOver(sf::RenderWindow& window, Controller& controller, Map& map) {
     if (hasWon) {
         for (size_t i = 0; i < buttons.size(); ++i) {
             // If using mouse, highlight hovered button
@@ -312,6 +314,7 @@ void Interface::updateGameOver(sf::RenderWindow& window, Controller& controller)
                     if (button.isHovered(window)) {
                         switch (button.getType()) {
                         case ButtonType::Retry:
+                            map.mapState = Map::MapState::PRACTICE;
                             shouldRestart = true; // New flag to signal a restart
                             totalElapsedTime = sf::Time::Zero; // Reset elapsed time
                             hasWon = false;

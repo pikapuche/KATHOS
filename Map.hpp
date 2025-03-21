@@ -17,6 +17,8 @@ public:
     bool bossZone = false;
     bool mapBoss = false;
 
+    float Volume = 10;
+
     Texture groundYellowLeftTexture, groundYellowMidTexture, groundYellowRightTexture;
     Texture groundRedLeftTexture, groundRedMidTexture, groundRedRightTexture;
     Texture groundGreenLeftTexture, groundGreenMidTexture, groundGreenRightTexture;
@@ -48,6 +50,7 @@ public:
     vector<ifstream*> maps;
 
     vector<shared_ptr<Interactible>> interactiblesVector;
+
 
     Map();
 

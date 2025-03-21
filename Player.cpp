@@ -22,6 +22,11 @@ Player::Player() : Entity(position.x, position.y) { // constructeur de base
     rectBar.setOutlineThickness(2);
     stateLook = LOOK_RIGHT;
     setColliderMap(leftMain, rightMain);
+    bufferJump.loadFromFile("Assets/SoundEffects/jump.wav");
+    bufferDoubleJump.loadFromFile("Assets/SoundEffects/double jump.wav");
+    bufferHit.loadFromFile("Assets/SoundEffects/coup atteint.wav");
+    bufferMiss.loadFromFile("Assets/SoundEffects/coup dans le vide.wav");
+    sound.setVolume(0);
 }
 
 void Player::movementManager(float deltaTime) { 
@@ -72,7 +77,7 @@ void Player::movementManager(float deltaTime) {
     if ((Mouse::isButtonPressed(Mouse::Left) || Joystick::isButtonPressed(0, 2)) && coolDownAttack.getElapsedTime().asSeconds() >= 0.7) { isAttacking = true; coolDownAttack.restart(); }
 
     // Si la gâchette gauche est pressée ou que A est pressée OU si la gâchette droite est pressée ou que A est pressée
-    if (((Mouse::isButtonPressed(Mouse::Right) || gachetteValue > 10) || (Keyboard::isKeyPressed(Keyboard::A) || gachetteValue < -10)) && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500) {
+    if (((Mouse::isButtonPressed(Mouse::Right) || gachetteValue > 50) || (Keyboard::isKeyPressed(Keyboard::A) || gachetteValue < -50)) && isTakeDash && !isDashing && coolDownDash.getElapsedTime().asMilliseconds() >= 1500) {
         isDashing = true;
         clock.restart();
     }
@@ -185,6 +190,10 @@ void Player::animationManager(float deltaTime) {
         }
         break;
     case ATTACKING :
+        sound.setBuffer(bufferHit);
+        if (sound.getStatus() != sf::Sound::Playing) {
+            sound.play();
+        }
         animAttackTimeDecr += deltaTime;
         anim_attack.y = 0;
         if (animAttackTimeDecr > 0.07f) {
@@ -228,6 +237,10 @@ void Player::animationManager(float deltaTime) {
 void Player::jump() {
 
     if (state == GROUNDED) {  // Sauter uniquement si le joueur est sur le sol / saute pas
+        sound.setBuffer(bufferJump);
+        if (sound.getStatus() != sf::Sound::Playing) {
+            sound.play();
+        }
         state = JUMP;
         stateMove = JUMPING;
         velocity.y = -jumpForce;  // Appliquer une force initiale vers le haut pour sauter 
@@ -235,6 +248,10 @@ void Player::jump() {
         jumpClock.restart();
     }
     else if (jumpCount == 1 && jumpClock.getElapsedTime().asMilliseconds() >= 300 && state != GROUNDED && isTakeJump) { // compteur permettant de savoir si on peut faire un deuxième saut
+        sound.setBuffer(bufferDoubleJump);
+        if (sound.getStatus() != sf::Sound::Playing) {
+            sound.play();
+        }
         velocity.y = -jumpForce;
         jumpCount = 2;
     }

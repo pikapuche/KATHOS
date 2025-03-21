@@ -46,6 +46,14 @@ protected:
     Clock coolDownAttack;
     Clock clock;
 
+    float VolumeSound;
+
+    SoundBuffer bufferJump;
+    SoundBuffer bufferDoubleJump;
+    SoundBuffer bufferHit;
+    SoundBuffer bufferMiss;
+    Sound sound;
+
 public:
 
     Clock coolDownInvincible;
@@ -62,6 +70,8 @@ public:
     bool floor = true;
 
     Player();
+
+    void soundManager();
 
     void movementManager(float deltaTime);
 

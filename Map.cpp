@@ -28,8 +28,6 @@ Map::Map() : mapState(MapState::PRACTICE) {
 	salle5Sprite.setTexture(salle5Texture);
 	salle6Sprite.setTexture(salle6Texture);
 	salle62Sprite.setTexture(salle62Texture);
-
-
 }
 
 Map::~Map() {}
@@ -71,7 +69,6 @@ void Map::reinitilisePlayer() {
 	player->setIsTakeJump(false);
 	player->setIsTakeSpeed(false);
 }
-
 
 void Map::collision(float deltaTime) {
 	for (auto& ground : groundSprites) {

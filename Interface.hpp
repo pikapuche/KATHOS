@@ -2,6 +2,7 @@
 #include "Button.hpp"
 #include "Player.hpp"
 #include "controllerManager.hpp"
+#include "Map.hpp"
 
 class PauseOverlay {
 private:
@@ -63,7 +64,7 @@ public:
     void initInterface();
 	bool getIsPaused();
 	void setIsPaused(bool paused);
-    void updateInterface(RenderWindow& window, Player& player, Controller& controller);
+    void updateInterface(RenderWindow& window, Player& player, Controller& controller, Map& map);
     bool getShouldRestart() const;
     void resetRestartFlag();
 
@@ -76,5 +77,5 @@ public:
     void setGameStarted(bool started);
     bool getGameStarted() const;
 
-    void updateGameOver(sf::RenderWindow& window, Controller& controller);
+    void updateGameOver(sf::RenderWindow& window, Controller& controller, Map& map);
 };
