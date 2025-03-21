@@ -19,17 +19,10 @@ void Game::initMusic()
         music.setLoop(true);
         music.setVolume(50.f);
     }
-
-    if (!musicBoss.openFromFile("Assets/Musiques/VSOLO musique boss16.wav")) {
-        cout << "euuuuuuuuuuuuuu wtf la zic ?" << endl;
-    }
-    musicBoss.setLoop(true);
-    musicBoss.setVolume(5.f);
 }
 void Game::gameOver(RenderWindow& window, Interface& overlay, Controller& controller)
 {
     if (isGameOver) {
-        musicBoss.stop();
         overlay.setWinCondition(true); //flemme de changer le nom pour l'instant 
 
         RectangleShape gameOverScreen(Vector2f(window.getSize().x, window.getSize().y));
@@ -71,7 +64,6 @@ void Game::gameOver(RenderWindow& window, Interface& overlay, Controller& contro
 void Game::Win(RenderWindow& window, Interface& overlay, Controller& controller)
 {
     if (isWin) {
-        musicBoss.stop();
         overlay.setWinCondition(true);
 
         RectangleShape winScreen(Vector2f(window.getSize().x, window.getSize().y));
@@ -205,7 +197,7 @@ void Game::run()
             if (!isWin && !isGameOver)
             {
                 if (m.mapBoss && count < 1) {
-                    musicBoss.play();
+                    m.musicBoss.play();
                     count++;
                 }
                 overlay.updateInterface(window, *m.player, controller); // Draw pause menu when paused

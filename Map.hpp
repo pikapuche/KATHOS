@@ -17,6 +17,8 @@ public:
     bool bossZone = false;
     bool mapBoss = false;
 
+    float Volume = 10;
+
     Texture groundYellowLeftTexture, groundYellowMidTexture, groundYellowRightTexture;
     Texture groundRedLeftTexture, groundRedMidTexture, groundRedRightTexture;
     Texture groundGreenLeftTexture, groundGreenMidTexture, groundGreenRightTexture;
@@ -49,9 +51,14 @@ public:
 
     vector<shared_ptr<Interactible>> interactiblesVector;
 
+    Music musicBoss;
+    Music musicLevel1;
+
     Map();
 
     ~Map();
+
+    void initMusic();
 
     void update(float deltaTime, RenderWindow& window, Controller& controller);
 

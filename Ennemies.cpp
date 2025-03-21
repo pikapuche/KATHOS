@@ -2,7 +2,7 @@
 
 Enemy::Enemy() : Entity(position.x, position.y)
 {
-    DEBUG = false;
+    DEBUG = true;
     if (DEBUG) {
         rectangleDetect.setFillColor(Color(255, 0, 0, 50));
         circleOne.setFillColor(Color::Yellow);
@@ -24,7 +24,10 @@ Enemy::Enemy() : Entity(position.x, position.y)
     circleLastPos.setRadius(20.f); // point de derniere position du player
     attackDetect.setSize(Vector2f(75.f, 20.f));
     attackShape.setSize(Vector2f(nuage, 20.f));
-    life = 50;
+    if(enemyState == CHASER) life = 75;
+    else {
+        life = 50;
+    }
     lifeBar.setSize(Vector2f(life, 10));
     lifeBar.setFillColor(Color::Green);
     rectBar.setSize(Vector2f(life, 10));
@@ -39,7 +42,6 @@ void Enemy::detectPlayer(Player& player)
     if (enemyState == CHASER) {
         if (rectangleDetect.getGlobalBounds().intersects(player.getSprite().getGlobalBounds()) && currentState != CHASE) { // si l'ennemi est un chasseur et que le perso entre dans le cercle de detection
             currentState = CHASE;
-            // texture course
         }
         else if (!rectangleDetect.getGlobalBounds().intersects(player.getSprite().getGlobalBounds()) && currentState == CHASE) {
             lastPlayerPosition = player.getSprite().getPosition().x;
@@ -80,6 +82,7 @@ void Enemy::movementManager(float pos, float pos2, float deltaTime) { // permet 
     sprite.setPosition(position);
     if (enemyState == CHASER) {
         rectangleDetect.setPosition(position);
+        sprite.setColor(Color::Red);
         circleLastPos.setPosition(lastPlayerPosition, sprite.getPosition().y);
     }
     circleOne.setPosition(waypointOne);
@@ -88,17 +91,17 @@ void Enemy::movementManager(float pos, float pos2, float deltaTime) { // permet 
     lifeBar.setPosition(position.x + 5, position.y - 26);
     rectBar.setPosition(position.x + 5, position.y - 26);
 
-    if (sprite.getPosition().y < 0) { // haut de l'ï¿½cran
+    if (sprite.getPosition().y < 0) { // haut de l'ecran
         sprite.setPosition(position.x, position.y = 64);
     }
-    if (sprite.getPosition().y > 1016) { // bas de l'ï¿½cran 
-        sprite.setPosition(position.x, position.y = 1016);
-    }
-    if (sprite.getPosition().x < 0) { // gauche de l'ï¿½cran
+    if (sprite.getPosition().x < 0) { // gauche de l'ecran
         sprite.setPosition(position.x = 0, position.y);
     }
-    if (sprite.getPosition().x > 1856) { // droite de l'ï¿½cran
+    if (sprite.getPosition().x > 1856) { // droite de l'ecran
         sprite.setPosition(position.x = 1856, position.y);
+    }
+    if (sprite.getPosition().y > 1150) {
+        resetLife(0);
     }
 }
 

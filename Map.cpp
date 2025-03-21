@@ -1,6 +1,6 @@
 #include "Map.hpp"
 
-Map::Map() : mapState(MapState::PRACTICE) {
+Map::Map() : mapState(MapState::SALLE6) {
 	groundYellowLeftTexture.loadFromFile("Assets/texture/Map/groundYellowLeft.png");
 	groundYellowMidTexture.loadFromFile("Assets/texture/Map/groundYellowMid.png");
 	groundYellowRightTexture.loadFromFile("Assets/texture/Map/groundYellowRight.png");
@@ -28,11 +28,20 @@ Map::Map() : mapState(MapState::PRACTICE) {
 	salle5Sprite.setTexture(salle5Texture);
 	salle6Sprite.setTexture(salle6Texture);
 	salle62Sprite.setTexture(salle62Texture);
-
-
 }
 
 Map::~Map() {}
+
+void Map::initMusic()
+{
+	musicBoss.openFromFile("Assets/Musiques/VSOLO musique boss16.wav");
+	musicBoss.setLoop(true);
+	musicBoss.setVolume(Volume);
+
+	musicLevel1.openFromFile("Assets/Musiques/Monde 1 aventure.wav");
+	musicLevel1.setLoop(true);
+	musicLevel1.setVolume(Volume);
+}
 
 void Map::update(float deltaTime, sf::RenderWindow& window, Controller& controller) {
     for (auto& interactv : interactiblesVector) {
@@ -71,7 +80,6 @@ void Map::reinitilisePlayer() {
 	player->setIsTakeJump(false);
 	player->setIsTakeSpeed(false);
 }
-
 
 void Map::collision(float deltaTime) {
 	for (auto& ground : groundSprites) {
