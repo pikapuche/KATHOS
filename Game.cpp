@@ -24,7 +24,7 @@ void Game::initMusic()
         cout << "euuuuuuuuuuuuuu wtf la zic ?" << endl;
     }
     musicBoss.setLoop(true);
-    musicBoss.setVolume(10.f);
+    musicBoss.setVolume(5.f);
 }
 void Game::gameOver(RenderWindow& window, Interface& overlay, Controller& controller, Map& map)
 {
